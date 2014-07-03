@@ -1,0 +1,4 @@
+bower_*
+node_*
+lib
+build
