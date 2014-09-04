@@ -31,6 +31,7 @@ module.exports = function (grunt) {
             },
             install: {}
         },
+        
         requirejs_config_generator: {
             development: {
                 "baseUrl": "",
@@ -69,14 +70,16 @@ module.exports = function (grunt) {
             files: ['<%= jshint.files %>'],
             tasks: ['jshint', 'qunit']
         },
+        
         csslint: {
             strict: {
                 options: {
-                    import: 2
+                    "import": 2
                 },
                 src: ['src/css/*.css']
             }
         },
+        
         jasmine: {
             test: {
                 src: 'src/js/*.js',
@@ -85,6 +88,7 @@ module.exports = function (grunt) {
                     vendor: 'bower_components/**/*.js'
                 }
             },
+            
             istanbul: {
                 src: '<%= jasmine.test.src %>',
                 options: {
@@ -102,7 +106,8 @@ module.exports = function (grunt) {
             }
         }
     });
-    grunt.loadNpmTasks('grunt-bower-requirejs');
+    
+    grunt.loadNpmTasks('grunt-bower-requirejs'); //enabling plugins
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
@@ -116,5 +121,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-requirejs-config-generator');
 
     grunt.registerTask('default', ['bower', 'concat', 'requirejs']);
-
+    /* grunt:test */
+    grunt.registerTask("test",["jasmine"]);
 };

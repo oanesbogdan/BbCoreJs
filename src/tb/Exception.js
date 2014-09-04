@@ -1,7 +1,7 @@
 (function (window) {
     "use strict";
-
     require(['Backbone'], function (Backbone) {
+        
         var Exception = Backbone.Model.extend({
             /**
              * BundleController contructor
@@ -17,10 +17,10 @@
             },
 
             defaults: {
-                name = '';
-                message = '';
-                params = {};
-                stack = this.getStack();
+                name : '',
+                message:  '',
+                params : {},
+                stack : this.getStack()
             },
 
             /**
@@ -88,7 +88,7 @@
             }
         });
 
-        var throw = function (name, message) {
+        var throwException = function (name, message) {
             var error = new Exception();
             error.raise.apply(error, arguments);
             error.pushError(error);
