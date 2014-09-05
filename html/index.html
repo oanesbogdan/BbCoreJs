@@ -6,18 +6,14 @@
         <script src="/bower_components/requirejs/require.js"></script>
          <script src="/require.config.js"></script>
         <script>
-            require(["BackBone","bb.core"], function(BackBone,bbs){
-              console.log(BackBone);
-              console.log(bb);
-              bb.init();
-              /* Application Manager Should */
+            require(["bb.core","BackBone","jsclass"],function(bbCore,BackBone,jsclass){
+              console.log(bbCore);
             });
         </script>
     </head>
     <body>
         <div style="border:1px solid blue; width: 800px; height: 400px">
             <p>Exemple d'application</p>
-            
         </div>
     </body>
 </html>

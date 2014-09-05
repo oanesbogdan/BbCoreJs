@@ -3,28 +3,15 @@ var bb = bb || {};
 /*... paths ... */
 require.config({
     paths: {
+        "bb.Api":"src/tb/core/core",
         "bb.ApplicationManager" : "src/tb/core/bb.ApplicationManager",
         "bb.Mediator": "src/tb/core/bb.Mediator",
         "bb.RouteManager": "src/tb/core/bb.RouteManager",
-        "bb.ViewManager": "src/tb/core/bb.ViewManager"
+        "bb.ViewManager": "src/tb/core/bb.ViewManager",
+        "bb.Utils": "src/tb/core/bb.Utils"
     }
 });
 
-define(["bb.ApplicationManager","bb.Mediator","bb.RouteManager","bb.ViewManager"], function(){
-    var bb = {
-        sayHello:  function(){
-            console.log("sayHello");
-        },
-        
-        test: function(){
-            console.log("test");
-        },
-        
-        radical: function(){
-            console.log("radical");
-        },
-        
-        init: function(config){}
-    };
-    return bb;
+define(["bb.Api","bb.ApplicationManager","bb.ViewManager","bb.Mediator","bb.RouteManager","bb.Utils"], function(bbCore){
+    return bbCore.dump();
 });

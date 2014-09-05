@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-define([],function(){
+define(["bb.Api"],function(bbCore){
         
     var _containers = {};
     var _events = {};
@@ -20,11 +20,11 @@ define([],function(){
     }
     
     var Api = {
-        register: "", 
-        invoke: "",
-        publish: ""
+        register: function(){}, 
+        invoke: function(){},
+        publish: function(){}
     };
-    bb.Mediator = Api;
+    bbCore.register("Mediator",Api);
     return Api;
 });
 
