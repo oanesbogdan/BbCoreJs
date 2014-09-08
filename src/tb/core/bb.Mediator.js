@@ -7,8 +7,6 @@ define(["bb.Api"],function(bbCore){
         
     var _containers = {};
     var _events = {};
-    
-        
     var _register = function(componentName,component){
         if(componentName in _containers) return;
         _containers[componentName] = component;
@@ -20,9 +18,9 @@ define(["bb.Api"],function(bbCore){
     }
     
     var Api = {
-        register: function(){}, 
+        register: function(topic,callback){}, 
         invoke: function(){},
-        publish: function(){}
+        publish: function(topic,params,save){}
     };
     bbCore.register("Mediator",Api);
     return Api;

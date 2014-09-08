@@ -1,8 +1,8 @@
-define(["BackBone"], function(){
+define(["bb.Api","BackBone"], function(bbCore){
     var Api = {
         register: "", 
         get: ""
     };
-    bb.ViewManager = Api; 
+    bbCore.register("ViewManager",Api);
     return Api;
 });

@@ -1,5 +1,3 @@
-var bb = bb || {};
-
 /*... paths ... */
 require.config({
     paths: {
