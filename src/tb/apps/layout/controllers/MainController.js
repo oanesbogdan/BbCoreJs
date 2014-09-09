@@ -1,5 +1,5 @@
-bb.application.registerController("LayoutController",{
-    
+bb.ControllerManager.registerController("LayoutController",{
+    appname: "layout",
     config: {
         imports: ["test.manager"]
     },
@@ -9,8 +9,12 @@ bb.application.registerController("LayoutController",{
         var rteManager = require("bb.rte");
     },
     
-    showAction: function(){
+    homeAction: function(){
         return this.render("#placeHolder","/path/template",{});
+    },
+    
+    listAction: function(){
+       alert("radical");
     },
     
     displayLayoutAction: function(){
@@ -23,20 +27,4 @@ bb.application.registerController("LayoutController",{
         });
     }
     
-});
-
-/* Abstract controller */
-define(["jsCore","BackBone"], function(){
-    var _controllersCtn = {};
-    
-    var ControllerFactory = (function(){
-        
-        var api = {
-            registerController: function(ctlName,config){}
-        }
-        
-        return api;
-    })();
-    
-    return ControllerFactory;
 });

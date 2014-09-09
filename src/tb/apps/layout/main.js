@@ -1,4 +1,7 @@
+/*
+ *require
+ **/
+
 require([],function(){
-    
     
 });

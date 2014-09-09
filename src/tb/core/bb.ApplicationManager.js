@@ -73,10 +73,14 @@ define(["jquery","bb.AppContainer","bb.Api","BackBone","jsclass"], function($,bb
             this.name = ("name" in config) ? config.name:"";
             this.state = 0; 
             this.dependencies = ["" ,""];
-            this.controllers = [];
+            this.controllersMng = null;
         },
         
         getMenu: function(){
+            
+        },
+        
+        setControllerMng: function(controllerMng){
             
         },
         
@@ -122,43 +126,70 @@ define(["jquery","bb.AppContainer","bb.Api","BackBone","jsclass"], function($,bb
         }        
     }
     
+    
+    /* what is config*/
+    var _init = function(config){
+        console.log("init");
+    }
+    
+    var _start = function(){
+        console.log("start");
+    }
+    
     var Api = {
-        
         registerApplication : _registerApplication,
+        invoke: function(actionInfos,params){
+            var actionInfos = actionInfos.split(":");
+            
+            var appPromise = this.lauchApplication(actionInfos[0]);
+            /* triger event app is loading */
+            appPromise.done(function(application){
+               console.log("app is loading ..."); 
+            })
+        /* init controller */
+            
+        /*execute Actions*/
+        },
         
         lauchApplication: function(appname,config){
             try{
+                var dfd = new $.Deferred();
+                var config = config || {};
                 /* stop current application */
                 if(_currentApplication){
-                    instance.onStop(); //trigger events?
+                    instance.onStop();
                 }
-                
                 /* start or resume the new one */
                 var applicationInfos = AppContainer.getByAppInfosName(appname);
                 if(!applicationInfos){
                     var Application = _AppDefContainer[appname]; 
+                    /* load application here load the main */
                     var instance = new Application(config); 
                     applicationInfos = {
                         instance : instance, 
                         name: appname,
                         state: 0
                     } 
-                   applicationInfos.instance.onStart(); 
+                    applicationInfos.instance.onStart(); 
                 }else{
                     /* application already exists call ressume */
                     applicationInfos.instance.onResume();  
-                }
-                
+                }                
                 _currentApplication = instance;
                 AppContainer.register(applicationInfos); 
+                dfd.resolve(_currentApplication);
             }catch(e){
                 console.log("exception"+e);  
             }
+            
+            return dfd.promise();
         },
         
         getApplicationList: function(){
             return _AppDefContainer;
-        }
+        },
+        init: _init,
+        start: _start
     };
     
         
