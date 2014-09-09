@@ -12,36 +12,63 @@ define("bb.ApiResource", ["bb.apiClient", "jsclass"],function(bbApiClient,jsClas
             this.client = client;
         },        
         
-        post: function (data, contentType) {
-            return {
-                "url": this.baserUrl
-            };
-        }, 
-        put: function (id, data, contentType) {
-            return {
-                "url": this.baserUrl + id  + "/"
-            };
+        post: function (data) {
+            var rb = this.client.createRequestBuilder();
+            rb
+                .setMethod('POST')
+                .setData(data)
+                .setUrl(this.baserUrl)
+            ;
             
+            return rb.getRequest();
+        }, 
+        put: function (id, data) {
+            var rb = this.client.createRequestBuilder();
+            rb
+                .setMethod('PUT')
+                .setData(data)
+                .setUrl(this.baserUrl + '/' + id)
+            ;
+            
+            return rb.getRequest();
         }, 
         delete: function (id) {
-            return {
-                "url": this.baserUrl + id  + "/"
-            };
+            var rb = this.client.createRequestBuilder();
+            rb
+                .setMethod('DELETE')
+                .setUrl(this.baserUrl + '/' + id)
+            ;
+            
+            return rb.getRequest();
         }, 
         link: function (id, data) {
-            return {
-                "url": this.baserUrl + id  + "/"
-            };
+            var rb = this.client.createRequestBuilder();
+            rb
+                .setMethod('LINK')
+                .setUrl(this.baserUrl + '/' + id)
+                .setData(data)
+            ;
+            
+            return rb.getRequest();
         }, 
-        get: function(queryString) {
-            return {
-                "url": this.baserUrl + id  + "/"
-            };
+        get: function(id) {
+            var rb = this.client.createRequestBuilder();
+            rb
+                .setMethod('GET')
+                .setUrl(this.baserUrl + '/' + id)
+            ;
+            
+            return rb.getRequest();
         }, 
-        getCollection: function(queryString) {
-            return {
-                "url": this.baserUrl
-            };
+        getCollection: function(queryParams) {
+            var rb = this.client.createRequestBuilder();
+            rb
+                .setMethod('GET')
+                .setUrl(this.baserUrl)
+                .setQueryParams(queryParams)
+            ;
+            
+            return rb.getRequest();
         }
 
     });

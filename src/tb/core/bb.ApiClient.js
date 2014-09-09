@@ -1,4 +1,4 @@
-define("bb.apiClient", ["jquery","bb.Api", "jsclass"], function($, bbCore,jsClass){
+define("bb.apiClient", ["jquery","bb.Api", "jsclass", "bb.apiRequestBuilder"], function($, bbCore,jsClass, requestBuilder){
     
     /**
      * BB Api Client
@@ -6,33 +6,34 @@ define("bb.apiClient", ["jquery","bb.Api", "jsclass"], function($, bbCore,jsClas
     var ApiClient = new jsClass.Class({
         publicKey: null,
         privateKey: null,
-        host: null,
+        version: null,
         resourceManager: {},
-        userAgent: null,
-        initialize: function(publicKey, privateKey, host, userAgent) {
+        // global jquery ajax config
+        config: {
+            timeout: 30000,
+            cache: false
+        },
+        
+        initialize: function(publicKey, privateKey, version, config) {
             this.publicKey = publicKey;
             this.privateKey = privateKey;
-            this.host = host;
-            if (typeof userAgent !== "undefined") {
-                this.userAgent = userAgent;
+            this.version = version;
+            
+            if(typeof config !== "undefined") {
+                $.extend(this.config, config);
             }
+            
+            $.ajaxSetup(this.config);
         },        
         
         send: function (request) {
             return $.ajax(request);
         },
         
-        /**
-         * Get user agent
-         * 
-         * @returns {String}
-         */
-        getUserAgent: function() {
-            if(null !== this.userAgent) {
-                return this.userAgent;
-            }
+        createRequestBuilder: function() {
+            var rb = new requestBuilder(name, this);
             
-            return 'BackBee Api Client 0.10 (' + this.publicKey + ', ' + window.location.host  + ')';
+            return rb;
         },
         
         /**
