@@ -60,13 +60,20 @@ define("bb.ApiResource", ["bb.apiClient", "jsclass"],function(bbApiClient,jsClas
             
             return rb.getRequest();
         }, 
-        getCollection: function(queryParams) {
+        getCollection: function(filters, start, limit) {
             var rb = this.client.createRequestBuilder();
             rb
                 .setMethod('GET')
                 .setUrl(this.baserUrl)
-                .setQueryParams(queryParams)
+                .setQueryParams(filters)
             ;
+            
+            if(typeof start === "undefined") {
+                start = 0;
+            }
+            if(typeof limit === "undefined") {
+                limit = this.client.config.resource_default_limit;
+            }
             
             return rb.getRequest();
         }

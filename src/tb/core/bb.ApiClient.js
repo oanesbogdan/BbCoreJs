@@ -8,10 +8,11 @@ define("bb.apiClient", ["jquery","bb.Api", "jsclass", "bb.apiRequestBuilder"], f
         privateKey: null,
         version: null,
         resourceManager: {},
-        // global jquery ajax config
+        // global config
         config: {
-            timeout: 30000,
-            cache: false
+            ajax_timeout: 30000,
+            ajax_cache: false,
+            resource_default_limit: 100
         },
         
         initialize: function(publicKey, privateKey, version, config) {
