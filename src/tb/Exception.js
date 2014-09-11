@@ -1,6 +1,6 @@
 (function (window) {
     "use strict";
-    require(['Backbone'], function (Backbone) {
+    require(["bbApi",'Backbone'], function (bbCore,Backbone) {
         
         var Exception = Backbone.Model.extend({
             /**
@@ -94,5 +94,6 @@
             error.pushError(error);
             throw(name + ' : ' + message);
         }
+        bb.bbCore.register("Exception",throwException);
     }(window));
 }(window));

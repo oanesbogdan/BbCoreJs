@@ -1,20 +1,21 @@
-bb.RouteManager.registerRoute("layout",{
-    prefix: "layout",
-    routes:{
-        "home":{
-            url: "#/layout/home",
-            action: "MainController:show",
-            params: {}
-        },
-        "edit":{
-            url: "#/layout/edit/{:id}",
-            action: "LayoutController:edit",
-            params: {}
-        },
-        "delete":{
-            url: "#/layouy/delete/{:id}",
-            action: "LayoutController:delete"
+define(["bb.core"],function(bbCore){
+    bbCore.RouteManager.registerRoute("layout",{
+        prefix: "layout",
+        routes: {
+            "name": {
+                url: "home",
+                action: "MainController:home"
+            },
+      
+            "test": {
+                url: "test",
+                action: "TestController:test"
+            },
+      
+            "firsname": {
+                url: "showlist/:page",
+                action: "MainController:list"
+            }     
         }
-    }
-   
+    });
 });

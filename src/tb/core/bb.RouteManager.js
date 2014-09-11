@@ -25,8 +25,12 @@ define(["bb.Api","BackBone","jsclass","bb.ApplicationManager"],function(bbApi,Ba
         handleApplicationLinks : function(){
         },
         
-        navigateTo: function(){
-            
+        navigate: function(path,triggerEvent,updateRoute){
+            var conf = {
+                trigger:(triggerEvent) ? triggerEvent : true, 
+                replace:(updateRoute)? updateRoute : true
+                } ;
+            this.mainRouter.navigate(path,conf);
         },
         
         genericRouteHandler: function(actionInfos,params){
@@ -41,9 +45,9 @@ define(["bb.Api","BackBone","jsclass","bb.ApplicationManager"],function(bbApi,Ba
         }
     });  
    
-   var _handleRoute = function(){
-       alert("radical blaze");
-   } 
+    var _handleRoute = function(){
+        alert("radical blaze");
+    } 
    
     var Api = {
         
@@ -61,7 +65,7 @@ define(["bb.Api","BackBone","jsclass","bb.ApplicationManager"],function(bbApi,Ba
         },
           
         initRouter : function(){
-            this.startRouter();
+            this.getRouter();
             BackBone.history.start();
         },
         
@@ -71,7 +75,12 @@ define(["bb.Api","BackBone","jsclass","bb.ApplicationManager"],function(bbApi,Ba
                 _routerInstance = new BackBuilderRouter;
             }  
             return _routerInstance;
+        },
+        
+        getRouter: function(){
+            return this.startRouter();
         }
+      
     };
     
     bbApi.register("RouteManager",Api);

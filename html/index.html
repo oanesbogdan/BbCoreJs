@@ -4,16 +4,65 @@
         <meta encoding="utf8">
         <title>Login</title>
         <script src="/bower_components/requirejs/require.js"></script>
-         <script src="/require.config.js"></script>
+        <script src="/require.config.js"></script>
+        <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <script src="/bower_components/requirejs/require.js"></script>
         <script>
-            require(["bb.core","BackBone","jsclass"],function(bbCore,BackBone,jsclass){
-              console.log(bbCore);
-            });
+            /* sample to put in a yml file*/
+            var applicationConfig = {
+                appPath: "/src/tb/apps",
+                /*ne charge que les onglets qui se trouvent dans "applications"*/
+                active: "layout",
+                route: "",
+                applications: {  
+                    layout : {
+                        label  : " Edition du layout",
+                        config : { } 
+                    },
+                    content: {
+                        label  : "Edition du contenu",
+                        config : { }
+                    }  
+                }
+            };
+            
+            require(["bb.core"],function(bbCore){
+                bbCore.RouteManager.initRouter();
+                bbCore.ApplicationManager.init(applicationConfig);
+            }); 
+               
         </script>
+
     </head>
     <body>
-        <div style="border:1px solid blue; width: 800px; height: 400px">
-            <p>Exemple d'application</p>
+        <!-- Static navbar -->
+        <div class="navbar navbar-default navbar-static-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">BackBuilder</a>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="container">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#/layout">Layout</a></li>
+                <li><a href="#/params">Content</a></li>
+            </ul>
+            <div class="jumbotron">
+                <p>Utiliser les onglets pour changer d'application</p>
+            </div>
+
         </div>
     </body>
+
+
 </html>

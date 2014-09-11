@@ -58,26 +58,55 @@ define("bb.AppContainer",["jquery","jsclass","bb.Api"],function($){
 });
 
 
-define(["jquery","bb.AppContainer","bb.Api","BackBone","jsclass"], function($,bbAppContainer,bbCore,BackBone,jsclass){
+define(["require","jquery","bb.Utils","bb.AppContainer","bb.Api","BackBone","jsclass","bb.ControllerManager"], function(require){
      
     /* Abstract Application with Interface */
+   
+    /* dependence */
+    var $ = require("jquery"),
+    bbAppContainer = require("bb.AppContainer"),
+    bbApi = require("bb.Api"),
+    BackBone = require("BackBone"),
+    bbUtils = require("bb.Utils"),
+    ControllerManager = require("bb.ControllerManager");
+        
     var _AppDefContainer = {};
     var _currentApplication = null;
+    var _config = null; 
     var AppContainer  = bbAppContainer.getInstance();
     var ILifeCycle = new JS.Interface(["onInit","onStart","onStop","onResume"]);
     
     var AbstractApplication = new JS.Class({
         
         initialize : function(config){
-            this.title = "";
-            this.name = ("name" in config) ? config.name:"";
             this.state = 0; 
             this.dependencies = ["" ,""];
-            this.controllersMng = null;
+            this.appControllers = this.registerControllers();
         },
         
-        getMenu: function(){
+      
+        registerControllers : function(){
+            try{
+                return ControllerManager.getAppController();
+            }catch(e){}
+        /* loadController */
             
+        },
+        
+        exposeMenu: function(){
+            
+        },
+        
+        dispatchToController: function(controller,action,params){
+            console.log("inside application:DispatchToController");
+            ControllerManager.loadController(this.getName(),controller).done(function(controller){
+                try{
+                    console.log("-- radical blaze --");
+                    controller.invoke(action,params); 
+                }catch(e){
+                    console.log("loadController",e);   
+                }
+            });
         },
         
         setControllerMng: function(controllerMng){
@@ -93,11 +122,16 @@ define(["jquery","bb.AppContainer","bb.Api","BackBone","jsclass"], function($,bb
         },
         
         onStop: function(){
-            console.log("on ... stop is called")
+            //dispatch to controller
+            console.log("on ... stop is called");
         },
         
         onResume: function(){
             console.log(console.log("on ... resume is called"))
+        },
+        
+        onError: function(e){
+            console.log( "error in["+this.name+"] application");
         }
         
     });
@@ -117,45 +151,87 @@ define(["jquery","bb.AppContainer","bb.Api","BackBone","jsclass"], function($,bb
      *
      **/
     var _registerApplication = function(appname,AppDef){
-        try{
-            if(typeof(AppDef)!=="object") throw "ApplicationManager : appDef Is undefined";
-            var applicationConstructor = new JS.Class(AbstractApplication,AppDef);   
-            _AppDefContainer[appname] = applicationConstructor;
-        }catch(e){
-            console.log("exception"+e);
-        }        
+        if(typeof(AppDef)!=="object") throw "ApplicationManager : appDef Is undefined";
+        var ApplicationConstructor = new JS.Class(AbstractApplication,AppDef);
+        
+        /**
+        *
+        */
+        ApplicationConstructor.define("getName",(function(name){
+            return function(){
+                this.name = name; 
+                return name;
+            }
+        })(appname));
+        if(_AppDefContainer[appname]) throw "AppAlreadyExists";
+        _AppDefContainer[appname] = ApplicationConstructor; 
     }
     
     
     /* what is config*/
     var _init = function(config){
-        console.log("init");
+        _config = config;
+        /* load apps here  */
+        var appPaths = [];
+        if(!("appPath" in config)) throw "InvalidAppConfig appPath is missing";
+        if(!("applications" in config)) throw "InvalidAppConfig applciations is missing";
+        $.each(config.applications,function(appname,conf){
+            var completePath =  config.appPath+"/"+appname+"/main.js";
+            appPaths.push(completePath);
+        });
+        bbUtils.requireWithPromise(appPaths).done(_appsAreLoaded).fail(_handleAppLoadingErrors);
+    }
+   
+   /**
+    * At the stage we are sure that all apps declared in applicationConfigs was loaded
+    * We can then load the "active" app
+    */
+    var _appsAreLoaded = function(){
+        var def = new $.Deferred();
+        var mainAppConf = _config.applications[_config.active];
+        var config = mainAppConf.config || config;
+        _load(_config.active,config);
+    }
+    
+    var _handleAppLoadingErrors = function(e){
+        console.log("errors");
+    }
+    
+    /**
+     * Now we need to require
+     **/
+    var _load = function(appname,config){
+        var completeAppname = ["app."+appname];
+        bbUtils.requireWithPromise(completeAppname).done(function(){
+        _lauchApplication(appname,config);  
+        }).fail(function(){
+            throw "Application["+completeAppname+"] can't be found";
+        });
     }
     
     var _start = function(){
         console.log("start");
     }
     
-    var Api = {
-        registerApplication : _registerApplication,
-        invoke: function(actionInfos,params){
-            var actionInfos = actionInfos.split(":");
-            
-            var appPromise = this.lauchApplication(actionInfos[0]);
-            /* triger event app is loading */
-            appPromise.done(function(application){
-               console.log("app is loading ..."); 
-            })
-        /* init controller */
-            
-        /*execute Actions*/
-        },
-        
-        lauchApplication: function(appname,config){
-            try{
-                var dfd = new $.Deferred();
-                var config = config || {};
-                /* stop current application */
+    
+    var _invoke =  function(actionInfos,params){
+        var actionInfos = actionInfos.split(":");  
+        var appPromise = this.lauchApplication(actionInfos[0]);
+        /* triger event app is loading */
+        appPromise.done(function(application){
+            application.dispatchToController(actionInfos[1],actionInfos[2]);
+        })
+    /* init controller */            
+    }
+    var _lauchApplication = function(appname,config){
+        try{
+            console.log("appname "+appname);
+            var dfd = new $.Deferred();
+            config = config || {};
+            if(_currentApplication && (_currentApplication.getName() == appname)){
+                dfd.resolve(_currentApplication);
+            }
+            else{
                 if(_currentApplication){
                     instance.onStop();
                 }
@@ -167,32 +243,34 @@ define(["jquery","bb.AppContainer","bb.Api","BackBone","jsclass"], function($,bb
                     var instance = new Application(config); 
                     applicationInfos = {
                         instance : instance, 
-                        name: appname,
-                        state: 0
+                        name: appname
+                    //state: 0
                     } 
+                    AppContainer.register(applicationInfos); 
                     applicationInfos.instance.onStart(); 
                 }else{
                     /* application already exists call ressume */
                     applicationInfos.instance.onResume();  
                 }                
                 _currentApplication = instance;
-                AppContainer.register(applicationInfos); 
-                dfd.resolve(_currentApplication);
-            }catch(e){
-                console.log("exception"+e);  
+                dfd.resolve(_currentApplication); 
             }
             
-            return dfd.promise();
-        },
-        
-        getApplicationList: function(){
-            return _AppDefContainer;
-        },
+        }catch(e){
+            console.log(e);  
+        }  
+        return dfd.promise();
+    }
+    
+    var Api = {
+        registerApplication : _registerApplication,
+        invoke: _invoke,
+        lauchApplication: _lauchApplication, 
         init: _init,
         start: _start
     };
     
         
-    bbCore.register("ApplicationManager",Api);
+    bbApi.register("ApplicationManager",Api);
     return Api;
 });

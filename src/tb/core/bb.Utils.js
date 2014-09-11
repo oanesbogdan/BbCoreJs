@@ -218,9 +218,21 @@ define(["jquery","bb.Api"], function($,bbApi){
    
     bbApi.register("SmartList",SmartList);
 
- 
+    
+    /* require with Promise */
+    var _requireWithPromise = function(dep){
+        var def = new $.Deferred();
+        require(dep,function(){
+            def.resolve.apply(this,arguments);
+        },function(reason){
+            def.reject(reason);
+        })
+        return def.promise();
+    } 
+    
     return {
         DbManager : DbManager,
+        requireWithPromise: _requireWithPromise,
         SmartList: SmartList 
     }
 

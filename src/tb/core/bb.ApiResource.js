@@ -23,7 +23,7 @@ define("bb.ApiResource", ["bb.apiClient", "jsclass"],function(bbApiClient,jsClas
             };
             
         }, 
-        delete: function (id) {
+        "delete": function (id) {
             return {
                 "url": this.baserUrl + id  + "/"
             };
