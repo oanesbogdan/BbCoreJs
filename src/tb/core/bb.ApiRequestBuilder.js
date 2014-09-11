@@ -16,12 +16,31 @@ define("bb.ApiRequestBuilder", ["jquery", "jsclass"],function($, jsClass){
         
         initialize: function(baserUrl){
             this.baserUrl = baserUrl;
-        },        
+        },
+        
+        setUrl: function (url) {
+            this.url = url;
+            return this;
+        },
+        
+        setMethod: function (method) {
+            this.method = method;
+            return this;
+        },
         
         setQueryParam: function (name, value) {
             this.queryParams[name] = value;
             return this;
-        }, 
+        },
+        
+        setQueryParams: function (queryParams) {
+            this.queryParams = queryParams;
+            return this;
+        },
+        
+        setPagination: function(start, limit) {
+            this.setHeader('Range', start + "," + limit);
+        },
         
         setQueryParams: function (params) {
             this.queryParams = params;
@@ -78,6 +97,65 @@ define("bb.ApiRequestBuilder", ["jquery", "jsclass"],function($, jsClass){
             
             
             return request;
+        },
+        
+        post: function(url, data, contentType) {
+            this
+                .setUrl(url)
+                .setData(data)
+                .setContentType(contentType)
+                .setMethod('POST')
+            ;
+            
+            return this;
+        },
+        
+        get: function(url, queryParams) {
+            this
+                .setUrl(url)
+                .setQueryParams(queryParams)
+                .setMethod('GET')
+            ;
+            
+            return this;
+        },
+        put: function(url, data, contentType) {
+            this
+                .setUrl(url)
+                .setData(data)
+                .setContentType(contentType)
+                .setMethod('PUT')
+            ;
+            
+            return this;
+        },
+        patch: function(url, data, contentType) {
+            this
+                .setUrl(url)
+                .setData(data)
+                .setContentType(contentType)
+                .setMethod('PATCH')
+            ;
+            
+            return this;
+        },
+        delete: function(url) {
+            this
+                .setUrl(url)
+                .setMethod('DELETE')
+            ;
+            
+            return this;
+        },
+        link: function(url, data, contentType) {
+            this
+                .setUrl(url)
+                .setMethod('DELETE')
+                .setData(data)
+                .setContentType(contentType)
+            ;
+            
+            return this;
         }
         
 

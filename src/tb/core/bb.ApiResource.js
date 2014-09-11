@@ -17,6 +17,7 @@ define("bb.ApiResource", ["bb.apiClient", "jsclass"],function(bbApiClient,jsClas
             rb
                 .setMethod('POST')
                 .setData(data)
+                .setContentType('application/json')
                 .setUrl(this.baserUrl)
             ;
             
@@ -27,6 +28,18 @@ define("bb.ApiResource", ["bb.apiClient", "jsclass"],function(bbApiClient,jsClas
             rb
                 .setMethod('PUT')
                 .setData(data)
+                .setContentType('application/json')
+                .setUrl(this.baserUrl + '/' + id)
+            ;
+            
+            return rb.getRequest();
+        }, 
+        patch: function (id, data) {
+            var rb = this.client.createRequestBuilder();
+            rb
+                .setMethod('PATCH')
+                .setData(data)
+                .setContentType('application/json')
                 .setUrl(this.baserUrl + '/' + id)
             ;
             
@@ -47,6 +60,7 @@ define("bb.ApiResource", ["bb.apiClient", "jsclass"],function(bbApiClient,jsClas
                 .setMethod('LINK')
                 .setUrl(this.baserUrl + '/' + id)
                 .setData(data)
+                .setContentType('application/json')
             ;
             
             return rb.getRequest();
@@ -74,6 +88,8 @@ define("bb.ApiResource", ["bb.apiClient", "jsclass"],function(bbApiClient,jsClas
             if(typeof limit === "undefined") {
                 limit = this.client.config.resource_default_limit;
             }
+   
+            rb.setPagination(start, limit);
             
             return rb.getRequest();
         }
