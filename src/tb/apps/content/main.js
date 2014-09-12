@@ -6,12 +6,15 @@
 /* update requireMap */
 
 require.config({
-    "content.route":"src/tb/apps/content/routes",
-    "content.home.controller":"src/tb/apps/content/controllers/home.controller",
-    "content.test.controller":"src/tb/apps/content/controllers/test.controller"
-    /*model more stuff here*/
+    paths: {
+        "content.routes": "src/tb/apps/content/routes",//mandatory
+        "content.home.controller":"src/tb/apps/content/controllers/home.controller",
+        "content.test.controller":"src/tb/apps/content/controllers/test.controller" 
+    }  
 });
-define("app.content",["bb.core"], function(bbCore){
+
+define("app.content",["bb.core","content.home.controller","content.test.controller"], function(bbCore){
+    
     /* declaration de l'application */
     bbCore.ApplicationManager.registerApplication("content",{
         
@@ -20,11 +23,11 @@ define("app.content",["bb.core"], function(bbCore){
         },
         
         onStart: function(){
-            console.log("onStart...");
+            console.log("onStart [content] ...");
         },
         
         onStop: function(){
-            console.log("onStop...");
+            console.log("content onStop is called...");
         },
         
         onError: function(){
@@ -33,5 +36,7 @@ define("app.content",["bb.core"], function(bbCore){
     });
   
 });
+
+console.log("fragile, la force de l'art");
 
  

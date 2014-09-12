@@ -1,29 +1,37 @@
 /* Application Déclaration */
 require.config({
     paths: {
-        "layout.route":"src/tb/apps/layout/routes",
+        "layout.routes": "src/tb/apps/layout/routes",
         "layout.home.controller":"src/tb/apps/layout/controllers/main.controller",
         "layout.test.controller":"src/tb/apps/layout/controllers/test.controller"
     }
 });
+
+define("app.layout",["require","bb.core","layout.test.controller","layout.home.controller"],function(require){
+    var bbCore = require("bb.core");
     
-define("app.layout",["bb.core","layout.route","layout.test.controller","layout.home.controller"],function(bbCore){
-    
-    bbCore.ApplicationManager.registerApplication("layout",{
+    bbCore.ApplicationManager.registerApplication("layout", {
+        
+        config: {
+            root: "route" 
+        },
+        
         onInit: function(){
             console.log(" LayoutApplication is initialized ");
         },
         
         onStart: function(){
-            console.log(" layout Application onStart...");
+            console.log(" layout Application [layout] onStart ...");
         },
         
         onStop: function(){
-            console.log("layout onStop...");
+            console.log("layout onStop is called ...");
         },
         
         onError: function(){
             console.log("layout onError...");
         }
+       
     });
 });
+console.log("fragile, la force de l'art II");

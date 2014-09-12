@@ -17,6 +17,6 @@ define(["bb.Api",
     "bb.RouteManager",
     "bb.ViewManager",
     "bb.ControllerManager",
-    "bb.Utils"], function(bbCore){
-        return bbCore.dump();
+    "bb.Utils"], function(bbApi){
+        return bbApi.dump();
     });

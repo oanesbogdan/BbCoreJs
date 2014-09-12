@@ -10,17 +10,17 @@ define(["bb.core"],function(bbCore){
     
      
         homeAction: function(){
-            console.log("inside homeAction ...");
+             $(".jumbotron").html($("<p> app: layout <br/> controller: MainController <br> action: homeAction</p>"));
         },
      
     
         listAction: function(){
-            console.log("inside MainController:listAction");
+            console.log("arguments",arguments);
+            $(".jumbotron").html($("<p> app: layout <br/> controller: MainController <br> action: listAction</p>"));
         },
     
         paramsAction: function(){
             console.log("inside MainController:params");
-     
         }
   
     });

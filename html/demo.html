@@ -6,18 +6,20 @@
         <script src="/bower_components/requirejs/require.js"></script>
         <script src="/require.config.js"></script>
         <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
-        <script src="/bower_components/requirejs/require.js"></script>
         <script>
             /* sample to put in a yml file*/
+            var _errorHandler = function(error){
+                console.log(error);
+            }
             var applicationConfig = {
                 appPath: "/src/tb/apps",
                 /*ne charge que les onglets qui se trouvent dans "applications"*/
                 active: "layout",
-                route: "",
+                route: "",//to change: App should kow
                 applications: {  
                     layout : {
-                        label  : " Edition du layout",
-                        config : { } 
+                        label  : "Layout",
+                        config : { mainRoute : "appLayout/home"} 
                     },
                     content: {
                         label  : "Edition du contenu",
@@ -27,9 +29,18 @@
             };
             
             require(["bb.core"],function(bbCore){
-                bbCore.RouteManager.initRouter();
+                var router = null;
+                bbCore.ApplicationManager.on("routesLoaded",function(){
+                    /*cf http://backbonejs.org/#Router for available options */
+                    router = bbCore.RouteManager.initRouter({silent:true});
+                });
+           
+                bbCore.ApplicationManager.on("appIsReady",function(app){
+                    router.navigate(app.getMainRoute());
+                }); 
+                
                 bbCore.ApplicationManager.init(applicationConfig);
-            }); 
+            },_errorHandler); 
                
         </script>
 
@@ -54,8 +65,8 @@
 
         <div class="container">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#/layout">Layout</a></li>
-                <li><a href="#/params">Content</a></li>
+                <li class="active"><a href="#appLayout/showlist/58">Layout</a></li>
+                <li><a data-action="layout" href="#appContent/params">Content</a></li>
             </ul>
             <div class="jumbotron">
                 <p>Utiliser les onglets pour changer d'application</p>

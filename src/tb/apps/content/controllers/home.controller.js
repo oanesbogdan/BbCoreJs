@@ -2,26 +2,29 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-bbCore.ControllerManager.registerController("MainController",{
-    appname: "content",
-    imports: ["test.manager"],
+define(["bb.core"],function(bbCore){
     
-    onInit: function(){
-        console.log("content onInit");
-    },
+    bbCore.ControllerManager.registerController("MainController",{
+        appname: "content",
+        imports: ["test.manager"],
+        
+        onInit: function(){
+            console.log("content onInit");
+        },
     
-    homeAction: function(){
-        console.log(" contentApp homeAction");
-    },
+        homeAction: function(){
+            console.log(" contentApp homeAction");
+        },
      
-    listAction: function(){
-        console.log("inside ... listAction");
-    },
+        listAction: function(){
+        },
      
-    paramsAction: function(){
-        console.log("inside ... paramsAction");
-    }
-    
-});
+        paramsAction: function(){
+            $(".jumbotron").html($("<p>app: content<br>controller:MainController<br>action: paramAction</p>"));
+        }
+        
+    });
   
+});
+
 

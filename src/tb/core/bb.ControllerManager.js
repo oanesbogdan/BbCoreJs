@@ -54,8 +54,7 @@ define(["bb.Api","jquery","jsclass","bb.Utils"], function(bbApi,$,jsClass,Utils)
     var _loadController = function(appname,controllerName){
         var def = $.Deferred();
         if(!appname || (typeof appname!="string")) throw "LoadController:appname Can't be null";
-        
-        /* handleInstance */
+       
         var cInstance = _controllerInstance[appname+":"+controllerName];
         if(cInstance){
             def.resolve(cInstance);  
@@ -63,22 +62,8 @@ define(["bb.Api","jquery","jsclass","bb.Utils"], function(bbApi,$,jsClass,Utils)
         else if(!cInstance){
             var controller = new _controllerContainer[appname][controllerName]();
             _controllerInstance[appname+":"+controllerName] = controller;
-            /* loadController dependencies */
-            /* controller.imports.push("require");
-            Utils.requireWithPromise(controller.imports).done(function(){
-                controller.onInit.call(controller,arguments);
-            }).fail();  */
             def.resolve(controller);
         }
-        
-        /* if controller is not loaded yet */
-        /* var controllerPath = CONTROLLER_PATH+controllerName+".controller";
-        console.log(controllerPath);
-        Utils.requireWithPromise([controllerName+".controller"]).done(function(controller){
-            alert("erida");
-        }).fail(function(reason){
-            def.reject(reason);  
-        });*/
         return def.promise();
     }
     

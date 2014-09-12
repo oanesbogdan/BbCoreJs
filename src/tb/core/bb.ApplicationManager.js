@@ -69,18 +69,20 @@ define(["require","jquery","bb.Utils","bb.AppContainer","bb.Api","BackBone","jsc
     BackBone = require("BackBone"),
     bbUtils = require("bb.Utils"),
     ControllerManager = require("bb.ControllerManager");
-        
+    
+    
     var _AppDefContainer = {};
     var _currentApplication = null;
     var _config = null; 
     var AppContainer  = bbAppContainer.getInstance();
-    var ILifeCycle = new JS.Interface(["onInit","onStart","onStop","onResume"]);
     
+    /* AbstractApplication  */
     var AbstractApplication = new JS.Class({
-        
+        config : {},
         initialize : function(config){
+            _.extend(this, Backbone.Events);
+            this.config = $.extend(true,this.config,config); 
             this.state = 0; 
-            this.dependencies = ["" ,""];
             this.appControllers = this.registerControllers();
         },
         
@@ -89,19 +91,18 @@ define(["require","jquery","bb.Utils","bb.AppContainer","bb.Api","BackBone","jsc
             try{
                 return ControllerManager.getAppController();
             }catch(e){}
-        /* loadController */
-            
+        /* loadController */  
         },
         
-        exposeMenu: function(){
-            
+        getMainRoute: function(){
+            return this.config.mainRoute;
         },
+        
+        exposeMenu: function(){ },
         
         dispatchToController: function(controller,action,params){
-            console.log("inside application:DispatchToController");
             ControllerManager.loadController(this.getName(),controller).done(function(controller){
                 try{
-                    console.log("-- radical blaze --");
                     controller.invoke(action,params); 
                 }catch(e){
                     console.log("loadController",e);   
@@ -118,7 +119,7 @@ define(["require","jquery","bb.Utils","bb.AppContainer","bb.Api","BackBone","jsc
         },
         
         onStart: function(){
-            console.log("on ... start is called");
+           this.trigger(this.getName()+":onStart");
         },
         
         onStop: function(){
@@ -168,45 +169,66 @@ define(["require","jquery","bb.Utils","bb.AppContainer","bb.Api","BackBone","jsc
     }
     
     
-    /* what is config*/
     var _init = function(config){
         _config = config;
         /* load apps here  */
+        var routePaths = [];
         var appPaths = [];
+       
         if(!("appPath" in config)) throw "InvalidAppConfig appPath is missing";
         if(!("applications" in config)) throw "InvalidAppConfig applciations is missing";
         $.each(config.applications,function(appname,conf){
             var completePath =  config.appPath+"/"+appname+"/main.js";
+            var completeRoutePath = appname+".routes";  
             appPaths.push(completePath);
+            routePaths.push(completeRoutePath); 
         });
-        bbUtils.requireWithPromise(appPaths).done(_appsAreLoaded).fail(_handleAppLoadingErrors);
-    }
-   
-   /**
-    * At the stage we are sure that all apps declared in applicationConfigs was loaded
-    * We can then load the "active" app
-    */
-    var _appsAreLoaded = function(){
-        var def = new $.Deferred();
-        var mainAppConf = _config.applications[_config.active];
-        var config = mainAppConf.config || config;
-        _load(_config.active,config);
-    }
-    
-    var _handleAppLoadingErrors = function(e){
-        console.log("errors");
+        bbUtils.requireWithPromise(appPaths)
+        /* register app routes --> trigger routesLoaded*/
+        .then($.proxy(_registerAppRoutes,null,routePaths))
+        /* load*/
+        .done(_appsAreLoaded).fail(_handleAppLoadingErrors);
     }
     
     /**
-     * Now we need to require
-     **/
+    * At the stage we are sure that all apps declared in applicationConfigs was loaded
+    * And that the router was loaded
+    * We can then load the "active" app
+    */
+    var _appsAreLoaded = function(){
+        var mainAppConf = _config.applications[_config.active];
+        var config = mainAppConf.config || config;
+        return _load(_config.active,config).then(function(app){
+            Api.trigger("appIsReady",app); //use mediator
+        });
+    }
+    
+    var _handleAppLoadingErrors = function(e){
+        console.log('... handle specific app Error here ...');
+    }
+    
+    var _registerAppRoutes = function(routes){
+        var def = new $.Deferred();
+        
+        return bbUtils.requireWithPromise(routes).done(function(){
+            Api.trigger("routesLoaded");
+            def.resolve.apply(this,arguments);
+        }).fail(function(reason){
+            throw new Error("Error while Loading application routes"+reason); 
+        });
+        return def.promise();
+    }
+    
+    /* load the app */
     var _load = function(appname,config){
+        var def = new $.Deferred();
         var completeAppname = ["app."+appname];
         bbUtils.requireWithPromise(completeAppname).done(function(){
-        _lauchApplication(appname,config);  
+            _lauchApplication(appname,config).done(def.resolve);  
         }).fail(function(){
             throw "Application["+completeAppname+"] can't be found";
         });
+        return def.promise();
     }
     
     var _start = function(){
@@ -215,43 +237,50 @@ define(["require","jquery","bb.Utils","bb.AppContainer","bb.Api","BackBone","jsc
     
     
     var _invoke =  function(actionInfos,params){
-        var actionInfos = actionInfos.split(":");  
+        actionInfos = actionInfos.split(":");  
         var appPromise = this.lauchApplication(actionInfos[0]);
         /* triger event app is loading */
         appPromise.done(function(application){
             application.dispatchToController(actionInfos[1],actionInfos[2]);
-        })
+        }).fail(function(e){
+            console.log(e)
+        });
     /* init controller */            
     }
     var _lauchApplication = function(appname,config){
         try{
-            console.log("appname "+appname);
             var dfd = new $.Deferred();
             config = config || {};
             if(_currentApplication && (_currentApplication.getName() == appname)){
                 dfd.resolve(_currentApplication);
             }
             else{
-                if(_currentApplication){
-                    instance.onStop();
-                }
-                /* start or resume the new one */
+                /** start or resume the new one */
                 var applicationInfos = AppContainer.getByAppInfosName(appname);
                 if(!applicationInfos){
                     var Application = _AppDefContainer[appname]; 
-                    /* load application here load the main */
+                    /** If app def can't be found */
+                    if(!Application) return _load(appname);                     
+                    /** stop currentApplication */
                     var instance = new Application(config); 
                     applicationInfos = {
                         instance : instance, 
                         name: appname
-                    //state: 0
                     } 
+                    
+                    /** stop current application */
+                    if(_currentApplication){
+                        _currentApplication.onStop();
+                    }
                     AppContainer.register(applicationInfos); 
                     applicationInfos.instance.onStart(); 
+                    instance = applicationInfos.instance; 
                 }else{
-                    /* application already exists call ressume */
-                    applicationInfos.instance.onResume();  
-                }                
+                    _currentApplication.onStop();
+                    /** application already exists call resume */
+                    applicationInfos.instance.onResume(); 
+                    instance = applicationInfos.instance; 
+                }   
                 _currentApplication = instance;
                 dfd.resolve(_currentApplication); 
             }
@@ -269,8 +298,9 @@ define(["require","jquery","bb.Utils","bb.AppContainer","bb.Api","BackBone","jsc
         init: _init,
         start: _start
     };
+    /* application as an Event emitter */
+    _.extend(Api, Backbone.Events);
     
-        
     bbApi.register("ApplicationManager",Api);
     return Api;
 });

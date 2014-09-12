@@ -1,7 +1,7 @@
 define(["bb.Api","BackBone","jsclass","bb.ApplicationManager"],function(bbApi,BackBone){
     var Router = BackBone.Router; 
     
-    var bbApplicationManager = require("bb.ApplicationManager"); 
+    var bbApplicationManager = require("bb.ApplicationManager"); //use the mediator to avoid a circular dependency
     var _routerInstance = null; 
     var _routeAppMap = {};
     /**
@@ -15,6 +15,7 @@ define(["bb.Api","BackBone","jsclass","bb.ApplicationManager"],function(bbApi,Ba
             this.routes = {}; 
             var ExtRouter = BackBone.Router.extend({
                 execute: function(callback,args){
+                    console.log("this is it");
                     /*trigger sont event here*/
                     if(typeof callback=="function") callback.apply(this,args);
                 }
@@ -29,7 +30,7 @@ define(["bb.Api","BackBone","jsclass","bb.ApplicationManager"],function(bbApi,Ba
             var conf = {
                 trigger:(triggerEvent) ? triggerEvent : true, 
                 replace:(updateRoute)? updateRoute : true
-                } ;
+            } ;
             this.mainRouter.navigate(path,conf);
         },
         
@@ -41,14 +42,12 @@ define(["bb.Api","BackBone","jsclass","bb.ApplicationManager"],function(bbApi,Ba
         registerRoute: function(routeInfos){
             var actionsName =  routeInfos.completeName.split(":");
             actionsName = actionsName[0];
+            console.log(routeInfos.url);
             this.mainRouter.route(routeInfos.url,routeInfos.completeName,$.proxy(this.genericRouteHandler,this,actionsName+":"+routeInfos.action));
         }
     });  
    
-    var _handleRoute = function(){
-        alert("radical blaze");
-    } 
-   
+  
     var Api = {
         
         registerRoute: function(appname,routeConf){
@@ -58,15 +57,21 @@ define(["bb.Api","BackBone","jsclass","bb.ApplicationManager"],function(bbApi,Ba
             var routes = routeConf.routes; 
             var prefix = (typeof routeConf.prefix=="string")? routeConf.prefix : "";
             $.each(routes,function(name,routeInfos){
-                var router = self.startRouter();
-                routeInfos.completeName = appname+":"+prefix+":"+name; 
+                var router = self.getRouter();
+                if(prefix.length!=0){
+                    var url = (routeInfos.url.indexOf("/")==0)?routeInfos.url.substring(1):routeInfos.url;
+                    routeInfos.url = prefix+"/"+url;
+                }
+                routeInfos.completeName = appname+":"+name;  
                 router.registerRoute(routeInfos);
             });
         },
           
-        initRouter : function(){
-            this.getRouter();
-            BackBone.history.start();
+        initRouter : function(conf){
+            conf = conf || {};
+            var router = this.getRouter();
+            BackBone.history.start(conf);
+            return router;
         },
         
         startRouter: function(){

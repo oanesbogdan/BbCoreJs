@@ -1,8 +1,8 @@
 define(["bb.core"],function(bbCore){
     bbCore.RouteManager.registerRoute("layout",{
-        prefix: "layout",
+        prefix: "appLayout",
         routes: {
-            "name": {
+            "default": {
                 url: "home",
                 action: "MainController:home"
             },
@@ -12,7 +12,7 @@ define(["bb.core"],function(bbCore){
                 action: "TestController:test"
             },
       
-            "firsname": {
+            "list": {
                 url: "showlist/:page",
                 action: "MainController:list"
             }     

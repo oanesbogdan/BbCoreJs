@@ -16,7 +16,7 @@ define(["bb.core"], function(bbCore){
         },
     
         listAction: function(){
-            alert("radical");
+        
         },
     
         displayLayoutAction: function(){
