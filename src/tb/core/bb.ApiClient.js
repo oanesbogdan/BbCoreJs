@@ -1,38 +1,85 @@
-define("bb.apiClient", ["jquery","bb.Api", "jsclass"], function($, bbCore,jsClass){
+define("bb.apiClient", ["jquery","bb.Api", "jsclass", "bb.apiRequestBuilder"], function($, bbCore,jsClass, requestBuilder){
     
     /**
      * BB Api Client
      **/
     var ApiClient = new jsClass.Class({
-        publicKey: null,
-        privateKey: null,
-        host: null,
+        version: 1,
         resourceManager: {},
-        userAgent: null,
-        initialize: function(publicKey, privateKey, host, userAgent) {
-            this.publicKey = publicKey;
-            this.privateKey = privateKey;
-            this.host = host;
-            if (typeof userAgent !== "undefined") {
-                this.userAgent = userAgent;
+        // global config
+        config: {
+            ajax_timeout: 30000,
+            ajax_cache: false,
+            resource_default_limit: 100
+        },
+        auth: {
+            authenticated : false
+        },
+        
+        initialize: function(version, config) {
+            if(typeof config !== "undefined") {
+                this.version = version;
             }
+            
+            if(typeof config !== "undefined") {
+                $.extend(this.config, config);
+            }
+            
+            $.ajaxSetup(this.config);
         },        
         
         send: function (request) {
+            request.context = this;
+            
             return $.ajax(request);
         },
         
-        /**
-         * Get user agent
-         * 
-         * @returns {String}
-         */
-        getUserAgent: function() {
-            if(null !== this.userAgent) {
-                return this.userAgent;
-            }
+        createRequestBuilder: function(name) {
+            var rb = new requestBuilder(name, this);
             
-            return 'BackBee Api Client 0.10 (' + this.publicKey + ', ' + window.location.host  + ')';
+            return rb;
+        },
+        
+        connect: function(username, password) {
+            var dateFormat = 'YYYY-MM-DD HH:mm:ss';
+            
+            this.auth.username = username;
+            this.auth.password = password;
+            this.auth.created = new Date();
+            this.auth.nonce = "1234567890";
+            
+            var digest = SparkMD5.hash(this.auth.nonce + moment(this.auth.created).format(dateFormat) + SparkMD5.hash(this.auth.password));
+            
+            // TODO
+            var rb = this.createRequestBuilder();
+            rb
+                .setUrl('/rest/1/security/auth/bb_area')
+                .setData({
+                    "created" : moment(this.auth.created).format(dateFormat),
+                    "digest" : digest,
+                    "username" : this.auth.username,
+                    "nonce" : this.auth.nonce
+                })
+            ;
+            
+            this.send(rb.getRequest()).done(this.connectSuccessHandler).done(this.connectErrorHandler);
+        },
+        
+        connectSuccessHandler: function(data) {
+            this.auth.authenticated = true;
+            var me = this;
+            $.trigger( "bb.api_authenticated", {auth: me.auth} );
+        },
+        
+        connectErrorHandler: function(data) {
+            this.auth.authenticated = false;
+            var me = this;
+            $.trigger( "bb.api_authentication_error", {auth: me.auth} );
+        },
+        
+        
+        encodeRequest: function(request) {
+            // TODO
         },
         
         /**

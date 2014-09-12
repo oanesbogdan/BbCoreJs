@@ -12,36 +12,87 @@ define("bb.ApiResource", ["bb.apiClient", "jsclass"],function(bbApiClient,jsClas
             this.client = client;
         },        
         
-        post: function (data, contentType) {
-            return {
-                "url": this.baserUrl
-            };
-        }, 
-        put: function (id, data, contentType) {
-            return {
-                "url": this.baserUrl + id  + "/"
-            };
+        post: function (data) {
+            var rb = this.client.createRequestBuilder();
+            rb
+                .setMethod('POST')
+                .setData(data)
+                .setContentType('application/json')
+                .setUrl(this.baserUrl)
+            ;
             
+            return rb.getRequest();
         }, 
-        "delete": function (id) {
-            return {
-                "url": this.baserUrl + id  + "/"
-            };
+        put: function (id, data) {
+            var rb = this.client.createRequestBuilder();
+            rb
+                .setMethod('PUT')
+                .setData(data)
+                .setContentType('application/json')
+                .setUrl(this.baserUrl + '/' + id)
+            ;
+            
+            return rb.getRequest();
+        }, 
+        patch: function (id, data) {
+            var rb = this.client.createRequestBuilder();
+            rb
+                .setMethod('PATCH')
+                .setData(data)
+                .setContentType('application/json')
+                .setUrl(this.baserUrl + '/' + id)
+            ;
+            
+            return rb.getRequest();
+        }, 
+
+        delete: function (id) {
+            var rb = this.client.createRequestBuilder();
+            rb
+                .setMethod('DELETE')
+                .setUrl(this.baserUrl + '/' + id)
+            ;
+            
+            return rb.getRequest();
         }, 
         link: function (id, data) {
-            return {
-                "url": this.baserUrl + id  + "/"
-            };
+            var rb = this.client.createRequestBuilder();
+            rb
+                .setMethod('LINK')
+                .setUrl(this.baserUrl + '/' + id)
+                .setData(data)
+                .setContentType('application/json')
+            ;
+            
+            return rb.getRequest();
         }, 
-        get: function(queryString) {
-            return {
-                "url": this.baserUrl + id  + "/"
-            };
+        get: function(id) {
+            var rb = this.client.createRequestBuilder();
+            rb
+                .setMethod('GET')
+                .setUrl(this.baserUrl + '/' + id)
+            ;
+            
+            return rb.getRequest();
         }, 
-        getCollection: function(queryString) {
-            return {
-                "url": this.baserUrl
-            };
+        getCollection: function(filters, start, limit) {
+            var rb = this.client.createRequestBuilder();
+            rb
+                .setMethod('GET')
+                .setUrl(this.baserUrl)
+                .setQueryParams(filters)
+            ;
+            
+            if(typeof start === "undefined") {
+                start = 0;
+            }
+            if(typeof limit === "undefined") {
+                limit = this.client.config.resource_default_limit;
+            }
+   
+            rb.setPagination(start, limit);
+            
+            return rb.getRequest();
         }
 
     });
