@@ -22,7 +22,7 @@ define(['jquery', 'bb.Api'], function(jQuery, bbApi) {
                  */
                 _init = function (dbName) {
                     var data = _createOrRetrieveDb(dbName),
-                        storageItem = _createStorage(data,dbName),
+                        storageItem = _createStorage(data,dbName);
 
                     _dbContainer[dbName] = storageItem;
 
@@ -306,7 +306,7 @@ define(['jquery', 'bb.Api'], function(jQuery, bbApi) {
                     self.keyId = key;
                 }
                 if (bb.jquery.isArray(data)) {
-                    bb.jquery.each(data, function (i, item {
+                    bb.jquery.each(data, function (i, item) {
                         var itemId = item[self.keyId];
 
                         self.set(itemId, item);

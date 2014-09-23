@@ -1,7 +1,7 @@
 (function (window) {
     "use strict";
-    require(["bbApi",'Backbone'], function (bbCore,Backbone) {
-        
+    require(["bbApi",'Backbone'], function (bbCore, Backbone) {
+
         var Exception = Backbone.Model.extend({
             /**
              * BundleController contructor
@@ -94,6 +94,6 @@
             error.pushError(error);
             throw(name + ' : ' + message);
         }
-        bb.bbCore.register("Exception",throwException);
+        bb.bbCore.register("Exception", throwException);
     }(window));
 }(window));

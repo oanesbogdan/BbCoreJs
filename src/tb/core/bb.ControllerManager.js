@@ -4,7 +4,7 @@ define(['bb.Api', 'jquery', 'jsclass', 'bb.Utils'], function (bbApi, jQuery, jsC
 
         _controllerInstance = {},
 
-        CONTROLLER_PATH = 'src/tb/apps/';
+        CONTROLLER_PATH = 'resources/src/tb/apps';
 
         /**
          * AbstractController Object
