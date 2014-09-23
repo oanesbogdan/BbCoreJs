@@ -19,8 +19,8 @@ module.exports = function (grunt) {
             compile: {
                 options: {
                     baseUrl: "./",
-                    mainConfigFile: "build/config.js",
-                    name: "<%= concat.dist.dest %>", // assumes a production build using almond
+                    mainConfigFile: "require.config.js",
+                    name: "<%= concat.toolbar.dest %>", // assumes a production build using almond
                     out: "build/<%= pkg.name %>.min.js"
                 }
             }
@@ -31,7 +31,7 @@ module.exports = function (grunt) {
             },
             install: {}
         },
-        
+
         requirejs_config_generator: {
             development: {
                 "baseUrl": "",
@@ -70,7 +70,7 @@ module.exports = function (grunt) {
             files: ['<%= jshint.files %>'],
             tasks: ['jshint', 'qunit']
         },
-        
+
         csslint: {
             strict: {
                 options: {
@@ -79,7 +79,7 @@ module.exports = function (grunt) {
                 src: ['src/css/*.css']
             }
         },
-        
+
         jasmine: {
             test: {
                 src: 'src/js/*.js',
@@ -88,7 +88,7 @@ module.exports = function (grunt) {
                     vendor: 'bower_components/**/*.js'
                 }
             },
-            
+
             istanbul: {
                 src: '<%= jasmine.test.src %>',
                 options: {
@@ -106,7 +106,7 @@ module.exports = function (grunt) {
             }
         }
     });
-    
+
     grunt.loadNpmTasks('grunt-bower-requirejs'); //enabling plugins
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-jshint');
