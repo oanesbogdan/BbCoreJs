@@ -20,6 +20,6 @@
     "paralleljs": "v0.2",
     "cryptojs": "*",
     "bootstrap": "*",
-    "jsclass": "https://github.com/jcoglan/jsclass.git"
+    "jsclass": "0.9.1"
   }
 }
