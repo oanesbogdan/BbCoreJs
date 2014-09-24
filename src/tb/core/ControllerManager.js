@@ -1,4 +1,4 @@
-define(['bb.Api', 'jquery', 'jsclass', 'bb.Utils'], function (bbApi, jQuery, jsClass, Utils) {
+define("tb.core.ControllerManager", ['tb.core.Core', 'jquery', 'jsclass', 'tb.core.Utils'], function (bbApi, jQuery, jsClass, Utils) {
 
     var _controllerContainer = {}, /* { appName: { }, appName_2:{}, appName_3:{} }; */
 

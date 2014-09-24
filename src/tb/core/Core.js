@@ -1,4 +1,4 @@
-define([], function () {
+define('tb.core.Core', [], function () {
     var _container = {},
 
         _set = function (ctn, object) {

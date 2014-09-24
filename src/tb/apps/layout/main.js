@@ -7,31 +7,31 @@ require.config({
     }
 });
 
-define("app.layout",["require","bb.core","layout.test.controller","layout.home.controller"],function(require){
+define("app.layout",["require","tb.core.Core","layout.test.controller","layout.home.controller"],function(require){
     var bbCore = require("bb.core");
-    
+
     bbCore.ApplicationManager.registerApplication("layout", {
-        
+
         config: {
-            root: "route" 
+            root: "route"
         },
-        
+
         onInit: function(){
             console.log(" LayoutApplication is initialized ");
         },
-        
+
         onStart: function(){
             console.log(" layout Application [layout] onStart ...");
         },
-        
+
         onStop: function(){
             console.log("layout onStop is called ...");
         },
-        
+
         onError: function(){
             console.log("layout onError...");
         }
-       
+
     });
 });
 console.log("fragile, la force de l'art II");

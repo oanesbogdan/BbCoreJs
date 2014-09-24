@@ -37,8 +37,8 @@ module.exports = function (grunt) {
                 options: {
                     baseUrl: "./",
                     mainConfigFile: "require.config.js",
-                    name: "<%= concat.toolbar.dest %>", // assumes a production build using almond
-                    out: "<%= dir.build %>/<%= pkg.name %>.min.js"
+                    name: "<%= concat.core.dest %>", // assumes a production build using almond
+                    out: "<%= dir.build %>/<%= components.core %>.min.js"
                 }
             }
         },

@@ -5,7 +5,7 @@ require.config({
         'jquery': 'build/libs.min',
         'jsclass' : 'build/libs.min',
         'underscore':'build/libs.min',
-        'bb.core': 'build/main.min', // 'src/tb/main',
+        'tb.core': 'build/main.min', // 'src/tb/main',
         'BackBone':'build/libs.min'
     },
     'shim': {

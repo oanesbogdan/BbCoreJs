@@ -1,4 +1,4 @@
-define(['jquery', 'bb.Api'], function(jQuery, bbApi) {
+define('tb.core.Utils', ['jquery', 'tb.core.Core'], function(jQuery, bbApi) {
 
     var DbManager = null,
 

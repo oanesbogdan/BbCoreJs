@@ -1,4 +1,4 @@
-define(["bb.core"],function(bbCore){
+define(["tb.core.Core"],function(bbCore){
     bbCore.RouteManager.registerRoute("layout",{
         prefix: "appLayout",
         routes: {
@@ -6,16 +6,16 @@ define(["bb.core"],function(bbCore){
                 url: "home",
                 action: "MainController:home"
             },
-      
+
             "test": {
                 url: "test",
                 action: "TestController:test"
             },
-      
+
             "list": {
                 url: "showlist/:page",
                 action: "MainController:list"
-            }     
+            }
         }
     });
 });

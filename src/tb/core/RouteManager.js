@@ -1,4 +1,4 @@
-define(['bb.Api', 'BackBone', 'jsclass', 'bb.ApplicationManager'], function (bbApi, BackBone) {
+define('tb.core.RouteManager', ['tb.core.Core', 'BackBone', 'jsclass', 'tb.core.ApplicationManager'], function (bbApi, BackBone) {
 
     var bbApplicationManager = require('bb.ApplicationManager');
 
