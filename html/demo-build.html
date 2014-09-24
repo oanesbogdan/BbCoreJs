@@ -33,7 +33,8 @@
 
         </div>
     </body>
-    <script data-main="resources/build/require.config.min" src="resources/lib/requirejs/require.js"></script>
+    <script src="resources/lib/requirejs/require.js"></script>
+    <script src="resources/build/require.config.min.js"></script>
     <script>
         /* sample to put in a yml file*/
         var _errorHandler = function(error){
@@ -56,7 +57,7 @@
             }
         };
 
-        require(['tb.core.Core'], function (bbCore) {
+        require(['tb.core'], function (bbCore) {
             var router = null;
 
             bbCore.ApplicationManager.on('routesLoaded', function () {

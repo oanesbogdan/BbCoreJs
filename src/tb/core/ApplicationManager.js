@@ -18,57 +18,18 @@
  *  Application can déclare many controller BackBone Controllers
  *  Application Manager
  **/
-define("tb.core.ApplicationManager",["jquery","jsclass","tb.core.Core"],function($){
-    var instance = null;
 
-    var AppContainer = new JS.Class({
-
-        initialize: function(){
-            this.container = [];
-        },
-
-        /** {name:"appname",instance:"",state} **/
-        register : function(applicationInfos){
-            this.container.push(applicationInfos);
-        },
-
-        getByAppInfosName : function(name){
-            var result = null;
-            $.each(this.container,function(i, appInfos){
-                if(appInfos.name==name){
-                    result = appInfos;
-                    return false;
-                }
-            });
-            return result;
-        }
-
-    });
-
-    return {
-        getInstance : function(){
-            if(!instance){
-                instance = new AppContainer;
-            }
-            return instance;
-        }
-
-    }
-
-});
-
-
-define(["require","jquery","bb.Utils","bb.AppContainer","bb.Api","BackBone","jsclass","bb.ControllerManager"], function(require){
+define("tb.core.ApplicationManager", ["require","BackBone","jsclass","jquery","tb.core.Utils","tb.core.ApplicationContainer","tb.core.Core","tb.core.ControllerManager"], function(require){
 
     /* Abstract Application with Interface */
 
     /* dependence */
     var $ = require("jquery"),
-    bbAppContainer = require("bb.AppContainer"),
-    bbApi = require("bb.Api"),
+    bbAppContainer = require("tb.core.ApplicationContainer"),
+    bbApi = require("tb.core.Core"),
     BackBone = require("BackBone"),
-    bbUtils = require("bb.Utils"),
-    ControllerManager = require("bb.ControllerManager");
+    bbUtils = require("tb.core.Utils"),
+    ControllerManager = require("tb.core.ControllerManager");
 
 
     var _AppDefContainer = {};

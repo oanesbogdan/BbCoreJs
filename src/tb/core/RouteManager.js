@@ -1,6 +1,6 @@
 define('tb.core.RouteManager', ['tb.core.Core', 'BackBone', 'jsclass', 'tb.core.ApplicationManager'], function (bbApi, BackBone) {
 
-    var bbApplicationManager = require('bb.ApplicationManager');
+    var bbApplicationManager = require('tb.core.ApplicationManager');
 
         //use the mediator to avoid a circular dependency
         _routerInstance = null,

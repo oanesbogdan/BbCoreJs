@@ -1,17 +1,18 @@
 /*... core modules path ... */
 require.config({
     paths: {
-        "tb.core.Core": "build/toolbar.core.min",
-        "tb.core.ApplicationManager": "build/toolbar.core.min",
-        "tb.core.Mediator": "build/toolbar.core.min",
-        "tb.core.RouteManager": "build/toolbar.core.min",
-        "tb.core.ViewManager": "build/toolbar.core.min",
-        "tb.core.ControllerManager": "build/toolbar.core.min",
-        "tb.core.Utils": "build/toolbar.core.min"
+        "tb.core.Core": "build/toolbar.core",
+        "tb.core.ApplicationManager": "build/toolbar.core",
+        "tb.core.Mediator": "build/toolbar.core",
+        "tb.core.RouteManager": "build/toolbar.core",
+        "tb.core.ViewManager": "build/toolbar.core",
+        "tb.core.ControllerManager": "build/toolbar.core",
+        "tb.core.Utils": "build/toolbar.core"
     }
 });
 
 define(
+    "tb.core",
     [
         "tb.core.Core",
         "tb.core.ApplicationManager",
