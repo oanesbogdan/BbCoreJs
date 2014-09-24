@@ -11,7 +11,7 @@ module.exports = function (grunt) {
                 }
             },
             toolbar: {
-                src: ['src/toolbar/**/*.js'],
+                src: ['src/tb/**/*.js'],
                 dest: 'build/toolbar.js'
             }
         },
@@ -120,7 +120,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-requirejs-config-generator');
 
-    grunt.registerTask('default', ['bower', 'concat', 'requirejs']);
+    grunt.registerTask('default', ['bower', 'concat', 'uglify']);
     /* grunt:test */
     grunt.registerTask("test",["jasmine"]);
 };
