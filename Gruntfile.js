@@ -3,6 +3,23 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        dir: {
+            src: 'src/tb',
+            build: 'build',
+            lib: 'lib'
+        },
+        components: {
+            core: 'toolbar.core',
+            config: 'require.config'
+        },
+        libs: {
+            backbone: 'backbone/backbone.js',
+            handlebars: 'handlebars/handlebars.js',
+            jquery: 'jquery/jquery.js',
+            jsclass: 'jsclass/class.js',
+            parallel: 'paralleljs/lib/*.js',
+            underscore: 'underscore/underscore.js'
+        },
         concat: {
             options: {
                 separator: '',
@@ -10,9 +27,9 @@ module.exports = function (grunt) {
                     return '\n/* ' + filepath + ' */\n' + src;
                 }
             },
-            toolbar: {
-                src: ['src/tb/**/*.js'],
-                dest: 'build/toolbar.js'
+            core: {
+                src: ['<%= dir.src %>/core/**/*.js'],
+                dest: '<%= dir.build %>/<%= components.core %>.js'
             }
         },
         requirejs: {
@@ -21,7 +38,7 @@ module.exports = function (grunt) {
                     baseUrl: "./",
                     mainConfigFile: "require.config.js",
                     name: "<%= concat.toolbar.dest %>", // assumes a production build using almond
-                    out: "build/<%= pkg.name %>.min.js"
+                    out: "<%= dir.build %>/<%= pkg.name %>.min.js"
                 }
             }
         },
@@ -47,9 +64,31 @@ module.exports = function (grunt) {
             options: {
                 banner: '/*! <%= pkg.name %> <%= pkg.version %> */\n'
             },
-            dist: {
+            core: {
                 files: {
-                    '<%= concat.toolbar.dest %>.min.js': ['<%= concat.toolbar.dest %>']
+                    '<%= dir.build %>/<%= components.core %>.min.js': ['<%= concat.core.dest %>']
+                }
+            },
+            main: {
+                files: {
+                    '<%= dir.build %>/main.min.js': ['<%= dir.src %>/main.build.js']
+                }
+            },
+            libs: {
+                files: {
+                    '<%= dir.build %>/libs.min.js': [
+                        '<%= dir.lib %>/<%= libs.jquery %>',
+                        '<%= dir.lib %>/<%= libs.underscore %>',
+                        '<%= dir.lib %>/<%= libs.jsclass %>',
+                        '<%= dir.lib %>/<%= libs.backbone %>',
+                        '<%= dir.lib %>/<%= libs.parallel %>',
+                        '<%= dir.lib %>/<%= libs.handlebars %>'
+                    ]
+                }
+            },
+            config: {
+                files: {
+                    '<%= dir.build %>/<%= components.config %>.min.js': ['src/<%= components.config %>.build.js']
                 }
             }
         },
