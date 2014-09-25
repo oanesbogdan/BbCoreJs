@@ -57,8 +57,9 @@
             }
         };
 
-        require(['bb.core'], function (bbCore) {
+        require(['tb.core'], function (bbCore) {
             var router = null;
+
             bbCore.ApplicationManager.on('routesLoaded', function () {
                 /*cf http://backbonejs.org/#Router for available options */
                 router = bbCore.RouteManager.initRouter({silent:true});
