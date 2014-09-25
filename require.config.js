@@ -3,7 +3,7 @@ require.config({
     catchError: true,
     paths: {
         'jquery': 'lib/jquery/jquery',
-        'jsclass' : 'lib/jsclass/class',
+        'jsclass' : 'node_modules/jsclass/min/core',
         'underscore': 'lib/underscore/underscore',
         'tb.core': 'src/tb/main',
         'BackBone': 'lib/backbone/backbone'
