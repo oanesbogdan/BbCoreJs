@@ -1,4 +1,4 @@
-define('tb.core.RouteManager', ['tb.core.Api', 'BackBone', 'jsclass', 'tb.core.ApplicationManager'], function (bbApi, BackBone) {
+define('tb.core.RouteManager', ['tb.core.Api', 'BackBone', 'jsclass', 'tb.core.ApplicationManager'], function (Api, BackBone) {
 
     var bbApplicationManager = require('tb.core.ApplicationManager');
 
@@ -52,7 +52,7 @@ define('tb.core.RouteManager', ['tb.core.Api', 'BackBone', 'jsclass', 'tb.core.A
             }
         }),
 
-        Api = {
+        RouteManager = {
             registerRoute: function (appname, routeConf) {
                 var self = this;
                 if(!routeConf.hasOwnProperty('routes')) {
@@ -97,6 +97,6 @@ define('tb.core.RouteManager', ['tb.core.Api', 'BackBone', 'jsclass', 'tb.core.A
 
         };
 
-    bbApi.register('RouteManager', Api);
-    return Api;
+    Api.register('RouteManager', RouteManager);
+    return RouteManager;
 });

@@ -1,4 +1,4 @@
-define("tb.core.ApiClient", ["jquery","tb.core.Api", "jsclass", "tb.core.ApiRequestBuilder"], function($, bbCore,jsClass, requestBuilder){
+define("tb.core.ApiClient", ["jquery","tb.core.Api", "jsclass", "tb.core.ApiRequestBuilder"], function($, Api, jsClass, ApiRequestBuilder){
 
     /**
      * BB Api Client
@@ -35,7 +35,7 @@ define("tb.core.ApiClient", ["jquery","tb.core.Api", "jsclass", "tb.core.ApiRequ
         },
 
         createRequestBuilder: function(name) {
-            var rb = new requestBuilder(name, this);
+            var rb = new ApiRequestBuilder(name, this);
 
             return rb;
         },
@@ -130,7 +130,7 @@ define("tb.core.ApiClient", ["jquery","tb.core.Api", "jsclass", "tb.core.ApiRequ
 
     });
 
-    bbCore.register("apiClient", ApiClient);
+    Api.register("apiClient", ApiClient);
 
     return ApiClient;
 });

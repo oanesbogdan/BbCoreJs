@@ -1,9 +1,9 @@
-define('tb.core.ViewManager', ['tb.core.Api', 'BackBone'], function (bbCore) {
-    var Api = {
+define('tb.core.ViewManager', ['tb.core.Api', 'BackBone'], function (Api) {
+    var ViewManager = {
         register: '',
         get: ''
     };
-    bbCore.register('ViewManager', Api);
+    Api.register('ViewManager', ViewManager);
 
-    return Api;
+    return ViewManager;
 });

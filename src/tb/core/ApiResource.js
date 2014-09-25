@@ -1,4 +1,4 @@
-define("tb.core.ApiResource", ["tb.core.ApiClient", "jsclass"],function(bbApiClient,jsClass){
+define("tb.core.ApiResource", ["tb.core.Api", "jsclass"],function(Api){
 
     /**
      * BB Api Client
@@ -97,7 +97,7 @@ define("tb.core.ApiResource", ["tb.core.ApiClient", "jsclass"],function(bbApiCli
 
     });
 
-    bbCore.register("ApiResource", ApiResource);
+    Api.register("ApiResource", ApiResource);
 
     return ApiResource;
 });

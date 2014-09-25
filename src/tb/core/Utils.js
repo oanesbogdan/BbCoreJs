@@ -1,4 +1,4 @@
-define('tb.core.Utils', ['jquery', 'tb.core.Api'], function(jQuery, bbApi) {
+define('tb.core.Utils', ['jquery', 'tb.core.Api'], function(jQuery, Api) {
 
     var DbManager = null,
 
@@ -373,8 +373,8 @@ define('tb.core.Utils', ['jquery', 'tb.core.Api'], function(jQuery, bbApi) {
             return def.promise();
         };
 
-    bbApi.register('bb.DBManager', DbManager);
-    bbApi.register('SmartList', SmartList);
+    Api.register('bb.DBManager', DbManager);
+    Api.register('SmartList', SmartList);
 
     return {
         DbManager: DbManager,

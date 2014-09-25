@@ -1,4 +1,4 @@
-define("tb.core.ControllerManager", ['tb.core.Api', 'jquery', 'tb.core.Utils', 'jsclass'], function (bbApi, jQuery, Utils) {
+define("tb.core.ControllerManager", ['tb.core.Api', 'jquery', 'tb.core.Utils', 'jsclass'], function (Api, jQuery, Utils) {
 
     var _controllerContainer = {}, /* { appName: { }, appName_2:{}, appName_3:{} }; */
 
@@ -73,9 +73,7 @@ define("tb.core.ControllerManager", ['tb.core.Api', 'jquery', 'tb.core.Utils', '
             if (ControllerDef.hasOwnProperty('initialize')) {
                 delete(ControllerDef.initialize);
             }
-            console.log(AbstractController);
             Constructor = new JS.Class(AbstractController, ControllerDef);
-            console.log(Constructor.prototype);
 
             /*define controller name */
             Constructor.define('getName', (function (name) {
@@ -111,6 +109,7 @@ define("tb.core.ControllerManager", ['tb.core.Api', 'jquery', 'tb.core.Utils', '
             if (cInstance) {
                 def.resolve(cInstance);
             } else if (!cInstance) {
+                console.log(_controllerContainer);
                 var controller = new _controllerContainer[appName][controllerName]();
 
                 _controllerInstance[appName + ':' + controllerName] = controller;
@@ -137,7 +136,7 @@ define("tb.core.ControllerManager", ['tb.core.Api', 'jquery', 'tb.core.Utils', '
          * [Api description]
          * @type {Object}
          */
-        Api = {
+        ControllerManager = {
             registerController: _registerController,
             loadController: _loadController,
             getAppController: _getAppControllers,
@@ -146,6 +145,6 @@ define("tb.core.ControllerManager", ['tb.core.Api', 'jquery', 'tb.core.Utils', '
             }
         };
 
-    bbApi.register('ControllerManager', Api);
-    return Api;
+    Api.register('ControllerManager', ControllerManager);
+    return ControllerManager;
 })

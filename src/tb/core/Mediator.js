@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-define('tb.core.Mediator', ['tb.core.Api'], function (bbCore) {
+define('tb.core.Mediator', ['tb.core.Api'], function (Api) {
 
     var _containers = {},
 
@@ -34,14 +34,14 @@ define('tb.core.Mediator', ['tb.core.Api'], function (bbCore) {
             return dfd.promise();
         },
 
-        Api = {
+        Mediator = {
             register: function (topic, callback) {},
             invoke: function () {},
             publish: function (topic, params ,save) {}
         };
 
-    bbCore.register('Mediator', Api);
+    Api.register('Mediator', Mediator);
 
-    return Api;
+    return Mediator;
 });
 
