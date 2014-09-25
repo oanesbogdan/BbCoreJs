@@ -7,8 +7,8 @@ require.config({
     }
 });
 
-define("app.layout",["require","tb.core.Core","layout.test.controller","layout.home.controller"],function(require){
-    var bbCore = require("bb.core");
+define("app.layout",["require","tb.core","layout.test.controller","layout.home.controller"],function(require){
+    var bbCore = require("tb.core");
 
     bbCore.ApplicationManager.registerApplication("layout", {
 

@@ -1,24 +1,27 @@
 /*... core modules path ... */
 require.config({
     paths: {
-        "bb.Api": "src/tb/core/core",
-        "bb.ApplicationManager": "src/tb/core/bb.ApplicationManager",
-        "bb.Mediator": "src/tb/core/bb.Mediator",
-        "bb.RouteManager": "src/tb/core/bb.RouteManager",
-        "bb.ViewManager": "src/tb/core/bb.ViewManager",
-        "bb.ControllerManager": "src/tb/core/bb.ControllerManager",
-        "bb.Utils": "src/tb/core/bb.Utils"
+        "tb.core.Api": "src/tb/core/Api",
+        "tb.core.ApplicationManager": "src/tb/core/ApplicationManager",
+        "tb.core.ApplicationContainer": "src/tb/core/ApplicationContainer",
+        "tb.core.Mediator": "src/tb/core/Mediator",
+        "tb.core.RouteManager": "src/tb/core/RouteManager",
+        "tb.core.ViewManager": "src/tb/core/ViewManager",
+        "tb.core.ControllerManager": "src/tb/core/ControllerManager",
+        "tb.core.Utils": "src/tb/core/Utils"
     }
 });
 
-define([
-        "bb.Api",
-        "bb.ApplicationManager",
-        "bb.Mediator",
-        "bb.RouteManager",
-        "bb.ViewManager",
-        "bb.ControllerManager",
-        "bb.Utils"
+define(
+    "tb.core",
+    [
+        "tb.core.Api",
+        "tb.core.ApplicationManager",
+        "tb.core.Mediator",
+        "tb.core.RouteManager",
+        "tb.core.ViewManager",
+        "tb.core.ControllerManager",
+        "tb.core.Utils"
     ],
     function(bbApi){
         return bbApi.dump();

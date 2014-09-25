@@ -13,7 +13,7 @@ require.config({
     }
 });
 
-define("app.content",["tb.core.Core","content.home.controller","content.test.controller"], function(bbCore){
+define("app.content",["tb.core","content.home.controller","content.test.controller"], function(bbCore){
 
     /* declaration de l'application */
     bbCore.ApplicationManager.registerApplication("content",{

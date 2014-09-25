@@ -1,4 +1,4 @@
-define('tb.core.Core', [], function () {
+define('tb.core.Api', [], function () {
     var _container = {},
 
         _set = function (ctn, object) {

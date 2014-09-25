@@ -2,11 +2,11 @@ require.config({
     baseUrl: 'resources/',
     catchError: true,
     paths: {
-        'jquery': 'build/libs.min',
+        'jquery': 'lib/jquery/jquery',
         'jsclass' : 'lib/jsclass/class',
-        'underscore':'build/libs.min',
+        'underscore': 'lib/underscore/underscore',
         'tb.core': 'build/main.min', // 'src/tb/main',
-        'BackBone':'lib/backbone/backbone'
+        'BackBone': 'lib/backbone/backbone'
     },
     'shim': {
         'BackBone': {}

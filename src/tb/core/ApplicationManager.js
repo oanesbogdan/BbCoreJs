@@ -19,14 +19,14 @@
  *  Application Manager
  **/
 
-define("tb.core.ApplicationManager", ["require","BackBone","jsclass","jquery","tb.core.Utils","tb.core.ApplicationContainer","tb.core.Core","tb.core.ControllerManager"], function(require){
+define("tb.core.ApplicationManager", ["require","BackBone","jsclass","jquery","tb.core.Utils","tb.core.ApplicationContainer","tb.core.Api","tb.core.ControllerManager"], function(require){
 
     /* Abstract Application with Interface */
 
     /* dependence */
     var $ = require("jquery"),
     bbAppContainer = require("tb.core.ApplicationContainer"),
-    bbApi = require("tb.core.Core"),
+    bbApi = require("tb.core.Api"),
     BackBone = require("BackBone"),
     bbUtils = require("tb.core.Utils"),
     ControllerManager = require("tb.core.ControllerManager");

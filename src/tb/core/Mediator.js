@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-define('tb.core.Mediator', ['tb.core.Core'], function (bbCore) {
+define('tb.core.Mediator', ['tb.core.Api'], function (bbCore) {
 
     var _containers = {},
 

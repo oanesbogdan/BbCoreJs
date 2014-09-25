@@ -2,11 +2,11 @@ require.config({
     baseUrl: 'resources/',
     catchError: true,
     paths: {
-        'jquery': 'bower_components/jquery/dist/jquery.min',
-        'jsclass' : 'bower_components/jsclass/class',
-        'underscore':'bower_components/underscore/underscore-min',
-        'bb.core': 'src/tb/main',
-        'BackBone':'bower_components/backbone/backbone'
+        'jquery': 'lib/jquery/jquery',
+        'jsclass' : 'lib/jsclass/class',
+        'underscore': 'lib/underscore/underscore',
+        'tb.core': 'src/tb/main',
+        'BackBone': 'lib/backbone/backbone'
     },
     'shim': {
         'BackBone': {}

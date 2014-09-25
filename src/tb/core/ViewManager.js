@@ -1,4 +1,4 @@
-define('tb.core.ViewManager', ['tb.core.Core', 'BackBone'], function (bbCore) {
+define('tb.core.ViewManager', ['tb.core.Api', 'BackBone'], function (bbCore) {
     var Api = {
         register: '',
         get: ''

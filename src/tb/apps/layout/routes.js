@@ -1,4 +1,4 @@
-define(["tb.core.Core"],function(bbCore){
+define(["tb.core"],function(bbCore){
     bbCore.RouteManager.registerRoute("layout",{
         prefix: "appLayout",
         routes: {

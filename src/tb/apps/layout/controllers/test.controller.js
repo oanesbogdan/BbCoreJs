@@ -1,4 +1,4 @@
-define(["tb.core.Core"], function(bbCore){
+define(["tb.core"], function(bbCore){
     bbCore.ControllerManager.registerController("TestController",{
         appname: "layout",
         config: {
@@ -6,8 +6,8 @@ define(["tb.core.Core"], function(bbCore){
         },
         /*Appelle init après les dépendences*/
         onInit: function(require){
-            var manager  = require("bb.manager");
-            var rteManager = require("bb.rte");
+            // var manager  = require("bb.manager");
+            // var rteManager = require("bb.rte");
         },
 
         homeAction: function(){

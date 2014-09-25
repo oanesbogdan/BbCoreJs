@@ -1,4 +1,4 @@
-define("tb.core.ApiClient", ["jquery","tb.core.Core", "jsclass", "tb.core.ApiRequestBuilder"], function($, bbCore,jsClass, requestBuilder){
+define("tb.core.ApiClient", ["jquery","tb.core.Api", "jsclass", "tb.core.ApiRequestBuilder"], function($, bbCore,jsClass, requestBuilder){
 
     /**
      * BB Api Client

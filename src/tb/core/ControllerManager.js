@@ -1,10 +1,10 @@
-define("tb.core.ControllerManager", ['tb.core.Core', 'jquery', 'jsclass', 'tb.core.Utils'], function (bbApi, jQuery, jsClass, Utils) {
+define("tb.core.ControllerManager", ['tb.core.Api', 'jquery', 'tb.core.Utils', 'jsclass'], function (bbApi, jQuery, Utils) {
 
     var _controllerContainer = {}, /* { appName: { }, appName_2:{}, appName_3:{} }; */
 
         _controllerInstance = {},
 
-        CONTROLLER_PATH = 'resources/src/tb/apps';
+        CONTROLLER_PATH = 'resources/src/tb/apps',
 
         /**
          * AbstractController Object
@@ -60,21 +60,22 @@ define("tb.core.ControllerManager", ['tb.core.Core', 'jquery', 'jsclass', 'tb.co
          * @param  {object} ControllerDef  [controller defenition]
          */
         _registerController  = function (controllerName, ControllerDef) {
+            if (!ControllerDef.hasOwnProperty('appname')) {
+                throw 'Controller Should Be Attached To An App';
+            }
+
             var appName = ControllerDef.appName,
 
                 Constructor = {},
 
                 appControllers = _controllerContainer[appName];
 
-            if (!ControllerDef.hasOwnProperty('appName')) {
-                throw 'Controller Should Be Attached To An App';
-            }
-
             if (ControllerDef.hasOwnProperty('initialize')) {
                 delete(ControllerDef.initialize);
             }
-
-            Contructor = new JS.Class(AbstractController, ControllerDef);
+            console.log(AbstractController);
+            Constructor = new JS.Class(AbstractController, ControllerDef);
+            console.log(Constructor.prototype);
 
             /*define controller name */
             Constructor.define('getName', (function (name) {

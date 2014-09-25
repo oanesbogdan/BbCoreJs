@@ -1,4 +1,5 @@
-define(["tb.core.Core"],function(bbCore){
+define(["tb.core"],function(bbCore){
+
     bbCore.RouteManager.registerRoute("content",{
         prefix: "appContent",
         routes: {

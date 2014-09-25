@@ -1,4 +1,4 @@
-define("tb.core.ApplicationContainer",["jquery","jsclass","tb.core.Core"],function($){
+define("tb.core.ApplicationContainer",["jquery","jsclass","tb.core.Api"],function($){
     var instance = null;
 
     var AppContainer = new JS.Class({

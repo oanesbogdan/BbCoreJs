@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-define(["tb.core.Core"],function(bbCore){
+define(["tb.core"],function(bbCore){
 
-    bbCore.ControllerManager.registerController("MainController",{
+    bbCore.ControllerManager.registerController("MainController", {
         appname: "content",
         imports: ["test.manager"],
 

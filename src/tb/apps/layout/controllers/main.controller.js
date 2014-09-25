@@ -1,4 +1,4 @@
-define(["tb.core.Core"],function(bbCore){
+define(["tb.core", "jquery"],function(bbCore, jQuery){
 
     bbCore.ControllerManager.registerController("MainController",{
         appname: "layout",
@@ -10,13 +10,13 @@ define(["tb.core.Core"],function(bbCore){
 
 
         homeAction: function(){
-             $(".jumbotron").html($("<p> app: layout <br/> controller: MainController <br> action: homeAction</p>"));
+             jQuery(".jumbotron").html(jQuery("<p> app: layout <br/> controller: MainController <br> action: homeAction</p>"));
         },
 
 
         listAction: function(){
             console.log("arguments",arguments);
-            $(".jumbotron").html($("<p> app: layout <br/> controller: MainController <br> action: listAction</p>"));
+            jQuery(".jumbotron").html(jQuery("<p> app: layout <br/> controller: MainController <br> action: listAction</p>"));
         },
 
         paramsAction: function(){
