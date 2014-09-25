@@ -57,19 +57,19 @@
             }
         };
 
-        require(['tb.core'], function (bbCore) {
+        require(['tb.core'], function (core) {
             var router = null;
 
-            bbCore.ApplicationManager.on('routesLoaded', function () {
+            core.ApplicationManager.on('routesLoaded', function () {
                 /*cf http://backbonejs.org/#Router for available options */
-                router = bbCore.RouteManager.initRouter({silent:true});
+                router = core.RouteManager.initRouter({silent:true});
             });
 
-            bbCore.ApplicationManager.on('appIsReady',function(app){
+            core.ApplicationManager.on('appIsReady',function(app){
                 router.navigate(app.getMainRoute());
             });
 
-            bbCore.ApplicationManager.init(applicationConfig);
+            core.ApplicationManager.init(applicationConfig);
         }, _errorHandler);
     </script>
 </html>
