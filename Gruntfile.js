@@ -3,6 +3,11 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        connect: {
+            test: {
+                port : 8000
+            }
+        },
         dir: {
             src: 'src/tb',
             build: 'build',
@@ -121,15 +126,21 @@ module.exports = function (grunt) {
         },
 
         jasmine: {
-            src: '<%= dir.src %>/**/*.js',
+            src: '<%= dir.src %>/core/**/*.js',
             options: {
                 specs: '<%= dir.specs %>/**/*.spec.js',
-                vendor: '<%= dir.lib %>/**/*.js'
+                // vendor: '<%= dir.lib %>/**/*.js',
+                helpers: '<%= dir.specs %>/**/*.helper.js',
+                template: require('grunt-template-jasmine-requirejs'),
+                templateOptions: {
+                    baseUrl: '',
+                    requireConfigFile: 'SpecRunner.js'
+                }
             },
             istanbul: {
                 src: '<%= jasmine.src %>',
                 options: {
-                    vendor: '<%= jasmine.options.vendor %>',
+                    // vendor: '<%= jasmine.options.vendor %>',
                     specs: '<%= jasmine.options.specs %>',
                     template: require('grunt-template-jasmine-istanbul'),
                     templateOptions: {
@@ -137,14 +148,19 @@ module.exports = function (grunt) {
                         report: [
                             {type: 'lcov', options: {dir: 'coverage'}},
                             {type: 'text-summary'}
-                        ]
+                        ],
+                        template: require('grunt-template-jasmine-requirejs'),
+                        templateOptions: {
+                            baseUrl: '',
+                            requireConfigFile: 'SpecRunner.js'
+                        }
                     }
                 }
             }
         }
     });
 
-    grunt.loadNpmTasks('grunt-bower-requirejs'); //enabling plugins
+    grunt.loadNpmTasks('grunt-bower-requirejs');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
