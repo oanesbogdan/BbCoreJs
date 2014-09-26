@@ -6,7 +6,8 @@ module.exports = function (grunt) {
         dir: {
             src: 'src/tb',
             build: 'build',
-            lib: 'lib'
+            lib: 'lib',
+            specs: 'specs'
         },
         components: {
             core: 'toolbar.core',
@@ -120,19 +121,16 @@ module.exports = function (grunt) {
         },
 
         jasmine: {
-            test: {
-                src: 'src/js/*.js',
-                options: {
-                    specs: 'test/*.spec.js',
-                    vendor: 'bower_components/**/*.js'
-                }
+            src: '<%= dir.src %>/**/*.js',
+            options: {
+                specs: '<%= dir.specs %>/**/*.spec.js',
+                vendor: '<%= dir.lib %>/**/*.js'
             },
-
             istanbul: {
-                src: '<%= jasmine.test.src %>',
+                src: '<%= jasmine.src %>',
                 options: {
-                    vendor: '<%= jasmine.test.options.vendor %>',
-                    specs: '<%= jasmine.test.options.specs %>',
+                    vendor: '<%= jasmine.options.vendor %>',
+                    specs: '<%= jasmine.options.specs %>',
                     template: require('grunt-template-jasmine-istanbul'),
                     templateOptions: {
                         coverage: 'coverage/json/coverage.json',
@@ -157,9 +155,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-istanbul-coverage');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
-    grunt.loadNpmTasks('grunt-requirejs-config-generator');
 
     grunt.registerTask('default', ['bower', 'concat', 'uglify']);
     /* grunt:test */
-    grunt.registerTask("test",["jasmine"]);
+    grunt.registerTask("test", ["jasmine"]);
 };
