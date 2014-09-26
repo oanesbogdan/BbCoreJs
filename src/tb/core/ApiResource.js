@@ -1,98 +1,151 @@
-define("tb.core.ApiResource", ["tb.core.Api", "jsclass"],function(Api){
+define("tb.core.ApiResource", ["tb.core.Api", "jsclass"], function(Api) {
 
     /**
-     * BB Api Client
-     **/
+     * ApiResource object
+     */
     var ApiResource = new jsClass.Class({
-        client: null,
+        
+        /**
+         * Client of ApiResource
+         * @type {Object}
+         */
+        client: {},
+        
+        /**
+         * Headers of ApiResource
+         * @type {Object}
+         */
         headers: {},
-        baserUrl: null,
-        initialize: function(baserUrl, client){
+        
+        /**
+         * Base url of ApiResource
+         * @type {String}
+         */
+        baserUrl: '',
+        
+        /**
+         * ApiResource initialization
+         * @param {String} baserUrl
+         * @param {Object} client
+         */
+        initialize: function(baserUrl, client) {
             this.baserUrl = baserUrl;
             this.client = client;
         },
 
+        /**
+         * Post resource
+         * @param {type} data
+         * @returns {Object} ApiRequest
+         */
         post: function (data) {
-            var rb = this.client.createRequestBuilder();
-            rb
-                .setMethod('POST')
-                .setData(data)
-                .setContentType('application/json')
-                .setUrl(this.baserUrl)
-            ;
+            var requestBuilder = this.client.createRequestBuilder();
+            requestBuilder.setMethod('POST')
+                          .setData(data)
+                          .setContentType('application/json')
+                          .setUrl(this.baserUrl);
 
-            return rb.getRequest();
+            return requestBuilder.getRequest();
         },
+        
+        /**
+         * Put resource
+         * @param {String} id
+         * @param {Mixed} data
+         * @returns {Object} ApiRequest
+         */
         put: function (id, data) {
-            var rb = this.client.createRequestBuilder();
-            rb
-                .setMethod('PUT')
-                .setData(data)
-                .setContentType('application/json')
-                .setUrl(this.baserUrl + '/' + id)
-            ;
+            var requestBuilder = this.client.createRequestBuilder();
+            requestBuilder.setMethod('PUT')
+                          .setData(data)
+                          .setContentType('application/json')
+                          .setUrl(this.baserUrl + '/' + id);
 
-            return rb.getRequest();
+            return requestBuilder.getRequest();
         },
+        
+        /**
+         * Patch resource
+         * @param {String} id
+         * @param {Mixed} data
+         * @returns {Object} ApiRequest
+         */
         patch: function (id, data) {
-            var rb = this.client.createRequestBuilder();
-            rb
-                .setMethod('PATCH')
-                .setData(data)
-                .setContentType('application/json')
-                .setUrl(this.baserUrl + '/' + id)
-            ;
+            var requestBuilder = this.client.createRequestBuilder();
+            requestBuilder.setMethod('PATCH')
+                          .setData(data)
+                          .setContentType('application/json')
+                          .setUrl(this.baserUrl + '/' + id);
 
-            return rb.getRequest();
+            return requestBuilder.getRequest();
         },
 
+        /**
+         * Delete resource
+         * @param {String} id
+         * @returns {Object} ApiRequest
+         */
         delete: function (id) {
-            var rb = this.client.createRequestBuilder();
-            rb
-                .setMethod('DELETE')
-                .setUrl(this.baserUrl + '/' + id)
-            ;
+            var requestBuilder = this.client.createRequestBuilder();
+            requestBuilder.setMethod('DELETE')
+                          .setUrl(this.baserUrl + '/' + id);
 
-            return rb.getRequest();
+            return requestBuilder.getRequest();
         },
+        
+        /**
+         * Link resource
+         * @param {String} id
+         * @param {Mixed} data
+         * @returns {Object} ApiRequest
+         */
         link: function (id, data) {
-            var rb = this.client.createRequestBuilder();
-            rb
-                .setMethod('LINK')
-                .setUrl(this.baserUrl + '/' + id)
-                .setData(data)
-                .setContentType('application/json')
-            ;
+            var requestBuilder = this.client.createRequestBuilder();
+            requestBuilder.setMethod('LINK')
+                          .setUrl(this.baserUrl + '/' + id)
+                          .setData(data)
+                          .setContentType('application/json');
 
-            return rb.getRequest();
+            return requestBuilder.getRequest();
         },
+        
+        /**
+         * Get resource
+         * @param {String} id
+         * @returns {Object} ApiRequest
+         */
         get: function(id) {
-            var rb = this.client.createRequestBuilder();
-            rb
-                .setMethod('GET')
-                .setUrl(this.baserUrl + '/' + id)
-            ;
+            var requestBuilder = this.client.createRequestBuilder();
+            requestBuilder.setMethod('GET')
+                          .setUrl(this.baserUrl + '/' + id);
 
-            return rb.getRequest();
+            return requestBuilder.getRequest();
         },
+        
+        /**
+         * Get collection of resource
+         * @param {String} filters
+         * @param {Number} start
+         * @param {Number} limit
+         * @returns {Object} ApiRequest
+         */
         getCollection: function(filters, start, limit) {
-            var rb = this.client.createRequestBuilder();
-            rb
-                .setMethod('GET')
-                .setUrl(this.baserUrl)
-                .setQueryParams(filters)
-            ;
+            var requestBuilder = this.client.createRequestBuilder();
+            requestBuilder.setMethod('GET')
+                          .setUrl(this.baserUrl)
+                          .setQueryParams(filters);
 
-            if(typeof start === "undefined") {
+            if (typeof start === "undefined") {
                 start = 0;
             }
-            if(typeof limit === "undefined") {
+            
+            if (typeof limit === "undefined") {
                 limit = this.client.config.resource_default_limit;
             }
 
-            rb.setPagination(start, limit);
+            requestBuilder.setPagination(start, limit);
 
-            return rb.getRequest();
+            return requestBuilder.getRequest();
         }
 
     });
