@@ -1,4 +1,4 @@
-define("tb.core.ApiResource", ["tb.core.Api", "jsclass"], function(Api) {
+define("tb.core.ApiResource", ["tb.core.Api", "jsclass"], function (Api) {
 
     /**
      * ApiResource object
@@ -28,7 +28,7 @@ define("tb.core.ApiResource", ["tb.core.Api", "jsclass"], function(Api) {
          * @param {String} baserUrl
          * @param {Object} client
          */
-        initialize: function(baserUrl, client) {
+        initialize: function (baserUrl, client) {
             this.baserUrl = baserUrl;
             this.client = client;
         },
@@ -114,7 +114,7 @@ define("tb.core.ApiResource", ["tb.core.Api", "jsclass"], function(Api) {
          * @param {String} id
          * @returns {Object} ApiRequest
          */
-        get: function(id) {
+        get: function (id) {
             var requestBuilder = this.client.createRequestBuilder();
             requestBuilder.setMethod('GET')
                           .setUrl(this.baserUrl + '/' + id);
@@ -129,17 +129,17 @@ define("tb.core.ApiResource", ["tb.core.Api", "jsclass"], function(Api) {
          * @param {Number} limit
          * @returns {Object} ApiRequest
          */
-        getCollection: function(filters, start, limit) {
+        getCollection: function (filters, start, limit) {
             var requestBuilder = this.client.createRequestBuilder();
             requestBuilder.setMethod('GET')
                           .setUrl(this.baserUrl)
                           .setQueryParams(filters);
 
-            if (typeof start === "undefined") {
+            if (start === undefined) {
                 start = 0;
             }
             
-            if (typeof limit === "undefined") {
+            if (limit === undefined) {
                 limit = this.client.config.resource_default_limit;
             }
 
