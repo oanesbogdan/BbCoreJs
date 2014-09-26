@@ -153,14 +153,14 @@ define('tb.core.ApiClient', ['jquery','tb.core.Api', 'jsclass', 'tb.core.ApiRequ
                 url += ((url.indexOf('?') == -1) ? '?' : '&') + $.param(queryParams);
             }
 
-            request['url'] = url;
+            request.url = url;
 
             if (typeof data !== 'undefined') {
-                request['data'] = data;
+                request.data = data;
             }
 
             if (typeof headers !== 'undefined') {
-                request['headers'] = headers;
+                request.headers = headers;
             }
 
             return request;
@@ -172,13 +172,13 @@ define('tb.core.ApiClient', ['jquery','tb.core.Api', 'jsclass', 'tb.core.ApiRequ
          * @returns {ApiResource}
          */
         getResource: function(name) {
-            if (this.resourceManager[name]) {
+            if (this.resourceManager.name) {
                 var resource = new ApiResource(name, this);
 
-                this.resourceManager[name] = resource;
+                this.resourceManager.name = resource;
             }
 
-            return this.resourceManager[name];
+            return this.resourceManager.name;
         }
 
     });
