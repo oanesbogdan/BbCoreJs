@@ -1,4 +1,4 @@
-define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function($, jsClass) {
+define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function ($, jsClass) {
 
     /**
      * ApiRequestBuilder object
@@ -52,9 +52,8 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function($, jsClass) 
         /**
          * ApiRequestBuilder initialization
          * @param {type} baserUrl
-         * @returns {undefined}
          */
-        initialize: function(baseUrl){
+        initialize: function (baseUrl){
             this.baseUrl = baseUrl;
         },
         
@@ -108,7 +107,7 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function($, jsClass) 
          * @param {Number} start
          * @param {Number} limit
          */
-        setPagination: function(start, limit) {
+        setPagination: function (start, limit) {
             this.setHeader('Range', start + ',' + limit);
         },
 
@@ -139,7 +138,7 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function($, jsClass) 
          * @param {String} contentType
          * @returns {Object} ApiRequestBuilder
          */
-        setContentType: function(contentType) {
+        setContentType: function (contentType) {
             this.setHeader('Content-Type', contentType);
             return this;
         },
@@ -148,7 +147,7 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function($, jsClass) 
          * Get the content type of request
          * @returns {String}
          */
-        getContentType: function() {
+        getContentType: function () {
             return this.headers['Content-Type'];
         },
         
@@ -156,7 +155,7 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function($, jsClass) 
          * Get the request object
          * @returns {Object} Request
          */
-        getRequest: function() {
+        getRequest: function () {
             var self = this,
 
                 /**
@@ -208,7 +207,7 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function($, jsClass) 
          * @param {String} contentType
          * @returns {Object} ApiRequestBuilder
          */
-        post: function(url, data, contentType) {
+        post: function (url, data, contentType) {
             this.setUrl(url)
                 .setData(data)
                 .setContentType(contentType)
@@ -223,7 +222,7 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function($, jsClass) 
          * @param {Object} queryParams
          * @returns {Object} ApiRequestBuilder
          */
-        get: function(url, queryParams) {
+        get: function (url, queryParams) {
             this.setUrl(url)
                 .setQueryParams(queryParams)
                 .setMethod('GET');
@@ -238,7 +237,7 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function($, jsClass) 
          * @param {String} contentType
          * @returns {Object} ApiRequestBuilder
          */
-        put: function(url, data, contentType) {
+        put: function (url, data, contentType) {
             this.setUrl(url)
                 .setData(data)
                 .setContentType(contentType)
@@ -254,7 +253,7 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function($, jsClass) 
          * @param {String} contentType
          * @returns {Object} ApiRequestBuilder
          */
-        patch: function(url, data, contentType) {
+        patch: function (url, data, contentType) {
             this.setUrl(url)
                 .setData(data)
                 .setContentType(contentType)
@@ -268,7 +267,7 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function($, jsClass) 
          * @param {String} url
          * @returns {Object} ApiRequestBuilder
          */
-        delete: function(url) {
+        delete: function (url) {
             this
                 .setUrl(url)
                 .setMethod('DELETE')
@@ -284,7 +283,7 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function($, jsClass) 
          * @param {String} contentType
          * @returns {Object} ApiRequestBuilder
          */
-        link: function(url, data, contentType) {
+        link: function (url, data, contentType) {
             this.setUrl(url)
                 .setMethod('DELETE')
                 .setData(data)
