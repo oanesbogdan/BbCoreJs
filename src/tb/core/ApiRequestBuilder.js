@@ -1,40 +1,40 @@
-define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function ($, jsClass) {
+define('tb.core.ApiRequestBuilder', ['jquery', 'tb.core.Api' 'jsclass'], function (jQuery, Api) {
 
     /**
      * ApiRequestBuilder object
      */
-    var ApiRequestBuilder = new jsClass.Class({
-        
+    var ApiRequestBuilder = new JS.Class({
+
         /**
          * Url of request
          * @type {String}
          */
         url: '',
-        
+
         /**
          * Base url of request
          * @type {String}
          */
         baseUrl: '',
-        
+
         /**
          * Method of request
          * @type {String}
          */
         method: 'GET',
-        
+
         /**
          * Query params of request
-         * @type {Object} 
+         * @type {Object}
          */
         queryParams: {},
-        
+
         /**
          * Data of request
          * @type {Mixed}
          */
         data: null,
-        
+
         /**
          * Headers of request
          * @type {Object}
@@ -42,7 +42,7 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function ($, jsClass)
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        
+
         /**
          * Configuration
          * @type {Object}
@@ -51,12 +51,12 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function ($, jsClass)
 
         /**
          * ApiRequestBuilder initialization
-         * @param {type} baserUrl
+         * @param {String} baserUrl
          */
         initialize: function (baseUrl){
             this.baseUrl = baseUrl;
         },
-        
+
         /**
          * Set the url of request
          * @param {String} url
@@ -64,10 +64,10 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function ($, jsClass)
          */
         setUrl: function (url) {
             this.url = url;
-            
+
             return this;
         },
-        
+
         /**
          * Set the method of request
          * @param {String} method
@@ -75,7 +75,7 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function ($, jsClass)
          */
         setMethod: function (method) {
             this.method = method;
-            
+
             return this;
         },
 
@@ -87,10 +87,10 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function ($, jsClass)
          */
         setQueryParam: function (name, value) {
             this.queryParams.name = value;
-            
+
             return this;
         },
-        
+
         /**
          * Set query params of request
          * @param {Object} queryParams
@@ -98,7 +98,7 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function ($, jsClass)
          */
         setQueryParams: function (queryParams) {
             this.queryParams = queryParams;
-            
+
             return this;
         },
 
@@ -117,10 +117,10 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function ($, jsClass)
          */
         setData: function (data) {
             this.data = data;
-            
+
             return this;
         },
-        
+
         /**
          * Set one header with name and value
          * @param {String} name
@@ -129,10 +129,10 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function ($, jsClass)
          */
         setHeader: function (name, value) {
             this.headers.name = value;
-            
+
             return this;
         },
-        
+
         /**
          * Set content type of request
          * @param {String} contentType
@@ -150,7 +150,7 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function ($, jsClass)
         getContentType: function () {
             return this.headers['Content-Type'];
         },
-        
+
         /**
          * Get the request object
          * @returns {Object} Request
@@ -163,13 +163,13 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function ($, jsClass)
                  * @type {Object}
                  */
                 request = {},
-                
+
                 /**
                  * Used for query string
                  * @type {String}
                  */
                 url = this.url;
- 
+
             // set the header to xhr object
             request.beforeSend = function (xhr) {
                 for (header in self.headers) {
@@ -193,13 +193,13 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function ($, jsClass)
                 }
             }
 
-            if (false === $.isEmptyObject(this.queryParams)) {
-                url += ((url.indexOf('?') == -1) ? '?' : '&') + $.param(this.queryParams);
+            if (false === jQuery.isEmptyObject(this.queryParams)) {
+                url += ((url.indexOf('?') == -1) ? '?' : '&') + jQuery.param(this.queryParams);
             }
 
             return request;
         },
-        
+
         /**
          * POST method of request
          * @param {String} url
@@ -229,7 +229,7 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function ($, jsClass)
 
             return this;
         },
-        
+
         /**
          * PUT method of request
          * @param {String} url
@@ -245,7 +245,7 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function ($, jsClass)
 
             return this;
         },
-        
+
         /**
          * PATCH method of request
          * @param {String} url
@@ -261,21 +261,19 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function ($, jsClass)
 
             return this;
         },
-        
+
         /**
          * DELETE method of request
          * @param {String} url
          * @returns {Object} ApiRequestBuilder
          */
         delete: function (url) {
-            this
-                .setUrl(url)
-                .setMethod('DELETE')
-            ;
+            this.setUrl(url)
+                .setMethod('DELETE');
 
             return this;
         },
-        
+
         /**
          * DELETE method with link of request
          * @param {String} url
@@ -293,7 +291,7 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'jsclass'], function ($, jsClass)
         }
     });
 
-    bbCore.register('ApiRequestBuilder', ApiRequestBuilder);
+    Api.register('ApiRequestBuilder', ApiRequestBuilder);
 
     return ApiRequestBuilder;
 });
