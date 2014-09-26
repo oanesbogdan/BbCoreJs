@@ -3,26 +3,26 @@ define("tb.core.ApiResource", ["tb.core.Api", "jsclass"], function (Api) {
     /**
      * ApiResource object
      */
-    var ApiResource = new jsClass.Class({
-        
+    var ApiResource = new JS.Class({
+
         /**
          * Client of ApiResource
          * @type {Object}
          */
         client: {},
-        
+
         /**
          * Headers of ApiResource
          * @type {Object}
          */
         headers: {},
-        
+
         /**
          * Base url of ApiResource
          * @type {String}
          */
         baserUrl: '',
-        
+
         /**
          * ApiResource initialization
          * @param {String} baserUrl
@@ -47,7 +47,7 @@ define("tb.core.ApiResource", ["tb.core.Api", "jsclass"], function (Api) {
 
             return requestBuilder.getRequest();
         },
-        
+
         /**
          * Put resource
          * @param {String} id
@@ -63,7 +63,7 @@ define("tb.core.ApiResource", ["tb.core.Api", "jsclass"], function (Api) {
 
             return requestBuilder.getRequest();
         },
-        
+
         /**
          * Patch resource
          * @param {String} id
@@ -92,7 +92,7 @@ define("tb.core.ApiResource", ["tb.core.Api", "jsclass"], function (Api) {
 
             return requestBuilder.getRequest();
         },
-        
+
         /**
          * Link resource
          * @param {String} id
@@ -108,7 +108,7 @@ define("tb.core.ApiResource", ["tb.core.Api", "jsclass"], function (Api) {
 
             return requestBuilder.getRequest();
         },
-        
+
         /**
          * Get resource
          * @param {String} id
@@ -121,7 +121,7 @@ define("tb.core.ApiResource", ["tb.core.Api", "jsclass"], function (Api) {
 
             return requestBuilder.getRequest();
         },
-        
+
         /**
          * Get collection of resource
          * @param {String} filters
@@ -138,7 +138,7 @@ define("tb.core.ApiResource", ["tb.core.Api", "jsclass"], function (Api) {
             if (start === undefined) {
                 start = 0;
             }
-            
+
             if (limit === undefined) {
                 limit = this.client.config.resource_default_limit;
             }
