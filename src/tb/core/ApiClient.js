@@ -1,22 +1,22 @@
-define('tb.core.ApiClient', ['jquery','tb.core.Api', 'jsclass', 'tb.core.ApiRequestBuilder'], function($, Api, jsClass, ApiRequestBuilder){
+define('tb.core.ApiClient', ['jquery','tb.core.Api', 'jsclass', 'tb.core.ApiRequestBuilder'], function(jQuery, Api, jsClass, ApiRequestBuilder){
 
     /**
      * ApiClient Object
      **/
     var ApiClient = new jsClass.Class({
-        
+
         /**
          * Version of api
          * @type {String}
          */
         version: '0.1.0',
-        
+
         /**
          * ResourceManager Object
          * @type {Object}
          */
         resourceManager: {},
-        
+
         /**
          * Configuration object
          * @type {Object}
@@ -26,7 +26,7 @@ define('tb.core.ApiClient', ['jquery','tb.core.Api', 'jsclass', 'tb.core.ApiRequ
             ajax_cache: false,
             resource_default_limit: 100
         },
-        
+
         /**
          * Authentication object
          * @type {object}
@@ -40,16 +40,16 @@ define('tb.core.ApiClient', ['jquery','tb.core.Api', 'jsclass', 'tb.core.ApiRequ
          * @param {String} version
          * @param {object} config
          */
-        initialize: function(version, config) {
-            if (typeof config !== 'undefined') {
+        initialize: function (version, config) {
+            if (config !== undefined) {
                 this.version = version;
             }
 
-            if (typeof config !== 'undefined') {
-                $.extend(this.config, config);
+            if (config !== undefined) {
+                jQuery.extend(this.config, config);
             }
 
-            $.ajaxSetup(this.config);
+            jQuery.ajaxSetup(this.config);
         },
 
         /**
@@ -60,7 +60,7 @@ define('tb.core.ApiClient', ['jquery','tb.core.Api', 'jsclass', 'tb.core.ApiRequ
         send: function (request) {
             request.context = this;
 
-            return $.ajax(request);
+            return jQuery.ajax(request);
         },
 
         /**
@@ -68,18 +68,18 @@ define('tb.core.ApiClient', ['jquery','tb.core.Api', 'jsclass', 'tb.core.ApiRequ
          * @param {String} name
          * @returns {object} ApiRequestBuilder
          */
-        createRequestBuilder: function(name) {
+        createRequestBuilder: function (name) {
             var apiRequestBuilder = new ApiRequestBuilder(name, this);
 
             return apiRequestBuilder;
         },
-        
+
         /**
          * Connect user to backbee's admin
          * @param {String} username
          * @param {String} password
          */
-        connect: function(username, password) {
+        connect: function (username, password) {
             var dateFormat = 'YYYY-MM-DD HH:mm:ss';
 
             this.auth.username = username;
@@ -103,35 +103,35 @@ define('tb.core.ApiClient', ['jquery','tb.core.Api', 'jsclass', 'tb.core.ApiRequ
 
             this.send(rb.getRequest()).done(this.connectSuccessHandler).done(this.connectErrorHandler);
         },
-        
+
         /**
          * Handle connection success
          */
-        connectSuccessHandler: function() {
+        connectSuccessHandler: function () {
             this.auth.authenticated = true;
-            
+
             var me = this;
-            
-            $.trigger('bb.api_authenticated', {auth: me.auth});
+
+            jQuery.trigger('bb.api_authenticated', {auth: me.auth});
         },
 
         /**
          * Handle connection error
          */
-        connectErrorHandler: function() {
+        connectErrorHandler: function () {
             this.auth.authenticated = false;
-            
+
             var me = this;
-            
-            $.trigger('bb.api_authentication_error', {auth: me.auth});
+
+            jQuery.trigger('bb.api_authentication_error', {auth: me.auth});
         },
 
         /**
-         * Encode request 
+         * Encode request
          * @param {Object} request
          * @returns {undefined}
          */
-        encodeRequest: function(request) {
+        encodeRequest: function (request) {
             /**
              * @TODO
             */
@@ -146,11 +146,11 @@ define('tb.core.ApiClient', ['jquery','tb.core.Api', 'jsclass', 'tb.core.ApiRequ
          * @param {Object} headers
          * @returns {Object} Request
          */
-        createRequest: function(url, method, queryParams, data, headers) {
+        createRequest: function (url, method, queryParams, data, headers) {
             var request = {'type' : method};
 
             if (typeof queryParams !== 'undefined'  && '' !== queryParams.trim()) {
-                url += ((url.indexOf('?') == -1) ? '?' : '&') + $.param(queryParams);
+                url += ((url.indexOf('?') == -1) ? '?' : '&') + jQuery.param(queryParams);
             }
 
             request.url = url;
@@ -171,7 +171,7 @@ define('tb.core.ApiClient', ['jquery','tb.core.Api', 'jsclass', 'tb.core.ApiRequ
          * @param {String} name
          * @returns {ApiResource}
          */
-        getResource: function(name) {
+        getResource: function (name) {
             if (this.resourceManager.name) {
                 var resource = new ApiResource(name, this);
 
@@ -180,7 +180,6 @@ define('tb.core.ApiClient', ['jquery','tb.core.Api', 'jsclass', 'tb.core.ApiRequ
 
             return this.resourceManager.name;
         }
-
     });
 
     Api.register('apiClient', ApiClient);
