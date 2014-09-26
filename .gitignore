@@ -6,3 +6,5 @@ build
 html/resources
 old/
 template/
+.grunt/
+coverage/
