@@ -1,38 +1,58 @@
-define("tb.core.ApplicationContainer",["jquery","jsclass","tb.core.Api"],function($){
-    var instance = null;
+define("tb.core.ApplicationContainer", ["jquery", "jsclass", "tb.core.Api"], function (jQuery, JS) {
+    'use strict';
 
-    var AppContainer = new JS.Class({
+    var instance = null,
+        AppContainer;
 
-        initialize: function(){
+    /**
+     * AppContainer object
+     */
+    AppContainer = new JS.Class({
+        /**
+         * Container initialisation
+         */
+        initialize: function () {
             this.container = [];
         },
 
-        /** {name:"appname",instance:"",state} **/
-        register : function(applicationInfos){
+        /**
+         * Register a new application
+         * @param {object} applicationInfos  { 
+         *                                       name:"appname",
+         *                                       instance:"",
+         *                                       state
+         *                                   }
+         */
+        register: function (applicationInfos) {
             this.container.push(applicationInfos);
         },
 
-        getByAppInfosName : function(name){
+        /**
+         * Gets application info by its name
+         * @param {type} name
+         * @returns {appInfos}
+         */
+        getByAppInfosName: function (name) {
             var result = null;
-            $.each(this.container,function(i, appInfos){
-                if(appInfos.name==name){
+            jQuery.each(this.container, function (i, appInfos) {
+                if (appInfos.name === name) {
                     result = appInfos;
                     return false;
                 }
+                i = i + 1;
             });
+
             return result;
         }
-
     });
 
     return {
-        getInstance : function(){
-            if(!instance){
-                instance = new AppContainer;
+        getInstance: function () {
+            if (!instance) {
+                instance = new AppContainer();
             }
             return instance;
         }
 
-    }
-
+    };
 });
