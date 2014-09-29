@@ -1,11 +1,11 @@
-(function (window) {
+(function () {
     "use strict";
 
-    require(['Backbone', 'tb/rest'], function (Backbone, rest) {
-        var User = Backbone.Model.extend({
-            digest: '',
-            login: '',
-
-        });
-    })
-}(window));
+    require(['BackBone'], function () {
+        return;
+        // var User = Backbone.Model.extend({
+        //     digest: '',
+        //     login: ''
+        // });
+    });
+}());
