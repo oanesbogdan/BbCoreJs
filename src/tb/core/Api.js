@@ -1,19 +1,22 @@
-define('tb.core.Api', [], function () {
-    var _container = {},
 
-        _set = function (ctn, object) {
-            _container[ctn] = object;
+define('tb.core.Api', [], function () {
+    'use strict';
+
+    var container = {},
+
+        set = function (ctn, object) {
+            container[ctn] = object;
         },
 
-        _get = function(ctn){
-            return _container[ctn];
-        }
+        get = function (ctn) {
+            return container[ctn];
+        };
 
     return {
-        register: _set,
-        get: _get,
+        register: set,
+        get: get,
         dump: function () {
-            return _container;
+            return container;
         }
     };
 });
