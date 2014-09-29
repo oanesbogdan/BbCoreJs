@@ -6,5 +6,6 @@ build
 html/resources
 old/
 template/
+nbproject/
 .grunt/
 coverage/
