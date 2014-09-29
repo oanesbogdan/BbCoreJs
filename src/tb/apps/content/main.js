@@ -7,30 +7,44 @@
 
 require.config({
     paths: {
-        "content.routes": "src/tb/apps/content/routes",//mandatory
-        "content.home.controller":"src/tb/apps/content/controllers/home.controller",
-        "content.test.controller":"src/tb/apps/content/controllers/test.controller"
+        "content.routes": "src/tb/apps/content/routes", //mandatory
+        "content.home.controller": "src/tb/apps/content/controllers/home.controller",
+        "content.test.controller": "src/tb/apps/content/controllers/test.controller"
     }
 });
 
-define("app.content",["tb.core","content.home.controller","content.test.controller"], function(bbCore){
+define("app.content", ["tb.core", "content.home.controller", "content.test.controller"], function (bbCore) {
+    'use strict';
 
-    /* declaration de l'application */
-    bbCore.ApplicationManager.registerApplication("content",{
-
-        onInit: function(){
+    /**
+     * content application declaration
+     */
+    bbCore.ApplicationManager.registerApplication("content", {
+        /**
+         * occurs on initialization of content application
+         */
+        onInit: function () {
             console.log(" LayoutApplication is initialized ");
         },
 
-        onStart: function(){
+        /**
+         * occurs on start of content application
+         */
+        onStart: function () {
             console.log("onStart [content] ...");
         },
 
-        onStop: function(){
+        /**
+         * occurs on stop of content application
+         */
+        onStop: function () {
             console.log("content onStop is called...");
         },
 
-        onError: function(){
+        /**
+         * occurs on error of content application
+         */
+        onError: function () {
             console.log("onError...");
         }
     });
