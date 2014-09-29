@@ -3,10 +3,10 @@ define([], function () {
 
     return {
         sayHello: function () {
-            console.log("hello");
+            console.log('hello');
         },
         sayGooBye: function () {
-            console.log("Ciao!");
+            console.log('Ciao!');
         }
     };
 });
