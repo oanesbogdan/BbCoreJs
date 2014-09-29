@@ -1,4 +1,6 @@
-define('tb.core.ApiClient', ['jquery','tb.core.Api', 'jsclass', 'tb.core.ApiRequestBuilder'], function(jQuery, Api, jsClass, ApiRequestBuilder){
+
+define('tb.core.ApiClient', ['jquery', 'tb.core.Api', 'jsclass', 'tb.core.ApiRequestBuilder', 'tb.core.ApiResource', 'moment'], function (jQuery, Api, jsClass, ApiRequestBuilder, ApiResource, moment) {
+    'use strict';
 
     /**
      * ApiClient Object
@@ -75,31 +77,43 @@ define('tb.core.ApiClient', ['jquery','tb.core.Api', 'jsclass', 'tb.core.ApiRequ
         },
 
         /**
+         * Create a new Digest with dateFormat
+         *
+         * @param  {[type]} dateFormat
+         * @return {[type]}
+         */
+        generateDigest: function (dateFormat) {
+            // SparkMD5.hash(this.auth.nonce + moment(this.auth.created).format(dateFormat) + SparkMD5.hash(this.auth.password))
+            return 'digest' + dateFormat;
+        },
+
+        /**
+         * @TODO complete the create request builder
+         *
          * Connect user to backbee's admin
          * @param {String} username
          * @param {String} password
          */
         connect: function (username, password) {
-            var dateFormat = 'YYYY-MM-DD HH:mm:ss';
+            var dateFormat = 'YYYY-MM-DD HH:mm:ss',
+                digest = '',
+                rb = {};
 
             this.auth.username = username;
             this.auth.password = password;
             this.auth.created = new Date();
             this.auth.nonce = '1234567890';
 
-            var digest = SparkMD5.hash(this.auth.nonce + moment(this.auth.created).format(dateFormat) + SparkMD5.hash(this.auth.password));
+            digest = this.generateDigest(dateFormat);
+            rb = this.createRequestBuilder();
 
-            /**
-             * @TODO
-             */
-            var rb = this.createRequestBuilder();
             rb.setUrl('/rest/1/security/auth/bb_area')
-              .setData({
-                  'created': moment(this.auth.created).format(dateFormat),
-                  'digest': digest,
-                  'username': this.auth.username,
-                  'nonce': this.auth.nonce
-              });
+                .setData({
+                    'created': moment(this.auth.created).format(dateFormat),
+                    'digest': digest,
+                    'username': this.auth.username,
+                    'nonce': this.auth.nonce
+                });
 
             this.send(rb.getRequest()).done(this.connectSuccessHandler).done(this.connectErrorHandler);
         },
@@ -127,14 +141,14 @@ define('tb.core.ApiClient', ['jquery','tb.core.Api', 'jsclass', 'tb.core.ApiRequ
         },
 
         /**
+         * @TODO
+         *
          * Encode request
          * @param {Object} request
          * @returns {undefined}
          */
         encodeRequest: function (request) {
-            /**
-             * @TODO
-            */
+            return JSON.stringify(request);
         },
 
         /**
@@ -149,17 +163,17 @@ define('tb.core.ApiClient', ['jquery','tb.core.Api', 'jsclass', 'tb.core.ApiRequ
         createRequest: function (url, method, queryParams, data, headers) {
             var request = {'type' : method};
 
-            if (typeof queryParams !== 'undefined'  && '' !== queryParams.trim()) {
-                url += ((url.indexOf('?') == -1) ? '?' : '&') + jQuery.param(queryParams);
+            if (queryParams !== undefined  && '' !== queryParams.trim()) {
+                url = url + ((url.indexOf('?') === -1) ? '?' : '&') + jQuery.param(queryParams);
             }
 
             request.url = url;
 
-            if (typeof data !== 'undefined') {
+            if (data !== undefined) {
                 request.data = data;
             }
 
-            if (typeof headers !== 'undefined') {
+            if (headers !== undefined) {
                 request.headers = headers;
             }
 
