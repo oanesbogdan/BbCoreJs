@@ -3,11 +3,10 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        connect: {
-            test: {
-                port : 8000
-            }
-        },
+
+        /**
+         * toolbar files and directories
+         */
         dir: {
             src: 'src/tb',
             build: 'build',
@@ -26,6 +25,31 @@ module.exports = function (grunt) {
             parallel: 'paralleljs/lib/*.js',
             underscore: 'underscore/underscore.js'
         },
+
+        /**
+         * application dependencies
+         */
+        bower: {
+            target: {
+                rjsConfig: 'app/config.js'
+            },
+            install: {}
+        },
+
+        requirejs: {
+            compile: {
+                options: {
+                    baseUrl: "./",
+                    mainConfigFile: "require.config.js",
+                    name: "<%= concat.core.dest %>",
+                    out: "<%= dir.build %>/<%= components.core %>.min.js"
+                }
+            }
+        },
+
+        /**
+         * application building
+         */
         concat: {
             options: {
                 separator: '',
@@ -38,34 +62,7 @@ module.exports = function (grunt) {
                 dest: '<%= dir.build %>/<%= components.core %>.js'
             }
         },
-        requirejs: {
-            compile: {
-                options: {
-                    baseUrl: "./",
-                    mainConfigFile: "require.config.js",
-                    name: "<%= concat.core.dest %>", // assumes a production build using almond
-                    out: "<%= dir.build %>/<%= components.core %>.min.js"
-                }
-            }
-        },
-        bower: {
-            target: {
-                rjsConfig: 'app/config.js'
-            },
-            install: {}
-        },
 
-        requirejs_config_generator: {
-            development: {
-                "baseUrl": "",
-                "deps": [],
-                "paths": {},
-                "shim": {}
-            },
-            production: {
-
-            }
-        },
         uglify: {
             options: {
                 banner: '/*! <%= pkg.name %> <%= pkg.version %> */\n'
@@ -98,6 +95,12 @@ module.exports = function (grunt) {
                 }
             }
         },
+
+        watch: {
+            files: ['<%= jshint.files %>'],
+            tasks: ['jshint', 'qunit']
+        },
+
         cssmin: {
             compress: {
                 files: {
@@ -105,43 +108,84 @@ module.exports = function (grunt) {
                 }
             }
         },
+
+        /**
+         * code style
+         */
         jshint: {
-            files: ['Gruntfile.js', 'src/**/*.js', 'specs/**/*.js'],
+            files: ['Gruntfile.js', 'src/**/*.js', 'specs/**/*.js']
             // options: {
             //     jshintrc: '.jshintrc'
             // }
         },
-        watch: {
-            files: ['<%= jshint.files %>'],
-            tasks: ['jshint', 'qunit']
+
+        jslint: {
+            grunt: {
+                src: ['Gruntfile.js'],
+                directives: {
+                    predef: [
+                        'module',
+                        'require'
+                    ]
+                }
+            },
+            test: {
+                src: ['specs/**/*.js'],
+                directives: {
+                    predef: [
+                        'define',
+                        'require',
+                        'it',
+                        'expect',
+                        'describe'
+                    ]
+                }
+            },
+            sources: {
+                src: ['src/**/*.js'],
+
+                directives: {
+                    browser: true,
+                    predef: [
+                        'define',
+                        'require',
+                        'module'
+                    ]
+                }
+            }
         },
 
         csslint: {
             strict: {
                 options: {
-                    "import": 2
+                    'import': 2
                 },
                 src: ['src/css/*.css']
             }
         },
 
+        /**
+         * application testing
+         */
         jasmine: {
-            src: '<%= dir.src %>/core/**/*.js',
-            options: {
-                specs: '<%= dir.specs %>/**/*.spec.js',
-                // vendor: '<%= dir.lib %>/**/*.js',
-                helpers: '<%= dir.specs %>/**/*.helper.js',
-                template: require('grunt-template-jasmine-requirejs'),
-                templateOptions: {
-                    baseUrl: '',
-                    requireConfigFile: 'SpecRunner.js'
+
+            test: {
+                src: '<%= dir.src %>/core/**/*.js',
+                options: {
+                    specs: '<%= dir.specs %>/**/*.spec.js',
+                    helpers: '<%= dir.specs %>/**/*.helper.js',
+                    template: require('grunt-template-jasmine-requirejs'),
+                    templateOptions: {
+                        baseUrl: '',
+                        requireConfigFile: 'SpecRunner.js'
+                    }
                 }
             },
-            istanbul: {
-                src: '<%= jasmine.src %>',
+
+            coverage: {
+                src: '<%= jasmine.test.src %>',
                 options: {
-                    // vendor: '<%= jasmine.options.vendor %>',
-                    specs: '<%= jasmine.options.specs %>',
+                    specs: '<%= jasmine.test.options.specs %>',
                     template: require('grunt-template-jasmine-istanbul'),
                     templateOptions: {
                         coverage: 'coverage/json/coverage.json',
@@ -157,10 +201,6 @@ module.exports = function (grunt) {
                     }
                 }
             }
-        },
-
-        jslint: {
-            src: ['Gruntfile.js', 'src/**/*.js', 'specs/**/*.js']
         }
     });
 
@@ -177,7 +217,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-jslint');
 
-    grunt.registerTask('default', ['bower', 'jshint', 'jasmine:test', 'concat', 'uglify']);
-    /* grunt:test */
-    grunt.registerTask("test", ['bower', 'jshint', 'jslint', 'jasmine:istanbul']);
+    // grunt tasks
+    grunt.registerTask('default', ['bower', 'jshint', 'jslint', 'jasmine:test', 'concat', 'uglify']);
+    grunt.registerTask('test', ['bower', 'jshint', 'jslint', 'jasmine:coverage']);
+    grunt.registerTask('build', ['bower', 'concat', 'uglify']);
 };
