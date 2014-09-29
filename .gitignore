@@ -9,3 +9,4 @@ template/
 nbproject/
 .grunt/
 coverage/
+npm-debug.log
