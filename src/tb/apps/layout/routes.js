@@ -1,5 +1,8 @@
-define(["tb.core"],function(bbCore){
-    bbCore.RouteManager.registerRoute("layout",{
+
+define(["tb.core"], function (bbCore) {
+    'use strict';
+
+    bbCore.RouteManager.registerRoute("layout", {
         prefix: "appLayout",
         routes: {
             "default": {
