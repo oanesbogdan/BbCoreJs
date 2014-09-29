@@ -1,30 +1,34 @@
-define(["tb.core"], function(bbCore){
-    bbCore.ControllerManager.registerController("TestController",{
-        appname: "layout",
+define(['tb.core'], function (bbCore) {
+    'use strict';
+
+    bbCore.ControllerManager.registerController('TestController', {
+        appname: 'layout',
+
         config: {
-            imports: ["test.manager","rte.manager"]
+            imports: ['test.manager', 'rte.manager']
         },
+
         /*Appelle init après les dépendences*/
-        onInit: function(require){
-            // var manager  = require("bb.manager");
-            // var rteManager = require("bb.rte");
+        onInit: function (require) {
+            console.log(require);
         },
 
-        homeAction: function(){
-            console.log("... homeAction ...");
-            return this.render("#placeHolder","/path/template",{});
+        homeAction: function () {
+            console.log('... homeAction ...');
+            return this.render('#placeHolder', '/path/template', {});
         },
 
-        listAction: function(){
-
+        listAction: function () {
+            console.log('... listAction ...');
         },
 
-        displayLayoutAction: function(){
-            var layouts = new Layout();
-            var self = this;
-            this.loadTemplate("/path/template").done(function(tpl){
-                self.render(tpl,{
-                    layout:layouts
+        displayLayoutAction: function () {
+            var layouts = {}, /* new Layout() */
+                self = this;
+
+            this.loadTemplate('/path/template').done(function (tpl) {
+                self.render(tpl, {
+                    layout: layouts
                 });
             });
         }
