@@ -1,4 +1,5 @@
-define('tb.core.ApiRequestBuilder', ['jquery', 'tb.core.Api', 'jsclass'], function (jQuery, Api) {
+define('tb.core.ApiRequestBuilder', ['jquery', 'tb.core.Api', 'jsclass'], function (jQuery, Api, JS) {
+    'use strict';
 
     /**
      * ApiRequestBuilder object
@@ -53,7 +54,7 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'tb.core.Api', 'jsclass'], functi
          * ApiRequestBuilder initialization
          * @param {String} baserUrl
          */
-        initialize: function (baseUrl){
+        initialize: function (baseUrl) {
             this.baseUrl = baseUrl;
         },
 
@@ -86,7 +87,7 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'tb.core.Api', 'jsclass'], functi
          * @returns {Object} ApiRequestBuilder
          */
         setQueryParam: function (name, value) {
-            this.queryParams.name = value;
+            this.queryParams[name] = value;
 
             return this;
         },
@@ -128,7 +129,7 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'tb.core.Api', 'jsclass'], functi
          * @returns {Object} ApiRequestBuilder
          */
         setHeader: function (name, value) {
-            this.headers.name = value;
+            this.headers[name] = value;
 
             return this;
         },
@@ -172,8 +173,11 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'tb.core.Api', 'jsclass'], functi
 
             // set the header to xhr object
             request.beforeSend = function (xhr) {
+                var header = {};
                 for (header in self.headers) {
-                    xhr.setRequestHeader(header, self.headers[header]);
+                    if (self.headers.hasOwnProperty(header)) {
+                        xhr.setRequestHeader(header, self.headers[header]);
+                    }
                 }
             };
 
@@ -189,12 +193,13 @@ define('tb.core.ApiRequestBuilder', ['jquery', 'tb.core.Api', 'jsclass'], functi
                     /**
                      * @TODO: Affiliate to data seems not work
                      */
-                    data = JSON.stringify(request.data);
+                    // data = JSON.stringify(request.data); // @TODO: data unused?
+                    JSON.stringify(request.data); // FIXME, depends on previous line
                 }
             }
 
             if (false === jQuery.isEmptyObject(this.queryParams)) {
-                url += ((url.indexOf('?') == -1) ? '?' : '&') + jQuery.param(this.queryParams);
+                url = url + ((url.indexOf('?') === -1) ? '?' : '&') + jQuery.param(this.queryParams);
             }
 
             return request;
