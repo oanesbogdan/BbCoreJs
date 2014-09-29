@@ -40,7 +40,7 @@ module.exports = function (grunt) {
             compile: {
                 options: {
                     baseUrl: "./",
-                    mainConfigFile: "require.config.js",
+                    mainConfigFile: "<%= dir.src %>/require.config.js",
                     name: "<%= concat.core.dest %>",
                     out: "<%= dir.build %>/<%= components.core %>.min.js"
                 }
@@ -177,7 +177,7 @@ module.exports = function (grunt) {
                     template: require('grunt-template-jasmine-requirejs'),
                     templateOptions: {
                         baseUrl: '',
-                        requireConfigFile: 'SpecRunner.js'
+                        requireConfigFile: '<%= dir.specs %>/require.config.js'
                     }
                 }
             },
@@ -196,7 +196,7 @@ module.exports = function (grunt) {
                         template: require('grunt-template-jasmine-requirejs'),
                         templateOptions: {
                             baseUrl: '',
-                            requireConfigFile: 'SpecRunner.js'
+                            requireConfigFile: '<%= dir.specs %>/require.config.js'
                         }
                     }
                 }
