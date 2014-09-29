@@ -1,10 +1,14 @@
-define(["tb.core"],function(bbCore){
+define(["tb.core"], function (bbCore) {
+    'use strict';
 
-    bbCore.RouteManager.registerRoute("content",{
+    /**
+     * Register every routes of content application into bbCore.routeManager
+     */
+    bbCore.RouteManager.registerRoute("content", {
         prefix: "appContent",
         routes: {
             "name": {
-                url: "/home/harris",//when a prefix can be found prefix/home/harris
+                url: "/home/harris", //when a prefix can be found prefix/home/harris
                 action: "MainController:home"
             },
 
