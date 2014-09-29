@@ -1,7 +1,11 @@
-define(['tb.core', 'tb.core.Api'], function (Core, Api) {
-    describe("Testing for jasmine", function () {
-        it("something", function() {
-            expect(true).toBe(true);
+(function () {
+    'use strict';
+
+    define(['tb.core', 'tb.core.Api'], function () {
+        describe('Testing for jasmine', function () {
+            it('something', function () {
+                expect(true).toBe(true);
+            });
         });
     });
-});
+}());
