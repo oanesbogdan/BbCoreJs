@@ -146,6 +146,7 @@ module.exports = function (grunt) {
 
                 directives: {
                     browser: true,
+                    devel: true,
                     predef: [
                         'define',
                         'require',
