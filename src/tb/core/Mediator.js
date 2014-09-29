@@ -3,44 +3,64 @@
  * and open the template in the editor.
  */
 
-define('tb.core.Mediator', ['tb.core.Api'], function (Api) {
+define('tb.core.Mediator', ['tb.core.Api', 'jquery'], function (Api, jQuery) {
+    'use strict';
 
-    var _containers = {},
+    var containers = {},
 
-        _events = {},
+        events = {},
 
         /**
-         * [_register description]
+         * [register description]
          * @param  {[type]} componentName [description]
          * @param  {[type]} component     [description]
          * @return {[type]}               [description]
          */
-        _register = function (componentName, component) {
-            if (componentName in _containers) {
+        register = function (componentName, component) {
+            if (containers.hasOwnProperty(componentName)) {
                 return;
             }
-            _containers[componentName] = component;
+
+            containers[componentName] = component;
         },
 
         /**
-         * [_invoke description]
+         * [invoke description]
          * @param  {[type]} component [description]
          * @param  {[type]} params    [description]
          * @return {[type]}           [description]
          */
-        _invoke = function (component, params) {
+        invoke = function (component, params) {
             var dfd = new jQuery.Defered();
+
+            console.log(component);
+            console.log(params);
 
             return dfd.promise();
         },
 
         Mediator = {
-            register: function (topic, callback) {},
-            invoke: function () {},
-            publish: function (topic, params ,save) {}
+            register: function (topic, callback) {
+                console.log(topic);
+                console.log(callback);
+                return;
+            },
+            invoke: function () {
+                return;
+            },
+            publish: function (topic, params, save) {
+                console.log(topic);
+                console.log(params);
+                console.log(save);
+                return;
+            }
         };
 
     Api.register('Mediator', Mediator);
+
+    console.log(events);
+    console.log(register);
+    console.log(invoke);
 
     return Mediator;
 });
