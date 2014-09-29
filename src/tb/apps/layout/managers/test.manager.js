@@ -1,10 +1,12 @@
-define([],function(){
+define([], function () {
+    'use strict';
+
     return {
-        sayHello: function(){
+        sayHello: function () {
             console.log("hello");
         },
-        sayGooBye:function(){
+        sayGooBye: function () {
             console.log("Ciao!");
         }
-    } 
+    };
 });
