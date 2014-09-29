@@ -106,10 +106,10 @@ module.exports = function (grunt) {
             }
         },
         jshint: {
-            files: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js'],
-            options: {
-                jshintrc: '.jshintrc'
-            }
+            files: ['Gruntfile.js', 'src/**/*.js', 'specs/**/*.js'],
+            // options: {
+            //     jshintrc: '.jshintrc'
+            // }
         },
         watch: {
             files: ['<%= jshint.files %>'],
@@ -157,6 +157,10 @@ module.exports = function (grunt) {
                     }
                 }
             }
+        },
+
+        jslint: {
+            src: ['Gruntfile.js', 'src/**/*.js', 'specs/**/*.js']
         }
     });
 
@@ -171,8 +175,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-istanbul-coverage');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
+    grunt.loadNpmTasks('grunt-jslint');
 
-    grunt.registerTask('default', ['bower', 'concat', 'uglify']);
+    grunt.registerTask('default', ['bower', 'jshint', 'jasmine:test', 'concat', 'uglify']);
     /* grunt:test */
-    grunt.registerTask("test", ["jasmine"]);
+    grunt.registerTask("test", ['bower', 'jshint', 'jslint', 'jasmine:istanbul']);
 };
