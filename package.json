@@ -22,6 +22,7 @@
     "grunt-jslint": "^1.1.12",
     "grunt-requirejs-config-generator": "~0.1.1",
     "grunt-template-jasmine-istanbul": "~0.3.0",
+    "grunt-template-jasmine-requirejs": "^0.2.0",
     "jsclass": "4.0.5"
   }
 }
