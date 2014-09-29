@@ -1,4 +1,4 @@
-define("tb.core.ApplicationContainer", ["jquery", "jsclass", "tb.core.Api"], function (jQuery, JS) {
+define('tb.core.ApplicationContainer', ['jquery', 'jsclass', 'tb.core.Api'], function (jQuery, JS) {
     'use strict';
 
     var instance = null,
