@@ -1,4 +1,4 @@
-define('tb.core.ApiRequestBuilder', ['jquery', 'tb.core.Api' 'jsclass'], function (jQuery, Api) {
+define('tb.core.ApiRequestBuilder', ['jquery', 'tb.core.Api', 'jsclass'], function (jQuery, Api) {
 
     /**
      * ApiRequestBuilder object

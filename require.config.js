@@ -9,6 +9,15 @@ require.config({
         'BackBone': 'lib/backbone/backbone'
     },
     'shim': {
-        'BackBone': {}
+        underscore: {
+            exports: '_'
+        },
+        BackBone: {
+            deps: ['underscore', 'jquery'],
+            exports: 'Backbone'
+        },
+        Bootstrap: {
+            deps: ['jquery']
+        }
     }
 });
