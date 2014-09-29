@@ -20,4 +20,3 @@ define('tb.core.Api', [], function () {
         }
     };
 });
-
