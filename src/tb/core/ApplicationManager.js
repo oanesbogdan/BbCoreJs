@@ -29,8 +29,6 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
 
         bbAppContainer = require('tb.core.ApplicationContainer'),
 
-        JS = require('jsclass'),
-
         underscore = require('underscore'),
 
         bbApi = require('tb.core.Api'),
