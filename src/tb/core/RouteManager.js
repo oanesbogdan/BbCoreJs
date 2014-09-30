@@ -1,11 +1,11 @@
-define('tb.core.RouteManager', ['tb.core.Api', 'BackBone', 'jsclass', 'tb.core.ApplicationManager'], function (Api, BackBone) {
+define('tb.core.RouteManager', ['jquery', 'tb.core.Api', 'BackBone', 'tb.core.ApplicationManager', 'jsclass'], function (jQuery, Api, BackBone, JS) {
 
-    var bbApplicationManager = require('tb.core.ApplicationManager');
+    'use strict';
+
+    var bbApplicationManager = require('tb.core.ApplicationManager'),
 
         //use the mediator to avoid a circular dependency
-        _routerInstance = null,
-
-        _routeAppMap = {},
+        routerInstance = null,
 
         /**
          * Router handle routes -> dispatch to application manager
@@ -33,13 +33,14 @@ define('tb.core.RouteManager', ['tb.core.Api', 'BackBone', 'jsclass', 'tb.core.A
 
             navigate: function (path, triggerEvent, updateRoute) {
                 var conf = {
-                    trigger: ((triggerEvent) ? triggerEvent : true),
-                    replace: ((updateRoute)? updateRoute : true)
-                } ;
+                    trigger: triggerEvent || true,
+                    replace: updateRoute || true
+                };
                 this.mainRouter.navigate(path, conf);
             },
 
             genericRouteHandler: function (actionInfos, params) {
+                console.log(params);
                 /* handle action here */
                 bbApplicationManager.invoke(actionInfos);
             },
@@ -48,25 +49,30 @@ define('tb.core.RouteManager', ['tb.core.Api', 'BackBone', 'jsclass', 'tb.core.A
                 var actionsName =  routeInfos.completeName.split(':');
                 actionsName = actionsName[0];
                 console.log(routeInfos.url);
-                this.mainRouter.route(routeInfos.url, routeInfos.completeName, $.proxy(this.genericRouteHandler, this, actionsName + ':' + routeInfos.action));
+                this.mainRouter.route(routeInfos.url, routeInfos.completeName, jQuery.proxy(this.genericRouteHandler, this, actionsName + ':' + routeInfos.action));
             }
         }),
 
         RouteManager = {
             registerRoute: function (appname, routeConf) {
-                var self = this;
-                if(!routeConf.hasOwnProperty('routes')) {
+                var self = this,
+                    routes = routeConf.routes,
+                    prefix = '',
+                    router = null,
+                    url = '';
+                if (!routeConf.hasOwnProperty('routes')) {
                     throw 'A Routes Key Must Be Provided';
                 }
-                if(!$.isPlainObject(routeConf.routes)) {
+                if (!jQuery.isPlainObject(routeConf.routes)) {
                     throw 'Routes Should Be An Object';
                 }
-                var routes = routeConf.routes;
-                var prefix = ((typeof routeConf.prefix === 'string') ? routeConf.prefix : '');
-                $.each(routes, function (name, routeInfos) {
-                    var router = self.getRouter();
-                    if(prefix.length !== 0) {
-                        var url = ((routeInfos.url.indexOf('/') === 0) ? routeInfos.url.substring(1) : routeInfos.url);
+                if (typeof routeConf.prefix === 'string') {
+                    prefix = routeConf.prefix;
+                }
+                jQuery.each(routes, function (name, routeInfos) {
+                    router = self.getRouter();
+                    if (prefix.length !== 0) {
+                        url = (routeInfos.url.indexOf('/') === 0) ? routeInfos.url.substring(1) : routeInfos.url;
                         routeInfos.url = prefix + '/' + url;
                     }
                     routeInfos.completeName = appname + ':' + name;
@@ -83,12 +89,10 @@ define('tb.core.RouteManager', ['tb.core.Api', 'BackBone', 'jsclass', 'tb.core.A
             },
 
             startRouter: function () {
-                if (_routerInstance) {
-                    return _routerInstance;
-                } else {
-                    _routerInstance = new Router();
+                if (!routerInstance) {
+                    routerInstance = new Router();
                 }
-                return _routerInstance;
+                return routerInstance;
             },
 
             getRouter: function () {
