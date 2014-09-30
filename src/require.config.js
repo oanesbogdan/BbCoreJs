@@ -6,7 +6,8 @@ require.config({
         'jsclass' : 'node_modules/jsclass/min/core',
         'underscore': 'lib/underscore/underscore',
         'tb.core': 'src/tb/main',
-        'BackBone': 'lib/backbone/backbone'
+        'BackBone': 'lib/backbone/backbone',
+        'moment': 'lib/moment/moment'
     },
     'shim': {
         underscore: {

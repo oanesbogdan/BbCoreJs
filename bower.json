@@ -20,6 +20,7 @@
     "paralleljs": "v0.2",
     "cryptojs": "*",
     "bootstrap": "*",
-    "jsclass": "4.0.5"
+    "jsclass": "4.0.5",
+    "moment": "~2.8.3"
   }
 }
