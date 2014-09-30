@@ -1,4 +1,4 @@
-define('tb.core.ApplicationContainer', ['jquery', 'jsclass', 'tb.core.Api'], function (jQuery, JS) {
+define('tb.core.ApplicationContainer', ['jquery', 'jsclass', 'tb.core.Api'], function (jQuery) {
     'use strict';
 
     var instance = null,
@@ -17,7 +17,7 @@ define('tb.core.ApplicationContainer', ['jquery', 'jsclass', 'tb.core.Api'], fun
 
         /**
          * Register a new application
-         * @param {object} applicationInfos  { 
+         * @param {object} applicationInfos  {
          *                                       name:"appname",
          *                                       instance:"",
          *                                       state
