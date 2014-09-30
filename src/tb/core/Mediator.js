@@ -3,12 +3,12 @@
  * and open the template in the editor.
  */
 
-define('tb.core.Mediator', ['tb.core.Api', 'jquery'], function (Api, jQuery) {
+define('tb.core.Mediator', ['tb.core.Api', 'jquery'], function (Api) {
     'use strict';
 
-    var containers = {},
+    var // containers = {},
 
-        events = {},
+//         events = {},
 
         /**
          * [register description]
@@ -16,13 +16,13 @@ define('tb.core.Mediator', ['tb.core.Api', 'jquery'], function (Api, jQuery) {
          * @param  {[type]} component     [description]
          * @return {[type]}               [description]
          */
-        register = function (componentName, component) {
-            if (containers.hasOwnProperty(componentName)) {
-                return;
-            }
-
-            containers[componentName] = component;
-        },
+//         register = function (componentName, component) {
+//             if (containers.hasOwnProperty(componentName)) {
+//                 return;
+//             }
+//
+//             containers[componentName] = component;
+//         },
 
         /**
          * [invoke description]
@@ -30,14 +30,14 @@ define('tb.core.Mediator', ['tb.core.Api', 'jquery'], function (Api, jQuery) {
          * @param  {[type]} params    [description]
          * @return {[type]}           [description]
          */
-        invoke = function (component, params) {
-            var dfd = new jQuery.Defered();
-
-            console.log(component);
-            console.log(params);
-
-            return dfd.promise();
-        },
+//         invoke = function (component, params) {
+//             var dfd = new jQuery.Defered();
+//
+//             console.log(component);
+//             console.log(params);
+//
+//             return dfd.promise();
+//         },
 
         Mediator = {
             register: function (topic, callback) {
@@ -57,10 +57,6 @@ define('tb.core.Mediator', ['tb.core.Api', 'jquery'], function (Api, jQuery) {
         };
 
     Api.register('Mediator', Mediator);
-
-    console.log(events);
-    console.log(register);
-    console.log(invoke);
 
     return Mediator;
 });
