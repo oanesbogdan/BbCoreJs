@@ -1,4 +1,4 @@
-require(['Backbone', 'tb.core.Api'], function (Backbone, Api) {
+require(['BackBone', 'tb.core.Api'], function (Backbone, Api) {
     'use strict';
 
     var Exception, throwException;
