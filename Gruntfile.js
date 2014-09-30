@@ -96,11 +96,6 @@ module.exports = function (grunt) {
             }
         },
 
-        watch: {
-            files: ['<%= jshint.files %>'],
-            tasks: ['jshint', 'qunit']
-        },
-
         cssmin: {
             compress: {
                 files: {
@@ -151,7 +146,8 @@ module.exports = function (grunt) {
                     predef: [
                         'define',
                         'require',
-                        'module'
+                        'module',
+                        'JS'
                     ]
                 }
             }
