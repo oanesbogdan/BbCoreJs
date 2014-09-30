@@ -9,7 +9,8 @@
             'tb.core.RouteManager': 'build/toolbar.core',
             'tb.core.ViewManager': 'build/toolbar.core',
             'tb.core.ControllerManager': 'build/toolbar.core',
-            'tb.core.Utils': 'build/toolbar.core'
+            'tb.core.Utils': 'build/toolbar.core',
+            'tb.core.Exception': 'src/toolbar.core'
         }
     });
 
