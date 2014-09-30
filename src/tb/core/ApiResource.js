@@ -1,4 +1,5 @@
 define("tb.core.ApiResource", ["tb.core.Api", "jsclass"], function (Api) {
+    'use strict';
 
     /**
      * ApiResource object
