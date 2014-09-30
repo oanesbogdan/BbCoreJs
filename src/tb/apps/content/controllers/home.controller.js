@@ -2,25 +2,39 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-define(["tb.core"],function(bbCore){
+define(['tb.core', 'jquery'], function (bbCore, jQuery) {
+    'use strict';
 
-    bbCore.ControllerManager.registerController("MainController", {
-        appname: "content",
-        imports: ["test.manager"],
+    bbCore.ControllerManager.registerController('MainController', {
+        appname: 'content',
+        imports: ['test.manager'],
 
-        onInit: function(){
-            console.log("content onInit");
+        /**
+         * occurs on init of content home controller
+         */
+        onInit: function () {
+            console.log('content onInit');
         },
 
-        homeAction: function(){
-            console.log(" contentApp homeAction");
+        /**
+         * Returns home route result
+         */
+        homeAction: function () {
+            console.log(' contentApp homeAction');
         },
 
-        listAction: function(){
+        /**
+         * Returns list route result
+         */
+        listAction: function () {
+            return;
         },
 
-        paramsAction: function(){
-            $(".jumbotron").html($("<p>app: content<br>controller:MainController<br>action: paramAction</p>"));
+        /**
+         * Returns params route result
+         */
+        paramsAction: function () {
+            jQuery('.jumbotron').html(jQuery('<p>app: content<br>controller:MainController<br>action: paramAction</p>'));
         }
 
     });
