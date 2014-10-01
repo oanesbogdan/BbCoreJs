@@ -1,40 +1,44 @@
 /* Application Déclaration */
 require.config({
     paths: {
-        "layout.routes": "src/tb/apps/layout/routes",
-        "layout.home.controller": "src/tb/apps/layout/controllers/main.controller",
-        "layout.test.controller": "src/tb/apps/layout/controllers/test.controller"
+        'main.routes': 'src/tb/apps/main/routes',
+        'main.controller': "src/tb/apps/main/controllers/main.controller"
     }
 });
 
-define("app.layout", ["require", "tb.core", "layout.test.controller", "layout.home.controller"], function (require) {
+define('app.main', ['tb.core', 'jquery', 'main.controller'], function (core, jQuery) {
     'use strict';
 
-    var bbCore = require("tb.core");
-
-    bbCore.ApplicationManager.registerApplication("layout", {
-
+    /**
+     * Main application defining default templates and themes
+     */
+    core.ApplicationManager.registerApplication('main', {
         config: {
-            root: "route"
+            tbElement: null,
+            tbSelector: '#bb-toolbar'
         },
 
         onInit: function () {
-            console.log(" LayoutApplication is initialized ");
+            if (!this.config.tbElement && !jQuery(this.config.tbSelector).length) {
+                throw 'Selector "' + this.config.tbSelector + '" does not exists, MainApplication cannot be initialized.';
+            } else {
+                this.config.tbElement = jQuery(jQuery(this.config.tbSelector).get(0));
+            }
+
+            console.log(' MainApplication is initialized ');
         },
 
         onStart: function () {
-            console.log(" layout Application [layout] onStart ...");
+            console.log(' MainApplication onStart...');
         },
 
         onStop: function () {
-            console.log("layout onStop is called ...");
+            console.log(' MainApplication onStop...');
         },
 
         onError: function () {
-            console.log("layout onError...");
+            console.log(' MainApplication onError...');
         }
 
     });
 });
-
-console.log("fragile, la force de l'art II");
