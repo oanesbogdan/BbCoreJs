@@ -12,7 +12,8 @@
             'tb.core.ControllerManager': 'src/tb/core/ControllerManager',
             'tb.core.Utils': 'src/tb/core/Utils',
             'tb.core.Exception': 'src/tb/core/Exception',
-            'tb.core.DriverHandler': 'src/tb/core/DriverHandler'
+            'tb.core.DriverHandler': 'src/tb/core/DriverHandler',
+            'tb.core.Request': 'src/tb/core/Request'
         }
     });
 
