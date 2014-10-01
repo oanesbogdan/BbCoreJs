@@ -6,10 +6,10 @@ define(['require', 'tb.core', 'tb.core.Exception', 'tb.core.Api'], function (req
     describe('Exceptions spec', function () {
         it('Raise new Exception', function () {
             try {
-                exception('test', 'test message');
+                exception('test', 101, 'test message');
                 expect(false).toBe(true);
             } catch (err) {
-                expect(err).toBe('test: test message');
+                expect(err).toBe('Error n°101 test: test message');
             }
         });
 
@@ -27,10 +27,10 @@ define(['require', 'tb.core', 'tb.core.Exception', 'tb.core.Api'], function (req
                 errors = api.get('errors');
 
             try {
-                exception('test2', 'test message');
+                exception('test2', 102, 'test message');
                 expect(false).toBe(true);
             } catch (err) {
-                expect(err).toBe('test2: test message');
+                expect(err).toBe('Error n°102 test2: test message');
             }
 
             expect(api.get('lastError')).not.toBe(null);
@@ -44,7 +44,7 @@ define(['require', 'tb.core', 'tb.core.Exception', 'tb.core.Api'], function (req
                 exception();
                 expect(false).toBe(true);
             } catch (err) {
-                expect(err).toBe('UnknowException: No description found for this exception.');
+                expect(err).toBe('Error n°500 UnknowException: No description found for this exception.');
             }
         });
     });
