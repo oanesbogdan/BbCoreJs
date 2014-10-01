@@ -178,6 +178,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                             currentApplication.onStop();
                         }
                         AppContainer.register(applicationInfos);
+                        applicationInfos.instance.onInit();
                         applicationInfos.instance.onStart();
                         instance = applicationInfos.instance;
                     } else {
