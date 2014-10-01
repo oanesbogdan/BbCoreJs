@@ -2,11 +2,12 @@
 <html lang="en_EN">
     <head>
         <meta encoding="utf8">
-        <title>Login</title>
+        <title>mainApp</title>
         <link rel="stylesheet" href="resources/bower_components/bootstrap/dist/css/bootstrap.min.css">
 
     </head>
     <body>
+        <div id="bb-toolbar"></div>
         <!-- Static navbar -->
         <div class="navbar navbar-default navbar-static-top" role="navigation">
             <div class="container">
@@ -43,9 +44,13 @@
         var applicationConfig = {
             appPath: 'resources/src/tb/apps',
             /*ne charge que les onglets qui se trouvent dans 'applications'*/
-            active: 'layout',
+            active: 'main',
             route: '', // to change: App should know
             applications: {
+                main : {
+                    label  : 'Main',
+                    config : { mainRoute : 'appMain/index'}
+                },
                 layout : {
                     label  : 'Layout',
                     config : { mainRoute : 'appLayout/home'}
