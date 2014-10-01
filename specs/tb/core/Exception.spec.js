@@ -1,13 +1,12 @@
 define(['require', 'tb.core', 'tb.core.Exception', 'tb.core.Api'], function (require) {
     'use strict';
 
-    var expected,
-        Exception = require('tb.core.Exception');
+    var exception = require('tb.core.Exception');
 
     describe('Exceptions spec', function () {
         it('Raise new Exception', function () {
             try {
-                Exception('test', 'test message');
+                exception('test', 'test message');
                 expect(false).toBe(true);
             } catch (err) {
                 expect(err).toBe('test: test message');
@@ -18,7 +17,7 @@ define(['require', 'tb.core', 'tb.core.Exception', 'tb.core.Api'], function (req
             var api = require('tb.core.Api'),
                 errors = api.get('errors');
 
-            expect(api.get('lastError')).not.toBe(null);;
+            expect(api.get('lastError')).not.toBe(null);
 
             expect(errors.length).toBe(1);
         });
@@ -28,16 +27,25 @@ define(['require', 'tb.core', 'tb.core.Exception', 'tb.core.Api'], function (req
                 errors = api.get('errors');
 
             try {
-                Exception('test2', 'test message');
+                exception('test2', 'test message');
                 expect(false).toBe(true);
             } catch (err) {
                 expect(err).toBe('test2: test message');
             }
 
-            expect(api.get('lastError')).not.toBe(null);;
+            expect(api.get('lastError')).not.toBe(null);
 
             expect(errors.length).toBe(2);
             expect(errors[errors.length - 1]).toBe(api.get('lastError'));
+        });
+
+        it('Try Unknow Exception', function () {
+            try {
+                exception();
+                expect(false).toBe(true);
+            } catch (err) {
+                expect(err).toBe('UnknowException: No description found for this exception.');
+            }
         });
     });
 });
