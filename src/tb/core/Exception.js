@@ -1,43 +1,21 @@
-require(['BackBone', 'tb.core.Api'], function (Backbone, Api) {
+define('tb.core.Exception', ['tb.core.Api', 'jsclass'], function () {
     'use strict';
-
-    var Exception, throwException;
 
     /**
      * Exception is the base class for all BackBee toolbar exceptions
      */
-    Exception = Backbone.Model.extend({
-        /**
-         * Default properties
-         */
-        defaults: {
-            name: '',
-            message: '',
-            params: {},
-            stack: this.getStack()
-        },
+    var Exception = new JS.Class({
+
+        api: require('tb.core.Api'),
 
         /**
          * Construct the exception
          */
-        constructor: function () {
-            this.exception = new Exception();
-            this.name = '';
-            this.message = '';
+        initialize: function (name, message) {
+            this.name = name || 'UnknowException';
+            this.message = message || 'No description found for this exception.';
             this.params = {};
             this.stack = this.getStack();
-        },
-
-        /**
-         * Set the properties of the exception
-         * @param {string} name
-         * @param {string} message
-         * @param {object} params
-         */
-        raise: function (name, message, params) {
-            this.name = name;
-            this.message = message;
-            this.params = params || {};
         },
 
         /**
@@ -45,31 +23,37 @@ require(['BackBone', 'tb.core.Api'], function (Backbone, Api) {
          * @returns {array}
          */
         getStack: function () {
-            var err = new Error(),
-                stack = err.stack.split("\n"),
-                cleanStack = stack.slice(4),
+            var err = new Error(this.name),
+                cleanStack = [],
+                stack,
                 key;
 
-            for (key in cleanStack) {
-                if (cleanStack.hasOwnProperty(key)) {
-                    cleanStack[key] = this.parseStackLine(cleanStack[key]);
+            if (err.stack) {
+                stack = err.stack.split("\n");
+                cleanStack = stack.slice(4);
+
+                for (key in cleanStack) {
+                    if (cleanStack.hasOwnProperty(key)) {
+                        cleanStack[key] = this.parseStackLine(cleanStack[key]);
+                    }
                 }
             }
 
             return cleanStack;
         },
 
+
         /**
          * Function to stock the Exception in Api.get('errors') and Api.get('lastError')
          * @param {Exception} error
          */
-        pushError: function (error) {
-            if (undefined === Api.get('errors')) {
-                Api.register('errors', []);
+        pushError: function (error, api) {
+            if (undefined === api.get('errors')) {
+                api.register('errors', []);
             }
 
-            Api.get('errors').push(error);
-            Api.register('lastError', error);
+            api.get('errors').push(error);
+            api.register('lastError', error);
         },
 
         /**
@@ -100,18 +84,10 @@ require(['BackBone', 'tb.core.Api'], function (Backbone, Api) {
         }
     });
 
-    /**
-     * Throw a new exception
-     * @param {type} name
-     * @param {type} message
-     */
-    throwException = function (name, message) {
-        var error = new Exception();
-        error.raise.apply(error, arguments);
-        error.pushError(error);
+    return function (name, message) {
+        var expected = new Exception(name, message);
+        expected.pushError(expected, expected.api);
 
-        throw (name + ' : ' + message);
+        throw name + ': ' + message;
     };
-
-    Api.register('Exception', throwException);
 });

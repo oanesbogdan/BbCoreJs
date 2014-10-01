@@ -26,8 +26,8 @@
             'tb.core.ControllerManager',
             'tb.core.Utils'
         ],
-        function (bbApi) {
-            return bbApi.dump();
+        function (Api) {
+            return Api.dump();
         }
     );
 }());
