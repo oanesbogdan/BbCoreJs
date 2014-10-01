@@ -233,7 +233,7 @@ define('tb.core.DriverHandler', ['underscore', 'jsclass'], function (us) {
                 start: start || 0,
                 limit: limit || null
             };
-        }
+        },
 
         /**
          * Generic way to find action/driver mapping with type and then call handle() on every valid drivers
@@ -294,5 +294,5 @@ define('tb.core.DriverHandler', ['underscore', 'jsclass'], function (us) {
 
     });
 
-    return DriverHandler;
+    return new JS.Singleton(DriverHandler);
 });
