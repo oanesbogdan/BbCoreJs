@@ -19,10 +19,10 @@ define('tb.core.Response', ['jsclass'], function () {
         datas: '',
 
         /**
-         * Row datas of Response
+         * Raw datas of Response
          * @type {String}
          */
-        rowDatas: '',
+        rawDatas: '',
 
         /**
          * Status code of Response
@@ -60,24 +60,24 @@ define('tb.core.Response', ['jsclass'], function () {
         },
 
         /**
-         * Return datas, if datas not set it 
-         * will return datas row
+         * Return datas, if datas not set it
+         * will return datas raw
          * @returns {Mixed}
          */
-        getData: function () {
+        getDatas: function () {
             if ('' === this.datas) {
-                return this.row_datas;
+                return this.rawDatas;
             }
 
             return this.datas;
         },
 
         /**
-         * Return row datas
+         * Return raw datas
          * @returns {String}
          */
-        getRowDatas: function () {
-            return this.rowDatas;
+        getRawDatas: function () {
+            return this.rawDatas;
         },
 
         /**
@@ -139,12 +139,12 @@ define('tb.core.Response', ['jsclass'], function () {
         },
 
         /**
-         * Set the row datas
-         * @param {String} rowDatas
+         * Set the raw datas
+         * @param {String} rawDatas
          * @returns {Response}
          */
-        setRowDatas: function (rowDatas) {
-            this.rowDatas = rowDatas;
+        setRawDatas: function (rawDatas) {
+            this.rawDatas = rawDatas;
 
             return this;
         },
