@@ -1,4 +1,4 @@
-define('tb.core.Logger', ['tb.core.Api', 'jsclass'], function () {
+define('tb.core.Logger', ['moment', 'tb.core.Api', 'jsclass'], function (moment) {
     'use strict';
 
     /**
@@ -17,9 +17,21 @@ define('tb.core.Logger', ['tb.core.Api', 'jsclass'], function () {
 
         Logger = new JS.Class({
 
+            logs: [],
+
             initialise: function (minLevel, mode) {
-                this.devmode = (mode !== 'production');
+                this.devmode = !(mode === 'production' || mode === null);
                 this.minimalLevel = minLevel || 4;
+            },
+
+            pushLog: function (log) {
+                api = require('tb.core.Api');
+
+                if (undefined === api.get('logs')) {
+                    api.register('logs', []);
+                }
+
+                api.get('logs').push(log);
             },
 
             consoleLog: function (level, message) {
@@ -36,17 +48,31 @@ define('tb.core.Logger', ['tb.core.Api', 'jsclass'], function () {
                 }
             },
 
+            buildLog: function (logLevel, level, message, context) {
+                var log = {
+                    level: logLevel,
+                    time: moment(),
+                    name: level,
+                    message: message,
+                    context: context
+                };
+                this.pushLog(log);
+            },
+
             log: function (level, message, context) {
+                var logLevel = 9;
                 if (LogLevels.hasOwnProperty(level)) {
                     logLevel = LogLevels[level];
-                } else {
-                    logLevel = 9;
+                } else if (parseInt(level, 10) !== 0) {
+                    logLevel = parseInt(level, 10);
+                }
+
+                if (this.devmode && console) {
+                    this.consoleLog(level, message);
                 }
 
                 if (logLevel <= this.minimalLevel) {
-                    if (this.devmode && console) {
-                        consoleLog(level, message);
-                    }
+                    this.buildLog(logLevel, level, message, context);
                 }
             }
         }),
@@ -171,5 +197,5 @@ define('tb.core.Logger', ['tb.core.Api', 'jsclass'], function () {
         log: function (level, message, context) {
             logger.log(level, message, context);
         }
-    }
+    };
 });
