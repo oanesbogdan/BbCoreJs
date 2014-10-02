@@ -1,4 +1,4 @@
-define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIjs/URI', 'jsclass'], function (Request, URI, RequestHandler) {
+define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIjs/URI', 'jsclass'], function (Request, RequestHandler, URI) {
     'use strict';
 
     var RestDriver = new JS.Class({
@@ -40,7 +40,7 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
              * @param  {Object} datas  datas contains request limit, start, criterias and datas
              * @return {Object}        the response data provided by performing your request
              */
-            handle: function (action, type, datas) {
+            handle: function (action, type, datas, callback) {
                 var url = new URI(this.baseUrl),
                     range;
 
@@ -64,7 +64,6 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
                         this.request.setDatas(datas.datas);
                     }
                 }
-
                 if (datas.hasOwnProperty('limit') && null !== datas.limit) {
                     range = (datas.hasOwnProperty('start') ? datas.start : '0') + ',' + datas.limit;
                     this.request.addHeader('Range',  range);
@@ -72,7 +71,7 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
 
                 this.request.setUrl(url.normalize().toString());
 
-                return this.getResult(this.request);
+                RequestHandler.send(this.request, callback);
             },
 
             /**
@@ -100,17 +99,6 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
                 }
 
                 return this;
-            },
-
-            /**
-             * Use RequestHandler to send request and return the response datas
-             * @param  {Object} request [description]
-             * @return {Object}         response we get from sent request
-             */
-            getResult: function (request) {
-                var response = RequestHandler.send(request);
-
-                return response.getDatas();
             }
         }),
         rest = new RestDriver();
@@ -124,8 +112,8 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
          * @param  {Object} datas  datas contains request limit, start, criterias and datas
          * @return {Object}        the response data provided by performing your request
          */
-        handle: function (action, type, datas) {
-            return rest.handle(action, type, datas);
+        handle: function (action, type, datas, callback) {
+            rest.handle(action, type, datas, callback);
         },
 
         /**
