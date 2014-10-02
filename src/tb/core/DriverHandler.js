@@ -144,77 +144,80 @@ define('tb.core.DriverHandler', ['underscore', 'jsclass'], function (us) {
 
         /**
          * Perform a create request
-         * @param  {String} type  type/namespace of your entity
-         * @param  {Object} datas contains every datas required to create your entity
-         * @return {Boolean} true
+         * @param  {String}   type     type/namespace of your entity
+         * @param  {Object}   datas    contains every datas required to create your entity
+         * @param  {Function} callback
          */
-        create: function (type, datas) {
-            return false !== this.doGenericAction('create', type, datas) ? true : false;
+        create: function (type, datas, callback) {
+            this.doGenericAction('create', type, {datas: datas}, callback);
         },
 
         /**
          * Perform a read request
-         * @param  {String} type      type/namespace of your entity
-         * @param  {Object} criterias
-         * @param  {Object} orderBy
-         * @param  {Number} start
-         * @param  {Number} limit
-         * @return {Mixed}
+         * @param  {String}   type      type/namespace of your entity
+         * @param  {Object}   criterias
+         * @param  {Object}   orderBy
+         * @param  {Number}   start
+         * @param  {Number}   limit
+         * @param  {Function} callback
          */
-        read: function (type, criterias, orderBy, start, limit) {
-            return this.doGenericAction('read', type, this.formatDatas(criterias, orderBy, start, limit));
+        read: function (type, criterias, orderBy, start, limit, callback) {
+            this.doGenericAction('read', type, this.formatDatas({}, criterias, orderBy, start, limit), callback);
         },
 
         /**
          * Perform an update request
-         * @param  {String} type      type/namespace of your entity
-         * @param  {Object} criterias
-         * @param  {Object} orderBy
-         * @param  {Number} start
-         * @param  {Number} limit
-         * @return {Mixed}
+         * @param  {String}   type      type/namespace of your entity
+         * @param  {Object}   datas
+         * @param  {Object}   criterias
+         * @param  {Object}   orderBy
+         * @param  {Number}   start
+         * @param  {Number}   limit
+         * @param  {Function} callback
          */
-        update: function (type, criterias, orderBy, start, limit) {
-            return this.doGenericAction('update', type, this.formatDatas(criterias, orderBy, start, limit));
+        update: function (type, datas, criterias, orderBy, start, limit, callback) {
+            this.doGenericAction('update', type, this.formatDatas(datas, criterias, orderBy, start, limit), callback);
         },
 
         /**
          * Perform an delete request
-         * @param  {String} type      type/namespace of your entity
-         * @param  {Object} criterias
-         * @param  {Object} orderBy
-         * @param  {Number} start
-         * @param  {Number} limit
-         * @return {Mixed}
+         * @param  {String}   type      type/namespace of your entity
+         * @param  {Object}   criterias
+         * @param  {Object}   orderBy
+         * @param  {Number}   start
+         * @param  {Number}   limit
+         * @param  {Function} callback
          */
-        delete: function (type, criterias, orderBy, start, limit) {
-            return this.doGenericAction('delete', type, this.formatDatas(criterias, orderBy, start, limit));
+        delete: function (type, criterias, orderBy, start, limit, callback) {
+            this.doGenericAction('delete', type, this.formatDatas({}, criterias, orderBy, start, limit), callback);
         },
 
         /**
          * Perform an link request
-         * @param  {String} type      type/namespace of your entity
-         * @param  {Object} criterias
-         * @param  {Object} orderBy
-         * @param  {Number} start
-         * @param  {Number} limit
-         * @return {Mixed}
+         * @param  {String}   type      type/namespace of your entity
+         * @param  {Object}   datas
+         * @param  {Object}   criterias
+         * @param  {Object}   orderBy
+         * @param  {Number}   start
+         * @param  {Number}   limit
+         * @param  {Function} callback
          */
-        link: function (type, criterias, orderBy, start, limit) {
-            return this.doGenericAction('link', type, this.formatDatas(criterias, orderBy, start, limit));
+        link: function (type, datas, criterias, orderBy, start, limit, callback) {
+            this.doGenericAction('link', type, this.formatDatas(datas, criterias, orderBy, start, limit), callback);
         },
 
         /**
          * Perform an patch request
-         * @param  {String} type      type/namespace of your entity
-         * @param  {Object} criterias
-         * @param  {Object} orderBy
-         * @param  {Number} start
-         * @param  {Number} limit
-         * @return {Mixed}
+         * @param  {String}   type      type/namespace of your entity
+         * @param  {Object}   datas
+         * @param  {Object}   criterias
+         * @param  {Object}   orderBy
+         * @param  {Number}   start
+         * @param  {Number}   limit
+         * @param  {Function} callback
          */
-        patch: function (type, criterias, orderBy, start, limit) {
-            return this.doGenericAction('patch', type, this.formatDatas(criterias, orderBy, start, limit));
+        patch: function (type, datas, criterias, orderBy, start, limit, callback) {
+            this.doGenericAction('patch', type, this.formatDatas(datas, criterias, orderBy, start, limit), callback);
         },
 
         /**
@@ -226,8 +229,9 @@ define('tb.core.DriverHandler', ['underscore', 'jsclass'], function (us) {
          * @param  {Number} limit
          * @return {Object}
          */
-        formatDatas: function (criterias, orderBy, start, limit) {
+        formatDatas: function (datas, criterias, orderBy, start, limit) {
             return {
+                datas: datas,
                 criterias: criterias || {},
                 orderBy: orderBy || {},
                 start: start || 0,
@@ -237,33 +241,31 @@ define('tb.core.DriverHandler', ['underscore', 'jsclass'], function (us) {
 
         /**
          * Generic way to find action/driver mapping with type and then call handle() on every valid drivers
-         * @param  {String} action the name of the action to execute
-         * @param  {String} type   type/namespace of your entity
-         * @param  {Object} datas
-         * @return {Mixed}
+         * @param  {String}   action   the name of the action to execute
+         * @param  {String}   type     type/namespace of your entity
+         * @param  {Object}   datas
+         * @param  {Function} callback
          */
-        doGenericAction: function (action, type, datas) {
+        doGenericAction: function (action, type, datas, callback) {
             var drivers = this.getDriversByTypeAndAction(type, action),
-                result,
+                // result,
                 driver;
 
             for (driver in drivers.list) {
                 if (drivers.list.hasOwnProperty(driver)) {
-                    result = this.drivers[drivers.list[driver]].handle(action, type, datas);
+                    this.drivers[drivers.list[driver]].handle(action, type, datas, callback);
 
-                    if (this.STOP_ON_FIRST_DRIVER_STRATEGY === drivers.strategy) {
-                        if (false !== result) {
-                            return result;
-                        }
-                    } else if (this.EXECUTE_ALL_DRIVER_STRATEGY === drivers.strategy) {
-                        if (false === result) {
-                            return result;
-                        }
-                    }
+                    // if (this.STOP_ON_FIRST_DRIVER_STRATEGY === drivers.strategy) {
+                    //     if (false !== result) {
+                    //         return;
+                    //     }
+                    // } else if (this.EXECUTE_ALL_DRIVER_STRATEGY === drivers.strategy) {
+                    //     if (false === result) {
+                    //         return;
+                    //     }
+                    // }
                 }
             }
-
-            return result;
         },
 
         /**
@@ -278,18 +280,22 @@ define('tb.core.DriverHandler', ['underscore', 'jsclass'], function (us) {
             if (this.mappings.hasOwnProperty(type) && this.mappings[type].hasOwnProperty(action)) {
                 drivers = {
                     list: this.mappings[type][action].drivers,
-                    strategy: true === this.mappings[type][action].hasOwnProperty('strategy')
-                        ? this.mappings[type][action].strategy
-                        : this.STOP_ON_FIRST_DRIVER_STRATEGY
+                    strategy: this.STOP_ON_FIRST_DRIVER_STRATEGY
+                };
+
+                if (this.mappings[type][action].hasOwnProperty('strategy')) {
+                    drivers.strategy = this.mappings[type][action].strategy;
+                }
+            }
+
+            if (null === drivers) {
+                drivers = {
+                    list: [this.defaultDriverId],
+                    strategy: this.STOP_ON_FIRST_DRIVER_STRATEGY
                 };
             }
 
-            return null === drivers
-                ? {
-                    list: [this.defaultDriverId],
-                    strategy: this.STOP_ON_FIRST_DRIVER_STRATEGY
-                }
-                : drivers;
+            return drivers;
         }
 
     });
