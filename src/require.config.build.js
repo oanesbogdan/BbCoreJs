@@ -8,7 +8,7 @@ require.config({
         'tb.core': 'build/main.min', // 'src/tb/main',
         'BackBone': 'lib/backbone/backbone',
         'moment': 'lib/moment/moment',
-        'urijs': 'lib/uri.js/URI.min'
+        'URIjs': 'lib/uri.js'
     },
     'shim': {
         'BackBone': {}
