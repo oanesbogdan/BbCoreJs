@@ -18,12 +18,11 @@ define('tb.core.Logger', ['moment', 'tb.core.Api', 'jsclass'], function (moment)
         Logger = new JS.Class({
 
             logs: [],
-            devmode: false,
-            minimalLevel: 4,
 
             initialize: function (minLevel, mode) {
                 this.devmode = !(mode === 'production' || mode === undefined);
                 this.minimalLevel = minLevel || 4;
+                this.tmpConf = false;
             },
 
             pushLog: function (log) {
@@ -65,17 +64,30 @@ define('tb.core.Logger', ['moment', 'tb.core.Api', 'jsclass'], function (moment)
                 var logLevel = 9;
                 if (LogLevels.hasOwnProperty(level)) {
                     logLevel = LogLevels[level];
-                } else if (parseInt(level, 10) !== 0) {
+                } else if (!isNaN(parseInt(level, 10))) {
                     logLevel = parseInt(level, 10);
                 }
 
-                if (this.devmode && console) {
+                if ((this.devmode || (this.tmpConf && this.tmpConf.devmode)) && console) {
                     this.consoleLog(level, message);
                 }
 
-                if (logLevel <= this.minimalLevel) {
+                if (logLevel <= this.minimalLevel || (this.tmpConf && this.tmpConf.level <= logLevel)) {
                     this.buildLog(logLevel, level, message, context);
                 }
+            },
+
+            updateLogLevel: function (minLevel, mode) {
+                if (minLevel && !isNaN(parseInt(minLevel, 10))) {
+                    this.tmpConf = {
+                        level: minLevel,
+                        devmode: !(mode === 'production' || mode === undefined)
+                    };
+                }
+            },
+
+            restaureLogLevel: function () {
+                this.tmpConf = false;
             }
         }),
 
@@ -198,6 +210,14 @@ define('tb.core.Logger', ['moment', 'tb.core.Api', 'jsclass'], function (moment)
          */
         log: function (level, message, context) {
             logger.log(level, message, context);
+        },
+
+        updateLogLevel: function (minLevel, mode) {
+            logger.updateLogLevel(minLevel, mode);
+        },
+
+        restaureLogLevel: function () {
+            logger.restaureLogLevel();
         }
     };
 });
