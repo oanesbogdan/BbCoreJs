@@ -7,75 +7,61 @@ define('tb.core.RequestHandler', ['jquery', 'tb.core.Response', 'jsclass'], func
     var RequestHandler = new JS.Class({
 
         /**
-         * Request object
-         * @type {Object}
-         */
-        Request: null,
-
-        /**
-         * Response object
-         * @type {Object}
-         */
-        Response: null,
-
-        /**
-         * Initialize of RequestHandler
-         * @param {Object} Request
-         */
-        initialize: function (Request) {
-            this.Request = Request;
-            this.Response = new Response();
-        },
-
-        /**
          * Send the request to the server and build
          * a Response object
          * @returns Response
          */
-        send: function () {
+        send: function (request, callback) {
             var self = this;
 
-            if (null !== this.Request) {
+            if (null !== request) {
                 jQuery.ajax({
-                    url: this.Request.getUrl(),
-                    type: this.Request.getMethod(),
-                    data: this.Request.getDatas()
+                    url: request.getUrl(),
+                    type: request.getMethod(),
+                    data: request.getDatas()
                 }).done(function (data, textStatus, xhr) {
-                    self.buildResponse(xhr.getAllResponseHeaders(),
+                    var response = self.buildResponse(
+                            xhr.getAllResponseHeaders(),
                             data,
                             xhr.responseText,
                             xhr.status,
                             textStatus,
-                            '');
+                            ''
+                        );
+
+                    callback(response.getDatas());
                 }).fail(function (xhr, textStatus, errorThrown) {
-                    self.buildResponse(xhr.getAllResponseHeaders(),
+                    var response = self.buildResponse(
+                            xhr.getAllResponseHeaders(),
                             '',
                             xhr.responseText,
                             xhr.status,
                             textStatus,
-                            errorThrown);
+                            errorThrown
+                        );
+
+                    callback(response.getDatas());
                 });
             }
-
-            return this.Response;
         },
 
         /**
          * Build the Response Object
          * @param {String} headers
          * @param {String} datas
-         * @param {String} rowDatas
+         * @param {String} rawDatas
          * @param {Number} status
          * @param {String} statusText
          * @param {String} errorText
          */
-        buildResponse: function (headers, datas, rowDatas, status, statusText, errorText) {
+        buildResponse: function (headers, datas, rawDatas, status, statusText, errorText) {
             var headersSplit,
                 header,
                 name,
                 value,
                 key,
-                identifierPos;
+                identifierPos,
+                response = new Response();
 
             headersSplit = headers.split('\r');
             for (key in headersSplit) {
@@ -85,18 +71,20 @@ define('tb.core.RequestHandler', ['jquery', 'tb.core.Response', 'jsclass'], func
                     if (-1 !== identifierPos) {
                         name = header.substring(0, identifierPos).trim();
                         value = header.substring(identifierPos + 1).trim();
-                        this.Response.addHeader(name, value);
+                        response.addHeader(name, value);
                     }
                 }
             }
 
-            this.Response.setDatas(datas);
-            this.Response.setRowDatas(rowDatas);
-            this.Response.setStatus(status);
-            this.Response.setStatusText(statusText);
-            this.Response.setErrorText(errorText);
+            response.setDatas(datas);
+            response.setRawDatas(rawDatas);
+            response.setStatus(status);
+            response.setStatusText(statusText);
+            response.setErrorText(errorText);
+
+            return response;
         }
     });
 
-    return RequestHandler;
+    return new JS.Singleton(RequestHandler);
 });
