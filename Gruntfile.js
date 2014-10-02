@@ -219,4 +219,5 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['bower', 'jshint', 'jslint', 'jasmine:test', 'concat', 'uglify']);
     grunt.registerTask('test', ['bower', 'jshint', 'jslint', 'jasmine:coverage']);
     grunt.registerTask('build', ['bower', 'concat', 'uglify']);
+    grunt.registerTask('jenkins', ['bower', 'jshint', 'jslint', 'jasmine:coverage', 'concat', 'uglify']);
 };
