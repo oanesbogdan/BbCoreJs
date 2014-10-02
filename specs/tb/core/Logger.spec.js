@@ -4,7 +4,7 @@ define(['require', 'tb.core', 'tb.core.Api', 'tb.core.Logger'], function (requir
     var logger = require('tb.core.Logger'),
         api = require('tb.core.Api');
 
-    describe('Exceptions spec', function () {
+    describe('Logger spec', function () {
         it('Logs actions', function () {
 
             logger.emergency('Test a emergency log.');
