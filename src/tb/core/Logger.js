@@ -18,14 +18,16 @@ define('tb.core.Logger', ['moment', 'tb.core.Api', 'jsclass'], function (moment)
         Logger = new JS.Class({
 
             logs: [],
+            devmode: false,
+            minimalLevel: 4,
 
-            initialise: function (minLevel, mode) {
-                this.devmode = !(mode === 'production' || mode === null);
+            initialize: function (minLevel, mode) {
+                this.devmode = !(mode === 'production' || mode === undefined);
                 this.minimalLevel = minLevel || 4;
             },
 
             pushLog: function (log) {
-                api = require('tb.core.Api');
+                var api = require('tb.core.Api');
 
                 if (undefined === api.get('logs')) {
                     api.register('logs', []);
