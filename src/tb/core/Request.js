@@ -253,7 +253,7 @@ define('tb.core.Request', ['jquery', 'jsclass'], function (jQuery) {
          */
         getUrl: function () {
             var url = '';
-            if (false === jQuery.empty(this.domain)) {
+            if ('' !== this.domain) {
                 url = url + this.scheme + '://' +  this.domain;
             }
             url =  '/' + url + this.baseUrl + '/' + this.uri + '/';
