@@ -37,7 +37,7 @@ define('tb.core.Request', ['jsclass'], function () {
          * @param {String} url
          * @returns {Object} Request
          */
-        setUrl: function(url) {
+        setUrl: function (url) {
             this.url = url;
 
             return this;
