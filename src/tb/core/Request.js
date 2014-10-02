@@ -39,7 +39,7 @@ define('tb.core.Request', ['jsclass'], function () {
          */
         setUrl: function(url) {
             this.url = url;
-            
+
             return this;
         },
 
@@ -82,13 +82,13 @@ define('tb.core.Request', ['jsclass'], function () {
          * @returns {Object} Request
          */
         setContentType: function (contentType) {
-            this.setHeader('Content-Type', contentType);
+            this.addHeader('Content-Type', contentType);
             return this;
         },
-        
+
         /**
          * Get the url with query params
-         * @returns {String} url builded 
+         * @returns {String} url builded
          */
         getUrl: function () {
             return this.url;
