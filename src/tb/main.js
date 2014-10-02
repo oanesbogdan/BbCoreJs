@@ -15,7 +15,8 @@
             'tb.core.DriverHandler': 'src/tb/core/DriverHandler',
             'tb.core.Request': 'src/tb/core/Request',
             'tb.core.RequestHandler': 'src/tb/core/RequestHandler',
-            'tb.core.Response': 'src/tb/core/Response'
+            'tb.core.Response': 'src/tb/core/Response',
+            'tb.core.RestDriver': 'src/tb/core/RestDriver'
         }
     });
 
@@ -28,7 +29,7 @@
             'tb.core.RouteManager',
             'tb.core.ViewManager',
             'tb.core.ControllerManager',
-            'tb.core.Utils',
+            'tb.core.Utils'
         ],
         function (Api) {
             return Api.dump();
