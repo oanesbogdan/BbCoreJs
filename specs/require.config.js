@@ -9,7 +9,8 @@ require.config({
         'BackBone': 'lib/backbone/backbone',
         'jasmine': 'node_modules/grunt-contrib-jasmine/vendor/jasmine-2.0.0/jasmine',
         'jasmine-html': 'node_modules/grunt-contrib-jasmine/vendor/jasmine-2.0.0/jasmine-html',
-        'spec': 'specs/'
+        'spec': 'specs/',
+        'moment': 'lib/moment/moment'
     },
     shim: {
         underscore: {
