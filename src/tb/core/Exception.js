@@ -50,11 +50,11 @@ define('tb.core.Exception', ['tb.core.Api', 'jsclass'], function () {
          */
         pushError: function (error, api) {
             if (undefined === api.get('errors')) {
-                api.register('errors', []);
+                api.set('errors', []);
             }
 
             api.get('errors').push(error);
-            api.register('lastError', error);
+            api.set('lastError', error);
         },
 
         /**
@@ -85,7 +85,7 @@ define('tb.core.Exception', ['tb.core.Api', 'jsclass'], function () {
         }
     });
 
-    return function (name, code, message) {
+    require('tb.core.Api').register('exception', function (name, code, message) {
         name = name || 'UnknowException';
         code = code || 500;
         message = message || 'No description found for this exception.';
@@ -94,5 +94,5 @@ define('tb.core.Exception', ['tb.core.Api', 'jsclass'], function () {
         expected.pushError(expected, expected.api);
 
         throw 'Error n°' + code + ' ' + name + ': ' + message;
-    };
+    });
 });

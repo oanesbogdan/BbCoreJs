@@ -29,7 +29,7 @@ define('tb.core.Logger', ['moment', 'tb.core.Api', 'jsclass'], function (moment)
                 var api = require('tb.core.Api');
 
                 if (undefined === api.get('logs')) {
-                    api.register('logs', []);
+                    api.set('logs', []);
                 }
 
                 api.get('logs').push(log);
@@ -100,7 +100,7 @@ define('tb.core.Logger', ['moment', 'tb.core.Api', 'jsclass'], function (moment)
      * See https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md
      * for the full interface specification.
      */
-    return {
+    require('tb.core.Api').register('logger', {
         /**
          * System is unusable.
          *
@@ -219,5 +219,5 @@ define('tb.core.Logger', ['moment', 'tb.core.Api', 'jsclass'], function (moment)
         restaureLogLevel: function () {
             logger.restaureLogLevel();
         }
-    };
+    });
 });
