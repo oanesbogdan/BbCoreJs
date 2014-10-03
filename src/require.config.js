@@ -7,7 +7,8 @@ require.config({
         'underscore': 'lib/underscore/underscore',
         'tb.core': 'src/tb/main',
         'BackBone': 'lib/backbone/backbone',
-        'moment': 'lib/moment/moment'
+        'moment': 'lib/moment/moment',
+        'URIjs': 'lib/uri.js'
     },
     'shim': {
         underscore: {

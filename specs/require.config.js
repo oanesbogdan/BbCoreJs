@@ -10,7 +10,8 @@ require.config({
         'jasmine': 'node_modules/grunt-contrib-jasmine/vendor/jasmine-2.0.0/jasmine',
         'jasmine-html': 'node_modules/grunt-contrib-jasmine/vendor/jasmine-2.0.0/jasmine-html',
         'spec': 'specs/',
-        'moment': 'lib/moment/moment'
+        'moment': 'lib/moment/moment',
+        'URIjs': 'lib/uri.js'
     },
     shim: {
         underscore: {

@@ -11,7 +11,12 @@
             'tb.core.ViewManager': 'src/tb/core/ViewManager',
             'tb.core.ControllerManager': 'src/tb/core/ControllerManager',
             'tb.core.Utils': 'src/tb/core/Utils',
-            'tb.core.Exception': 'src/tb/core/Exception'
+            'tb.core.Exception': 'src/tb/core/Exception',
+            'tb.core.DriverHandler': 'src/tb/core/DriverHandler',
+            'tb.core.Request': 'src/tb/core/Request',
+            'tb.core.RequestHandler': 'src/tb/core/RequestHandler',
+            'tb.core.Response': 'src/tb/core/Response',
+            'tb.core.RestDriver': 'src/tb/core/RestDriver'
         }
     });
 
