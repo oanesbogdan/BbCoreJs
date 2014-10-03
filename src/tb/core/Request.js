@@ -5,28 +5,33 @@ define('tb.core.Request', ['jsclass'], function () {
      * Request object
      */
     var Request = new JS.Class({
-        /**
-         * Uri of request
-         * @type {String}
-         */
-        url: '',
-        /**
-         * Method of request
-         * @type {String}
-         */
-        method: 'GET',
-        /**
-         * Data of request
-         * @type {Mixed}
-         */
-        datas: null,
-        /**
-         * Headers of request
-         * @type {Object}
-         */
-        headers: {
-            'Content-Type': 'application/x-www-form-uriencoded'
+
+        initialize: function () {
+            /**
+             * Uri of request
+             * @type {String}
+             */
+            this.url = '';
+            /**
+             * Method of request
+             * @type {String}
+             */
+            this.method = 'GET';
+            /**
+             * Data of request
+             * @type {Mixed}
+             */
+            this.datas = null;
+            /**
+             * Headers of request
+             * @type {Object}
+             */
+            this.headers = {
+                'Content-Type': 'application/x-www-form-uriencoded'
+            };
+
         },
+
         /**
          * Set url of request
          * @param {String} url
