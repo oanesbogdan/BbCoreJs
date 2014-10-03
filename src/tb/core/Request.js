@@ -5,25 +5,21 @@ define('tb.core.Request', ['jsclass'], function () {
      * Request object
      */
     var Request = new JS.Class({
-
         /**
          * Uri of request
          * @type {String}
          */
         url: '',
-
         /**
          * Method of request
          * @type {String}
          */
         method: 'GET',
-
         /**
          * Data of request
          * @type {Mixed}
          */
         datas: null,
-
         /**
          * Headers of request
          * @type {Object}
@@ -31,7 +27,6 @@ define('tb.core.Request', ['jsclass'], function () {
         headers: {
             'Content-Type': 'application/x-www-form-uriencoded'
         },
-
         /**
          * Set url of request
          * @param {String} url
@@ -42,7 +37,6 @@ define('tb.core.Request', ['jsclass'], function () {
 
             return this;
         },
-
         /**
          * Set the method of request
          * @param {String} method
@@ -53,7 +47,6 @@ define('tb.core.Request', ['jsclass'], function () {
 
             return this;
         },
-
         /**
          * @param {Mixed} data
          * @returns {Object} Request
@@ -63,7 +56,16 @@ define('tb.core.Request', ['jsclass'], function () {
 
             return this;
         },
+        /**
+         * Set all headers in request
+         * @param {Object} headers
+         * @returns {Object} Request
+         */
+        setHeaders: function (headers) {
+            this.headers = headers;
 
+            return this;
+        },
         /**
          * Set one header with name and value
          * @param {String} name
@@ -75,7 +77,6 @@ define('tb.core.Request', ['jsclass'], function () {
 
             return this;
         },
-
         /**
          * Set content type of request
          * @param {String} contentType
@@ -85,7 +86,6 @@ define('tb.core.Request', ['jsclass'], function () {
             this.addHeader('Content-Type', contentType);
             return this;
         },
-
         /**
          * Get the url with query params
          * @returns {String} url builded
@@ -93,7 +93,6 @@ define('tb.core.Request', ['jsclass'], function () {
         getUrl: function () {
             return this.url;
         },
-
         /**
          * Get the content type of request
          * @returns {String}
@@ -101,7 +100,6 @@ define('tb.core.Request', ['jsclass'], function () {
         getContentType: function () {
             return this.headers['Content-Type'];
         },
-
         /**
          * GEt the method of request
          * @returns {String}
@@ -109,7 +107,6 @@ define('tb.core.Request', ['jsclass'], function () {
         getMethod: function () {
             return this.method;
         },
-
         /**
          * Get the data of request
          * @returns {Mixed}
@@ -117,7 +114,14 @@ define('tb.core.Request', ['jsclass'], function () {
         getDatas: function () {
             return this.datas;
         },
-
+        /**
+         * Get header by key
+         * @param {String} key
+         * @returns {Object|null}
+         */
+        getHeader: function (key) {
+            return this.headers[key] || null;
+        },
         /**
          * Get the headers of request
          * @returns {Object}
