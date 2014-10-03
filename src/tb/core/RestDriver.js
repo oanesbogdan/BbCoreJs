@@ -3,21 +3,19 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
 
     var RestDriver = new JS.Class({
             /**
-             * The REST api base url (example: /rest/1/)
-             * @type {String}
-             */
-            baseUrl: '', // retrieve it from core?
-
-            /**
-             * Request object used to build every REST request
-             * @type {Object}
-             */
-            request: null,
-
-            /**
              * RestDriver constructor, we initialize the Request object with a default content type
              */
             initialize: function () {
+                /**
+                 * The REST api base url (example: /rest/1/)
+                 * @type {String}
+                 */
+                this.baseUrl = ''; // retrieve it from core?
+
+                /**
+                 * Request object used to build every REST request
+                 * @type {Object}
+                 */
                 this.request = new Request();
                 this.request.setContentType('application/json');
 
