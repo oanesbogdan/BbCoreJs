@@ -8,12 +8,6 @@ define('tb.core.DriverHandler', ['underscore', 'jsclass'], function (us) {
     var DriverHandler = new JS.Class({
 
         /**
-         * Driver strategies constants
-         */
-        STOP_ON_FIRST_DRIVER_STRATEGY: 0,
-        EXECUTE_ALL_DRIVER_STRATEGY: 1,
-
-        /**
          * Every available actions
          * @type {Array}
          */
@@ -248,22 +242,11 @@ define('tb.core.DriverHandler', ['underscore', 'jsclass'], function (us) {
          */
         doGenericAction: function (action, type, datas, callback) {
             var drivers = this.getDriversByTypeAndAction(type, action),
-                // result,
                 driver;
 
-            for (driver in drivers.list) {
-                if (drivers.list.hasOwnProperty(driver)) {
-                    this.drivers[drivers.list[driver]].handle(action, type, datas, callback);
-
-                    // if (this.STOP_ON_FIRST_DRIVER_STRATEGY === drivers.strategy) {
-                    //     if (false !== result) {
-                    //         return;
-                    //     }
-                    // } else if (this.EXECUTE_ALL_DRIVER_STRATEGY === drivers.strategy) {
-                    //     if (false === result) {
-                    //         return;
-                    //     }
-                    // }
+            for (driver in drivers) {
+                if (drivers.hasOwnProperty(driver)) {
+                    this.drivers[drivers[driver]].handle(action, type, datas, callback);
                 }
             }
         },
@@ -278,21 +261,11 @@ define('tb.core.DriverHandler', ['underscore', 'jsclass'], function (us) {
             var drivers = null;
 
             if (this.mappings.hasOwnProperty(type) && this.mappings[type].hasOwnProperty(action)) {
-                drivers = {
-                    list: this.mappings[type][action].drivers,
-                    strategy: this.STOP_ON_FIRST_DRIVER_STRATEGY
-                };
-
-                if (this.mappings[type][action].hasOwnProperty('strategy')) {
-                    drivers.strategy = this.mappings[type][action].strategy;
-                }
+                drivers = this.mappings[type][action].drivers,
             }
 
             if (null === drivers) {
-                drivers = {
-                    list: [this.defaultDriverId],
-                    strategy: this.STOP_ON_FIRST_DRIVER_STRATEGY
-                };
+                drivers = [this.defaultDriverId];
             }
 
             return drivers;
