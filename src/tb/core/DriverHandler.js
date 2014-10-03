@@ -47,7 +47,6 @@ define('tb.core.DriverHandler', ['underscore', 'jsclass'], function (us) {
          * @return {Object} self
          */
         addDriver: function (id, driver, isDefault) {
-
             if (false === this.hasDriver(id)) {
                 this.drivers[id] = driver;
             }
@@ -57,6 +56,21 @@ define('tb.core.DriverHandler', ['underscore', 'jsclass'], function (us) {
             }
 
             return this;
+        },
+
+        /**
+         * Returns driver object if it is registered
+         * @param  {String} id the identifier of the driver we are looking for
+         * @return {Object}    the driver object if it exists, else null
+         */
+        getDriver: function (id) {
+            var driver = null;
+
+            if (this.hasDriver(id)) {
+                driver = this.drivers[id];
+            }
+
+            return driver;
         },
 
         /**
