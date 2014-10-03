@@ -44,5 +44,13 @@ define(['tb.core.Request'], function (TbRequest) {
             Request.addHeader('bar', 'foo');
             expect(Request.getHeader('bar')).toEqual('foo');
         });
+
+        it('Testing Content-Type getter/setter', function () {
+            var contentType = 'application/json';
+
+            Request.setContentType(contentType);
+            expect(Request.getContentType()).toEqual(contentType);
+        });
+
     });
 });
