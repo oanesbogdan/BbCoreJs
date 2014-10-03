@@ -261,7 +261,7 @@ define('tb.core.DriverHandler', ['underscore', 'jsclass'], function (us) {
             var drivers = null;
 
             if (this.mappings.hasOwnProperty(type) && this.mappings[type].hasOwnProperty(action)) {
-                drivers = this.mappings[type][action].drivers,
+                drivers = this.mappings[type][action].drivers;
             }
 
             if (null === drivers) {
