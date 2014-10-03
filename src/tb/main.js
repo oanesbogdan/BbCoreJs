@@ -16,7 +16,8 @@
             'tb.core.Request': 'src/tb/core/Request',
             'tb.core.RequestHandler': 'src/tb/core/RequestHandler',
             'tb.core.Response': 'src/tb/core/Response',
-            'tb.core.RestDriver': 'src/tb/core/RestDriver'
+            'tb.core.RestDriver': 'src/tb/core/RestDriver',
+            'tb.core.Logger': 'src/tb/core/Logger'
         }
     });
 
@@ -29,10 +30,12 @@
             'tb.core.RouteManager',
             'tb.core.ViewManager',
             'tb.core.ControllerManager',
-            'tb.core.Utils'
+            'tb.core.Utils',
+            'tb.core.Exception',
+            'tb.core.Logger'
         ],
         function (Api) {
-            return Api.dump();
+            return Api;
         }
     );
 }());
