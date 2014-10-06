@@ -1,11 +1,10 @@
-define('tb.core.RequestHandler', ['jquery', 'tb.core.Response', 'jsclass'], function (jQuery, Response) {
+define('tb.core.RequestHandler', ['jquery', 'tb.core.Response', 'jsclass'], function (jQuery, TbResponse) {
     'use strict';
 
     /**
      * RequestHandler object
      */
     var RequestHandler = new JS.Class({
-
         /**
          * Send the request to the server and build
          * a Response object
@@ -18,7 +17,8 @@ define('tb.core.RequestHandler', ['jquery', 'tb.core.Response', 'jsclass'], func
                 jQuery.ajax({
                     url: request.getUrl(),
                     type: request.getMethod(),
-                    data: request.getDatas()
+                    data: request.getDatas(),
+                    headers: request.getHeaders()
                 }).done(function (data, textStatus, xhr) {
                     var response = self.buildResponse(
                             xhr.getAllResponseHeaders(),
@@ -44,7 +44,6 @@ define('tb.core.RequestHandler', ['jquery', 'tb.core.Response', 'jsclass'], func
                 });
             }
         },
-
         /**
          * Build the Response Object
          * @param {String} headers
@@ -55,13 +54,32 @@ define('tb.core.RequestHandler', ['jquery', 'tb.core.Response', 'jsclass'], func
          * @param {String} errorText
          */
         buildResponse: function (headers, datas, rawDatas, status, statusText, errorText) {
+            var Response = new TbResponse();
+
+            this.buildHeaders(Response, headers);
+
+            Response.setDatas(datas);
+            Response.setRawDatas(rawDatas);
+            Response.setStatus(status);
+            Response.setStatusText(statusText);
+            Response.setErrorText(errorText);
+
+            return Response;
+        },
+        /**
+         * Build String headers, split \r to have all key/value
+         * and split each with ":" for have a key and value
+         * and use addHeader function to set each header
+         * @param {Object} Response
+         * @param {String} headers
+         */
+        buildHeaders: function (Response, headers) {
             var headersSplit,
                 header,
                 name,
                 value,
                 key,
-                identifierPos,
-                response = new Response();
+                identifierPos;
 
             headersSplit = headers.split('\r');
             for (key in headersSplit) {
@@ -71,18 +89,10 @@ define('tb.core.RequestHandler', ['jquery', 'tb.core.Response', 'jsclass'], func
                     if (-1 !== identifierPos) {
                         name = header.substring(0, identifierPos).trim();
                         value = header.substring(identifierPos + 1).trim();
-                        response.addHeader(name, value);
+                        Response.addHeader(name, value);
                     }
                 }
             }
-
-            response.setDatas(datas);
-            response.setRawDatas(rawDatas);
-            response.setStatus(status);
-            response.setStatusText(statusText);
-            response.setErrorText(errorText);
-
-            return response;
         }
     });
 
