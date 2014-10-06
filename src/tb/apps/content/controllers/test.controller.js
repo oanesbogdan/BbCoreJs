@@ -7,7 +7,7 @@ define(['jquery', 'tb.core'], function (jQuery, bbCore) {
     'use strict';
 
     bbCore.ControllerManager.registerController('TestController', {
-        appname: 'content',
+        appName: 'content',
         imports: ['test.manager'],
 
         onInit: function () {

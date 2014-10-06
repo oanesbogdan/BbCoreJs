@@ -4,7 +4,8 @@
         <meta encoding="utf8">
         <title>Login</title>
         <link rel="stylesheet" href="resources/bower_components/bootstrap/dist/css/bootstrap.min.css">
-
+        <script src="resources/bower_components/requirejs/require.js"></script>
+        <script src="resources/src/require.config.js"></script>
     </head>
     <body>
         <!-- Static navbar -->
@@ -21,7 +22,6 @@
                 </div>
             </div>
         </div>
-
         <div class="container">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#appLayout/showlist/58">Layout</a></li>
@@ -30,46 +30,44 @@
             <div class="jumbotron">
                 <p>Utiliser les onglets pour changer d'application</p>
             </div>
-
         </div>
-    </body>
-    <script src="resources/bower_components/requirejs/require.js"></script>
-    <script src="resources/src/require.config.js"></script>
-    <script>
-        /* sample to put in a yml file*/
-        var _errorHandler = function(error){
-            console.log(error);
-        }
-        var applicationConfig = {
-            appPath: 'resources/src/tb/apps',
-            /*ne charge que les onglets qui se trouvent dans 'applications'*/
-            active: 'layout',
-            route: '', // to change: App should know
-            applications: {
-                layout : {
-                    label  : 'Layout',
-                    config : { mainRoute : 'appLayout/home'}
-                },
-                content: {
-                    label  : 'Edition du contenu',
-                    config : { }
-                }
+
+        <script>
+            /* sample to put in a yml file*/
+            var _errorHandler = function(error){
+                console.log(error);
             }
-        };
+            var applicationConfig = {
+                appPath: 'resources/src/tb/apps',
+                /*ne charge que les onglets qui se trouvent dans 'applications'*/
+                active: 'layout',
+                route: '', // to change: App should know
+                applications: {
+                    layout : {
+                        label  : 'Layout',
+                        config : { mainRoute : 'appLayout/home'}
+                    },
+                    content: {
+                        label  : 'Edition du contenu',
+                        config : { }
+                    }
+                }
+            };
 
-        require(['tb.core'], function (core) {
-            var router = null;
+            require(['tb.core'], function (core) {
+                var router = null;
 
-            core.ApplicationManager.on('routesLoaded', function () {
-                /*cf http://backbonejs.org/#Router for available options */
-                router = core.RouteManager.initRouter({silent:true});
-            });
+                core.ApplicationManager.on('routesLoaded', function () {
+                    /*cf http://backbonejs.org/#Router for available options */
+                    router = core.RouteManager.initRouter({silent:true});
+                });
 
-            core.ApplicationManager.on('appIsReady',function(app){
-                router.navigate(app.getMainRoute());
-            });
+                core.ApplicationManager.on('appIsReady',function(app){
+                    router.navigate(app.getMainRoute());
+                });
 
-            core.ApplicationManager.init(applicationConfig);
-        }, _errorHandler);
-    </script>
+                core.ApplicationManager.init(applicationConfig);
+            }, _errorHandler);
+        </script>
+    </body>
 </html>

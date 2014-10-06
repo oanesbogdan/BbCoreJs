@@ -16,8 +16,10 @@ define('tb.core.ControllerManager', ['tb.core.Api', 'jquery', 'jsclass', 'tb.cor
         /**
          * Controller initialisation
          */
+       
         initialize: function () {
             this.state = 0;
+            this.onInit();
         },
 
         /**
@@ -28,7 +30,7 @@ define('tb.core.ControllerManager', ['tb.core.Api', 'jquery', 'jsclass', 'tb.cor
         },
 
         /**
-         * Envent onEnabled
+         * Event onEnabled
          */
         onEnabled: function () {
             console.log('inside I\'m there onStart');
@@ -62,7 +64,8 @@ define('tb.core.ControllerManager', ['tb.core.Api', 'jquery', 'jsclass', 'tb.cor
      * @param  {object} ControllerDef  [controller defenition]
      */
     registerController = function (controllerName, ControllerDef) {
-        if (false === ControllerDef.hasOwnProperty('appname')) {
+        console.log(ControllerDef);
+        if (false === ControllerDef.hasOwnProperty('appName')) {
             throw 'Controller Should Be Attached To An App';
         }
 
@@ -106,7 +109,8 @@ define('tb.core.ControllerManager', ['tb.core.Api', 'jquery', 'jsclass', 'tb.cor
         }
 
         cInstance = controllerInstance[appName + ':' + controllerName];
-
+        
+        console.log("controllerCtn",controllerContainer);
         if (cInstance) {
             def.resolve(cInstance);
         } else if (!cInstance) {
@@ -127,7 +131,6 @@ define('tb.core.ControllerManager', ['tb.core.Api', 'jquery', 'jsclass', 'tb.cor
         if (controllerContainer.hasOwnProperty(appName)) {
             return controllerContainer[appName];
         }
-
         throw 'Controller Not Found';
     };
 
@@ -138,7 +141,7 @@ define('tb.core.ControllerManager', ['tb.core.Api', 'jquery', 'jsclass', 'tb.cor
     ControllerManager = {
         registerController: registerController,
         loadController: loadController,
-        getAppController: getAppControllers,
+        getAppControllers: getAppControllers,
         getAllControllers: function () {
             return controllerContainer;
         }

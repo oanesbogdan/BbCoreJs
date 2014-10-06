@@ -34,8 +34,8 @@
             'tb.core.Exception',
             'tb.core.Logger'
         ],
-        function (Api) {
-            return Api;
+        function (Core) {
+            return Object.freeze(Core);
         }
     );
 }());

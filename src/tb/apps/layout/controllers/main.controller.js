@@ -2,7 +2,7 @@ define(['tb.core', 'jquery'], function (bbCore, jQuery) {
     'use strict';
 
     bbCore.ControllerManager.registerController('MainController', {
-        appname: 'layout',
+        appName: 'layout',
         imports: ['test.manager'],
         onInit: function () {
             console.log('on init is called');

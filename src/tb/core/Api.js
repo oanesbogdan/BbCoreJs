@@ -4,39 +4,30 @@ define('tb.core.Api', ['jquery', 'jsclass'], function (jQuery) {
 
     var container = {},
 
-        api = new JS.Class({
-            register:  function (ctn, object) {
-                var key;
-                for (key in this) {
-                    if (this.hasOwnProperty(key) && key === ctn) {
-                        return;
-                    }
+    api = {
+        register:  function (ctn, object) {
+            var key;
+            for (key in this) {
+                if (this.hasOwnProperty(key) && key === ctn) {
+                    return;
                 }
-                this[ctn] = object;
-            },
+            }
+            this[ctn] = object;
+        },
 
-            set: function (ctn, object) {
-                container[ctn] = object;
-            },
+        set: function (ctn, object) {
+            container[ctn] = object;
+        },
 
-            get: function (ctn) {
-                return container[ctn];
-            },
+        get: function (ctn) {
+            return container[ctn];
+        },
 
-            unset: function (ctn) {
-                this.container[ctn] = null;
-                delete container[ctn];
-            },
+        unset: function (ctn) {
+            this.container[ctn] = null;
+            delete container[ctn];
+        }
+    };
 
-            remove: function (ctn) {
-                this[ctn] = null;
-                delete this[ctn];
-            },
-
-            trigger: jQuery.trigger,
-
-            on: jQuery.on
-        });
-
-    return new JS.Singleton(api);
+    return api;
 });

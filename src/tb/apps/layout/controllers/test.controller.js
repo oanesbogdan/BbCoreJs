@@ -2,7 +2,7 @@ define(['tb.core'], function (bbCore) {
     'use strict';
 
     bbCore.ControllerManager.registerController('TestController', {
-        appname: 'layout',
+        appName: 'layout',
 
         config: {
             imports: ['test.manager', 'rte.manager']
