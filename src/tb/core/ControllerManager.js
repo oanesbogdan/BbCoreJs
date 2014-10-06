@@ -16,7 +16,6 @@ define('tb.core.ControllerManager', ['tb.core.Api', 'jquery', 'jsclass', 'tb.cor
         /**
          * Controller initialisation
          */
-       
         initialize: function () {
             this.state = 0;
             this.onInit();
@@ -109,8 +108,8 @@ define('tb.core.ControllerManager', ['tb.core.Api', 'jquery', 'jsclass', 'tb.cor
         }
 
         cInstance = controllerInstance[appName + ':' + controllerName];
-        
-        console.log("controllerCtn",controllerContainer);
+
+        console.log("controllerCtn", controllerContainer);
         if (cInstance) {
             def.resolve(cInstance);
         } else if (!cInstance) {

@@ -151,7 +151,8 @@ module.exports = function (grunt) {
                         'define',
                         'require',
                         'module',
-                        'JS'
+                        'JS',
+                        'load' // temp remove it
                     ]
                 }
             }
