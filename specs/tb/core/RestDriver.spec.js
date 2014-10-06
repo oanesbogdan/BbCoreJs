@@ -5,7 +5,7 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
     var baseUrl = '127.0.0.1:8080/rest/1/',
         type = 'page',
         uid = '123456789',
-        callback = {},
+        callback = function () { return; },
         fakeXhr = {
             responseText: '',
             status: '',
