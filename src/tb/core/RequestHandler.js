@@ -1,10 +1,16 @@
-define('tb.core.RequestHandler', ['jquery', 'tb.core.Response', 'jsclass'], function (jQuery, TbResponse) {
+define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.Response', 'jsclass'], function (jQuery, Underscore, Backbone, TbResponse) {
     'use strict';
 
     /**
      * RequestHandler object
      */
     var RequestHandler = new JS.Class({
+        /**
+         * Initialize of RequestHandler
+         */
+        initialize: function () {
+            Underscore.extend(this, Backbone.Events);
+        },
         /**
          * Send the request to the server and build
          * a Response object
@@ -29,6 +35,8 @@ define('tb.core.RequestHandler', ['jquery', 'tb.core.Response', 'jsclass'], func
                             ''
                         );
 
+                    self.trigger('request:send:done', response);
+
                     callback(response.getDatas());
                 }).fail(function (xhr, textStatus, errorThrown) {
                     var response = self.buildResponse(
@@ -39,6 +47,8 @@ define('tb.core.RequestHandler', ['jquery', 'tb.core.Response', 'jsclass'], func
                             textStatus,
                             errorThrown
                         );
+
+                    self.trigger('request:send:fail', response);
 
                     callback(response.getDatas());
                 });

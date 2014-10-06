@@ -29,8 +29,9 @@ define(['tb.core.RequestHandler', 'jquery', 'tb.core.Request'], function (Reques
             expect(Response.getHeader('Range')).toEqual('5, 10');
         });
 
-        it("Testing Send::Success, should execute the callback function on success", function () {
+        it("Testing Send::Success, should execute the callback function on success and test trigger event (request:send:done)", function () {
             var callback = jasmine.createSpy(),
+                callBackTrigger = jasmine.createSpy(),
                 datas = {foo: 'bar'};
 
             spyOn(jQuery, "ajax").and.callFake(function () {
@@ -39,23 +40,30 @@ define(['tb.core.RequestHandler', 'jquery', 'tb.core.Request'], function (Reques
 
                 return d.promise();
             });
+            
+            RequestHandler.on('request:send:done', callBackTrigger);
 
             RequestHandler.send(Request, callback);
             expect(callback).toHaveBeenCalled();
+            expect(callBackTrigger).toHaveBeenCalled();
         });
 
-        it("Testing Send::Fail, should execute the callback function on fail", function () {
-            var callback = jasmine.createSpy();
-
+        it("Testing Send::Fail, should execute the callback function on fail and test trigger event (request:send:fail)", function () {
+            var callback = jasmine.createSpy(),
+                callBackTrigger = jasmine.createSpy();
+                
             spyOn(jQuery, "ajax").and.callFake(function () {
                 var d = jQuery.Deferred();
                 d.reject(fakeXhr, '', '');
 
                 return d.promise();
             });
+            
+            RequestHandler.on('request:send:fail', callBackTrigger);
 
             RequestHandler.send(Request, callback);
             expect(callback).toHaveBeenCalled();
+            expect(callBackTrigger).toHaveBeenCalled();
         });
 
         it("Testing Send if request is null", function () {
@@ -67,7 +75,7 @@ define(['tb.core.RequestHandler', 'jquery', 'tb.core.Request'], function (Reques
 
                 return d.promise();
             });
-
+            
             RequestHandler.send(null, callback);
             expect(callback).not.toHaveBeenCalled();
         });
