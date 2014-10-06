@@ -212,10 +212,18 @@ define('tb.core.Logger', ['moment', 'tb.core.Api', 'jsclass'], function (moment)
             logger.log(level, message, context);
         },
 
+        /**
+         * Update temporaly the log level
+         * @param  Number minLevel
+         * @param  string mode
+         */
         updateLogLevel: function (minLevel, mode) {
             logger.updateLogLevel(minLevel, mode);
         },
 
+        /**
+         * Restaure the application original log level
+         */
         restaureLogLevel: function () {
             logger.restaureLogLevel();
         }
