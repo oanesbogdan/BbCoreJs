@@ -8,6 +8,7 @@ require.config({
         'handlebars': 'lib/handlebars/handlebars',
         'tb.core': 'src/tb/main',
         'BackBone': 'lib/backbone/backbone',
+        'handlebars': 'lib/handlebars/handlebars',
         'moment': 'lib/moment/moment',
         'text': 'lib/requirejs-text/text',
         'URIjs': 'lib/uri.js'
