@@ -17,7 +17,6 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
                  * @type {Object}
                  */
                 this.request = new Request();
-                this.request.setContentType('application/json');
 
                 // Lack of authentification process to add to request header
             },
@@ -42,6 +41,9 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
                 var url = new URI(this.baseUrl),
                     range;
 
+                this.request.headers = {};
+                this.request.setContentType('application/json');
+
                 url.segment(type);
 
                 if ('read' === action) {
@@ -62,6 +64,7 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
                         this.request.setDatas(datas.datas);
                     }
                 }
+
                 if (datas.hasOwnProperty('limit') && null !== datas.limit) {
                     range = (datas.hasOwnProperty('start') ? datas.start : '0') + ',' + datas.limit;
                     this.request.addHeader('Range',  range);
