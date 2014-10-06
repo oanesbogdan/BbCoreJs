@@ -179,14 +179,13 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
         },
 
         lauchApplication = function (appname, config) {
-           var dfd = new $.Deferred(),
+            var dfd = new $.Deferred(),
 
                 applicationInfos = AppContainer.getByAppInfosName(appname),
 
                 Application = AppDefContainer[appname],
 
                 instance;
-                
 
             try {
                 config = config || {};
@@ -199,10 +198,10 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                     if (!applicationInfos) {
                         /** If app def can't be found */
                         if (!Application) {
-                            return load(appname,config); //@TODO resolve 'load' was used before it was defined.
+                            return load(appname, config); //@TODO resolve 'load' was used before it was defined.
                         }
-                         instance = new Application(config);
-                         console.log("instance",instance);
+                        instance = new Application(config);
+                        console.log("instance", instance);
                         /** stop currentApplication */
 
                         applicationInfos = {
@@ -259,9 +258,9 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
          * We can then load the 'active' app
          */
         appsAreLoaded = function () {
-            var activeAppConf = ( config.applications[config.active] ) ? config.applications[config.active] : {};
+            var activeAppConf = config.applications[config.active] || {};
             return load(config.active, activeAppConf).then(function (app) {
-                console.log("app",app);
+                console.log("app", app);
                 Api.trigger('appIsReady', app); //use mediator
             });
         },
@@ -281,11 +280,11 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
             if (!config.hasOwnProperty('applications')) {
                 throw 'InvalidAppConfig [applications] key is missing';
             }
-            
-            if(!config.hasOwnProperty("active")){
-                throw "InvalidAppConfig [active] key is missing";
+
+            if (!config.hasOwnProperty('active')) {
+                throw 'InvalidAppConfig [active] key is missing';
             }
-            
+
             $.each(config.applications, function (appname) {
                 appPaths.push(config.appPath + '/' + appname + '/main.js');
                 routePaths.push(appname + '.routes');
@@ -303,7 +302,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
         },
 
         invoke =  function (actionInfos, params) {
-            console.log("in invoke",params);
+            console.log("in invoke", params);
             actionInfos = actionInfos.split(':');
             var appPromise = this.lauchApplication(actionInfos[0]);
 
