@@ -127,18 +127,19 @@ module.exports = function (grunt) {
             test: {
                 src: ['specs/**/*.js'],
                 directives: {
+                    node: true,
                     predef: [
                         'define',
                         'require',
                         'it',
                         'expect',
+                        '__dirname',
                         'describe'
                     ]
                 }
             },
             sources: {
                 src: ['src/**/*.js'],
-
                 directives: {
                     browser: true,
                     devel: true,
