@@ -40,7 +40,7 @@ define(['tb.core.RequestHandler', 'jquery', 'tb.core.Request'], function (Reques
 
                 return d.promise();
             });
-            
+
             RequestHandler.on('request:send:done', callBackTrigger);
 
             RequestHandler.send(Request, callback);
@@ -51,14 +51,14 @@ define(['tb.core.RequestHandler', 'jquery', 'tb.core.Request'], function (Reques
         it("Testing Send::Fail, should execute the callback function on fail and test trigger event (request:send:fail)", function () {
             var callback = jasmine.createSpy(),
                 callBackTrigger = jasmine.createSpy();
-                
+
             spyOn(jQuery, "ajax").and.callFake(function () {
                 var d = jQuery.Deferred();
                 d.reject(fakeXhr, '', '');
 
                 return d.promise();
             });
-            
+
             RequestHandler.on('request:send:fail', callBackTrigger);
 
             RequestHandler.send(Request, callback);
@@ -75,7 +75,7 @@ define(['tb.core.RequestHandler', 'jquery', 'tb.core.Request'], function (Reques
 
                 return d.promise();
             });
-            
+
             RequestHandler.send(null, callback);
             expect(callback).not.toHaveBeenCalled();
         });
