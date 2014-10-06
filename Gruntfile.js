@@ -135,7 +135,9 @@ module.exports = function (grunt) {
                         'it',
                         'expect',
                         '__dirname',
-                        'describe'
+                        'describe',
+                        'spyOn',
+                        'jasmine'
                     ]
                 }
             },
