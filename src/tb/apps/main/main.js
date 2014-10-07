@@ -6,7 +6,7 @@ require.config({
     }
 });
 
-define('app.main', ['tb.core', 'jquery', 'handlebars', 'main.controller'], function (core, jQuery) {
+define('app.main', ['tb.core', 'tb.core.ViewManager', 'jquery', 'handlebars', 'main.controller'], function (core, ViewManager, jQuery) {
     'use strict';
 
     /**
@@ -22,9 +22,8 @@ define('app.main', ['tb.core', 'jquery', 'handlebars', 'main.controller'], funct
         onInit: function () {
             if (!this.config.tbElement && !jQuery(this.config.tbSelector).length) {
                 throw 'Selector "' + this.config.tbSelector + '" does not exists, MainApplication cannot be initialized.';
-            } else {
-                this.config.tbElement = jQuery(jQuery(this.config.tbSelector).get(0));
             }
+            this.config.tbElement = jQuery(jQuery(this.config.tbSelector).get(0));
 
             console.log(' MainApplication is initialized ');
         },
@@ -149,24 +148,10 @@ define('app.main', ['tb.core', 'jquery', 'handlebars', 'main.controller'], funct
                             ]
                         }
                     ]
-            };
-            
-            require(['tb.core.Request', 'tb.core.RequestHandler'], function(Request, RequestHandler) {
-                var request = new Request();
-                request.setContentType('text/plain')
-                        .setMethod('GET')
-                        .setUrl('../src/tb/apps/main/templates/toolbar.tpl');
-                
-                RequestHandler.send(request, function(response) {
-                   var template = Handlebars.compile(response);
-                });
-            });
-            
-            var template = Handlebars.compile('<div id="bb5-ui"><nav id="bb5-navbar-primary" class="navbar navbar-inverse clearfix" role="navigation"><ul class="nav nav-tabs bb5-ui-width-setter" id="bb5-maintabs">{{#each menus}}<li class="dropdown{{#if active}} active{{/if}}"><a data-toggle="dropdown" class="dropdown-toggle" id="myTabDrop1" href="{{url}}">{{text}} <b class="caret"></b></a><ul aria-labelledby="{{label}}" role="menu" class="dropdown-menu">{{#each items}}<li class="{{#if active}}active{{/if}}"><a data-toggle="tab" tabindex="-1" href="{{url}}">{{text}}</a></li>{{/each}}</ul></li>{{/each}}</ul><ul class="nav navbar-nav pull-right"></ul></nav><nav id="bb5-navbar-secondary" class="navbar navbar-default"><div class="navbar-header"><span class="navbar-brand"><img src="img/backbuilder5.png" alt="BackBuilder5"></span><div class="bb5-ui-width-setter"><span class="bb5-ui-tab-title"></span></div><ul class="nav navbar-nav pull-right"></ul></div></nav></div>');
-            var html = template(Toolbar);
-            
-            this.config.tbElement.html(html);
-            
+                };
+
+            ViewManager.render(Toolbar, 'src/tb/apps/main/templates/toolbar', {}, this.updatetbElement, this);
+
             console.log(' MainApplication onStart...');
         },
 
@@ -176,6 +161,10 @@ define('app.main', ['tb.core', 'jquery', 'handlebars', 'main.controller'], funct
 
         onError: function () {
             console.log(' MainApplication onError...');
+        },
+
+        updatetbElement: function (html) {
+            this.config.tbElement.replaceWith(jQuery(html));
         }
 
     });
