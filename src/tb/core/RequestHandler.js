@@ -16,7 +16,7 @@ define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.R
          * a Response object
          * @returns Response
          */
-        send: function (request, callback) {
+        send: function (request, callback, context) {
             var self = this;
 
             if (null !== request) {
@@ -41,7 +41,7 @@ define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.R
                     self.trigger('request:send:done', response);
 
                     if (callback !== undefined) {
-                        callback(response.getDatas());
+                        callback.call(context ? context : this, response.getDatas());
                     }
                 }).fail(function (xhr, textStatus, errorThrown) {
                     var response = self.buildResponse(
@@ -56,7 +56,7 @@ define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.R
                     self.trigger('request:send:fail', response);
 
                     if (callback !== undefined) {
-                        callback(response.getDatas());
+                        callback.call(context ? context : this, response.getDatas());
                     }
                 });
             }
