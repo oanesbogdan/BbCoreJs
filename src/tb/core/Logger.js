@@ -67,9 +67,8 @@ define('tb.core.Logger', ['moment', 'tb.core.Api', 'jsclass'], function (moment)
                 } else if (!isNaN(parseInt(level, 10))) {
                     logLevel = parseInt(level, 10);
                 }
-
                 if ((this.devmode || (this.tmpConf && this.tmpConf.devmode)) && console) {
-                    this.consoleLog(level, message);
+                    this.consoleLog(logLevel, message);
                 }
 
                 if (logLevel <= this.minimalLevel || (this.tmpConf && this.tmpConf.level <= logLevel)) {
