@@ -46,6 +46,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 this.appControllers = this.registerControllers();
                 this.onInit();
             },
+
             registerControllers: function () {
                 try {
                     return ControllerManager.getAppControllers();

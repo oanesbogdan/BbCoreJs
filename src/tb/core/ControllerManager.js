@@ -1,25 +1,23 @@
-define('tb.core.ControllerManager', [
-    'require',
-    'tb.core.Api',
-    'jquery',
-    'jsclass',
-    'tb.core.Utils'
-], function (require) {
+define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'jquery', 'jsclass', 'tb.core.Utils'], function (require) {
     'use strict';
     var Api = require('tb.core.Api'),
         jQuery = require('jquery'),
         bbUtils = require('tb.core.Utils'),
         controllerContainer = {},
         controllerInstance = {},
+        enabledController = null,
         AbstractController,
         registerController,
         loadController,
         getAppControllers,
+        updateEnabledController,
         $ = jQuery,
         ControllerManager;
     AbstractController = new JS.Class({
         initialize: function () {
             this.state = 0;
+            this.enabled = false;
+            /* at this stage app is available */
         },
         handleImport: function () {
             var def = new $.Deferred();
@@ -37,10 +35,12 @@ define('tb.core.ControllerManager', [
             return def.promise();
         },
         onEnabled: function () {
-            console.log('inside I\'m there onStart');
+            this.enabled = true;
+            console.log('inside core onEnabled');
         },
         onDisabled: function () {
-            console.log('inside onResume');
+            this.enabled = false;
+            console.log('inside core onDisabled');
         },
         invoke: function (action, params) {
             var actionName = action + 'Action';
@@ -79,22 +79,31 @@ define('tb.core.ControllerManager', [
     loadController = function (appName, controllerName) {
         var def = jQuery.Deferred(),
             cInstance = '',
-            controller;
+            currentController;
         if (!appName || typeof appName !== 'string') {
             throw 'LoadController:appName Can\'t be null';
         }
         cInstance = controllerInstance[appName + ':' + controllerName];
         if (cInstance) {
+            updateEnabledController(cInstance);
             def.resolve(cInstance);
         } else if (!cInstance) {
-            controller = new controllerContainer[appName][controllerName]();
-            controllerInstance[appName + ':' + controllerName] = controller;
-            controller.handleImport().then(function () {
-                controller.onInit(require);
-                def.resolve(controller);
+            currentController = new controllerContainer[appName][controllerName]();
+            controllerInstance[appName + ':' + controllerName] = currentController;
+            currentController.handleImport().then(function () {
+                currentController.onInit(require);
+                updateEnabledController(currentController);
+                def.resolve(currentController);
             }).fail(def.reject);
         }
         return def.promise();
+    };
+    updateEnabledController = function (currentController) {
+        if (enabledController) {
+            enabledController.onDisabled();
+        }
+        enabledController = currentController;
+        enabledController.onEnabled();
     };
     getAppControllers = function (appName) {
         if (controllerContainer.hasOwnProperty(appName)) {

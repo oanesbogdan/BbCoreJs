@@ -10,6 +10,14 @@ define(['tb.core', 'jquery'], function (bbCore, jQuery) {
             return "onInit";
         },
 
+        onEnabled: function () {
+            console.log("layout:MainController Inside onEnabled method");
+        },
+
+        onDisabled: function () {
+            console.log("layout:MainController Inside OnDisabled method");
+        },
+
         homeAction: function () {
             jQuery('.jumbotron').html(jQuery('<p> app: layout <br/> controller: MainController <br> action: homeAction</p>'));
         },
