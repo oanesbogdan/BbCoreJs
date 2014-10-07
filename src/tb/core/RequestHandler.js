@@ -18,6 +18,7 @@ define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.R
          */
         send: function (request, callback, context) {
             var self = this;
+            context = context || this;
 
             if (null !== request) {
 
