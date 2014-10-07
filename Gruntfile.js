@@ -113,7 +113,6 @@ module.exports = function (grunt) {
             //     jshintrc: '.jshintrc'
             // }
         },
-
         jslint: {
             grunt: {
                 src: ['Gruntfile.js'],
@@ -220,7 +219,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-istanbul-coverage');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-jslint');
-
     // grunt tasks
     grunt.registerTask('default', ['bower', 'jshint', 'jslint', 'jasmine:test', 'concat', 'uglify']);
     grunt.registerTask('test', ['bower', 'jshint', 'jslint', 'jasmine:coverage']);

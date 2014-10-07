@@ -7,7 +7,7 @@ define(['tb.core', 'jquery'], function (bbCore, jQuery) {
 
     bbCore.ControllerManager.registerController('MainController', {
         appName: 'content',
-        imports: ['test.manager'],
+        config: { imports: ['content.test.manager']},
 
         /**
          * occurs on init of content home controller
@@ -20,7 +20,7 @@ define(['tb.core', 'jquery'], function (bbCore, jQuery) {
          * Returns home route result
          */
         homeAction: function () {
-            console.log(' contentApp homeAction');
+            console.log('contentApp homeAction');
         },
 
         /**

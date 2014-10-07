@@ -9,7 +9,8 @@ require.config({
     paths: {
         "content.routes": "src/tb/apps/content/routes", //mandatory
         "content.home.controller": "src/tb/apps/content/controllers/home.controller",
-        "content.test.controller": "src/tb/apps/content/controllers/test.controller"
+        "content.test.controller": "src/tb/apps/content/controllers/test.controller",
+        "content.test.manager": "src/tb/apps/content/managers/test.manager"
     }
 });
 

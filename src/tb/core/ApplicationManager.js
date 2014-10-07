@@ -60,6 +60,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 underscore.extend(this, Backbone.Events);
                 this.config = $.extend(true, this.config, config);
                 this.appControllers = this.registerControllers();
+                this.onInit();
             },
 
             registerControllers: function () {
@@ -85,6 +86,8 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                     } catch (e) {
                         console.log('loadController', e);
                     }
+                }).fail(function (reason) {
+                    bbApi.exception("LoadControllerException", "5000", reason.message);
                 });
             },
 
@@ -144,6 +147,9 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
          *
          **/
         registerApplication = function (appname, AppDef) {
+            if ('string' !== typeof appname) {
+                throw "ApplicationManager :appname should be a string";
+            }
             if ('object' !== typeof AppDef) {
                 throw 'ApplicationManager : appDef Is undefined';
             }

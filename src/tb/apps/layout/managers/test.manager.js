@@ -1,6 +1,5 @@
 define([], function () {
     'use strict';
-
     return {
         sayHello: function () {
             console.log('hello');

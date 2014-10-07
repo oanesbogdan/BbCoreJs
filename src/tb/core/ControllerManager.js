@@ -1,142 +1,107 @@
-define('tb.core.ControllerManager', ['tb.core.Api', 'jquery', 'jsclass', 'tb.core.Utils'], function (Api, jQuery) {
+define('tb.core.ControllerManager', [
+    'require',
+    'tb.core.Api',
+    'jquery',
+    'jsclass',
+    'tb.core.Utils'
+], function (require) {
     'use strict';
-
-    var controllerContainer = {}, /* { appName: { }, appName_2:{}, appName_3:{} }; */
+    var Api = require('tb.core.Api'),
+        jQuery = require('jquery'),
+        bbUtils = require('tb.core.Utils'),
+        controllerContainer = {},
         controllerInstance = {},
         AbstractController,
         registerController,
         loadController,
         getAppControllers,
+        $ = jQuery,
         ControllerManager;
-
-    /**
-     * AbstractController Object
-     */
     AbstractController = new JS.Class({
-        /**
-         * Controller initialisation
-         */
         initialize: function () {
             this.state = 0;
-            this.onInit();
         },
-
-        /**
-         * handle import with
-         */
         handleImport: function () {
-            console.log('config', this.config);
+            var def = new $.Deferred();
+            if ($.isArray(this.config.imports) && this.config.imports.length) {
+                bbUtils.requireWithPromise(this.config.imports).done(def.resolve).fail(function (reason) {
+                    var error = {
+                        method: 'ControllerManager:handleImport',
+                        message: reason
+                    };
+                    def.reject(error);
+                });
+            } else {
+                def.resolve();
+            }
+            return def.promise();
         },
-
-        /**
-         * Event onEnabled
-         */
         onEnabled: function () {
             console.log('inside I\'m there onStart');
         },
-
-        /**
-         * Envent onDisabled
-         */
         onDisabled: function () {
             console.log('inside onResume');
         },
-
-        /**
-         * Invoke action
-         * @param  {string} action [Action called]
-         * @param  {array}  params [Action parameters]
-         */
         invoke: function (action, params) {
             var actionName = action + 'Action';
-
             if (typeof this[actionName] !== 'function') {
                 throw 'Action Doesnt Exists : ' + actionName + ' ' + this.getName();
             }
             this[actionName](params);
         }
     });
-
-    /**
-     * Register an Application Controller
-     * @param  {string} controllerName [controller name]
-     * @param  {object} ControllerDef  [controller defenition]
-     */
     registerController = function (controllerName, ControllerDef) {
-        console.log(ControllerDef);
         if (false === ControllerDef.hasOwnProperty('appName')) {
             throw 'Controller Should Be Attached To An App';
         }
-
         var appName = ControllerDef.appName,
             Constructor = {},
             appControllers = controllerContainer[appName];
-
         if (ControllerDef.hasOwnProperty('initialize')) {
-            delete (ControllerDef.initialize);
+            delete ControllerDef.initialize;
         }
-
         Constructor = new JS.Class(AbstractController, ControllerDef);
-
-        /*define controller name */
+        Constructor.define('initialize', (function (config) {
+            return function () {
+                this.callSuper(config);
+            };
+        }(ControllerDef.config)));
         Constructor.define('getName', (function (name) {
             return function () {
                 return name;
             };
         }(controllerName)));
-
         if (!appControllers) {
             controllerContainer[appName] = {};
         }
-
         controllerContainer[appName][controllerName] = Constructor;
     };
-
-    /**
-     * Load a application controller
-     * @param  {string} appName        [application name]
-     * @param  {string} controllerName [controller name]
-     * @return {[type]}                [a promise]
-     */
     loadController = function (appName, controllerName) {
         var def = jQuery.Deferred(),
             cInstance = '',
             controller;
-
-        if (!appName || (typeof appName !== 'string')) {
+        if (!appName || typeof appName !== 'string') {
             throw 'LoadController:appName Can\'t be null';
         }
-
         cInstance = controllerInstance[appName + ':' + controllerName];
-
-        console.log("controllerCtn", controllerContainer);
         if (cInstance) {
             def.resolve(cInstance);
         } else if (!cInstance) {
             controller = new controllerContainer[appName][controllerName]();
             controllerInstance[appName + ':' + controllerName] = controller;
-            def.resolve(controller);
+            controller.handleImport().then(function () {
+                controller.onInit(require);
+                def.resolve(controller);
+            }).fail(def.reject);
         }
-
         return def.promise();
     };
-
-    /**
-     * Get application controllers
-     * @param  {string} appName         [application name]
-     * @return {AbstractController}     [description]
-     */
     getAppControllers = function (appName) {
         if (controllerContainer.hasOwnProperty(appName)) {
             return controllerContainer[appName];
         }
         throw 'Controller Not Found';
     };
-
-    /**
-     * [Api description]
-     * @type {Object}
-     */
     ControllerManager = {
         registerController: registerController,
         loadController: loadController,
@@ -145,7 +110,6 @@ define('tb.core.ControllerManager', ['tb.core.Api', 'jquery', 'jsclass', 'tb.cor
             return controllerContainer;
         }
     };
-
     Api.register('ControllerManager', ControllerManager);
     return ControllerManager;
 });
