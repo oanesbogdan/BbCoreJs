@@ -8,6 +8,7 @@ require.config({
         'tb.core': 'src/tb/main',
         'BackBone': 'lib/backbone/backbone',
         'moment': 'lib/moment/moment',
+        'text': 'lib/requirejs-text/text',
         'URIjs': 'lib/uri.js'
     },
     'shim': {

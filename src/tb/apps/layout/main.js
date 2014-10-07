@@ -4,7 +4,8 @@ require.config({
         "layout.routes": "src/tb/apps/layout/routes",
         "layout.home.controller": "src/tb/apps/layout/controllers/main.controller",
         "layout.test.controller": "src/tb/apps/layout/controllers/test.controller",
-        "layout.test.manager": "src/tb/apps/layout/managers/test.manager"
+        "layout.test.manager": "src/tb/apps/layout/managers/test.manager",
+        "layout/tpl/home": "src/tb/apps/layout/templates/home.tpl"
     }
 });
 

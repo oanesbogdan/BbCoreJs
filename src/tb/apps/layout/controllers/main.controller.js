@@ -3,9 +3,10 @@ define(['tb.core', 'jquery'], function (bbCore, jQuery) {
 
     bbCore.ControllerManager.registerController('MainController', {
         appName: 'layout',
-        config: { imports: ['layout.test.managers']},
-        onInit: function () {
+        config: { imports: ['layout.test.manager', 'text!layout/tpl/home']},
+        onInit: function (require) {
             /*require("layout.test.manager");*/
+            this.listTpl = require("text!layout/tpl/home");
             return "onInit";
         },
 
