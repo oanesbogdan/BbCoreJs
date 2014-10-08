@@ -26,9 +26,9 @@ define(['tb.core', 'jquery'], function (bbCore, jQuery) {
             console.log('arguments', arguments);
             jQuery('.jumbotron').html(jQuery('<p> app: layout <br/> controller: MainController <br> action: listAction</p>'));
         },
-
         paramsAction: function () {
             console.log('inside MainController:params');
         }
+
     });
 });
