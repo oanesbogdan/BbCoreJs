@@ -20,6 +20,9 @@ define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.R
             var self = this;
 
             if (null !== request) {
+
+                self.trigger('request:send:before', request);
+
                 jQuery.ajax({
                     url: request.getUrl(),
                     type: request.getMethod(),
@@ -37,7 +40,9 @@ define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.R
 
                     self.trigger('request:send:done', response);
 
-                    callback(response.getDatas());
+                    if (callback !== undefined) {
+                        callback(response.getDatas());
+                    }
                 }).fail(function (xhr, textStatus, errorThrown) {
                     var response = self.buildResponse(
                             xhr.getAllResponseHeaders(),
@@ -50,7 +55,9 @@ define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.R
 
                     self.trigger('request:send:fail', response);
 
-                    callback(response.getDatas());
+                    if (callback !== undefined) {
+                        callback(response.getDatas());
+                    }
                 });
             }
         },

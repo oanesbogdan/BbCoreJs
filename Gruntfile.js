@@ -136,7 +136,9 @@ module.exports = function (grunt) {
                         '__dirname',
                         'describe',
                         'spyOn',
-                        'jasmine'
+                        'jasmine',
+                        'sessionStorage',
+                        'window'
                     ]
                 }
             },
