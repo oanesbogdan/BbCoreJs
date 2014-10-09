@@ -13,13 +13,13 @@ define('app.main', ['tb.core', 'tb.core.ViewManager', 'jquery', 'handlebars', 'm
      * Main application defining default templates and themes
      */
     core.ApplicationManager.registerApplication('main', {
-        config: {
-            baseUrl: 'src/tb/apps/main',
-            tbElement: null,
-            tbSelector: '#bb-toolbar'
-        },
 
         onInit: function () {
+            this.config = {
+                baseUrl: 'src/tb/apps/main',
+                tbElement: null,
+                tbSelector: '#bb-toolbar'
+            };
             if (!this.config.tbElement && !jQuery(this.config.tbSelector).length) {
                 throw 'Selector "' + this.config.tbSelector + '" does not exists, MainApplication cannot be initialized.';
             }
@@ -130,7 +130,7 @@ define('app.main', ['tb.core', 'tb.core.ViewManager', 'jquery', 'handlebars', 'm
                         {
                             label: 'bundle',
                             text: 'Extensions',
-                            url: '#',
+                            url: '#/bundle/list',
                             active: false,
                             items: [
                                 {
