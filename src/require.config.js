@@ -5,6 +5,7 @@ require.config({
         'jquery': 'lib/jquery/jquery',
         'jsclass' : 'node_modules/jsclass/min/core',
         'underscore': 'lib/underscore/underscore',
+        'handlebars': 'lib/handlebars/handlebars',
         'tb.core': 'src/tb/main',
         'BackBone': 'lib/backbone/backbone',
         'moment': 'lib/moment/moment',

@@ -43,17 +43,17 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 this.state = 0;
                 underscore.extend(this, Backbone.Events);
                 this.config = $.extend(true, this.config, config);
-                this.appControllers = this.registerControllers();
+                //this.appControllers = this.registerControllers();
                 this.onInit();
             },
 
-            registerControllers: function () {
+          /*  registerControllers: function () {
                 try {
                     return ControllerManager.getAppControllers();
                 } catch (e) {
                     console.log('registerControllers', e);
                 }
-            },
+            },*/
             getMainRoute: function () {
                 return this.config.mainRoute;
             },
@@ -63,6 +63,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
             dispatchToController: function (controller, action, params) {
                 ControllerManager.loadController(this.getName(), controller).done(function (controller) {
                     try {
+                        params = underscore.rest(params); //# cf http://underscorejs.org/#rest
                         controller.invoke(action, params);
                     } catch (e) {
                         console.log('loadController', e);
@@ -244,16 +245,16 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
         start = function () {
             console.log('start');
         },
-        invoke = function (actionInfos) {
+        invoke = function (actionInfos, params) {
             actionInfos = actionInfos.split(':');
             var appPromise = this.lauchApplication(actionInfos[0]);
             /* triger event app is loading */
             appPromise.done(function (application) {
-                application.dispatchToController(actionInfos[1], actionInfos[2]);
+                application.dispatchToController(actionInfos[1], actionInfos[2], params);
             }).fail(function (e) {
-                console.log(e);
+                console.log("AppManager:invoke", e);
             });
-            /* init controller */
+
         };
     Api = {
         registerApplication: registerApplication,

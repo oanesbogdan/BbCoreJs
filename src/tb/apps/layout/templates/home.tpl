@@ -1,6 +1,6 @@
 <div>
-   <p> this is my template {{name}}</p>
-   <p> this my second {{templateName}}</p>
-
-   {{outlet trucmush}}
+    <p> this is my applicationName {{appName}}</p>
+   <p> this my template name {{templateName}}</p>
+   <a data-action="layout:list" href="javascript:;">Go to layout test controller</a>
+   <p>{{radical}}</p>
 </div>

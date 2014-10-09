@@ -1,4 +1,4 @@
-define(['tb.core', 'jquery'], function (bbCore, jQuery) {
+define(['tb.core', 'jquery', "handlebars"], function (bbCore, jQuery) {
     'use strict';
 
     bbCore.ControllerManager.registerController('MainController', {
@@ -6,7 +6,8 @@ define(['tb.core', 'jquery'], function (bbCore, jQuery) {
         config: { imports: ['layout.test.manager', 'text!layout/tpl/home']},
         onInit: function (require) {
             /*require("layout.test.manager");*/
-            this.listTpl = require("text!layout/tpl/home");
+            this.homeTpl = require("text!layout/tpl/home");
+            this.rootView = jQuery(".jumbotron");
             return "onInit";
         },
 
@@ -19,11 +20,22 @@ define(['tb.core', 'jquery'], function (bbCore, jQuery) {
         },
 
         homeAction: function () {
-            jQuery('.jumbotron').html(jQuery('<p> app: layout <br/> controller: MainController <br> action: homeAction</p>'));
+            var contentTpl,
+                data,
+                html;
+            /*global Handlebars */
+            Handlebars.registerHelper("radical", function () {
+                return new Handlebars.SafeString("<p>radical blaze</p>");
+            });
+
+            contentTpl = Handlebars.compile(this.homeTpl);
+            data = { appName: "Layout", templateName: "home"};
+            html = contentTpl(data);
+            this.rootView.html(html);
         },
 
-        listAction: function () {
-            console.log('arguments', arguments);
+        listAction: function (page, section) {
+            console.log(page, section);
             jQuery('.jumbotron').html(jQuery('<p> app: layout <br/> controller: MainController <br> action: listAction</p>'));
         },
         paramsAction: function () {

@@ -47,7 +47,11 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'jquery', 'jsclas
             if (typeof this[actionName] !== 'function') {
                 throw 'Action Doesnt Exists : ' + actionName + ' ' + this.getName();
             }
-            this[actionName](params);
+            try {
+                this[actionName].apply(this, params);
+            } catch (e) {
+                throw "Controller:invoke error while executing [" + actionName + "] in " + this.getName() + " controller " + e;
+            }
         }
     });
     registerController = function (controllerName, ControllerDef) {
@@ -99,6 +103,9 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'jquery', 'jsclas
         return def.promise();
     };
     updateEnabledController = function (currentController) {
+        if (currentController === enabledController) {
+            return;
+        }
         if (enabledController) {
             enabledController.onDisabled();
         }

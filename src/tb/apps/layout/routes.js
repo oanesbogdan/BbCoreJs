@@ -16,8 +16,12 @@ define(["tb.core"], function (bbCore) {
             },
 
             "list": {
-                url: "showlist/:page",
-                action: "MainController:list"
+                url: "showlist/:page/:section",
+                action: "MainController:list",
+                defaults: {
+                    ":page": 45,
+                    ":section": "books"
+                }
             }
         }
     });
