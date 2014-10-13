@@ -2,13 +2,13 @@ define('tb.core.RouteManager', ['jquery', 'tb.core.Api', 'BackBone', 'tb.core.Ap
     'use strict';
     var bbApplicationManager = require('tb.core.ApplicationManager'),
         //use the mediator to avoid a circular dependency
-        routerInstance = null,
         routesCollections = {},
         /**
          * Router handle routes -> dispatch to application manager
          * Application manager
          **/
         Router = new JS.Class({
+
             initialize: function () {
                 this.routes = {};
                 var ExtRouter = BackBone.Router.extend({
@@ -21,6 +21,7 @@ define('tb.core.RouteManager', ['jquery', 'tb.core.Api', 'BackBone', 'tb.core.Ap
                 this.mainRouter = new ExtRouter({});
                 this.handleApplicationLinks();
             },
+
             handleApplicationLinks: function () {
                 /* si href ne rien faire */
                 var self = this,
@@ -30,15 +31,17 @@ define('tb.core.RouteManager', ['jquery', 'tb.core.Api', 'BackBone', 'tb.core.Ap
                     var action = jQuery(this).data("action");
                     if ("string" === typeof action) {
                         e.preventDefault();
-                        routeInfos = routesCollections[action];
+                        routeInfos = routesCollections[action]; // layout:home
                         if (!jQuery.isPlainObject(routeInfos)) {
                             throw "RouteManager:handleApplicationLinks route " + action + " can't be found";
                         }
+
                         url = self.buildLink(action);
                         self.navigate(url);
                     }
                 });
             },
+
             buildLink: function (routeName, linkParams) {
                 var routeInfos,
                     link;
@@ -46,6 +49,7 @@ define('tb.core.RouteManager', ['jquery', 'tb.core.Api', 'BackBone', 'tb.core.Ap
                 if (!jQuery.isPlainObject(routeInfos)) {
                     throw "RouteManager:buildLink routeInfos can't be found";
                 }
+
                 linkParams = linkParams || routeInfos.defaults;
                 link = routeInfos.url;
                 if (routeInfos.hasOwnProperty("defaults")) {
@@ -53,69 +57,91 @@ define('tb.core.RouteManager', ['jquery', 'tb.core.Api', 'BackBone', 'tb.core.Ap
                         link = link.replace(key, value);
                     });
                 }
+
                 return link;
             },
+
             navigate: function (path, triggerEvent, updateRoute) {
                 var conf = {
-                    trigger: triggerEvent ||  true,
+                    trigger: triggerEvent || true,
                     replace: updateRoute || true
                 };
                 this.mainRouter.navigate(path, conf);
             },
+
             genericRouteHandler: function (actionInfos) {
                 var params = jQuery.merge([], arguments);
                 params.pop();
                 bbApplicationManager.invoke(actionInfos, params);
             },
+
             registerRoute: function (routeInfos) {
                 var actionsName = routeInfos.completeName.split(':');
+                console.log(routeInfos);
                 actionsName = actionsName[0];
                 this.mainRouter.route(routeInfos.url, routeInfos.completeName, jQuery.proxy(this.genericRouteHandler, this, actionsName + ':' + routeInfos.action));
             }
+
         }),
+        routerInstance = new Router(),
         RouteManager = {
+
+            initRouter: function (conf) {
+                conf = conf || {};
+                BackBone.history.start(conf);
+
+                return this;
+            },
+
             registerRoute: function (appname, routeConf) {
                 var self = this,
                     routes = routeConf.routes,
                     prefix = '',
-                    router = self.getRouter(),
                     url = '';
+
                 if (!routeConf.hasOwnProperty('routes')) {
-                    throw 'A Routes Key Must Be Provided';
+                    throw 'A routes key must be provided';
                 }
+
                 if (!jQuery.isPlainObject(routeConf.routes)) {
-                    throw 'Routes Should Be An Object';
+                    throw 'Routes must be an object';
                 }
+
                 if (typeof routeConf.prefix === 'string') {
                     prefix = routeConf.prefix;
                 }
+
                 jQuery.each(routes, function (name, routeInfos) {
+                    if (!jQuery.isPlainObject(routeInfos)) {
+                        throw name + ' route infos must be an object';
+                    }
+
+                    if (!routeInfos.hasOwnProperty('url')) {
+                        throw name + ' route infos must have `url` property';
+                    }
+
+                    if (!routeInfos.hasOwnProperty('action')) {
+                        throw name + ' route infos must have `action` property';
+                    }
+
                     if (prefix.length !== 0) {
                         url = (routeInfos.url.indexOf('/') === 0) ? routeInfos.url.substring(1) : routeInfos.url;
                         routeInfos.url = prefix + '/' + url;
                     }
+
                     routeInfos.completeName = appname + ':' + name;
                     /*register r*/
                     routesCollections[routeInfos.completeName] = routeInfos;
-                    router.registerRoute(routeInfos);
+                    routerInstance.registerRoute(routeInfos);
                 });
             },
-            initRouter: function (conf) {
-                conf = conf || {};
-                var router = this.getRouter();
-                BackBone.history.start(conf);
-                return router;
-            },
-            startRouter: function () {
-                if (!routerInstance) {
-                    routerInstance = new Router();
-                }
-                return routerInstance;
-            },
-            getRouter: function () {
-                return this.startRouter();
+
+            navigate: function (path, triggerEvent, updateRoute) {
+                routerInstance.navigate(path, triggerEvent, updateRoute);
             }
         };
+
     Api.register('RouteManager', RouteManager);
+
     return RouteManager;
 });
