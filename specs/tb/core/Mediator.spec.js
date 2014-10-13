@@ -6,16 +6,12 @@ define(['require', 'tb.core'], function (require) {
         argument = 'not realy',
 
         fake = {
-            withoutThis: function (something) {
+            withoutThis: function () {
                 throw 'Fake error';
             },
 
             withThis: function (something) {
                 return this.withoutThis(something);
-            },
-
-            withThrow: function () {
-                throw 'Fake error';
             }
         };
 
@@ -44,7 +40,7 @@ define(['require', 'tb.core'], function (require) {
             expect(console.info).not.toHaveBeenCalled();
         });
 
-        it ('Percistant publish an post subscribe', function () {
+        it('Percistant publish an post subscribe', function () {
             api.Mediator.percistantPublish('percistant fake event', argument);
 
             spyOn(fake, 'withoutThis');
@@ -55,7 +51,7 @@ define(['require', 'tb.core'], function (require) {
 
         });
 
-        it ('Remove percistant publish an post subscribe', function () {
+        it('Remove percistant publish an post subscribe', function () {
             api.Mediator.removePublish('percistant fake event');
 
             spyOn(fake, 'withoutThis');
