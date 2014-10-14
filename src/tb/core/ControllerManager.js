@@ -36,11 +36,11 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'jquery', 'jsclas
         },
         onEnabled: function () {
             this.enabled = true;
-            console.log('inside core onEnabled');
+            // console.log('inside core onEnabled');
         },
         onDisabled: function () {
             this.enabled = false;
-            console.log('inside core onDisabled');
+            // console.log('inside core onDisabled');
         },
         invoke: function (action, params) {
             var actionName = action + 'Action';
