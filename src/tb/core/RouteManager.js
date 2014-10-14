@@ -1,16 +1,20 @@
 define('tb.core.RouteManager', ['jquery', 'tb.core.Api', 'BackBone', 'tb.core.ApplicationManager', 'jsclass'], function (jQuery, Api, BackBone) {
     'use strict';
     var bbApplicationManager = require('tb.core.ApplicationManager'),
+
         //use the mediator to avoid a circular dependency
         routesCollections = {},
+
         /**
          * Router handle routes -> dispatch to application manager
          * Application manager
          **/
         Router = new JS.Class({
 
+            /**
+             * Router's constructor
+             */
             initialize: function () {
-                this.routes = {};
                 var ExtRouter = BackBone.Router.extend({
                     execute: function (callback, args) {
                         if (typeof callback === 'function') {
@@ -18,15 +22,21 @@ define('tb.core.RouteManager', ['jquery', 'tb.core.Api', 'BackBone', 'tb.core.Ap
                         }
                     }
                 });
+
+                this.routes = {};
                 this.mainRouter = new ExtRouter({});
                 this.handleApplicationLinks();
             },
 
+            /**
+             * Enable listener on click of every body a tags
+             */
             handleApplicationLinks: function () {
                 /* si href ne rien faire */
                 var self = this,
                     url,
                     routeInfos;
+
                 jQuery("body").delegate("a", "click", function (e) {
                     var action = jQuery(this).data("action");
                     if ("string" === typeof action) {
@@ -42,14 +52,23 @@ define('tb.core.RouteManager', ['jquery', 'tb.core.Api', 'BackBone', 'tb.core.Ap
                 });
             },
 
+            /**
+             * Builds with linkParams and returns the path according to routeName
+             *
+             * @param  {String} routeName
+             * @param  {Object} linkParams
+             *
+             * @return {String}
+             */
             buildLink: function (routeName, linkParams) {
                 var routeInfos,
                     link;
-                routeInfos = routesCollections[routeName] || {};
-                if (!jQuery.isPlainObject(routeInfos)) {
-                    throw "RouteManager:buildLink routeInfos can't be found";
+
+                if (false === routesCollections.hasOwnProperty(routeName)) {
+                    throw 'RouteManager:buildLink routeInfos can\'t be found';
                 }
 
+                routeInfos = routesCollections[routeName];
                 linkParams = linkParams || routeInfos.defaults;
                 link = routeInfos.url;
                 if (routeInfos.hasOwnProperty("defaults")) {
@@ -61,6 +80,13 @@ define('tb.core.RouteManager', ['jquery', 'tb.core.Api', 'BackBone', 'tb.core.Ap
                 return link;
             },
 
+            /**
+             * Navigate to path and invoke the right action
+             *
+             * @param  {String}  path
+             * @param  {Boolean} triggerEvent
+             * @param  {Boolean} updateRoute
+             */
             navigate: function (path, triggerEvent, updateRoute) {
                 var conf = {
                     trigger: triggerEvent || true,
@@ -69,15 +95,24 @@ define('tb.core.RouteManager', ['jquery', 'tb.core.Api', 'BackBone', 'tb.core.Ap
                 this.mainRouter.navigate(path, conf);
             },
 
+            /**
+             * It acts like the FrontController and invoke the right controller
+             *
+             * @param  {Object} actionInfos
+             */
             genericRouteHandler: function (actionInfos) {
                 var params = jQuery.merge([], arguments);
                 params.pop();
                 bbApplicationManager.invoke(actionInfos, params);
             },
 
+            /**
+             * Register routeInfos into BackBee router
+             *
+             * @param  {Object} routeInfos
+             */
             registerRoute: function (routeInfos) {
                 var actionsName = routeInfos.completeName.split(':');
-                console.log(routeInfos);
                 actionsName = actionsName[0];
                 this.mainRouter.route(routeInfos.url, routeInfos.completeName, jQuery.proxy(this.genericRouteHandler, this, actionsName + ':' + routeInfos.action));
             }
@@ -86,6 +121,12 @@ define('tb.core.RouteManager', ['jquery', 'tb.core.Api', 'BackBone', 'tb.core.Ap
         routerInstance = new Router(),
         RouteManager = {
 
+            /**
+             * Initialize RouteManager and start BackBone history component
+             *
+             * @param  {Object} conf
+             * @return {Object} self
+             */
             initRouter: function (conf) {
                 conf = conf || {};
                 BackBone.history.start(conf);
@@ -93,9 +134,27 @@ define('tb.core.RouteManager', ['jquery', 'tb.core.Api', 'BackBone', 'tb.core.Ap
                 return this;
             },
 
+            /**
+             * Register application's routes into RouteManager; a routeConfig object must look like:
+             *
+             * {
+             *     prefix: 'YOUR_PREFIX', // optionnal
+             *     routes: {
+             *         home: {
+             *             url: 'URL_PATTERN', // example: /foo/bar, you can also have dynamic parameter like: /foo/bar/1, /foo/bar/2, etc. the associated pattern is: /foo/bar/:page
+             *             action: '',
+             *             defaults: { // defaults key is optionnal
+             *                  ":page": 1
+             *             }
+             *         }
+             *     }
+             * }
+             *
+             * @param  {String} appname
+             * @param  {Object} routeConf
+             */
             registerRoute: function (appname, routeConf) {
-                var self = this,
-                    routes = routeConf.routes,
+                var routes = routeConf.routes,
                     prefix = '',
                     url = '';
 
@@ -130,14 +189,43 @@ define('tb.core.RouteManager', ['jquery', 'tb.core.Api', 'BackBone', 'tb.core.Ap
                     }
 
                     routeInfos.completeName = appname + ':' + name;
-                    /*register r*/
+
                     routesCollections[routeInfos.completeName] = routeInfos;
                     routerInstance.registerRoute(routeInfos);
                 });
             },
 
+            /**
+             * Navigate to path and invoke the associated action (alias of this.navigateByPath() to maintain
+             * compatibility)
+             *
+             * @param  {Object}  path
+             * @param  {Boolean} triggerEvent
+             * @param  {Boolean} updateRoute
+             */
             navigate: function (path, triggerEvent, updateRoute) {
+                this.navigateByPath(path, triggerEvent, updateRoute);
+            },
+
+            /**
+             * Navigate to path and invoke the associated action
+             *
+             * @param  {Object}  path
+             * @param  {Boolean} triggerEvent
+             * @param  {Boolean} updateRoute
+             */
+            navigateByPath: function (path, triggerEvent, updateRoute) {
                 routerInstance.navigate(path, triggerEvent, updateRoute);
+            },
+
+            /**
+             * [navigateByName description]
+             * @param  {String}  name
+             * @param  {Boolean} triggerEvent
+             * @param  {Boolean} updateRoute
+             */
+            navigateByName: function (name, triggerEvent, updateRoute) {
+                this.navigateByPath(routerInstance.buildLink(name), triggerEvent, updateRoute);
             }
         };
 

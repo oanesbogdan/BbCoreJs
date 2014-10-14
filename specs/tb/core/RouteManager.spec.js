@@ -1,7 +1,36 @@
 define(['tb.core', 'tb.core.RouteManager', 'BackBone'], function (Core, Router, BackBone) {
     'use strict';
 
+    var testController = null,
+        applicationConfig = {
+            appPath: 'specs/tb/apps',
+            active: 'test',
+            route: '',
+            applications: {
+                test : {
+                    label  : 'Test application',
+                    config : {}
+                }
+            }
+        };
+
+    Core.ApplicationManager.on('appIsReady', function (application) {
+        if ('test' === application.getName()) {
+            Core.ControllerManager.loadController('test', 'TestController').done(function (controller) {
+                testController = controller;
+            });
+        }
+    });
+
+    Core.ApplicationManager.init(applicationConfig);
+
     describe('RouteManager spec', function () {
+
+        it('Adding Test application into ApplicationManager', function (done) {
+            setTimeout(function () {
+                done();
+            }, 100);
+        });
 
         it('Call initRouter will start BackBone history component with config', function () {
             Router.initRouter();
@@ -66,7 +95,7 @@ define(['tb.core', 'tb.core.RouteManager', 'BackBone'], function (Core, Router, 
                 Router.registerRoute('app', {
                     routes: {
                         'test': {
-                            'url': '/test'
+                            url: '/test'
                         }
                     }
                 });
@@ -75,5 +104,57 @@ define(['tb.core', 'tb.core.RouteManager', 'BackBone'], function (Core, Router, 
                 expect(e).toEqual('test route infos must have `action` property');
             }
         });
-    });
+
+        it('Navigate to TestController::fooAction by path', function (done) {
+            Router.navigateByPath('/test/foo');
+
+            setTimeout(function () {
+                done();
+            }, 100);
+
+            expect(testController.value).toEqual('foo');
+        });
+
+        it('Register route with prefix and navigate to it by path', function (done) {
+            Router.registerRoute('test', {
+                prefix: 'testApp',
+                routes: {
+                    'bar': {
+                        url: '/test/bar',
+                        action: 'TestController:bar'
+                    },
+                    'foo': {
+                        url: 'test/foo',
+                        action: 'TestController:foo'
+                    }
+                }
+            });
+
+            Router.navigateByPath('testApp/test/bar');
+            setTimeout(function () {
+                done();
+            }, 100);
+
+            expect(testController.value).toEqual('bar');
+        });
+
+        it('Navigate to TestController::fooAction() with right route name', function (done) {
+            Router.navigateByName('test:bar');
+            setTimeout(function () {
+                done();
+            }, 100);
+
+            expect(testController.value).toEqual('bar');
+        });
+
+        it('Navigate to TestController::fooAction() with unknown route name will throw an exception', function () {
+            try {
+                Router.navigateByName('test:foobar');
+                expect(true).toEqual(false);
+            } catch (e) {
+                expect(e).toEqual('RouteManager:buildLink routeInfos can\'t be found');
+            }
+        });
+
+    }); // end of call describe() function
 });
