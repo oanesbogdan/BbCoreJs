@@ -23,7 +23,7 @@ Download front dependenies
 bower install
 ```
 
-## Build the project :
+## Test and Build the project :
 ```
 grunt
 ```
