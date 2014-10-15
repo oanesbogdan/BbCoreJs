@@ -185,6 +185,5 @@ define('app.main', ['tb.core', 'tb.core.ViewManager', 'jquery', 'handlebars', 'm
         renderInDialogContainer: function (html) {
             jQuery(this.config.dialogContainerSelector).html(html);
         }
-
     });
 });

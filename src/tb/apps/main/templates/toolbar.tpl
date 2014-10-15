@@ -7,7 +7,7 @@
                 <ul aria-labelledby="{{label}}" role="menu" class="dropdown-menu">
                     {{#each items}}
                     <li class="{{#if active}}active{{/if}}"><a data-toggle="tab" tabindex="-1" href="{{url}}">{{text}}</a></li>
-                        {{/each}}
+                    {{/each}}
                 </ul>
             </li>
             {{/each}}
