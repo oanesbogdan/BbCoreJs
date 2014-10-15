@@ -108,10 +108,10 @@ module.exports = function (grunt) {
          * code style
          */
         jshint: {
-            files: ['Gruntfile.js', 'src/**/*.js', 'specs/**/*.js']
-            // options: {
-            //     jshintrc: '.jshintrc'
-            // }
+            files: ['Gruntfile.js', 'src/**/*.js', 'specs/**/*.js'],
+            options: {
+                jshintrc: '.jshintrc'
+            }
         },
         jslint: {
             grunt: {
