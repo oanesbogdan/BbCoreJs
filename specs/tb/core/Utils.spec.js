@@ -184,7 +184,6 @@ define(['require', 'tb.core', "tb.core.Utils"], function (require) {
                 bbUtils.requireWithPromise(["tb.corde.Utils"]).fail(callbacks.fail);
                 setTimeout(function () {
                     expect(test).toEqual("fail");
-                    console.log(test);
                     done();
                 }, 1000);
             });
