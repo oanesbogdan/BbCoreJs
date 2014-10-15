@@ -256,13 +256,18 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 console.log("AppManager:invoke", e);
             });
 
+        },
+
+        getAppByName = function (appName) {
+            return AppContainer.getByAppInfosName(appName);
         };
     Api = {
         registerApplication: registerApplication,
         invoke: invoke,
         lauchApplication: lauchApplication,
         init: init,
-        start: start
+        start: start,
+        getAppByName: getAppByName
     };
     /* application as an Event emitter */
     underscore.extend(Api, Backbone.Events);

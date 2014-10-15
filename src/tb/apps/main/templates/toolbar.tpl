@@ -7,7 +7,7 @@
                 <ul aria-labelledby="{{label}}" role="menu" class="dropdown-menu">
                     {{#each items}}
                     <li class="{{#if active}}active{{/if}}"><a data-toggle="tab" tabindex="-1" href="{{url}}">{{text}}</a></li>
-                    {{/each}}
+                        {{/each}}
                 </ul>
             </li>
             {{/each}}
@@ -17,9 +17,15 @@
 
     <nav id="bb5-navbar-secondary" class="navbar navbar-default">
         <div class="navbar-header">
-            <span class="navbar-brand"><img src="img/backbuilder5.png" alt="BackBuilder5"></span>
-            <div class="bb5-ui-width-setter"><span class="bb5-ui-tab-title"></span></div>
+            <span class="navbar-brand"><img src="resources/img/backbuilder5.png" alt="BackBuilder5"></span>
+            <div class="bb5-ui-width-setter"><span class="bb5-ui-tab-title">Edition</span></div>
             <ul class="nav navbar-nav pull-right"></ul>
         </div>
     </nav>
+
+    <div class="bb5-ui-width-setter bb5-ui-banner">
+        <div class="tab-content" id="bb5-maintabsContent"></div>
+    </div>
+
+    <div class="bb5-dialog-container"><!--#include file="inc-dialog.php" --></div>
 </div>

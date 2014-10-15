@@ -92,6 +92,7 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'jquery', 'jsclas
             updateEnabledController(cInstance);
             def.resolve(cInstance);
         } else if (!cInstance) {
+            
             currentController = new controllerContainer[appName][controllerName]();
             controllerInstance[appName + ':' + controllerName] = currentController;
             currentController.handleImport().then(function () {

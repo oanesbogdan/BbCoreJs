@@ -18,12 +18,16 @@ define('app.main', ['tb.core', 'tb.core.ViewManager', 'jquery', 'handlebars', 'm
             this.config = {
                 baseUrl: 'src/tb/apps/main',
                 tbElement: null,
-                tbSelector: '#bb-toolbar'
+                tbSelector: '#bb-toolbar',
+                mainContentSelector: '#bb5-maintabsContent',
+                dialogContainerSelector: '.bb5-dialog-container'
             };
             if (!this.config.tbElement && !jQuery(this.config.tbSelector).length) {
                 throw 'Selector "' + this.config.tbSelector + '" does not exists, MainApplication cannot be initialized.';
             }
             this.config.tbElement = jQuery(jQuery(this.config.tbSelector).get(0));
+
+            core.set('application.main', this);
 
             console.log(' MainApplication is initialized ');
         },
@@ -130,7 +134,7 @@ define('app.main', ['tb.core', 'tb.core.ViewManager', 'jquery', 'handlebars', 'm
                         {
                             label: 'bundle',
                             text: 'Extensions',
-                            url: '#/bundle/list',
+                            url: '#/bundle/index',
                             active: false,
                             items: [
                                 {
@@ -165,6 +169,24 @@ define('app.main', ['tb.core', 'tb.core.ViewManager', 'jquery', 'handlebars', 'm
 
         updatetbElement: function (html) {
             this.config.tbElement.replaceWith(jQuery(html));
+        },
+
+        render: function (content) {
+            ViewManager.render(content.data, content.template, content.options, function(html) {
+                try {
+                    this[content.renderFunctionName](html);
+                } catch (e) {
+                    console.log(e);
+                }
+            }, content.context);
+        },
+
+        renderInMainContent: function (html) {
+            jQuery(this.config.mainContentSelector).html(html);
+        },
+
+        renderInDialogContainer: function (html) {
+            jQuery(this.config.dialogContainerSelector).html(html);
         }
 
     });

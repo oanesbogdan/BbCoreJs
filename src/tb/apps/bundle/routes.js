@@ -4,12 +4,16 @@ define(["tb.core"], function (BbCore) {
     /**
      * Register every routes of bundle application into BbCore.routeManager
      */
-    BbCore.RouteManager.registerRoute("bundle", {
-        prefix: "bundle",
+    BbCore.RouteManager.registerRoute('bundle', {
+        prefix: 'bundle',
         routes: {
-            "bundle.list": {
-                url: "/list",
-                action: "BundleController:list"
+            'index': {
+                url: '/index',
+                action: 'BundleController:index'
+            },
+            'list': {
+                url: '/list',
+                action: 'BundleController:list'
             }
         }
     });

@@ -15,6 +15,13 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'jsclass'], function (Cor
             CoreDriverHandler.addDriver('rest', CoreRestDriver);
         },
 
+<<<<<<< Updated upstream
+=======
+        findFirst: function(callback) {
+            CoreDriverHandler.read(this.TYPE, criterias, orderBy, start, 1, callback);
+        },
+
+>>>>>>> Stashed changes
         list: function(callback) {
             CoreDriverHandler.read(this.TYPE, criterias, orderBy, start, limit, callback);
         }
