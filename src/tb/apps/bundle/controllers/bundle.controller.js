@@ -7,8 +7,7 @@ define(['tb.core', 'tb.core.ViewManager'], function (Core, ViewManager) {
         },
 
         onInit: function () {
-            this.bundleList = {},
-            this.bundles = {bundles: this.bundleList},
+            this.bundles = null,
             this.repository = require('bundle.repository');
             this.mainApp =  Core.get('application.main');
         },
@@ -20,20 +19,20 @@ define(['tb.core', 'tb.core.ViewManager'], function (Core, ViewManager) {
         listAndRender: function (template, functionName) {
             var self = this,
                 callback = function(data, response) {
-                    self.bundleList = data;
-                    self.mainApp.render({data: data, template: template, renderFunctionName: functionName});
+                    self.bundles = {bundles: data};
+                    self.mainApp.render({data: self.bundles, template: template, renderFunctionName: functionName});
                 };
             this.repository.list(callback);
         },
 
         listAction: function () {
-            var template = 'src/tb/apps/bundle/templates/index',
+            var template = 'src/tb/apps/bundle/templates/list',
                 functionName = 'renderInDialogContainer';
 
-            if (null === this.bundleList) {
+            if (null === this.bundles) {
                 this.listAndRender(template, functionName);
             } else {
-                this.mainApp.render(this.bundles, template, functionName);
+                this.mainApp.render({data: this.bundles, template: template, renderFunctionName: functionName});
             }
         }
     });
