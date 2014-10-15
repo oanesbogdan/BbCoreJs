@@ -1,8 +1,9 @@
-define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'jquery', 'jsclass', 'tb.core.Utils'], function (require) {
+define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.ApplicationContainer', 'jquery', 'jsclass', 'tb.core.Utils'], function (require) {
     'use strict';
     var Api = require('tb.core.Api'),
         jQuery = require('jquery'),
         bbUtils = require('tb.core.Utils'),
+        appContainer = require("tb.core.ApplicationContainer"),
         controllerContainer = {},
         controllerInstance = {},
         enabledController = null,
@@ -17,7 +18,8 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'jquery', 'jsclas
         initialize: function () {
             this.state = 0;
             this.enabled = false;
-            /* at this stage app is available */
+            var appInfos = appContainer.getInstance().getByAppInfosName(this.appName);
+            this.mainApp =  appInfos.instance;
         },
         handleImport: function () {
             var def = new $.Deferred();
