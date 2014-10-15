@@ -172,12 +172,9 @@ define('app.main', ['tb.core', 'tb.core.ViewManager', 'jquery', 'handlebars', 'm
         },
 
         render: function (content) {
+            var self = this;
             ViewManager.render(content.data, content.template, content.options, function(html) {
-                try {
-                    this[content.renderFunctionName](html);
-                } catch (e) {
-                    console.log(e);
-                }
+                self[content.renderFunctionName](html);
             }, content.context);
         },
 

@@ -6,25 +6,9 @@ define(['tb.core', 'tb.core.ViewManager'], function (Core, ViewManager) {
             imports: ['bundle.repository']
         },
 
-        repository: null,
-<<<<<<< Updated upstream
-
         onInit: function () {
-            this.repository = require('bundle.repository');
-        },
-
-        listAction: function () {
-            var callback = function(data, response) {
-                console.log(response);
-            };
-            this.repository.list(callback);
-=======
-        mainApp: null,
-        bundleList: {},
-        bundles: {bundles: bundleList},
-
-        onInit: function () {
-            console.log('la'); 
+            this.bundleList = {},
+            this.bundles = {bundles: this.bundleList},
             this.repository = require('bundle.repository');
             this.mainApp =  Core.get('application.main');
         },
@@ -37,7 +21,7 @@ define(['tb.core', 'tb.core.ViewManager'], function (Core, ViewManager) {
             var self = this,
                 callback = function(data, response) {
                     self.bundleList = data;
-                    this.mainApp.render(data, template, functionName);
+                    self.mainApp.render({data: data, template: template, renderFunctionName: functionName});
                 };
             this.repository.list(callback);
         },
@@ -51,7 +35,6 @@ define(['tb.core', 'tb.core.ViewManager'], function (Core, ViewManager) {
             } else {
                 this.mainApp.render(this.bundles, template, functionName);
             }
->>>>>>> Stashed changes
         }
     });
 });
