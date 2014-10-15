@@ -1,4 +1,3 @@
-/*global describe, it, before, beforeEach, after, afterEach */
 define(['require', 'tb.core', "tb.core.Utils"], function (require) {
     "use strict";
     var smartList, core, bbUtils;

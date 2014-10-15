@@ -138,7 +138,11 @@ module.exports = function (grunt) {
                         'spyOn',
                         'jasmine',
                         'sessionStorage',
-                        'window'
+                        'window',
+                        'before',
+                        'beforeEach',
+                        'after',
+                        'afterEach'
                     ]
                 }
             },
