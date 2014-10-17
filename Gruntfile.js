@@ -156,6 +156,7 @@ module.exports = function (grunt) {
                         'define',
                         'require',
                         'module',
+                        'Handlebars',
                         'JS',
                         'load' // temp remove it
                     ]

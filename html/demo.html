@@ -25,7 +25,7 @@
         <div class="container">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#appLayout/showlist/58">Layout</a></li>
-                <li><a href="#appContent/params">Content</a></li>
+                <li><a data-action="layout:default" href="#appContent/params">Content</a></li>
             </ul>
             <div class="jumbotron">
                 <p>Utiliser les onglets pour changer d'application</p>
@@ -59,7 +59,7 @@
 
                 core.ApplicationManager.on('routesLoaded', function () {
                     /*cf http://backbonejs.org/#Router for available options */
-                    router = core.RouteManager.initRouter({silent:true});
+                    router = core.RouteManager.initRouter({silent : false, pushState: false});
                 });
 
                 core.ApplicationManager.on('appIsReady',function(app){

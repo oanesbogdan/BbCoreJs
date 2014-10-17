@@ -6,6 +6,7 @@ require.config({
         'jsclass' : 'node_modules/jsclass/min/core',
         'underscore': 'lib/underscore/underscore',
         'tb.core': 'src/tb/main',
+        'handlebars': 'lib/handlebars/handlebars',
         'BackBone': 'lib/backbone/backbone',
         'jasmine': 'node_modules/grunt-contrib-jasmine/vendor/jasmine-2.0.0/jasmine',
         'jasmine-html': 'node_modules/grunt-contrib-jasmine/vendor/jasmine-2.0.0/jasmine-html',
