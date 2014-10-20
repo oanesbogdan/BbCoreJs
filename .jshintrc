@@ -59,25 +59,8 @@
     "supernew"      : false,     // true: Tolerate `new function () { ... };` and `new Object;`
     "validthis"     : false,     // true: Tolerate using this in a non-constructor function
 
-    // Environments
-    "browser"       : true,     // Web Browser (window, document, etc)
-    "browserify"    : false,    // Browserify (node.js code in the browser)
-    "couch"         : false,    // CouchDB
-    "devel"         : true,     // Development/debugging (alert, confirm, etc)
-    "dojo"          : false,    // Dojo Toolkit
-    "jasmine"       : true,     // Jasmine
-    "jquery"        : false,    // jQuery
-    "mocha"         : true,     // Mocha
-    "mootools"      : false,    // MooTools
-    "node"          : false,    // Node.js
-    "nonstandard"   : false,    // Widely adopted globals (escape, unescape, etc)
-    "prototypejs"   : false,    // Prototype and Scriptaculous
-    "qunit"         : false,    // QUnit
-    "rhino"         : false,    // Rhino
-    "shelljs"       : false,    // ShellJS
-    "worker"        : true,     // Web Workers
-    "wsh"           : false,    // Windows Scripting Host
-    "yui"           : false,    // Yahoo User Interface
+    "browser"       : true,
+    "devel"         : true,
 
     // Custom Globals
     "predef"       : [
@@ -89,6 +72,12 @@
         "window",
         "JS",
         "load",
-        "Handlebars"
+        "Handlebars",
+        "expect",
+        "it",
+        "spyOn",
+        "describe",
+        "jasmine",
+        "beforeEach"
     ]
 }
