@@ -7,6 +7,8 @@ define("tb.core.TemplateRenderer", ['require', 'jquery', 'tb.core.Api', 'handleb
 
         bbUtils = require('tb.core.Utils'),
 
+        Handlebars = require('handlebars'),
+
         TemplateManager = new JS.Class({
 
             initialize: function (config) {
