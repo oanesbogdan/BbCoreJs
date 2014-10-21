@@ -172,9 +172,7 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
 
             var appName = ControllerDef.appName,
 
-                Constructor = {},
-
-                appControllers = controllerContainer[appName];
+                Constructor = {};
 
             if (ControllerDef.hasOwnProperty('initialize')) {
                 delete ControllerDef.initialize;
@@ -194,7 +192,7 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
                 };
             }(controllerName)));
 
-            if (!appControllers) {
+            if (!controllerContainer[appName]) {
                 controllerContainer[appName] = {};
             }
 
