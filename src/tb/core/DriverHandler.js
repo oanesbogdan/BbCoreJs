@@ -283,8 +283,16 @@ define('tb.core.DriverHandler', ['underscore', 'jsclass'], function (us) {
             }
 
             return drivers;
-        }
+        },
 
+        /**
+         * Reset DriverHandler class
+         */
+        reset: function () {
+            this.drivers = {};
+            this.defaultDriverId = null;
+            this.mappings = {};
+        }
     });
 
     return new JS.Singleton(DriverHandler);

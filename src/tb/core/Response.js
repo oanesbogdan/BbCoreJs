@@ -7,40 +7,45 @@ define('tb.core.Response', ['jsclass'], function () {
     var Response = new JS.Class({
 
         /**
-         * Headers of Response
-         * @type {Object}
+         * Initialize of Response
          */
-        headers: {},
+        initialize: function () {
+            /**
+            * Headers of Response
+            * @type {Object}
+            */
+            this.headers = {};
 
-        /**
-         * Mixed data value of Response
-         * @type {Mixed}
-         */
-        datas: '',
+            /**
+            * Mixed data value of Response
+            * @type {Mixed}
+            */
+            this.datas = '';
 
-        /**
-         * Raw datas of Response
-         * @type {String}
-         */
-        rawDatas: '',
+            /**
+            * Raw datas of Response
+            * @type {String}
+            */
+            this.rawDatas = '';
 
-        /**
-         * Status code of Response
-         * @type {Number}
-         */
-        status: 200,
+            /**
+            * Status code of Response
+            * @type {Number}
+            */
+            this.status = 200;
 
-        /**
-         * Status text of Response
-         * @type {String}
-         */
-        statusText: '',
+            /**
+            * Status text of Response
+            * @type {String}
+            */
+            this.statusText = '';
 
-        /**
-         * Error text of Response
-         * @type {String}
-         */
-        errorText: '',
+            /**
+            * Error text of Response
+            * @type {String}
+            */
+            this.errorText = '';
+        },
 
         /**
          * return all headers of Response

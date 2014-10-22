@@ -85,6 +85,10 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
                 var criterias = datas.hasOwnProperty('criterias') ? datas.criterias : null,
                     criteria;
 
+                if (datas.hasOwnProperty('datas')) {
+                    datas.datas = JSON.stringify(datas.datas);
+                }
+
                 if (null === criterias) {
                     return this;
                 }

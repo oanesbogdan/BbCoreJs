@@ -42,7 +42,7 @@ define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.R
                     self.trigger('request:send:done', response);
 
                     if (callback !== undefined) {
-                        callback.call(context ? context : this, response.getDatas(), response);
+                        callback.call(context || this, response.getDatas(), response);
                     }
                 }).fail(function (xhr, textStatus, errorThrown) {
                     var response = self.buildResponse(
@@ -57,7 +57,7 @@ define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.R
                     self.trigger('request:send:fail', response);
 
                     if (callback !== undefined) {
-                        callback.call(context ? context : this, response.getDatas(), response);
+                        callback.call(context || this, response.getDatas(), response);
                     }
                 });
             }

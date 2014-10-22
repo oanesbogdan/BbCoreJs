@@ -9,11 +9,11 @@ define(["tb.core"], function (BbCore) {
         routes: {
             'index': {
                 url: '/index',
-                action: 'BundleController:index'
+                action: 'MainController:index'
             },
             'list': {
                 url: '/list',
-                action: 'BundleController:list'
+                action: 'MainController:list'
             }
         }
     });
