@@ -1,23 +1,27 @@
-define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'jquery', 'jsclass', 'tb.core.Utils'], function (require) {
+define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.ApplicationContainer', 'jquery', 'jsclass', 'tb.core.Utils'], function (require) {
     'use strict';
     var Api = require('tb.core.Api'),
         jQuery = require('jquery'),
         bbUtils = require('tb.core.Utils'),
+        appContainer = require("tb.core.ApplicationContainer"),
         controllerContainer = {},
         controllerInstance = {},
         enabledController = null,
+        initController,
         AbstractController,
         registerController,
         loadController,
         getAppControllers,
         updateEnabledController,
+        computeControllerName,
         $ = jQuery,
         ControllerManager;
     AbstractController = new JS.Class({
         initialize: function () {
             this.state = 0;
             this.enabled = false;
-            /* at this stage app is available */
+            var appInfos = appContainer.getInstance().getByAppInfosName(this.appName);
+            this.mainApp = appInfos.instance;
         },
         handleImport: function () {
             var def = new $.Deferred();
@@ -80,27 +84,46 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'jquery', 'jsclas
         }
         controllerContainer[appName][controllerName] = Constructor;
     };
+    computeControllerName = function (controllerName) {
+        var ctlName = "",
+            controllerPos;
+        controllerPos = controllerName.indexOf("Controller");
+        if (controllerPos !== -1) {
+            controllerName = controllerName.substring(0, controllerPos);
+            ctlName = controllerName.toLowerCase() + '.controller';
+        }
+        if (ctlName.length === 0) {
+            throw "Invalid controller name. Valid name example";
+        }
+        return ctlName;
+    };
     loadController = function (appName, controllerName) {
-        var def = jQuery.Deferred(),
-            cInstance = '',
-            currentController;
+        var fullControllerName = appName + "." + computeControllerName(controllerName),
+            def = jQuery.Deferred(),
+            cInstance = '';
         if (!appName || typeof appName !== 'string') {
             throw 'LoadController:appName Can\'t be null';
         }
-        cInstance = controllerInstance[appName + ':' + controllerName];
+        cInstance = controllerInstance[fullControllerName];
         if (cInstance) {
             updateEnabledController(cInstance);
             def.resolve(cInstance);
         } else if (!cInstance) {
-            currentController = new controllerContainer[appName][controllerName]();
-            controllerInstance[appName + ':' + controllerName] = currentController;
-            currentController.handleImport().then(function () {
-                currentController.onInit(require);
-                updateEnabledController(currentController);
-                def.resolve(currentController);
+            bbUtils.requireWithPromise([fullControllerName]).done(function () {
+                initController(appName, controllerName, def);
             }).fail(def.reject);
         }
         return def.promise();
+    };
+    initController = function (appName, controllerName, def) {
+        var currentController, fullControllerName = appName + '.' + computeControllerName(controllerName);
+        currentController = new controllerContainer[appName][controllerName]();
+        controllerInstance[fullControllerName] = currentController;
+        currentController.handleImport().then(function () {
+            currentController.onInit(require);
+            updateEnabledController(currentController);
+            def.resolve(currentController);
+        });
     };
     updateEnabledController = function (currentController) {
         if (currentController === enabledController) {

@@ -108,10 +108,10 @@ module.exports = function (grunt) {
          * code style
          */
         jshint: {
-            files: ['Gruntfile.js', 'src/**/*.js', 'specs/**/*.js']
-            // options: {
-            //     jshintrc: '.jshintrc'
-            // }
+            files: ['Gruntfile.js', 'src/**/*.js', 'specs/**/*.js'],
+            options: {
+                jshintrc: '.jshintrc'
+            }
         },
         jslint: {
             grunt: {
@@ -138,7 +138,11 @@ module.exports = function (grunt) {
                         'spyOn',
                         'jasmine',
                         'sessionStorage',
-                        'window'
+                        'window',
+                        'before',
+                        'beforeEach',
+                        'after',
+                        'afterEach'
                     ]
                 }
             },
@@ -152,6 +156,7 @@ module.exports = function (grunt) {
                         'define',
                         'require',
                         'module',
+                        'Handlebars',
                         'JS',
                         'load' // temp remove it
                     ]
