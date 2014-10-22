@@ -1,0 +1,35 @@
+
+<nav id="bb5-navbar-primary" class="navbar navbar-inverse clearfix" role="navigation">
+    <ul class="nav nav-tabs bb5-ui-width-setter" id="bb5-maintabs">
+        {% for menu in menus %}
+            <li class="dropdown{% if menu.active %} active{% endif %}">
+                <a data-toggle="dropdown" class="dropdown-toggle" id="{{ menu.label }}-menu" href="{{ menu.url }}">
+                    {{ menu.text }}
+                    <b class="caret"></b>
+                </a>
+                <ul aria-labelledby="{{ menu.label }}" role="menu" class="dropdown-menu">
+                    {% for item in menu.items %}
+                        <li class="{% if item.active %}active{% endif %}">
+                            <a data-toggle="tab" tabindex="-1" href="{{ item.url }}">{{ item.text }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+    <ul class="nav navbar-nav pull-right"></ul>
+</nav>
+
+<nav id="bb5-navbar-secondary" class="navbar navbar-default">
+    <div class="navbar-header">
+        <span class="navbar-brand"><img src="resources/img/backbuilder5.png" alt="BackBuilder5"></span>
+        <div class="bb5-ui-width-setter"><span class="bb5-ui-tab-title">Edition</span></div>
+        <ul class="nav navbar-nav pull-right"></ul>
+    </div>
+</nav>
+
+<div class="bb5-ui-width-setter bb5-ui-banner">
+    <div class="tab-content" id="bb5-maintabsContent"></div>
+</div>
+
+<div class="bb5-dialog-container"></div>
