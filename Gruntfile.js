@@ -156,7 +156,7 @@ module.exports = function (grunt) {
                         'define',
                         'require',
                         'module',
-                        'Handlebars',
+                        'Backbone',
                         'JS',
                         'load' // temp remove it
                     ]
@@ -179,7 +179,7 @@ module.exports = function (grunt) {
         jasmine: {
 
             test: {
-                src: '<%= dir.src %>/core/**/*.js',
+                src: ['<%= dir.src %>/core/**/*.js'],
                 options: {
                     specs: '<%= dir.specs %>/**/*.spec.js',
                     helpers: '<%= dir.specs %>/**/*.helper.js',

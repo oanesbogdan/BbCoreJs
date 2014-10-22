@@ -1,13 +1,33 @@
-(function () {
+define('tb.core.ViewManager', ['nunjucks', 'jsclass'], function (Nunjucks) {
     'use strict';
 
-    define('tb.core.ViewManager', ['tb.core.Api', 'BackBone'], function (Api) {
-        var ViewManager = {
-            register: '',
-            get: ''
-        };
-        Api.register('ViewManager', ViewManager);
+    /**
+     * ViewManager object
+     */
+    var ViewManager = new JS.Class({
 
-        return ViewManager;
+        /**
+         * Return the rendering engine (Nunjucks today)
+         * @returns {Object} Nunjucks
+         */
+        getRenderer: function () {
+            if (!this.renderer) {
+                this.renderer = Nunjucks;
+            }
+
+            return this.renderer;
+        },
+
+        /**
+         * Render a template
+         * @param {String} html
+         * @param {Object} data
+         * @returns {String}
+         */
+        render: function (html, data) {
+            return this.getRenderer().renderString(html, data);
+        }
     });
-}());
+
+    return new JS.Singleton(ViewManager);
+});

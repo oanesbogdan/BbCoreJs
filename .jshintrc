@@ -74,6 +74,7 @@
         "spyOn",
         "describe",
         "jasmine",
-        "beforeEach"
+        "beforeEach",
+        "Backbone"
     ]
 }
