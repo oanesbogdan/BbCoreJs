@@ -25,5 +25,6 @@ require.config({
         Bootstrap: {
             deps: ['jquery']
         }
+
     }
 });
