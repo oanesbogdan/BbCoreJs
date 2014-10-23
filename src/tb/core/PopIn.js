@@ -111,7 +111,9 @@ define('tb.core.PopIn', ['jsclass'], function () {
              * @return {PopIn} self
              */
             open: function () {
-                this.state = OPEN_STATE;
+                if (this.state !== DESTROY_STATE) {
+                    this.state = OPEN_STATE;
+                }
 
                 return this;
             },
@@ -129,7 +131,9 @@ define('tb.core.PopIn', ['jsclass'], function () {
              * @return {PopIn} self
              */
             close: function () {
-                this.state = HIDDEN_STATE;
+                if (this.state !== DESTROY_STATE) {
+                    this.state = HIDDEN_STATE;
+                }
 
                 return this;
             },
@@ -149,7 +153,6 @@ define('tb.core.PopIn', ['jsclass'], function () {
             destroy: function () {
                 this.state = DESTROY_STATE;
                 delete this.id;
-                delete this.title;
                 delete this.content;
                 delete this.options;
                 delete this.children;
