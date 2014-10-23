@@ -121,9 +121,11 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
         computeControllerName = function (controllerName) {
             var ctlName = '',
 
-                controllerPos;
+                controllerPos = -1;
 
-            controllerPos = controllerName.indexOf('Controller');
+            if ('string' === typeof controllerName) {
+                controllerPos = controllerName.indexOf('Controller');
+            }
 
             if (controllerPos !== -1) {
                 controllerName = controllerName.substring(0, controllerPos);
@@ -131,7 +133,7 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
             }
 
             if (ctlName.length === 0) {
-                exception(15004, 'Invalid controller name');
+                exception(15004, 'Controller name do not respect {name}Controller style declaration');
             }
 
             return ctlName;
@@ -221,7 +223,7 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
             if (cInstance) {
                 updateEnabledController(cInstance);
                 def.resolve(cInstance);
-            } else if (!cInstance) {
+            } else {
                 utils.requireWithPromise([fullControllerName]).done(function () {
                     initController(appName, controllerName, def);
                 }).fail(def.reject);

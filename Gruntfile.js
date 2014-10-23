@@ -142,7 +142,8 @@ module.exports = function (grunt) {
                         'before',
                         'beforeEach',
                         'after',
-                        'afterEach'
+                        'afterEach',
+                        'xit'
                     ]
                 }
             },
