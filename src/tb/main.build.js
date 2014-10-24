@@ -35,7 +35,8 @@
             'tb.core.Response': 'src/toolbar.core',
             'tb.core.RestDriver': 'src/toolbar.core',
             'tb.core.Logger': 'src/toolbar.core',
-            'tb.core.PopIn': 'src/tb/core/PopIn'
+            'tb.core.PopIn': 'src/tb/core/PopIn',
+            'tb.core.PopInManager': 'src/tb/core/PopInManager'
         }
     });
 
