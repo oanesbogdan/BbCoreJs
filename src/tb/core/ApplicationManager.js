@@ -43,7 +43,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
     var $ = require('jquery'),
         bbAppContainer = require('tb.core.ApplicationContainer'),
         underscore = require('underscore'),
-        bbApi = require('tb.core.Api'),
+        coreApi = require('tb.core.Api'),
         Backbone = require('BackBone'),
         bbUtils = require('tb.core.Utils'),
         ControllerManager = require('tb.core.ControllerManager'),
@@ -64,8 +64,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 //this.appControllers = this.registerControllers();
                 this.onInit();
             },
-
-          /*  registerControllers: function () {
+            /*  registerControllers: function () {
                 try {
                     return ControllerManager.getAppControllers();
                 } catch (e) {
@@ -87,7 +86,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                         console.log('loadController', e);
                     }
                 }).fail(function (reason) {
-                    bbApi.exception("LoadControllerException", "5000", reason.message);
+                    coreApi.exception("LoadControllerException", "5000", reason.message);
                 });
             },
             /**
@@ -105,13 +104,8 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
             onStart: function () {
                 this.trigger(this.getName() + ':onStart');
             },
-            onStop: function () {
-                //dispatch to controller
-                console.log('on ... stop is called');
-            },
-            onResume: function () {
-                console.log('on ... resume is called');
-            },
+            onStop: function () {},
+            onResume: function () {},
             onError: function (e) {
                 console.log('error in[' + this.name + '] application', e);
             }
@@ -156,7 +150,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 };
             }(appname)));
             if (AppDefContainer[appname]) {
-                throw 'AppAlreadyExists';
+                coreApi.exception('ApplicationManagerException', 50007, 'An application named [' + appname + '] already exists.');
             }
             AppDefContainer[appname] = ApplicationConstructor;
         },
@@ -166,10 +160,10 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 Api.trigger('routesLoaded');
                 def.resolve.apply(this, arguments);
             }).fail(function (reason) {
-                throw new Error('Error while Loading application routes' + reason);
+                def.reject(reason);
             });
         },
-        lauchApplication = function (appname, config) {
+        launchApplication = function (appname, config) {
             var dfd = new $.Deferred(),
                 applicationInfos = AppContainer.getByAppInfosName(appname),
                 Application = AppDefContainer[appname],
@@ -179,7 +173,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 if (currentApplication && (currentApplication.getName() === appname)) {
                     dfd.resolve(currentApplication);
                 } else {
-                    /** start or resume the new one */
+                    /** If app has not been loaded yet */
                     if (!applicationInfos) {
                         /** If app def can't be found */
                         if (!Application) {
@@ -213,19 +207,15 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
             }
             return dfd.promise();
         },
-        /* load the app */
         load = function (appname, config) {
             var def = new $.Deferred(),
                 completeAppname = ['app.' + appname];
             bbUtils.requireWithPromise(completeAppname).done(function () {
-                lauchApplication(appname, config).done(def.resolve);
+                launchApplication(appname, config).done(def.resolve);
             }).fail(function () {
-                throw 'Application[' + completeAppname + '] can\'t be found';
+                def.reject('Application[' + completeAppname + '] can\'t be found');
             });
             return def.promise();
-        },
-        handleAppLoadingErrors = function (e) {
-            console.log('... handle specific app Error here ...', e);
         },
         /**
          * At this stage we are sure that all apps declared in applicationConfigs was loaded
@@ -241,54 +231,81 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 Api.trigger('appIsReady', app); //use mediator
             });
         },
+        reset = function () {
+            AppDefContainer = {};
+            currentApplication = null;
+            config = null;
+            Api.off();
+            AppContainer.reset();
+        },
+        handleAppLoadingErrors = function (reason) {
+            Api.trigger('appError', {
+                reason: reason
+            });
+
+        },
         init = function (configuration) {
-            /* load apps here  */
+            if (!configuration || !$.isPlainObject(configuration)) {
+                coreApi.exception("ApplicationManagerException", 50001, 'init expects a parameter one to be an object.');
+            }
             var routePaths = [],
+                routeName = '',
                 appPaths = [];
             config = configuration;
             if (!config.hasOwnProperty('appPath')) {
-                throw 'InvalidAppConfig [appPath] key is missing';
+                coreApi.exception('ApplicationManagerException', 50002, 'InvalidAppConfig [appPath] key is missing');
             }
             if (!config.hasOwnProperty('applications')) {
-                throw 'InvalidAppConfig [applications] key is missing';
+                coreApi.exception('ApplicationManagerException', 50003, 'InvalidAppConfig [applications] key is missing');
             }
             if (!config.hasOwnProperty("active")) {
-                throw "InvalidAppConfig [active] key is missing";
+                coreApi.exception('ApplicationManagerException', 50004, 'InvalidAppConfig [active] key is missing');
             }
-            $.each(config.applications, function (appname) {
+            if (!$.isPlainObject(configuration.applications)) {
+                coreApi.exception('ApplicationManagerException', 50005, 'InvalidAppConfig [applications] should be an object');
+            }
+            if (underscore.size(config.applications) === 0) {
+                coreApi.exception('ApplicationManagerException', 50006, 'InvalidAppConfig at least one application config should be provided');
+            }
+            $.each(config.applications, function (appname, appConfig) {
                 appPaths.push(config.appPath + '/' + appname + '/main.js');
-                routePaths.push(appname + '.routes');
+                /*handle alt route path here */
+                routeName = appname + '.routes';
+                if (appConfig.config.hasOwnProperty('routePath') && typeof appConfig.config.routePath === 'string') {
+                    routeName = appConfig.config.routePath;
+                }
+                routePaths.push(routeName);
             });
             bbUtils.requireWithPromise(appPaths).then($.proxy(registerAppRoutes, null, routePaths)).done(appsAreLoaded).fail(handleAppLoadingErrors);
         },
-        start = function () {
-            console.log('start');
-        },
         invoke = function (actionInfos, params) {
+            params = params || {};
+            if (!actionInfos || ('string' !== typeof actionInfos)) {
+                coreApi.exception('ApplicationManagerException', 50009, 'Application.invoke actionInfos should be a string')
+            }
             actionInfos = actionInfos.split(':');
-            var appPromise = this.lauchApplication(actionInfos[0]);
-            /* triger event app is loading */
-            appPromise.done(function (application) {
-                application.dispatchToController(actionInfos[1], actionInfos[2], params);
-            }).fail(function (e) {
-                console.log("AppManager:invoke", e);
+            if (actionInfos.length !== 3) {
+                coreApi.exception('ApplicationManagerException', 50010, 'Invalid actionInfos. Valid format {appname}:{controllerName}:{controllerAction}');
+            }
+            var appPromise = launchApplication(actionInfos[0]);
+            appPromise.fail(function(reason){
+                Api.trigger("appError",{reason: reason});
             });
 
-        },
-
-        getAppByName = function (appName) {
-            return AppContainer.getByAppInfosName(appName);
+            appPromise.done(function (application) {
+                console.log("radical good");
+                application.dispatchToController(actionInfos[1], actionInfos[2], params);
+            });
         };
     Api = {
         registerApplication: registerApplication,
         invoke: invoke,
-        lauchApplication: lauchApplication,
+        launchApplication: launchApplication,
         init: init,
-        start: start,
-        getAppByName: getAppByName
+        reset: reset
     };
     /* application as an Event emitter */
     underscore.extend(Api, Backbone.Events);
-    bbApi.register('ApplicationManager', Api);
+    coreApi.register('ApplicationManager', Api);
     return Api;
 });

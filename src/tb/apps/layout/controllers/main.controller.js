@@ -34,6 +34,11 @@ define(['tb.core', 'jquery'], function (bbCore, jQuery) {
         onDisabled: function () {
             console.log("layout:MainController Inside OnDisabled method");
         },
+
+        layoutListAction: function(){
+            console.log(arguments);
+        },
+
         homeAction: function () {
             try {
                 var responseHtml,
@@ -45,9 +50,6 @@ define(['tb.core', 'jquery'], function (bbCore, jQuery) {
                 responseHtml = this.tplRenderer.render('src/tb/apps/layout/templates/home.tpl', {
                     data: data
                 }); //action append, replace
-                jQuery(responseHtml).on('click', '.sred', function () {
-                    alert("this is it");
-                });
                 jQuery(this.rootView).html(responseHtml);
             } catch (e) {
                 console.log(e);
@@ -57,7 +59,8 @@ define(['tb.core', 'jquery'], function (bbCore, jQuery) {
             console.log(page, section);
             jQuery('.jumbotron').html(jQuery('<p> app: layout <br/> controller: MainController <br> action: listAction</p>'));
         },
-        paramsAction: function () {
+        paramsAction: function (p,s,d,u) {
+            console.log(p);
             console.log('inside MainController:params');
         }
     });

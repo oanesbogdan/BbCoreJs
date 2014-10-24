@@ -24,6 +24,8 @@ define("tb.core.TemplateRenderer", ['require', 'jquery', 'tb.core.Api', 'handleb
         bbApi = require('tb.core.Api'),
 
         bbUtils = require('tb.core.Utils'),
+        
+        Handlebars = require("handlebars"),
 
         Handlebars = require('handlebars'),
 

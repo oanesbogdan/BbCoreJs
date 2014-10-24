@@ -32,7 +32,7 @@ define(["tb.core"], function (bbCore) {
 
             "params": {
                 url: "/params",
-                action: "MainController:params"
+                action: "HomeController:params"
             },
 
             "list": {
