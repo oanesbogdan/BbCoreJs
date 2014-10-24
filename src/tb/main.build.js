@@ -21,13 +21,15 @@
 
     require.config({
         paths: {
-            'tb.core.Core': 'build/toolbar.core',
-            'tb.core.ApplicationManager': 'build/toolbar.core',
-            'tb.core.Mediator': 'build/toolbar.core',
-            'tb.core.RouteManager': 'build/toolbar.core',
-            'tb.core.ViewManager': 'build/toolbar.core',
-            'tb.core.ControllerManager': 'build/toolbar.core',
-            'tb.core.Utils': 'build/toolbar.core',
+            'tb.core.Api': 'src/toolbar.core',
+            'tb.core.ApplicationManager': 'src/toolbar.core',
+            'tb.core.ApplicationContainer': 'src/toolbar.core',
+            'tb.core.Mediator': 'src/toolbar.core',
+            'tb.core.RouteManager': 'src/toolbar.core',
+            'tb.core.ViewManager': 'src/toolbar.core',
+            'tb.core.TemplateRenderer': 'src/toolbar.core',
+            'tb.core.ControllerManager': 'src/toolbar.core',
+            'tb.core.Utils': 'src/toolbar.core',
             'tb.core.Exception': 'src/toolbar.core',
             'tb.core.DriverHandler': 'src/toolbar.core',
             'tb.core.Request': 'src/toolbar.core',
@@ -35,8 +37,9 @@
             'tb.core.Response': 'src/toolbar.core',
             'tb.core.RestDriver': 'src/toolbar.core',
             'tb.core.Logger': 'src/toolbar.core',
-            'tb.core.PopIn': 'src/tb/core/PopIn',
-            'tb.core.PopInManager': 'src/tb/core/PopInManager'
+            'tb.core.PopIn': 'src/toolbar.core',
+            'tb.core.PopInManager': 'src/toolbar.core',
+            'tb.core.Scope': 'src/toolbar.core'
         }
     });
 
@@ -51,10 +54,11 @@
             'tb.core.ControllerManager',
             'tb.core.Utils',
             'tb.core.Exception',
-            'tb.core.Logger'
+            'tb.core.Logger',
+            'tb.core.Scope'
         ],
-        function (Api) {
-            return Api;
+        function (Core) {
+            return Object.freeze(Core);
         }
     );
 }());
