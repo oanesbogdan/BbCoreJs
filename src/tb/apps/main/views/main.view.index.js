@@ -83,7 +83,7 @@ define(['jquery', 'tb.core.ViewManager', 'text!main/tpl/toolbar'], function (jQu
                     {
                         label: 'contribute',
                         text: 'Contribution',
-                        url: '#',
+                        url: '#/contribution/index',
                         active: false,
                         items: [
                             {
