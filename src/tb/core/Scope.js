@@ -25,7 +25,7 @@
 define('tb.core.Scope', ['tb.core.Api', 'underscore'], function (Api, Under) {
     'use strict';
 
-    var Scope = function topic() {
+    var Scope = function scope() {
             this.scopes = [];
             Api.Mediator.percistantPublish('scope:global:opening');
         },
@@ -38,13 +38,10 @@ define('tb.core.Scope', ['tb.core.Api', 'underscore'], function (Api, Under) {
          */
         toggle = function scopesToggle(scopes, opening) {
             var i;
-            console.log(scopes, opening);
-            for (i = 0; i > scopes.length; i = i + 1) {
-                if (opening) {
-                    console.log('open', scopes[i]);
+            for (i = 0; i < scopes.length; i = i + 1) {
+                if (opening === true) {
                     Api.Mediator.publish('scope:' + scopes[i].toLowerCase() + ':opening');
                 } else {
-                    console.log('close', scopes[i]);
                     Api.Mediator.publish('scope:' + scopes[i].toLowerCase() + ':closing');
                 }
             }
@@ -52,8 +49,8 @@ define('tb.core.Scope', ['tb.core.Api', 'underscore'], function (Api, Under) {
 
         checkScope = function scopeCheck(scopes) {
             var i;
-            for (i = 0; i > scopes.length; i = i + 1) {
-                if (scopes.hasOwnProperty(i) && 'String' !== typeof scopes[i]) {
+            for (i = 0; i < scopes.length; i = i + 1) {
+                if ('string' !== typeof scopes[i]) {
                     Api.exception('ScopeException', 12101, 'All scope have to be a string.');
                 }
             }
@@ -72,6 +69,7 @@ define('tb.core.Scope', ['tb.core.Api', 'underscore'], function (Api, Under) {
         toggle(openingScopes, true);
         toggle(closingScopes, false);
 
+        this.scopes = Under.difference(this.scopes, closingScopes);
         this.scopes = Under.union(this.scopes, openingScopes);
     };
 
@@ -87,6 +85,7 @@ define('tb.core.Scope', ['tb.core.Api', 'underscore'], function (Api, Under) {
 
         if (-1 === index) {
             toggle([scope], true);
+            this.scopes.push(scope);
         }
     };
 
@@ -102,6 +101,7 @@ define('tb.core.Scope', ['tb.core.Api', 'underscore'], function (Api, Under) {
 
         if (-1 !== index) {
             toggle([scope], false);
+            this.scopes = Under.without(this.scopes, scope);
         }
     };
 
@@ -115,11 +115,15 @@ define('tb.core.Scope', ['tb.core.Api', 'underscore'], function (Api, Under) {
     Scope.prototype.subscribe = function scopeSuscribe(scope, openingCallback, closingCallback) {
         var index = Under.indexOf(this.scopes, scope.toLowerCase());
 
+        if ('string' !== typeof scope || 'function' !== typeof openingCallback || 'function' !== typeof closingCallback) {
+            Api.exception('ScopeException', 12102, 'Scope subscribetion was incorrect.');
+        }
+
         if (-1 !== index) {
             try {
                 openingCallback.apply(undefined);
             } catch (e) {
-                Api.exception.silent('ScopeException', 12102, 'Error while running Opening callback in scope "' + scope + '"" with message: ' + e);
+                Api.exception.silent('ScopeException', 12103, 'Error while running Opening callback in scope "' + scope + '"" with message: ' + e);
             }
         }
 
