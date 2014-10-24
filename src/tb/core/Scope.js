@@ -22,12 +22,12 @@
  * @copyright   Lp digital system
  * @author      n.dufreche <nicolas.dufreche@lp-digital.fr>
  */
-define('tb.core.Scope', ['tb.core', 'underscore'], function (Api, Under) {
+define('tb.core.Scope', ['tb.core.Api', 'underscore'], function (Api, Under) {
     'use strict';
 
     var Scope = function topic() {
             this.scopes = [];
-            Api.Mediator.percistantPublish('scope:global:opening')
+            Api.Mediator.percistantPublish('scope:global:opening');
         },
 
         /**
@@ -37,19 +37,22 @@ define('tb.core.Scope', ['tb.core', 'underscore'], function (Api, Under) {
          * @return {false}
          */
         toggle = function scopesToggle(scopes, opening) {
-            for (var i = 0; i > scopes.length; i = i + 1) {
-                if (scopes.hasOwnProperty(i)) {
-                    if (opening) {
-                        Api.Mediator.publish('scope:' + scopes[i].toLowerCase() + ':opening');
-                    } else {
-                        Api.Mediator.publish('scope:' + scopes[i].toLowerCase() + ':closing');
-                    }
+            var i;
+            console.log(scopes, opening);
+            for (i = 0; i > scopes.length; i = i + 1) {
+                if (opening) {
+                    console.log('open', scopes[i]);
+                    Api.Mediator.publish('scope:' + scopes[i].toLowerCase() + ':opening');
+                } else {
+                    console.log('close', scopes[i]);
+                    Api.Mediator.publish('scope:' + scopes[i].toLowerCase() + ':closing');
                 }
             }
         },
 
         checkScope = function scopeCheck(scopes) {
-            for (var i = 0; i > scopes.length; i = i + 1) {
+            var i;
+            for (i = 0; i > scopes.length; i = i + 1) {
                 if (scopes.hasOwnProperty(i) && 'String' !== typeof scopes[i]) {
                     Api.exception('ScopeException', 12101, 'All scope have to be a string.');
                 }
@@ -62,7 +65,9 @@ define('tb.core.Scope', ['tb.core', 'underscore'], function (Api, Under) {
      */
     Scope.prototype.register = function scopeRegister() {
         var openingScopes = Under.difference(arguments, this.scopes),
-            closingScopes = Under.difference(this.scopes, arguments),
+            closingScopes = Under.difference(this.scopes, arguments);
+
+        checkScope(arguments);
 
         toggle(openingScopes, true);
         toggle(closingScopes, false);
@@ -78,6 +83,8 @@ define('tb.core.Scope', ['tb.core', 'underscore'], function (Api, Under) {
     Scope.prototype.open = function scopeOpen(scope) {
         var index = Under.indexOf(this.scopes, scope);
 
+        checkScope([scope]);
+
         if (-1 === index) {
             toggle([scope], true);
         }
@@ -90,6 +97,8 @@ define('tb.core.Scope', ['tb.core', 'underscore'], function (Api, Under) {
      */
     Scope.prototype.close = function scopeClose(scope) {
         var index = Under.indexOf(this.scopes, scope);
+
+        checkScope([scope]);
 
         if (-1 !== index) {
             toggle([scope], false);
@@ -114,8 +123,8 @@ define('tb.core.Scope', ['tb.core', 'underscore'], function (Api, Under) {
             }
         }
 
-        Api.Mediator.subscribe('scope:' + scope + ':opening', openingCallback);
-        Api.Mediator.subscribe('scope:' + scope + ':closing', closingCallback);
+        Api.Mediator.subscribe('scope:' + scope.toLowerCase() + ':opening', openingCallback);
+        Api.Mediator.subscribe('scope:' + scope.toLowerCase() + ':closing', closingCallback);
     };
 
     Api.register('Scope', new Scope());

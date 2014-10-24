@@ -37,7 +37,8 @@
             'tb.core.RestDriver': 'src/tb/core/RestDriver',
             'tb.core.Logger': 'src/tb/core/Logger',
             'tb.core.PopIn': 'src/tb/core/PopIn',
-            'tb.core.PopInManager': 'src/tb/core/PopInManager'
+            'tb.core.PopInManager': 'src/tb/core/PopInManager',
+            'tb.core.Scope': 'src/tb/core/Scope'
         }
     });
     define('tb.core', [
@@ -50,7 +51,8 @@
         'tb.core.ControllerManager',
         'tb.core.Utils',
         'tb.core.Exception',
-        'tb.core.Logger'
+        'tb.core.Logger',
+        'tb.core.Scope'
     ], function (Core) {
         return Object.freeze(Core);
     });
