@@ -57,12 +57,20 @@ define(['tb.core.PopIn'], function (PopIn) {
             });
         });
 
-        it('Test disable and enable fo PopIn "modal" behavior', function () {
+        it('Test disable and enable of PopIn "modal" behavior', function () {
             expect(popin.isModal()).toEqual(false);
             popin.enableModal();
             expect(popin.isModal()).toEqual(true);
             popin.disableModal();
             expect(popin.isModal()).toEqual(false);
+        });
+
+        it('Test disable and enable of PopIn "resize" behavior', function () {
+            expect(popin.isResizable()).toEqual(false);
+            popin.enableResize();
+            expect(popin.isResizable()).toEqual(true);
+            popin.disableResize();
+            expect(popin.isResizable()).toEqual(false);
         });
 
         it('Call PopIn::close() on a closed pop-in won\'t change pop-in state', function () {
