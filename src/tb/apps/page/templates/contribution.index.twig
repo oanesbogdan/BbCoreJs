@@ -1,19 +1,16 @@
-<div class="tab-pane" id="messages">
+<div class="tab-pane active" id="messages">
     <div class="row">
         <div class="col-bb5-56 bb5-border-right">
             <p>Statut de la page :
-                <select class="form-inline input-xs" name="[]">
-                    <option value="">En ligne</option>
+                <select id="page-state-select" class="form-inline input-xs" name="state">
+                    <option value="1" {% if page.state == 1 %}selected{% endif %}>En ligne et visible dans le menu</option>
+                    <option value="3" {% if page.state == 3 %}selected{% endif %}>En ligne et non visible dans le menu</option>
+                    <option value="0" {% if page.state == 0 or page.state == 2 %}selected{% endif %}>Hors ligne</option>
                 </select>
                 <button type="button" class="btn btn-default-grey btn-xs">SEO de la page</button>
             </p>
-            <p>
-                <label>
-                    <input type="checkbox" name="grid"> Visible dans les menus
-                </label>
-            </p>
             <p class="position-bottom">
-                <button type="button" class="btn btn-transparent btn-xs btn-toggle btn-show---">
+                <button id="scheduling-publication-btn" type="button" class="btn btn-transparent btn-xs btn-toggle btn-show">
                     <i class="fa fa-angle-down"></i> Programmer la publication / l'archivage
                 </button>
             </p>
@@ -30,9 +27,9 @@
                 </button>
             </p>
             <p>
-                <button type="button" class="btn btn-simple btn-xs btn-block">
+                <a type="button" href="#page/delete/{{ page.uid }}" class="btn btn-simple btn-xs btn-block">
                     <i class="fa fa-trash-o"></i> Supprimer
-                </button>
+                </a>
             </p>
         </div>
         <div class="col-bb5-20">

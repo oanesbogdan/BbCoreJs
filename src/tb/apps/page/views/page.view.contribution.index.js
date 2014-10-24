@@ -1,4 +1,4 @@
-define(['jquery', 'tb.core.ViewManager', 'text!page/tpl/contribution.index'], function (jQuery, ViewManager, template) {
+define(['jquery', 'tb.core.ViewManager', 'text!page/tpl/contribution/index', 'page.repository'], function (jQuery, ViewManager, template, PageRepository) {
 
     'use strict';
 
@@ -11,12 +11,14 @@ define(['jquery', 'tb.core.ViewManager', 'text!page/tpl/contribution.index'], fu
         /**
          * Point of Toolbar in DOM
          */
-        el: '#bb5-maintabsContent',
+        el: '#contrib-tab-apps',
 
         /**
          * Initialize of PageViewContributionIndex
          */
-        initialize: function () {
+        initialize: function (config) {
+            this.currentPage = config.data;
+
             this.bindUiEvents();
         },
 
@@ -24,16 +26,26 @@ define(['jquery', 'tb.core.ViewManager', 'text!page/tpl/contribution.index'], fu
          * Events of view
          */
         bindUiEvents: function () {
-            jQuery(this.el).on('click', 'ul#bb5-maintabs li a', this.manageMenu);
+            jQuery(this.el).on('change', '#page-state-select', jQuery.proxy(this.manageState, this));
         },
 
+        /**
+         * Change the state of the page
+         * @param {Object} event
+         */
+        manageState: function (event) {
+            var self = jQuery(event.currentTarget),
+                optionSelected = self.children('option:selected');
+
+            PageRepository.state(this.currentPage.uid, optionSelected.val());
+        },
 
         /**
          * Render the template into the DOM with the ViewManager
          * @returns {Object} PageViewContributionIndex
          */
         render: function () {
-            jQuery(this.el).html(ViewManager.render(template, this.bundle));
+            jQuery(this.el).html(ViewManager.render(template, {'page': this.currentPage}));
 
             return this;
         }

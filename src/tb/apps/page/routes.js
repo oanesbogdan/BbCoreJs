@@ -8,8 +8,16 @@ define(["tb.core"], function (BbCore) {
         prefix: 'page',
         routes: {
             'contribution.index': {
-                url: '/index',
+                url: '/contribution/index',
                 action: 'MainController:contributionIndex'
+            },
+            'delete': {
+                url: '/delete/:uid',
+                action: 'MainController:delete'
+            },
+            'new': {
+                url: '/new',
+                action: 'MainController:new'
             }
         }
     });
