@@ -19,18 +19,40 @@
 define('tb.core.PopInManager', ['tb.core.PopIn', 'jquery', 'jsclass', 'jqueryui'], function (PopIn, jQuery) {
     'use strict';
 
+    /**
+     * Contains every default options for a pop-in
+     * @type {Object}
+     */
     var DEFAULT_POPIN_OPTIONS = {
             autoOpen: false
         },
 
+        /**
+         * PopInManager allow us to handle with ease tb.core.PopIn
+         */
         PopInManager = new JS.Class({
 
+            /**
+             * Unique id generator for pop-in id
+             * @type {Number}
+             */
             popInId: 0,
 
+            /**
+             * @type {String}
+             */
             toolbarId: 'body',
 
+            /**
+             * @type {String}
+             */
             containerId: 'bb5-dialog-container',
 
+            /**
+             * Create a tb.core.PopIn with basic configuration like its id and options
+             * @param  {Object} config configuration of pop-in
+             * @return {PopIn}
+             */
             createPopIn: function (config) {
                 var popIn = new PopIn(),
                     options = jQuery.extend({}, DEFAULT_POPIN_OPTIONS),
@@ -64,16 +86,29 @@ define('tb.core.PopInManager', ['tb.core.PopIn', 'jquery', 'jsclass', 'jqueryui'
 
         }),
 
+        /**
+         * The unique instance of PopInManager
+         * @type {PopInManager}
+         */
         manager = new PopInManager();
 
     return {
 
+        /**
+         * Initialize the PopInManager by setting the toolbarId
+         * @param {String} toolbarId
+         */
         init: function (toolbarId) {
             if (typeof toolbarId === 'string') {
                 manager.toolbarId = toolbarId;
             }
         },
 
+        /**
+         * Create a tb.core.PopIn with basic configuration like its id and options
+         * @param  {Object} options
+         * @return {PopIn}
+         */
         createPopIn: function (options) {
             var popIn = manager.createPopIn(options),
                 self = this;
@@ -87,6 +122,12 @@ define('tb.core.PopInManager', ['tb.core.PopIn', 'jquery', 'jsclass', 'jqueryui'
             return popIn;
         },
 
+        /**
+         * Create and add a new child to parent pop-in
+         * @param  {PopIn}  parent  the parent of the new pop-in to create
+         * @param  {Object} options
+         * @return {PopIn}  the child pop-in
+         */
         createSubPopIn: function (parent, options) {
             var popIn = this.createPopIn(options);
 
@@ -99,6 +140,10 @@ define('tb.core.PopInManager', ['tb.core.PopIn', 'jquery', 'jsclass', 'jqueryui'
             return popIn;
         },
 
+        /**
+         * Display the pop-in
+         * @param {PopIn} popIn the pop-in to display
+         */
         display: function (popIn) {
             if (popIn.isClose()) {
                 popIn.open();
@@ -117,6 +162,10 @@ define('tb.core.PopInManager', ['tb.core.PopIn', 'jquery', 'jsclass', 'jqueryui'
             }
         },
 
+        /**
+         * Hide pop-in and its children
+         * @param {PopIn} popIn
+         */
         hide: function (popIn) {
             var child = null,
                 children = null;
@@ -134,6 +183,22 @@ define('tb.core.PopInManager', ['tb.core.PopIn', 'jquery', 'jsclass', 'jqueryui'
             }
         },
 
+        /**
+         * Toggle display/hide of pop-in
+         * @param {PopIn} popIn the pop-in to toggle
+         */
+        toggle: function (popIn) {
+            if (popIn.isOpen()) {
+                this.hide(popIn);
+            } else if (popIn.isClose()) {
+                this.display(popIn);
+            }
+        },
+
+        /**
+         * Destroy pop-in and its children
+         * @param {PopIn} popIn the pop-in to destroy
+         */
         destroy: function (popIn) {
             var child = null,
                 children = null;
@@ -155,14 +220,6 @@ define('tb.core.PopInManager', ['tb.core.PopIn', 'jquery', 'jsclass', 'jqueryui'
                 }
 
                 popIn.destroy();
-            }
-        },
-
-        toggle: function (popIn) {
-            if (popIn.isOpen()) {
-                this.hide(popIn);
-            } else if (popIn.isClose()) {
-                this.display(popIn);
             }
         }
 
