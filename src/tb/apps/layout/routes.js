@@ -14,6 +14,10 @@ define(["tb.core"], function (bbCore) {
                 url: "test",
                 action: "TestController:test"
             },
+            layout: {
+                url: "showlist/(:id)",
+                action: "MainController:params"
+            },
 
             "list": {
                 url: "showlist/:page/:section",

@@ -110,7 +110,8 @@ module.exports = function (grunt) {
         jshint: {
             files: ['Gruntfile.js', 'src/**/*.js', 'specs/**/*.js'],
             options: {
-                jshintrc: '.jshintrc'
+                jshintrc: '.jshintrc',
+                predef: ['xdescribe']
             }
         },
         jslint: {
@@ -135,6 +136,7 @@ module.exports = function (grunt) {
                         'expect',
                         '__dirname',
                         'describe',
+                        'xdescribe',
                         'spyOn',
                         'jasmine',
                         'sessionStorage',
@@ -157,6 +159,7 @@ module.exports = function (grunt) {
                         'require',
                         'module',
                         'Handlebars',
+                        'xdescribe',
                         'JS',
                         'load' // temp remove it
                     ]

@@ -15,18 +15,21 @@ define("app.layout", ["require", "tb.core"], function (require) {
         config: {
             root: "route"
         },
+
         onInit: function () {
             console.log(" LayoutApplication is initialized ");
         },
+
         onStart: function () {
             console.log(" layout Application [layout] onStart ...");
         },
+
         onStop: function () {
             console.log("layout onStop is called ...");
         },
+
         onError: function () {
             console.log("layout onError...");
         }
     });
 });
-console.log("fragile, la force de l'art II");

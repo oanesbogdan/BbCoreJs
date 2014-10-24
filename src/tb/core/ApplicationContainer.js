@@ -1,9 +1,7 @@
-define('tb.core.ApplicationContainer', ['jquery', 'jsclass', 'tb.core.Api'], function (jQuery) {
+define('tb.core.ApplicationContainer', ['jquery', 'jsclass', 'tb.core.Api'], function (jQuery, Class, coreApi) {
     'use strict';
-
     var instance = null,
         AppContainer;
-
     /**
      * AppContainer object
      */
@@ -14,7 +12,6 @@ define('tb.core.ApplicationContainer', ['jquery', 'jsclass', 'tb.core.Api'], fun
         initialize: function () {
             this.container = [];
         },
-
         /**
          * Register a new application
          * @param {object} applicationInfos  {
@@ -24,9 +21,14 @@ define('tb.core.ApplicationContainer', ['jquery', 'jsclass', 'tb.core.Api'], fun
          *                                   }
          */
         register: function (applicationInfos) {
+            if (!jQuery.isPlainObject(applicationInfos)) {
+                coreApi.exception('AppContainerException', 60000, 'applicationInfos should be an object');
+            }
+            if (!applicationInfos.hasOwnProperty('name')) {
+                coreApi.exception('AppContainerException', 60001, 'applicationInfos should have a name property');
+            }
             this.container.push(applicationInfos);
         },
-
         /**
          * Gets application info by its name
          * @param {type} name
@@ -41,11 +43,12 @@ define('tb.core.ApplicationContainer', ['jquery', 'jsclass', 'tb.core.Api'], fun
                 }
                 i = i + 1;
             });
-
             return result;
+        },
+        reset: function () {
+            this.container = [];
         }
     });
-
     return {
         getInstance: function () {
             if (!instance) {
@@ -53,6 +56,5 @@ define('tb.core.ApplicationContainer', ['jquery', 'jsclass', 'tb.core.Api'], fun
             }
             return instance;
         }
-
     };
 });
