@@ -89,10 +89,10 @@ define('tb.core.PopIn', ['jsclass'], function () {
              * @return {PopIn} self
              */
             addChild: function (child) {
-                if (typeof child === 'object' && typeof child.isA === 'function' && child.isA(PopIn)) {
+                if (typeof child === 'object' && typeof child.isA === 'function' && child.isA(PopIn) && false === child.isDestroy() && false === this.isDestroy()) {
                     this.children.push(child);
                 } else {
-                    throw 'PopIn::addChild only accept PopIn object.';
+                    throw 'PopIn::addChild only accept PopIn object which is not in destroy state.';
                 }
 
                 return this;

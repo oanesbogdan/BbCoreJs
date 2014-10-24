@@ -99,24 +99,24 @@ define(['tb.core.PopIn'], function (PopIn) {
         });
 
         it('Call PopIn::destroy() on a pop-in will change its state to DESTROY_STATE (= 2) and unset every properties except to state', function () {
-            var popin = new PopIn();
-            expect(popin.isDestroy()).toEqual(false);
-            popin.destroy();
-            expect(popin.isDestroy()).toEqual(true);
-            expect(popin.id).toEqual(undefined);
-            expect(popin.content).toEqual(undefined);
-            expect(popin.options).toEqual(undefined);
-            expect(popin.children).toEqual(undefined);
+            var popIn = new PopIn();
+            expect(popIn.isDestroy()).toEqual(false);
+            popIn.destroy();
+            expect(popIn.isDestroy()).toEqual(true);
+            expect(popIn.id).toEqual(undefined);
+            expect(popIn.content).toEqual(undefined);
+            expect(popIn.options).toEqual(undefined);
+            expect(popIn.children).toEqual(undefined);
         });
 
         it('Call PopIn::open() or PopIn::close() on a destroyed pop-in won\'t change pop-in state', function () {
-            var popin = new PopIn();
-            popin.destroy();
-            expect(popin.isDestroy()).toEqual(true);
-            popin.open();
-            expect(popin.isOpen()).toEqual(false);
-            popin.close();
-            expect(popin.isClose()).toEqual(false);
+            var popIn = new PopIn();
+            popIn.destroy();
+            expect(popIn.isDestroy()).toEqual(true);
+            popIn.open();
+            expect(popIn.isOpen()).toEqual(false);
+            popIn.close();
+            expect(popIn.isClose()).toEqual(false);
         });
 
         it('Add a non PopIn object as child of PopIn will raise an exception', function () {
@@ -126,7 +126,7 @@ define(['tb.core.PopIn'], function (PopIn) {
                 popin.addChild({});
                 expect(true).toEqual(false);
             } catch (e) {
-                expect(e).toEqual('PopIn::addChild only accept PopIn object.');
+                expect(e).toEqual('PopIn::addChild only accept PopIn object which is not in destroy state.');
             }
 
             expect(popin.getChildren().length).toEqual(0);
@@ -138,6 +138,28 @@ define(['tb.core.PopIn'], function (PopIn) {
             popin.addChild(childPopin);
 
             expect(popin.getChildren().length).toEqual(1);
+        });
+
+        it('Cannot add a child pop-in if its has destroyed state or if the parent is destroyed', function () {
+            var popIn = new PopIn(),
+                destroyedPopIn = new PopIn();
+
+            destroyedPopIn.destroy();
+            try {
+                popIn.addChild(destroyedPopIn);
+                expect(true).toEqual(false);
+            } catch (e) {
+                expect(e).toEqual('PopIn::addChild only accept PopIn object which is not in destroy state.');
+                expect(popIn.getChildren().length).toEqual(0);
+            }
+
+            try {
+                destroyedPopIn.addChild(popIn);
+                expect(true).toEqual(false);
+            } catch (e) {
+                expect(e).toEqual('PopIn::addChild only accept PopIn object which is not in destroy state.');
+                expect(destroyedPopIn.getChildren()).toEqual(undefined);
+            }
         });
     });
 });
