@@ -216,7 +216,23 @@ define('tb.core.PopIn', ['jsclass'], function () {
             },
 
             /**
-             * * Enable modal behavior for this pop-in
+             * Class property setter
+             * @param {String} dialogClass new class value
+             */
+            setClass: function (dialogClass) {
+                this.options.dialogClass = dialogClass;
+            },
+
+            /**
+             * Class property getter
+             * @return {String} return class property
+             */
+            getClass: function () {
+                return this.options.dialogClass || '';
+            },
+
+            /**
+             * Enable modal behavior for this pop-in
              * @return {PopIn} self
              */
             enableModal: function () {
@@ -244,19 +260,31 @@ define('tb.core.PopIn', ['jsclass'], function () {
             },
 
             /**
-             * Class property setter
-             * @param {String} dialogClass new class value
+             * Enable resize behavior for this pop-in
+             * @return {PopIn} self
              */
-            setClass: function (dialogClass) {
-                this.options.dialogClass = dialogClass;
+            enableResize: function () {
+                this.options.resizable = true;
+
+                return this;
             },
 
             /**
-             * Class property getter
-             * @return {String} return class property
+             * Disable resize behavior for this pop-in
+             * @return {PopIn} self
              */
-            getClass: function () {
-                return this.options.dialogClass || '';
+            disableResize: function () {
+                this.options.resizable = false;
+
+                return this;
+            },
+
+            /**
+             * Returns true if this pop-in is resizable, else false
+             * @return {Boolean}
+             */
+            isResizable: function () {
+                return this.options.resizable || false;
             }
         });
 
