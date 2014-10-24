@@ -27,6 +27,7 @@ define(['tb.core', 'tb.core.RouteManager', 'BackBone'], function (Core, Router, 
     describe('RouteManager spec', function () {
 
         it('Adding Test application into ApplicationManager', function (done) {
+            expect(true).toBe(true);
             setTimeout(function () {
                 done();
             }, 100);
