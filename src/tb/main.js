@@ -35,10 +35,22 @@
             'tb.core.RequestHandler': 'src/tb/core/RequestHandler',
             'tb.core.Response': 'src/tb/core/Response',
             'tb.core.RestDriver': 'src/tb/core/RestDriver',
-            'tb.core.Logger': 'src/tb/core/Logger'
+            'tb.core.Logger': 'src/tb/core/Logger',
+            'tb.core.PopIn': 'src/tb/core/PopIn'
         }
     });
-    define('tb.core', ['tb.core.Api', 'tb.core.ApplicationManager', 'tb.core.Mediator', 'tb.core.RouteManager', 'tb.core.ViewManager', 'tb.core.TemplateRenderer', 'tb.core.ControllerManager', 'tb.core.Utils', 'tb.core.Exception', 'tb.core.Logger'], function (Core) {
+    define('tb.core', [
+        'tb.core.Api',
+        'tb.core.ApplicationManager',
+        'tb.core.Mediator',
+        'tb.core.RouteManager',
+        'tb.core.ViewManager',
+        'tb.core.TemplateRenderer',
+        'tb.core.ControllerManager',
+        'tb.core.Utils',
+        'tb.core.Exception',
+        'tb.core.Logger'
+    ], function (Core) {
         return Object.freeze(Core);
     });
 }());

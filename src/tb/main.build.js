@@ -34,7 +34,8 @@
             'tb.core.RequestHandler': 'src/toolbar.core',
             'tb.core.Response': 'src/toolbar.core',
             'tb.core.RestDriver': 'src/toolbar.core',
-            'tb.core.Logger': 'src/toolbar.core'
+            'tb.core.Logger': 'src/toolbar.core',
+            'tb.core.PopIn': 'src/tb/core/PopIn'
         }
     });
 
