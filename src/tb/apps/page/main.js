@@ -12,14 +12,6 @@ require.config({
         //Templates
         'page/tpl/contribution/index': 'src/tb/apps/page/templates/contribution.index.twig',
         'page/tpl/contribution/scheduling_publication': 'src/tb/apps/page/templates/scheduling_publication.dialog.twig'
-
-        //Views
-        'page.view.contribution.index': 'src/tb/apps/page/views/page.view.contribution.index',
-        'page.view.delete': 'src/tb/apps/page/views/page.view.delete',
-        'page.view.new': 'src/tb/apps/page/views/page.view.new',
-
-        //Templates
-        'page/tpl/contribution.index': 'src/tb/apps/page/templates/contribution.index.twig'
     }
 });
 
