@@ -2,6 +2,7 @@ require.config({
     paths: {
         'page.routes': 'src/tb/apps/page/routes',
         'page.main.controller': 'src/tb/apps/page/controllers/main.controller',
+<<<<<<< HEAD
         'page.repository': 'src/tb/apps/page/repository/page.repository',
 
         //Views
@@ -12,6 +13,14 @@ require.config({
         //Templates
         'page/tpl/contribution/index': 'src/tb/apps/page/templates/contribution.index.twig',
         'page/tpl/contribution/scheduling_publication': 'src/tb/apps/page/templates/scheduling_publication.dialog.twig'
+=======
+
+        //Views
+        'bundle.view.contribution.index': 'src/tb/apps/page/views/bundle.view.contribution.index',
+
+        //Templates
+        'page/tpl/contribution.index': 'src/tb/apps/page/templates/contribution.index.twig'
+>>>>>>> #2353 init page application
     }
 });
 
