@@ -7,14 +7,7 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
         controllerContainer = {},
         controllerInstance = {},
         enabledController = null,
-        initController,
-        AbstractController,
-        registerController,
-        loadController,
-        getAppControllers,
-        updateEnabledController,
-        computeControllerName,
-        $ = jQuery,
+        initController, AbstractController, registerController, loadController, getAppControllers, updateEnabledController, computeControllerName, $ = jQuery,
         ControllerManager;
     AbstractController = new JS.Class({
         initialize: function () {
@@ -109,9 +102,13 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
             updateEnabledController(cInstance);
             def.resolve(cInstance);
         } else if (!cInstance) {
-            bbUtils.requireWithPromise([fullControllerName]).done(function () {
+            if (typeof controllerContainer[appName][controllerName] === 'function') {
                 initController(appName, controllerName, def);
-            }).fail(def.reject);
+            } else {
+                bbUtils.requireWithPromise([fullControllerName]).done(function () {
+                    initController(appName, controllerName, def);
+                }).fail(def.reject);
+            }
         }
         return def.promise();
     };
