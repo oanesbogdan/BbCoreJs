@@ -14,7 +14,7 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
             }
         },
         datas = {
-            "title": "Test RestDriver"
+            title: 'Test RestDriver'
         };
 
     Rest.setBaseUrl(baseUrl);
@@ -97,7 +97,7 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
                 var d = jQuery.Deferred();
                 expect(req.url).toEqual(baseUrl + type + '?parent_uid=abcdef1234567890');
                 expect(req.type).toEqual('DELETE');
-                expect(req.data).toEqual(JSON.stringify(datas));
+                expect(req.data).toEqual(null);
                 expect(req.headers).toEqual({'Content-Type': 'application/json', 'Range': '0,10'});
                 d.resolve('', '', fakeXhr);
 
@@ -117,7 +117,16 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
                 var d = jQuery.Deferred();
                 expect(req.url).toEqual(baseUrl + type + '/' + uid);
                 expect(req.type).toEqual('PATCH');
-                expect(req.data).toEqual(JSON.stringify(datas));
+                expect(req.data).toEqual(JSON.stringify({
+                    operations: [
+                        {
+                            op: 'replace',
+                            path: '/title',
+                            value: 'Test RestDriver'
+
+                        }
+                    ]
+                }));
                 expect(req.headers).toEqual({'Content-Type': 'application/json'});
                 d.resolve('', '', fakeXhr);
 

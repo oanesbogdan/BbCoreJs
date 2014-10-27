@@ -34,7 +34,7 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
                  * Request object used to build every REST request
                  * @type {Object}
                  */
-                this.request = new Request();
+                this.request = null;
 
                 // Lack of authentification process to add to request header
             },
@@ -59,6 +59,7 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
                 var url = new URI(this.baseUrl),
                     range;
 
+                this.request = new Request();
                 this.request.headers = {};
                 this.request.setContentType('application/json');
 
@@ -72,7 +73,11 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
                     this.computeCriterias(url, datas);
 
                     if (datas.hasOwnProperty('datas')) {
-                        this.request.setDatas(datas.datas);
+                        if ('patch' === action) {
+                            this.request.setDatas(this.computePatchOperations(datas.datas));
+                        } else {
+                            this.request.setDatas(datas.datas);
+                        }
                     }
                 } else if ('create' === action) {
                     this.request.setMethod('POST');
@@ -90,6 +95,10 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
 
                 this.request.setUrl(url.normalize().toString());
 
+                if (null !== this.request.getDatas()) {
+                    this.request.setDatas(JSON.stringify(this.request.getDatas()));
+                }
+
                 RequestHandler.send(this.request, callback);
             },
 
@@ -102,10 +111,6 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
             computeCriterias: function (url, datas) {
                 var criterias = datas.hasOwnProperty('criterias') ? datas.criterias : null,
                     criteria;
-
-                if (datas.hasOwnProperty('datas')) {
-                    datas.datas = JSON.stringify(datas.datas);
-                }
 
                 if (null === criterias) {
                     return this;
@@ -122,6 +127,30 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
                 }
 
                 return this;
+            },
+
+            /**
+             * Format request datas to match with path operations standard (RFC 6902: http://tools.ietf.org/html/rfc6902)
+             * @param  {Object} datas patch raw datas
+             * @return {Object}       formatted patch datas
+             */
+            computePatchOperations: function (datas) {
+                var operations = [],
+                    key;
+
+                for (key in datas) {
+                    if (datas.hasOwnProperty(key)) {
+                        operations.push({
+                            op: 'replace',
+                            path: '/' + key,
+                            value: datas[key]
+                        });
+                    }
+                }
+
+                return {
+                    operations: operations
+                };
             }
         }),
         rest = new RestDriver();
