@@ -1,6 +1,7 @@
 define(["tb.core"], function (Core) {
     'use strict';
     describe("ApplicationManager test ", function () {
+        console.log(" When started ");
         beforeEach(function () {
             this.appConfig = {
                 appPath: 'specs/tb/apps',
@@ -23,7 +24,7 @@ define(["tb.core"], function (Core) {
                         config: {}
                     }
                 }
-            }
+            };
             this.appConfigWithAltRoutePath = {
                 appPath: 'specs/tb/apps',
                 active: 'test',
@@ -36,7 +37,7 @@ define(["tb.core"], function (Core) {
                         }
                     }
                 }
-            }
+            };
             Core.ApplicationManager.reset();
         });
         var errorMessage = function (code, message) {
@@ -159,8 +160,8 @@ define(["tb.core"], function (Core) {
                 done();
             }, 1000);
         });
+        /* all appManager lifecycle ...*/
         describe("Application life cycle", function () {
-            Core.ApplicationManager.reset();
             var layoutApp = null,
                 contentApp = null,
                 currentApp = null,
@@ -168,6 +169,7 @@ define(["tb.core"], function (Core) {
                 barAction = false,
                 callBack;
             beforeEach(function () {
+                Core.ApplicationManager.reset();
                 layoutApp = null, contentApp = null, currentApp = null, callBack = {
                     layoutIsLaunched: function (app) {
                         layoutApp = app;
@@ -177,51 +179,62 @@ define(["tb.core"], function (Core) {
                         contentApp = app;
                         currentApp = app;
                     },
-                    lastAppIsLaunched: function(app){
+                    lastAppIsLaunched: function (app) {
                         lastApp = app;
-                        cosnole.log(lastApp.getName());
+                        currentApp = app;
                     },
-                    appFailToLaunch: function () {},
+                    appFailToLaunch: function (reason) {
+                        new Error(reason);
+                    },
                     appHasError: function () {}
                 };
-                Core.ApplicationManager.registerApplication("LayoutApplication", {
-                    onInit: function () {},
-                    onStart: function () {},
-                    onStop: function () {
-                        console.log("onStop: LayoutApplication")
-                    },
-                    onResume: function () {},
-                    onError: function () {}
-                });
-                Core.ApplicationManager.registerApplication("ContentApplication", {
-                    onInit: function () {},
-                    onStart: function () {},
-                    onStop: function () {},
-                    onResume: function () {},
-                    onError: function () {}
-                });
-                Core.ApplicationManager.registerApplication("LastApplication", {
-                    onInit: function () {},
-                    onStart: function () {},
-                    onStop: function () {},
-                    onResume: function () {},
-                    onError: function () {}
-                });
-                /* register a controller ContentApplication*/
-                Core.ControllerManager.registerController('ContentController', {
-                    appName: 'LastApplication',
-                    config: {
-                        imports: []
-                    },
-                    onInit: function () {},
-                    fooAction: function () {
-                        this.value = 'foo';
-                    },
-                    barAction: function () {
-                        this.value = 'bar';
-                        barAction = 'bar';
-                    }
-                });
+                /*app Layout*/
+                try {
+                    Core.ApplicationManager.registerApplication("LayoutApplication", {
+                        onInit: function () {},
+                        onStart: function () {},
+                        onStop: function () {
+                            console.log("onStop: LayoutApplication")
+                        },
+                        onResume: function () {},
+                        onError: function () {}
+                    });
+                    /*app Content*/
+                    Core.ApplicationManager.registerApplication("ContentApplication", {
+                        onInit: function () {},
+                        onStart: function () {},
+                        onStop: function () {},
+                        onResume: function () {},
+                        onError: function () {}
+                    });
+                    /*app Last*/
+                    Core.ApplicationManager.registerApplication("LastApplication", {
+                        onInit: function () {
+                            console.log("onInit is Started");
+                        },
+                        onStart: function () {},
+                        onStop: function () {},
+                        onResume: function () {},
+                        onError: function () {}
+                    });
+                    /* register a controller ContentApplication*/
+                    Core.ControllerManager.registerController('ContentController', {
+                        appName: 'LastApplication',
+                        config: {
+                            imports: []
+                        },
+                        onInit: function () {
+                            console.log("inside ContentController");
+                        },
+                        fooAction: function () {
+                            this.value = 'foo';
+                        },
+                        barAction: function () {
+                            this.value = 'bar';
+                            barAction = 'bar';
+                        }
+                    });
+                } catch (e) {}
             });
             it("Should fail because application already exists", function () {
                 try {
@@ -242,16 +255,16 @@ define(["tb.core"], function (Core) {
             it("Should create an application", function (done) {
                 spyOn(callBack, 'layoutIsLaunched').and.callThrough();
                 spyOn(callBack, 'contentIsLaunched').and.callThrough();
-                /* LayoutApplication */
+                /* launch LayoutApplication */
                 Core.ApplicationManager.launchApplication("LayoutApplication", {}).done(callBack.layoutIsLaunched).fail(callBack.appFailToLaunch);
                 setTimeout(function () {
-                    expect(callBack.layoutIsLaunched).toHaveBeenCalled();
-                    spyOn(layoutApp, 'onStop').and.callThrough();
                     spyOn(layoutApp, 'onResume').and.callThrough();
                     spyOn(layoutApp, 'onInit').and.callThrough();
+                    spyOn(layoutApp, 'onStop').and.callThrough();
+                    expect(callBack.layoutIsLaunched).toHaveBeenCalled();
                     expect(layoutApp).not.toBeUndefined();
                     expect(layoutApp.getName()).toEqual("LayoutApplication");
-                    /* ContentApplication */
+                    /* Then launch ContentApplication */
                     Core.ApplicationManager.launchApplication("ContentApplication", {}).done(callBack.contentIsLaunched).fail(callBack.appFailToLaunch);
                     expect(callBack.contentIsLaunched).toHaveBeenCalled();
                     spyOn(contentApp, 'onStop').and.callThrough();
@@ -259,8 +272,8 @@ define(["tb.core"], function (Core) {
                     expect(contentApp).not.toBeUndefined();
                     expect(contentApp.getName()).toEqual("ContentApplication");
                     expect(layoutApp.onStop).toHaveBeenCalled();
-                    layoutApp.onStop.calls.reset(); //spy
-                    /*testing onResume */
+                    layoutApp.onStop.calls.reset(); //clean spies
+                    /* Then lauch LayoutApplication */
                     Core.ApplicationManager.launchApplication("LayoutApplication", {}).done(callBack.layoutIsLaunched).fail(callBack.appFailToLaunch);
                     expect(currentApp.getName()).toEqual("LayoutApplication");
                     expect(layoutApp.onInit).not.toHaveBeenCalled();
@@ -268,12 +281,11 @@ define(["tb.core"], function (Core) {
                     expect(contentApp.onStop).toHaveBeenCalled();
                     expect(layoutApp.onResume).toHaveBeenCalled();
                     contentApp.onStop.calls.reset();
-                    /*last switch from Content TO LayoutApplication */
+                    /*And then switch from Content TO LayoutApplication */
                     Core.ApplicationManager.launchApplication("ContentApplication", {}).done(callBack.contentIsLaunched).fail(callBack.appFailToLaunch);
                     expect(currentApp.getName()).toEqual("ContentApplication");
                     expect(layoutApp.onStop).toHaveBeenCalled();
                     expect(contentApp.onStop).not.toHaveBeenCalled();
-                    expect(contentApp.onResume).toHaveBeenCalled();
                     done();
                 }, 1000);
             });
@@ -302,37 +314,67 @@ define(["tb.core"], function (Core) {
             });
             it("ApplicationManager.invoke should fail if the app provided can't be found", function (done) {
                 var hasError = false;
-                Core.ApplicationManager.reset();
-                Core.ApplicationManager.on("appError", function () {
+                Core.ApplicationManager.on("appError", function (e) {
                     hasError = true;
                 });
                 Core.ApplicationManager.launchApplication("ContentApplication", {}).done(callBack.contentIsLaunched).fail(callBack.appFailToLaunch);
                 Core.ApplicationManager.invoke("ContentApplsication:ContentController:barAction");
                 setTimeout(function () {
-                    try {
-                        expect(hasError).toEqual(true);
-                    } catch (e) {
-                        console.log(e);
-                    }
+                    expect(hasError).toEqual(true);
                     done()
                 }, 1000);
             });
-          /* it("Application.invoke should execute Controller action", function (done) {
+
+            it("Application.invoke should fail if controller can't be found", function (done) {
+                var controllerHasError = false;
                 Core.ApplicationManager.reset();
                 Core.ApplicationManager.on("appError", function (e) {
-                    console.log(JSON.stringify(e));
+                    controllerHasError = true;
                 });
-                Core.ApplicationManager.launchApplication("LastApplication", {}).done(callBack.lastAppIsLaunched).fail(callBack.appFailToLaunch);
-                Core.ApplicationManager.invoke("LastApplication:ContentController:barAction");
+                Core.ApplicationManager.launchApplication("LastApplication", {}).fail(function (reason) {
+                    console.log(reason);
+                    console.log("Error:" + reason);
+                });
+                Core.ApplicationManager.invoke("LastApplication:ContenstController:bar");
                 setTimeout(function () {
-                    try {
-                        expect(barAction).toEqual("bar");
-                    } catch (e) {
-                        console.log(e);
-                    }
+                    expect(controllerHasError).toBe(true);
                     done();
                 }, 1000);
-            });*/
+            });
+
+
+            it("Application.invoke should fail if controller action can't be found", function (done) {
+                var controllerHasError = false;
+                Core.ApplicationManager.reset();
+                Core.ApplicationManager.on("appError", function (e) {
+                    controllerHasError = true;
+                    console.log(e);
+                });
+                Core.ApplicationManager.launchApplication("LastApplication", {}).fail(function (reason) {
+                    console.log(reason);
+                    console.log("Error:" + reason);
+                });
+                Core.ApplicationManager.invoke("LastApplication:ContentController:baz");
+                setTimeout(function () {
+                    expect(controllerHasError).toBe(true);
+                    done();
+                }, 1000);
+            });
+
+
+
+            it("Application.invoke should execute Controller action", function (done) {
+                Core.ApplicationManager.on("appError", function (e) {});
+                Core.ApplicationManager.launchApplication("LastApplication", {}).done(function (a) {
+                }).fail(function (reason) {
+                    console.log("Error:" + reason);
+                });
+                Core.ApplicationManager.invoke("LastApplication:ContentController:bar");
+                setTimeout(function () {
+                    expect(barAction).toEqual("bar");
+                    done();
+                }, 1000);
+            });
         });
     });
 });

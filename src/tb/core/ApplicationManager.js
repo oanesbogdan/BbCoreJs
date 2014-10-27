@@ -78,16 +78,18 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 return;
             },
             dispatchToController: function (controller, action, params) {
+                var def = new $.Deferred();
                 ControllerManager.loadController(this.getName(), controller).done(function (controller) {
                     try {
                         params = underscore.rest(params); //# cf http://underscorejs.org/#rest
                         controller.invoke(action, params);
-                    } catch (e) {
-                        console.log('loadController', e);
+                    } catch (reason) {
+                        def.reject(reason);
                     }
                 }).fail(function (reason) {
-                    coreApi.exception("LoadControllerException", "5000", reason.message);
+                    def.reject(reason.message);
                 });
+                return def.promise();
             },
             /**
              * @TODO finalise setter
@@ -149,7 +151,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                     return name;
                 };
             }(appname)));
-            if (AppDefContainer[appname]) {
+            if (AppDefContainer.hasOwnProperty(appname)) {
                 coreApi.exception('ApplicationManagerException', 50007, 'An application named [' + appname + '] already exists.');
             }
             AppDefContainer[appname] = ApplicationConstructor;
@@ -170,6 +172,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 instance;
             try {
                 config = config || {};
+                /* If the current application is called */
                 if (currentApplication && (currentApplication.getName() === appname)) {
                     dfd.resolve(currentApplication);
                 } else {
@@ -232,7 +235,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
             });
         },
         reset = function () {
-            AppDefContainer = {};
+            //AppDefContainer = {};
             currentApplication = null;
             config = null;
             Api.off();
@@ -242,7 +245,6 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
             Api.trigger('appError', {
                 reason: reason
             });
-
         },
         init = function (configuration) {
             if (!configuration || !$.isPlainObject(configuration)) {
@@ -281,20 +283,24 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
         invoke = function (actionInfos, params) {
             params = params || {};
             if (!actionInfos || ('string' !== typeof actionInfos)) {
-                coreApi.exception('ApplicationManagerException', 50009, 'Application.invoke actionInfos should be a string')
+                coreApi.exception('ApplicationManagerException', 50009, 'Application.invoke actionInfos should be a string');
             }
             actionInfos = actionInfos.split(':');
             if (actionInfos.length !== 3) {
                 coreApi.exception('ApplicationManagerException', 50010, 'Invalid actionInfos. Valid format {appname}:{controllerName}:{controllerAction}');
             }
             var appPromise = launchApplication(actionInfos[0]);
-            appPromise.fail(function(reason){
-                Api.trigger("appError",{reason: reason});
+            appPromise.fail(function (reason) {
+                Api.trigger("appError", {
+                    reason: reason
+                });
             });
-
             appPromise.done(function (application) {
-                console.log("radical good");
-                application.dispatchToController(actionInfos[1], actionInfos[2], params);
+                application.dispatchToController(actionInfos[1], actionInfos[2], params).done( /*trigger events here if needed*/ ).fail(function (e) {
+                    Api.trigger("appError", {
+                        reason: e
+                    });
+                });
             });
         };
     Api = {

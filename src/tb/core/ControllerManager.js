@@ -279,7 +279,6 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
             }
         };
 
-
     Api.register('ControllerManager', ControllerManager);
 
     return ControllerManager;
