@@ -242,9 +242,13 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
                 updateEnabledController(cInstance);
                 def.resolve(cInstance);
             } else {
-                utils.requireWithPromise([fullControllerName]).done(function () {
+                if (controllerContainer.hasOwnProperty(appName) && typeof controllerContainer[appName][controllerName] === 'function') {
                     initController(appName, controllerName, def);
-                }).fail(def.reject);
+                } else {
+                    utils.requireWithPromise([fullControllerName]).done(function () {
+                        initController(appName, controllerName, def);
+                    }).fail(def.reject);
+                }
             }
 
             return def.promise();

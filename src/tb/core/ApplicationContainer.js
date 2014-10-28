@@ -1,4 +1,4 @@
-define('tb.core.ApplicationContainer', ['jquery', 'jsclass', 'tb.core.Api'], function (jQuery, Class, coreApi) {
+define('tb.core.ApplicationContainer', ['jquery', 'jsclass', 'tb.core.Api'], function (jQuery, coreApi) {
     'use strict';
     var instance = null,
         AppContainer;
@@ -37,6 +37,7 @@ define('tb.core.ApplicationContainer', ['jquery', 'jsclass', 'tb.core.Api'], fun
         getByAppInfosName: function (name) {
             var result = null;
             jQuery.each(this.container, function (i, appInfos) {
+
                 if (appInfos.name === name) {
                     result = appInfos;
                     return false;
