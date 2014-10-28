@@ -88,8 +88,12 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
             onStart: function () {
                 this.trigger(this.getName() + ':onStart');
             },
-            onStop: function () {},
-            onResume: function () {},
+            onStop: function () {
+                console.log("onStop");
+            },
+            onResume: function () {
+                console.log("onStop");
+            },
             onError: function (e) {
                 console.log('error in[' + this.name + '] application', e);
             }
@@ -277,7 +281,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 });
             });
             appPromise.done(function (application) {
-                application.dispatchToController(actionInfos[1], actionInfos[2], params).done( /*trigger events here if needed*/ ).fail(function (e) {
+                application.dispatchToController(actionInfos[1], actionInfos[2], params).fail(function (e) {
                     Api.trigger("appError", {
                         reason: e
                     });
