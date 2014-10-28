@@ -40,7 +40,7 @@ define(["tb.core"], function (Core) {
             Core.ApplicationManager.reset();
         });
         var errorMessage = function (code, message) {
-                return 'Error nÂ°' + code + ' ApplicationManagerException: ' + message;
+                return 'Error n°' + code + ' ApplicationManagerException: ' + message;
             };
         it("ApplicationManager.Init throws exception when wrong params are provided", function () {
             expect(true).toBe(true);
