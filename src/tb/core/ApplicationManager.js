@@ -295,7 +295,6 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
         init: init,
         reset: reset
     };
-    /* application as an Event emitter */
     underscore.extend(Api, Backbone.Events);
     coreApi.register('ApplicationManager', Api);
     return Api;
