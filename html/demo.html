@@ -24,8 +24,8 @@
         </div>
         <div class="container">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#appLayout/showlist/58">Layout</a></li>
-                <li><a data-action="layout:default" href="#appContent/params">Content</a></li>
+                <li class="active"><a data-action="layout:default" href="#appContent/params">Layout</a></li>
+                <li><a href='#appContent/params'>Content</a></li>
             </ul>
             <div class="jumbotron">
                 <p>Utiliser les onglets pour changer d'application</p>
@@ -35,7 +35,7 @@
         <script>
             /* sample to put in a yml file*/
             var _errorHandler = function(error){
-                console.log(error);
+                console.log("error", error);
             }
             var applicationConfig = {
                 appPath: 'resources/src/tb/apps',
@@ -49,25 +49,35 @@
                     },
                     content: {
                         label  : 'Edition du contenu',
-                        config : { }
+                        config : {}
                     }
                 }
             };
+
 
             require(['tb.core'], function (core) {
                 var router = null;
 
                 core.ApplicationManager.on('routesLoaded', function () {
                     /*cf http://backbonejs.org/#Router for available options */
-                    router = core.RouteManager.initRouter({silent : false, pushState: false});
+                    router = core.RouteManager.initRouter({silent : false});
+                });
+
+                core.ApplicationManager.on('appError', function(reason){
+                    console.log("bbCoreError --> ", reason);
                 });
 
                 core.ApplicationManager.on('appIsReady',function(app){
                     router.navigate(app.getMainRoute());
                 });
 
-                core.ApplicationManager.init(applicationConfig);
+                try {
+                    core.ApplicationManager.init(applicationConfig);
+                } catch(e){
+                    console.log(e);
+                }
             }, _errorHandler);
+
         </script>
     </body>
 </html>

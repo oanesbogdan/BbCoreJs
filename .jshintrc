@@ -76,6 +76,7 @@
         "jasmine",
         "beforeEach",
         "Backbone",
-        "xit"
+        "xit",
+        "xdescribe"
     ]
 }

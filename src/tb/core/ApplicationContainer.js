@@ -1,27 +1,7 @@
-/*
- * Copyright (c) 2011-2013 Lp digital system
- *
- * This file is part of BackBuilder5.
- *
- * BackBuilder5 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BackBuilder5 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
- */
-define('tb.core.ApplicationContainer', ['jquery', 'jsclass', 'tb.core.Api'], function (jQuery) {
+define('tb.core.ApplicationContainer', ['jquery', 'jsclass', 'tb.core.Api'], function (jQuery, coreApi) {
     'use strict';
-
     var instance = null,
         AppContainer;
-
     /**
      * AppContainer object
      */
@@ -32,7 +12,6 @@ define('tb.core.ApplicationContainer', ['jquery', 'jsclass', 'tb.core.Api'], fun
         initialize: function () {
             this.container = [];
         },
-
         /**
          * Register a new application
          * @param {object} applicationInfos  {
@@ -42,9 +21,14 @@ define('tb.core.ApplicationContainer', ['jquery', 'jsclass', 'tb.core.Api'], fun
          *                                   }
          */
         register: function (applicationInfos) {
+            if (!jQuery.isPlainObject(applicationInfos)) {
+                coreApi.exception('AppContainerException', 60000, 'applicationInfos should be an object');
+            }
+            if (!applicationInfos.hasOwnProperty('name')) {
+                coreApi.exception('AppContainerException', 60001, 'applicationInfos should have a name property');
+            }
             this.container.push(applicationInfos);
         },
-
         /**
          * Gets application info by its name
          * @param {type} name
@@ -53,17 +37,19 @@ define('tb.core.ApplicationContainer', ['jquery', 'jsclass', 'tb.core.Api'], fun
         getByAppInfosName: function (name) {
             var result = null;
             jQuery.each(this.container, function (i, appInfos) {
+
                 if (appInfos.name === name) {
                     result = appInfos;
                     return false;
                 }
                 i = i + 1;
             });
-
             return result;
+        },
+        reset: function () {
+            this.container = [];
         }
     });
-
     return {
         getInstance: function () {
             if (!instance) {
@@ -71,6 +57,5 @@ define('tb.core.ApplicationContainer', ['jquery', 'jsclass', 'tb.core.Api'], fun
             }
             return instance;
         }
-
     };
 });

@@ -18,7 +18,7 @@
  */
 define(['tb.core', 'jquery', 'content.test.manager'], function (bbCore, jQuery) {
     'use strict';
-    bbCore.ControllerManager.registerController('MainController', {
+    bbCore.ControllerManager.registerController('HomeController', {
         appName: 'content',
         config: {
             imports: ['content.test.manager']
