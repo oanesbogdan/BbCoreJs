@@ -153,7 +153,8 @@ module.exports = function (grunt) {
                         'beforeEach',
                         'after',
                         'afterEach',
-                        'xit'
+                        'xit',
+                        'xdescribe'
                     ]
                 }
             },

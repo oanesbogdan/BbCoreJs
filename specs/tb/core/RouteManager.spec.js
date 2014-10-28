@@ -20,8 +20,8 @@ define(['tb.core', 'tb.core.RouteManager', 'BackBone'], function (Core, Router, 
         }
     });
     Core.ApplicationManager.init(applicationConfig);
-    /* global xdescribe */
-    xdescribe('RouteManager spec', function () {
+
+    describe('RouteManager spec', function () {
         it('Adding Test application into ApplicationManager', function (done) {
             expect(true).toBe(true);
             setTimeout(function () {

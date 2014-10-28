@@ -1,6 +1,7 @@
 define(["tb.core"], function (Core) {
     'use strict';
-    describe("ApplicationManager test ", function () {
+
+    describe("ApplicationManager test", function () {
         beforeEach(function () {
             this.appConfig = {
                 appPath: 'specs/tb/apps',
@@ -13,6 +14,7 @@ define(["tb.core"], function (Core) {
                     }
                 }
             };
+
             this.appConfigWithError = {
                 appPath: 'specs/tb/apps',
                 active: 'test',
@@ -24,6 +26,7 @@ define(["tb.core"], function (Core) {
                     }
                 }
             };
+
             this.appConfigWithAltRoutePath = {
                 appPath: 'specs/tb/apps',
                 active: 'test',
@@ -37,19 +40,20 @@ define(["tb.core"], function (Core) {
                     }
                 }
             };
+
             Core.ApplicationManager.reset();
         });
         var errorMessage = function (code, message) {
                 return 'Error n°' + code + ' ApplicationManagerException: ' + message;
             };
         it("ApplicationManager.Init throws exception when wrong params are provided", function () {
-            expect(true).toBe(true);
             try {
                 Core.ApplicationManager.init();
                 expect(true).toBe(false);
             } catch (e) {
                 expect(e).toEqual(errorMessage(50001, "init expects a parameter one to be an object."));
             }
+
             try {
                 Core.ApplicationManager.reset();
                 Core.ApplicationManager.init({});
@@ -57,6 +61,7 @@ define(["tb.core"], function (Core) {
             } catch (e) {
                 expect(e).toEqual(errorMessage(50002, "InvalidAppConfig [appPath] key is missing"));
             }
+
             try {
                 Core.ApplicationManager.init({
                     appPath: "src/tb/apps"
@@ -65,6 +70,7 @@ define(["tb.core"], function (Core) {
             } catch (e) {
                 expect(e).toEqual(errorMessage(50003, 'InvalidAppConfig [applications] key is missing'));
             }
+
             try {
                 Core.ApplicationManager.init({
                     appPath: "src/tb/apps",
@@ -74,6 +80,7 @@ define(["tb.core"], function (Core) {
             } catch (e) {
                 expect(e).toEqual(errorMessage(50004, 'InvalidAppConfig [active] key is missing'));
             }
+
             try {
                 Core.ApplicationManager.init({
                     appPath: "src/tb/apps",
@@ -85,6 +92,7 @@ define(["tb.core"], function (Core) {
                 expect(e).toEqual(errorMessage(50006, 'InvalidAppConfig at least one application config should be provided'));
             }
         });
+
         it("Should trigger appIsReady event", function (done) {
             var callBack = {
                 onInit: function () {return; }
@@ -101,6 +109,7 @@ define(["tb.core"], function (Core) {
                 expect(false).toBe(true);
             }
         });
+
         it("Should trigger appLoadingError event", function (done) {
             var callBack = {
                 onError: function () {return; }
@@ -118,6 +127,7 @@ define(["tb.core"], function (Core) {
                 Core.logger.debug(e);
             }
         });
+
         it("Should trigger routesLoaded event", function (done) {
             var callBack = {
                 onRouteReady: function () {
@@ -129,6 +139,7 @@ define(["tb.core"], function (Core) {
             try {
                 Core.ApplicationManager.on("routesLoaded", callBack.onRouteReady);
                 Core.ApplicationManager.init(this.appConfig);
+
                 setTimeout(function () {
                     expect(callBack.onRouteReady).toHaveBeenCalled();
                     done();
@@ -138,6 +149,7 @@ define(["tb.core"], function (Core) {
                 expect(true).toBe(false);
             }
         });
+
         it("Should fail because wrong.routes can't be found", function (done) {
             var callBack = {
                 routesReady: function () {
@@ -153,19 +165,22 @@ define(["tb.core"], function (Core) {
             Core.ApplicationManager.on("routesLoaded", callBack.routesReady);
             Core.ApplicationManager.on("appError", callBack.appError);
             Core.ApplicationManager.init(this.appConfigWithAltRoutePath);
+
             setTimeout(function () {
                 expect(callBack.routesReady).not.toHaveBeenCalled();
                 expect(callBack.appError).toHaveBeenCalled();
                 done();
             }, 1000);
         });
+
         /* all appManager lifecycle ...*/
         describe("Application life cycle", function () {
-            var layoutApp = null,
-                contentApp = null,
-                currentApp = null,
+            var layoutApp,
+                contentApp,
+                currentApp,
                 barAction = false,
                 callBack;
+
             beforeEach(function () {
                 Core.ApplicationManager.reset();
                 layoutApp = null;
@@ -195,6 +210,7 @@ define(["tb.core"], function (Core) {
                         onResume: function () {Core.logger.debug("$noop"); },
                         onError: function () {Core.logger.debug("$noop"); }
                     });
+
                     /*app Content*/
                     Core.ApplicationManager.registerApplication("ContentApplication", {
                         onInit: function () {Core.logger.debug("$noop"); },
@@ -203,6 +219,7 @@ define(["tb.core"], function (Core) {
                         onResume: function () {Core.logger.debug("$noop"); },
                         onError: function () {Core.logger.debug("$noop"); }
                     });
+
                     /*app Last*/
                     Core.ApplicationManager.registerApplication("LastApplication", {
                         onInit: function () {
@@ -213,6 +230,7 @@ define(["tb.core"], function (Core) {
                         onResume: function () {Core.logger.debug("$noop"); },
                         onError: function () {Core.logger.debug("$noop"); }
                     });
+
                     /* register a controller ContentApplication*/
                     Core.ControllerManager.registerController('ContentController', {
                         appName: 'LastApplication',
@@ -232,6 +250,7 @@ define(["tb.core"], function (Core) {
                     });
                 } catch (e) { Core.logger.debug(e); }
             });
+
             it("Should fail because application already exists", function () {
                 try {
                     Core.ApplicationManager.registerApplication("LayoutApplication", {
@@ -248,6 +267,7 @@ define(["tb.core"], function (Core) {
                     expect(e).toEqual(errorMessage(50007, 'An application named [LayoutApplication] already exists.'));
                 }
             });
+
             it("Should create an application", function (done) {
                 spyOn(callBack, 'layoutIsLaunched').and.callThrough();
                 spyOn(callBack, 'contentIsLaunched').and.callThrough();
@@ -285,6 +305,7 @@ define(["tb.core"], function (Core) {
                     done();
                 }, 1000);
             });
+
             it("ApplicationManager.invoke should throw an error when no parameter is provided", function (done) {
                 Core.ApplicationManager.launchApplication("ContentApplication", {}).done(callBack.contentIsLaunched).fail(callBack.appFailToLaunch);
                 setTimeout(function () {
@@ -296,6 +317,7 @@ define(["tb.core"], function (Core) {
                     done();
                 }, 1000);
             });
+
             it("ApplicationManager.invoke should throw an error when wrong parameters are provided", function (done) {
                 Core.ApplicationManager.launchApplication("ContentApplication", {}).done(callBack.contentIsLaunched).fail(callBack.appFailToLaunch);
                 setTimeout(function () {
@@ -308,6 +330,7 @@ define(["tb.core"], function (Core) {
                     done();
                 }, 1000);
             });
+
             it("ApplicationManager.invoke should fail if the app provided can't be found", function (done) {
                 var hasError = false;
                 Core.ApplicationManager.on("appError", function () {
@@ -320,6 +343,7 @@ define(["tb.core"], function (Core) {
                     done();
                 }, 1000);
             });
+
             it("Application.invoke should fail if controller can't be found", function (done) {
                 var controllerHasError = false;
                 Core.ApplicationManager.reset();
@@ -336,6 +360,7 @@ define(["tb.core"], function (Core) {
                     done();
                 }, 1000);
             });
+
             it("Application.invoke should fail if controller action can't be found", function (done) {
                 var controllerHasError = false;
                 Core.ApplicationManager.reset();
@@ -353,6 +378,7 @@ define(["tb.core"], function (Core) {
                     done();
                 }, 1000);
             });
+
             it("Application.invoke should execute Controller action", function (done) {
                 Core.ApplicationManager.on("appError", function () {Core.logger.debug("$noop"); });
                 Core.ApplicationManager.launchApplication("LastApplication", {}).fail(function (reason) {
