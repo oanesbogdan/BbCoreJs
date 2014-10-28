@@ -1,6 +1,6 @@
 define(['tb.core', 'tb.core.RouteManager', 'BackBone'], function (Core, Router, BackBone) {
     'use strict';
-    var testController = null,
+    var testController = {value: ''},
         applicationConfig = {
             appPath: 'specs/tb/apps',
             active: 'test',
@@ -132,13 +132,16 @@ define(['tb.core', 'tb.core.RouteManager', 'BackBone'], function (Core, Router, 
             }, 100);
             expect(testController.value).toEqual('bar');
         });
-        it('Navigate to TestController::fooAction() with unknown route name will throw an exception', function () {
-            try {
-                Router.navigateByName('test:foobar');
-                expect(true).toEqual(false);
-            } catch (e) {
-                expect(e).toEqual('RouteManager:buildLink routeInfos can\'t be found');
-            }
+        it('Navigate to TestController::fooAction() with unknown route name will throw an exception', function (done) {
+            setTimeout(function () {
+                try {
+                    Router.navigateByName('test:foobar');
+                    expect(true).toEqual(false);
+                } catch (e) {
+                    expect(e).toEqual('RouteManager:buildLink routeInfos can\'t be found');
+                }
+                done();
+            }, 100);
         });
     }); // end of call describe() function
 });
