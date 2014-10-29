@@ -17,26 +17,26 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('form.view', ['tb.core.ViewManager', 'BackBone'], function (ViewManager, Backbone) {
+define('form.element.Text', ['form.Element', 'jsclass'], function (Element) {
     'use strict';
 
-    var FormView = Backbone.View.extend({
+    /**
+     * ElementText object
+     */
+    var Text = new JS.Class(Element, {
 
-        initialize: function (template, elements, form) {
-            this.el = '#bb5-ui';
+        initialize: function (view, template, formTag) {
+            this.view = view;
             this.template = template;
-            this.elements = elements;
-            this.form = form;
+            this.formTag = formTag;
         },
 
-        /**
-         * Render the template into the DOM with the ViewManager
-         * @returns {String} html
-         */
         render: function () {
-            return ViewManager.render(this.template, {elements: this.elements, form: this.form});
+            var view = new this.view(this.template, this.formTag, this);
+
+            return view.render();
         }
     });
 
-    return FormView;
+    return Text;
 });

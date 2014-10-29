@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define('tb.core.FormBuilder', ['tb.core', 'form.Form', 'jsclass'], function (Core, FormConstructor) {
+define('tb.core.FormBuilder', ['tb.core', 'form.Form', 'tb.core.Utils', 'jsclass'], function (Core, FormConstructor, Utils) {
     'use strict';
 
     /**
@@ -42,40 +42,62 @@ define('tb.core.FormBuilder', ['tb.core', 'form.Form', 'jsclass'], function (Cor
          * @param {type} config
          * @returns {undefined}
          */
-        createForm: function (config) {
+        renderForm: function (config, callback) {
 
             var key,
                 elements,
-                element,
-                template,
-                view;
+                elementConfig,
+                view,
+                typeFormated,
+                self = this,
+                requireArray = [];
 
             if (!config.hasOwnProperty('elements')) {
                 Core.exception('MissingPropertyException', 500, 'Property "elements" not found');
             }
 
             //Load form in config or a default form
-            if (config.hasOwnProperty('form')) {
-                if (config.form.hasOwnProperty('template')) {
-                    //Load the template
-                }
-                if (config.form.hasOwnProperty('view')) {
-                    //Load the view
-                }
+            if (!config.hasOwnProperty('form')) {
+                config.form = {};
+            }
+
+            if (!config.form.hasOwnProperty('template')) {
+                config.form.template = 'text!src/tb/core/form/templates/form.twig';
+            }
+
+            if (!config.form.hasOwnProperty('view')) {
+                config.form.view = 'form.view';
             }
 
             //Set the config (template/view)
-            this.form = new FormConstructor();
+            requireArray.push(config.form.template).push(config.form.view);
+            this.form = new FormConstructor(config.form);
 
             elements = config.elements;
             for (key in elements) {
                 if (elements.hasOwnProperty(key)) {
-                    element = elements[key];
-                    this.form.add(key, element);
+                    elementConfig = elements[key];
+
+                    typeFormated = elementConfig.type.substr(0, 1).toUpperCase() + elementConfig.type.substr(1);
+                    elementConfig.class = 'form.element.' + typeFormated;
+                    requireArray.push(elementConfig.view);
+
+                    elementConfig.template = 'text!src/tb/core/form/element/templates/' + elementConfig.type + '.twig';
+                    requireArray.push(elementConfig.template);
+
+                    elementConfig.view = 'form.element.view.' + elementConfig.type;
+                    requireArray.push(elementConfig.view);
+
+                    this.form.add(key, elementConfig);
                 }
             }
 
-            return this.form;
+            Utils.requireWithPromise(requireArray).done(function () {
+                //callback(self.form.render());
+                self.form.render();
+            }).fail(function (e) {
+                console.log(e);
+            });
         }
     });
 

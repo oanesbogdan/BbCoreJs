@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('form.Form', ['jsclass'], function () {
+define('form.Form', ['underscore', 'BackBone', 'underscore', 'tb.core', 'jsclass'], function (Underscore, Backbone, us, Core) {
     'use strict';
 
     /**
@@ -25,11 +25,74 @@ define('form.Form', ['jsclass'], function () {
      */
     var Form = new JS.Class({
 
+        AVAILABLE_METHOD: ['POST', 'GET'],
+
         /**
          * Initialize of Form
          */
-        initialize: function () {
+        initialize: function (config) {
+            Underscore.extend(this, Backbone.Events);
             this.elements = {};
+            this.config = config;
+
+            this.computeMandatoryConfig(config);
+
+            this.computeDefaultValue(config);
+        },
+
+        computeMandatoryConfig: function (config) {
+
+            if (config === undefined) {
+                Core.exception('MissingConfigException', 500, 'Config must be set');
+            }
+
+            if (!config.hasOwnProperty('template')) {
+                Core.exception('MissingPropertyException', 500, 'Property "template" not found in form');
+            } else {
+                this.template = require(config.template);
+            }
+
+            if (!config.hasOwnProperty('view')) {
+                Core.exception('MissingPropertyException', 500, 'Property "view" not found in form');
+            } else {
+                this.view = require(config.view);
+            }
+        },
+
+        computeDefaultValue: function (config) {
+
+            this.id = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+
+            this.method = 'POST';
+            if (config.hasOwnProperty('method') && us.contains(this.AVAILABLE_METHOD, config.method)) {
+                this.method = config.method;
+            }
+
+            this.action = null;
+            if (config.hasOwnProperty('action')) {
+                this.action = config.action;
+            }
+
+            this.submitLabel = 'Submit';
+            if (config.hasOwnProperty('submit_label')) {
+                this.submitLabel = config.submit_label;
+            }
+        },
+
+        getMethod: function () {
+            return this.method;
+        },
+
+        getAction: function () {
+            return this.action;
+        },
+
+        getSubmitLabel: function () {
+            return this.submitLabel;
+        },
+
+        getId: function () {
+            return this.id;
         },
 
         /**
@@ -40,6 +103,13 @@ define('form.Form', ['jsclass'], function () {
          */
         add: function (key, element) {
             if (!this.elements.hasOwnProperty(key)) {
+
+                if (!element.hasOwnProperty('class') ||
+                    !element.hasOwnProperty('view') ||
+                    !element.hasOwnProperty('template')) {
+
+                    Core.exception('MissingPropertyException', 500, 'One or more property not found on add element in form');
+                }
                 this.elements[key] = element;
             }
 
@@ -82,14 +152,29 @@ define('form.Form', ['jsclass'], function () {
 
         render: function () {
             var key,
-                element;
+                element,
+                items = [],
+                view,
+                elementConfig,
+                elementClass,
+                elementView,
+                elementTemplate;
 
             for (key in this.elements) {
                 if (this.elements.hasOwnProperty(key)) {
-                    element = this.elements[key];
-                    //load and render
+                    elementConfig = this.elements[key];
+
+                    elementClass = require(elementConfig.class);
+                    elementTemplate = require(elementConfig.template);
+                    elementView = require(elementConfig.view);
+
+                    items.push((new elementClass(elementView, elementTemplate, this.id)).render());
                 }
             }
+
+            view = new this.view(this.template, items, this);
+
+            return view.render();
         }
     });
 
