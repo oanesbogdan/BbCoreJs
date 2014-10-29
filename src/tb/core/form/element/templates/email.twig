@@ -1,0 +1,10 @@
+<div class="form-group">
+    <label class="sr-only" for="">{{ element.getLabel() }}</label>
+    <input type="email"
+           name="{{ element.getKey() }}"
+           {% if element.isDisabled() %}disabled{% endif %}
+           {% if element.getValue() != null %}value="{{ element.getValue() }}"{% endif %}
+           class="form-control"
+           {% if element.getPlaceholder() != null %}placeholder="{{ element.getPlaceholder() }}"{% endif %}
+    >
+</div>
