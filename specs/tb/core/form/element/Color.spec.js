@@ -1,16 +1,16 @@
-define(['form.element.view.password', 'form.element.Password', 'text!src/tb/core/form/element/templates/password.twig'], function (view, TextConstructor, template) {
+define(['form.element.view.color', 'form.element.Color', 'text!src/tb/core/form/element/templates/color.twig'], function (view, TextConstructor, template) {
     'use strict';
 
-    describe('Testing ElementPassword', function () {
+    describe('Testing ElementColor', function () {
 
         var config = {
-                type: 'password',
-                label: 'My password',
-                value: '123456789',
+                type: 'color',
+                label: 'My color',
+                value: '0000',
                 disabled: true
             },
             formTag = 'hZ1e',
-            element = new TextConstructor('my_password', config, formTag, view, template);
+            element = new TextConstructor('my_calor', config, formTag, view, template);
 
         it('Testing initialize', function () {
 
@@ -19,7 +19,7 @@ define(['form.element.view.password', 'form.element.Password', 'text!src/tb/core
         });
 
         it('Testing render', function () {
-
+            
             expect(element.render().length).toBeGreaterThan(0);
         });
     });
