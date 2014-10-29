@@ -20,6 +20,22 @@ define(['tb.core.PopInManager', 'tb.core.PopIn'], function (PopInManager, PopIn)
 
             expect(popIn.getId()).toEqual('foobar');
             expect(popIn.getOptions().resizable).toEqual(true);
+
+            expect(typeof popIn.display).toEqual('function');
+            spyOn(PopInManager, 'display');
+            popIn.display();
+            expect(PopInManager.display).toHaveBeenCalled();
+
+            expect(typeof popIn.hide).toEqual('function');
+            spyOn(PopInManager, 'hide');
+            popIn.hide();
+            expect(PopInManager.hide).toHaveBeenCalled();
+
+            expect(typeof popIn.mask).toEqual('function');
+            popIn.mask();
+
+            expect(typeof popIn.unmask).toEqual('function');
+            popIn.unmask();
         });
 
         it('Create a sub pop-in with invalid parent will raise an exception', function () {
