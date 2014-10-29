@@ -83,11 +83,20 @@ define(['form.Form', 'text!src/tb/core/form/templates/form.twig', 'form.view', '
                 label: 'My select',
                 options: {foo: 'bar', bar: 'bar'},
                 selected: ['foo']
+            }, checkbox = {
+                view: 'form.element.view.checkbox',
+                template: 'text!src/tb/core/form/element/templates/checkbox.twig',
+                class: 'form.element.Checkbox',
+                type: 'checkbox',
+                label: 'My Checkbox',
+                options: {foo: 'bar', bar: 'bar'},
+                checked: ['foo']
             };
 
             form.add('name', text);
             form.add('list', select);
-
+            form.add('check', checkbox);
+            
             expect(form.render().length).toBeGreaterThan(0);
         });
     });
