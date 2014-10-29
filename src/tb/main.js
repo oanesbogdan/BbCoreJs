@@ -38,10 +38,7 @@
             'tb.core.Logger': 'src/tb/core/Logger',
             'tb.core.PopIn': 'src/tb/core/PopIn',
             'tb.core.PopInManager': 'src/tb/core/PopInManager',
-            'tb.core.Scope': 'src/tb/core/Scope',
-            'form.Element': 'src/tb/core/form/element/Element',
-            'form.element.Text': 'src/tb/core/form/element/Text',
-            'form.element.Select': 'src/tb/core/form/element/Select'
+            'tb.core.Scope': 'src/tb/core/Scope'
         }
     });
     define('tb.core', [
