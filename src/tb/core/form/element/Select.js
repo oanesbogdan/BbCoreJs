@@ -17,26 +17,52 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('form.element.Text', ['form.Element', 'jsclass'], function (Element) {
+define('form.element.Select', ['form.Element', 'jsclass'], function (Element) {
     'use strict';
 
     /**
      * ElementText object
      */
-    var Text = new JS.Class(Element, {
+    var Select = new JS.Class(Element, {
 
         initialize: function (key, config, formTag, view, template) {
             this.callSuper(key, config, formTag);
             this.view = view;
             this.template = template;
+
+            this.buildCustomConfig(config);
         },
 
         render: function () {
             var view = new this.view(this.template, this.formTag, this);
 
             return view.render();
+        },
+
+        buildCustomConfig: function (config) {
+            this.options = {};
+            if (config.hasOwnProperty('options')) {
+                this.options = config.options;
+            }
+
+            if (config.hasOwnProperty('selected')) {
+                this.setValue(config.selected);
+            }
+
+            this.multiple = false;
+            if (config.hasOwnProperty('multiple') && config.multiple === true) {
+                this.multiple = config.multiple;
+            }
+        },
+
+        getOptions: function () {
+            return this.options;
+        },
+
+        isMultiple: function () {
+            return this.multiple;
         }
     });
 
-    return Text;
+    return Select;
 });
