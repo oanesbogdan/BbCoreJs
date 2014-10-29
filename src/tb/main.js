@@ -37,7 +37,9 @@
             'tb.core.RestDriver': 'src/tb/core/RestDriver',
             'tb.core.PopIn': 'src/tb/core/PopIn',
             'tb.core.PopInManager': 'src/tb/core/PopInManager',
-            'tb.core.Scope': 'src/tb/core/Scope'
+            'tb.core.Scope': 'src/tb/core/Scope',
+            'form.element.Text': 'src/tb/core/form/element/Text',
+            'form.Element': 'src/tb/core/form/element/Element'
         }
     });
     define('tb.core', [

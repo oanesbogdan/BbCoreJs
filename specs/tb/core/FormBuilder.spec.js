@@ -24,14 +24,14 @@ define(['tb.core.FormBuilder'], function (FormBuilder) {
             expect(typeof FormBuilder.form).toBe('undefined');
 
             try {
-                FormBuilder.createForm({});
+                FormBuilder.renderForm({});
                 expect(false).toBe(true);
             } catch (e) {
                 expect(e).toEqual('Error n°500 MissingPropertyException: Property "elements" not found');
             }
 
-            form = FormBuilder.createForm(config);
-            expect(typeof form).toBe('object');
+            FormBuilder.renderForm(config);
+            expect(typeof FormBuilder.form).toBe('object');
         });
     });
 });

@@ -30,9 +30,10 @@ define('form.Element', ['tb.core', 'jsclass'], function (Core) {
          * @param {String} key
          * @param {Object} config
          */
-        initialize: function (key, config) {
+        initialize: function (key, config, formTag) {
             this.key = key;
             this.config = config;
+            this.formTag = formTag;
 
             this.computeMandatoryConfig(config);
 

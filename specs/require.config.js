@@ -6,7 +6,7 @@ require.config({
         'jqueryui': 'lib/jquery-ui/jquery-ui',
         'jsclass' : 'node_modules/jsclass/min/core',
         'underscore': 'lib/underscore/underscore',
-        'nunjucks': 'lib/nunjucks/nunjucks.min',
+        'nunjucks': 'bower_components/nunjucks/browser/nunjucks',
         'tb.core': 'src/tb/main',
         'tb.component': 'src/tb/component/component',
         'handlebars': 'lib/handlebars/handlebars',
