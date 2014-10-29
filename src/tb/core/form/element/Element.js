@@ -81,6 +81,10 @@ define('form.Element', ['tb.core', 'jsclass'], function (Core) {
                 Core.exception('MissingConfigException', 500, 'Config must be set');
             }
 
+            if (typeof this.formTag !== 'string') {
+                Core.exception('BadTypeException', 500, 'The formTag of element must be a string');
+            }
+
             if (!config.hasOwnProperty('type')) {
                 Core.exception('MissingPropertyException', 500, 'Property "type" not found of element: ' + this.key);
             } else {
@@ -134,6 +138,16 @@ define('form.Element', ['tb.core', 'jsclass'], function (Core) {
          */
         getValue: function () {
             return this.value;
+        },
+
+        /**
+         * Set the value of element
+         * @returns {Object} Element
+         */
+        setValue: function (value) {
+            this.value = value;
+
+            return this;
         },
 
         /**

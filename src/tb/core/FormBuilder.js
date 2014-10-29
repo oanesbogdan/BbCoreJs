@@ -70,7 +70,8 @@ define('tb.core.FormBuilder', ['tb.core', 'form.Form', 'tb.core.Utils', 'jsclass
             }
 
             //Set the config (template/view)
-            requireArray.push(config.form.template).push(config.form.view);
+            requireArray.push(config.form.template);
+            requireArray.push(config.form.view);
             this.form = new FormConstructor(config.form);
 
             elements = config.elements;

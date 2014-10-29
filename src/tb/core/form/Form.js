@@ -40,6 +40,10 @@ define('form.Form', ['underscore', 'BackBone', 'underscore', 'tb.core', 'jsclass
             this.computeDefaultValue(config);
         },
 
+        /**
+         * Verify a mandatory field and set the view and template in form
+         * @param {Object} config
+         */
         computeMandatoryConfig: function (config) {
 
             if (config === undefined) {
@@ -59,6 +63,10 @@ define('form.Form', ['underscore', 'BackBone', 'underscore', 'tb.core', 'jsclass
             }
         },
 
+        /**
+         * Set the default value if is not define in config
+         * @param {Object} config
+         */
         computeDefaultValue: function (config) {
 
             this.id = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
@@ -79,18 +87,34 @@ define('form.Form', ['underscore', 'BackBone', 'underscore', 'tb.core', 'jsclass
             }
         },
 
+        /**
+         * Get the method of form
+         * @returns {String}
+         */
         getMethod: function () {
             return this.method;
         },
 
+        /**
+         * Get the action of form
+         * @returns {String}
+         */
         getAction: function () {
             return this.action;
         },
 
+        /**
+         * Get the label of button submit
+         * @returns {String}
+         */
         getSubmitLabel: function () {
             return this.submitLabel;
         },
 
+        /**
+         * Get the unique id
+         * @returns {String}
+         */
         getId: function () {
             return this.id;
         },
@@ -150,6 +174,10 @@ define('form.Form', ['underscore', 'BackBone', 'underscore', 'tb.core', 'jsclass
             return this.elements;
         },
 
+        /**
+         * Render each element in form
+         * @returns {String} HTML
+         */
         render: function () {
             var key,
                 element,
@@ -168,12 +196,12 @@ define('form.Form', ['underscore', 'BackBone', 'underscore', 'tb.core', 'jsclass
                     elementTemplate = require(elementConfig.template);
                     elementView = require(elementConfig.view);
 
-                    items.push((new elementClass(elementView, elementTemplate, this.id)).render());
+                    items.push((new elementClass(key,  elementConfig, this.id, elementView, elementTemplate)).render());
                 }
             }
 
             view = new this.view(this.template, items, this);
-
+            
             return view.render();
         }
     });

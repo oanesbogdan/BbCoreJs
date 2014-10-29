@@ -4,6 +4,8 @@ define(['form.Element'], function (ElementConstructor) {
 
     describe('Testing FormElement', function () {
 
+        var formTag = '1Zvze';
+
         it('Testing FormElement constructor error (Missing key or config)', function () {
             var element;
 
@@ -21,6 +23,13 @@ define(['form.Element'], function (ElementConstructor) {
                 expect(e).toEqual('Error n°500 MissingConfigException: Config must be set');
             }
 
+            try {
+                element = new ElementConstructor('foo', {});
+                expect(false).toBe(true);
+            } catch (e) {
+                expect(e).toEqual('Error n°500 BadTypeException: The formTag of element must be a string');
+            }
+
             expect(element).not.toBeDefined();
         });
 
@@ -31,7 +40,7 @@ define(['form.Element'], function (ElementConstructor) {
                 element;
 
             try {
-                element = new ElementConstructor('foo', config);
+                element = new ElementConstructor('foo', config, formTag);
                 expect(false).toBe(true);
             } catch (e) {
                 expect(e).toEqual('Error n°500 MissingPropertyException: Property "type" not found of element: foo');
@@ -44,7 +53,7 @@ define(['form.Element'], function (ElementConstructor) {
             var config = {
                     type: 'text'
                 },
-                element = new ElementConstructor('name', config);
+                element = new ElementConstructor('name', config, formTag);
 
             expect(element.getKey()).toEqual('name');
             expect(element.getConfig()).toEqual(config);
@@ -63,7 +72,7 @@ define(['form.Element'], function (ElementConstructor) {
                     label: 'Jean pierre',
                     disabled: true
                 },
-                element = new ElementConstructor('name', config);
+                element = new ElementConstructor('name', config, formTag);
 
             expect(element.getKey()).toEqual('name');
             expect(element.getConfig()).toEqual(config);
