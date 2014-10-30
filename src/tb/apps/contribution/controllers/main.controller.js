@@ -1,4 +1,4 @@
-define(['tb.core', 'contribution.view.index'], function (Core, IndexView) {
+define(['tb.core', 'contribution.view.index', 'contribution.view.testform'], function (Core, IndexView, TestformView) {
     'use strict';
 
     Core.ControllerManager.registerController('MainController', {
@@ -22,6 +22,12 @@ define(['tb.core', 'contribution.view.index'], function (Core, IndexView) {
          */
         indexAction: function () {
             var view = new IndexView();
+            view.render();
+        },
+
+        testformAction: function () {
+            var view = new TestformView();
+
             view.render();
         }
     });

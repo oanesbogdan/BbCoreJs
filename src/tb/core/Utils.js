@@ -261,13 +261,24 @@ define('tb.core.Utils', ['jquery', 'tb.core.Api'], function (jQuery, Api) {
          * @param  {[type]} dep [description]
          * @return {[type]}     [description]
          */
-        requireWithPromise = function (dep) {
+        requireWithPromise = function (dep, keepRequireContext) {
             var def = new jQuery.Deferred();
-            require(dep, function () {
-                def.resolve.apply(this, arguments);
-            }, function (reason) {
-                def.reject(reason);
-            });
+            if (keepRequireContext) {
+
+                dep.splice(0, 0, 'require');
+                
+                require(dep, function (req) {
+                    def.resolve.call(this, req);
+                }, function (reason) {
+                    def.reject(reason);
+                });
+            } else {
+                require(dep, function () {
+                    def.resolve.apply(this, arguments);
+                }, function (reason) {
+                    def.reject(reason);
+                });
+            }
             return def.promise();
         };
     Api.register('SmartList', SmartList);

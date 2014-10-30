@@ -17,10 +17,10 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('form.element.view.select', ['tb.core.ViewManager', 'BackBone'], function (ViewManager, Backbone) {
+define(['tb.core.ViewManager', 'BackBone'], function (ViewManager, Backbone) {
     'use strict';
 
-    var SelectView = Backbone.View.extend({
+    var PasswordView = Backbone.View.extend({
 
         initialize: function (template, formTag, element) {
             this.el = formTag;
@@ -37,5 +37,5 @@ define('form.element.view.select', ['tb.core.ViewManager', 'BackBone'], function
         }
     });
 
-    return SelectView;
+    return PasswordView;
 });

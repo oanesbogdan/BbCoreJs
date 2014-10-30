@@ -1,14 +1,14 @@
 <div class="form-group">
     {% for key, item in element.getOptions() %}
-        <div class="checkbox{% if element.isInline() %}-inline{% endif %}">
-            <label>
+        <label class="checkbox{% if element.isInline() %}-inline{% endif %}">
                 <input type="checkbox"
                        name="{{ element.getKey() }}"
                        {% if element.isDisabled() %}disabled{% endif %}
                        value="{{ key }}"
-                       {% if key in element.getValue() %}checked{% endif %}>
+                       {% if key in element.getValue() %}checked{% endif %}
+                       style="margin-top:0px;";
+                >
                 {{ item }}
-            </label>
-        </div>
+        </label>
     {% endfor %}
 </div>

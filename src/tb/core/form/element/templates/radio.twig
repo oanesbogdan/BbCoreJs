@@ -1,14 +1,14 @@
 <div class="form-group">
     {% for key, item in element.getOptions() %}
-        <div class="radio{% if element.isInline() %}-inline{% endif %}">
-            <label>
+        <label class="radio{% if element.isInline() %}-inline{% endif %}">
                 <input type="radio"
                        name="{{ element.getKey() }}"
                        {% if element.isDisabled() %}disabled{% endif %}
                        value="{{ key }}"
-                       {% if element.getValue() == key %}checked{% endif %}>
+                       {% if element.getValue() == key %}checked{% endif %}
+                       style="margin-top:0px;";
+                >
                 {{ item }}
-            </label>
-        </div>
+        </label>
     {% endfor %}
 </div>

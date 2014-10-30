@@ -1,5 +1,5 @@
 <div class="form-group {% if error != null %}has-error{% endif %}">
-    <label class="sr-only" for="">{{ element.getLabel() }}</label>
+    <label for="">{{ element.getLabel() }}</label>
     <input type="text"
            name="{{ element.getKey() }}"
            {% if element.isDisabled() %}disabled{% endif %}

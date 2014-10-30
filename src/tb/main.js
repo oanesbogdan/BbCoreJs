@@ -38,7 +38,10 @@
             'tb.core.Logger': 'src/tb/core/Logger',
             'tb.core.PopIn': 'src/tb/core/PopIn',
             'tb.core.PopInManager': 'src/tb/core/PopInManager',
-            'tb.core.Scope': 'src/tb/core/Scope'
+            'tb.core.Scope': 'src/tb/core/Scope',
+            'tb.core.FormBuilder': 'src/tb/core/FormBuilder',
+            'form.Form': 'src/tb/core/form/Form',
+            'form.Element': 'src/tb/core/form/element/Element'
         }
     });
     define('tb.core', [

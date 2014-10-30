@@ -1,9 +1,0 @@
-<div class="form-group">
-    <label class="sr-only" for="">{{ element.getLabel() }}</label>
-    <input type="color"
-           name="{{ element.getKey() }}"
-           {% if element.isDisabled() %}disabled{% endif %}
-           {% if element.getValue() != null%}value="{{ element.getValue() }}"{% endif %}
-           class="form-control"
-    >
-</div>
