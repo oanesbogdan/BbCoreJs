@@ -119,6 +119,49 @@ define('tb.core.PopInManager', ['tb.core.PopIn', 'jquery', 'jsclass', 'jqueryui'
                 });
             }
 
+            /**
+             * Add display() method to tb.core.PopIn to call tb.core.PopInManager::display()
+             */
+            popIn.display = function () {
+                self.display(popIn);
+            };
+
+            /**
+             * Add hide() method to tb.core.PopIn to call tb.core.PopInManager::hide()
+             */
+            popIn.hide = function () {
+                self.hide(popIn);
+            };
+
+            /**
+             * Add mask() method to tb.core.PopIn to display loader overlay on top of dialog
+             */
+            popIn.mask = function () {
+                var popInId = '#' + popIn.getId(),
+                    element = jQuery('<div/>', {
+                        class: 'loader'
+                    }).html('<i class="fa fa-spin fa-spinner"></i> Chargement en cours');
+
+                element.css('background-color', 'rgba(0, 0, 0, .7)');
+                element.css('color', 'white');
+                element.css('font-size', '14px');
+                element.css('height', '100%');
+                element.css('left', '0');
+                element.css('line-height', jQuery(popInId).parent().height() + 'px');
+                element.css('position', 'absolute');
+                element.css('text-align', 'center');
+                element.css('top', '0');
+                element.css('width', '100%');
+                element.appendTo(jQuery(popInId).parent());
+            };
+
+            /**
+             * Add unmask() method to tb.core.PopIn to remove loader overlay from dialog
+             */
+            popIn.unmask = function () {
+                jQuery('#' + popIn.getId()).parent().find('div.loader').remove();
+            };
+
             return popIn;
         },
 
