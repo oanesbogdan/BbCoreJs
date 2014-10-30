@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define('tb.core.Logger', ['moment', 'tb.core.Api', 'jsclass'], function (moment) {
+define(['moment', 'tb.core.Api', 'jsclass'], function (moment) {
     'use strict';
 
     /**
@@ -117,7 +117,7 @@ define('tb.core.Logger', ['moment', 'tb.core.Api', 'jsclass'], function (moment)
      * See https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md
      * for the full interface specification.
      */
-    require('tb.core.Api').register('logger', {
+    return {
         /**
          * System is unusable.
          *
@@ -244,5 +244,5 @@ define('tb.core.Logger', ['moment', 'tb.core.Api', 'jsclass'], function (moment)
         restaureLogLevel: function () {
             logger.restaureLogLevel();
         }
-    });
+    };
 });

@@ -95,7 +95,7 @@ define('tb.core.Mediator', ['tb.core.Api'], function (Api) {
                 try {
                     this.topics[topic][i].execute.apply(this.topics[topic][i], args);
                 } catch (e) {
-                    Api.logger.error('Mediator as catch an error on "' + topic + '" topic with the following message: "' + e + '"');
+                    Api.exception.silent('MediatorException', 12201, 'Mediator as catch an error on "' + topic + '" topic with the following message: "' + e + '"');
                 }
             }
         }

@@ -18,10 +18,10 @@ define(['require', 'tb.core'], function (require) {
     describe('Mediator publish and subscribe spec', function () {
         it('Subscribe without context and publish', function () {
             api.Mediator.subscribe('a fake event', fake.withoutThis);
-            spyOn(api.logger, 'error');
+            spyOn(api.exception, 'silent');
 
             api.Mediator.publish('a fake event', argument);
-            expect(api.logger.error).toHaveBeenCalledWith('Mediator as catch an error on "' + 'a fake event' + '" topic with the following message: "' + 'Fake error' + '"');
+            expect(api.exception.silent).toHaveBeenCalledWith('MediatorException', 12201, 'Mediator as catch an error on "' + 'a fake event' + '" topic with the following message: "' + 'Fake error' + '"');
 
             api.Mediator.unsubscribe('a fake event', fake.withoutThis);
         });

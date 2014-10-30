@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define('tb.core.Api', [], function () {
+define('tb.core.Api', ['require', 'tb.component'], function (require) {
     'use strict';
 
     var container = {},
@@ -43,6 +43,10 @@ define('tb.core.Api', [], function () {
             unset: function (ctn) {
                 this.container[ctn] = null;
                 delete container[ctn];
+            },
+
+            component: function (name) {
+                return require('tb.component/' + name + '/main');
             }
         };
 
