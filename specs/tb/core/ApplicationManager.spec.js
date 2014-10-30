@@ -1,8 +1,19 @@
 define(["tb.core"], function (Core) {
     'use strict';
 
+    var BasicAppliaction = function () {
+        return {
+            onInit: function () {return; },
+            onStart: function () {return; },
+            onStop: function () {return; },
+            onResume: function () {return; },
+            onError: function () {return; }
+        };
+    };
+
     describe("ApplicationManager test", function () {
         beforeEach(function () {
+            spyOn(console, 'debug');
             this.appConfig = {
                 appPath: 'specs/tb/apps',
                 active: 'test',
@@ -44,8 +55,8 @@ define(["tb.core"], function (Core) {
             Core.ApplicationManager.reset();
         });
         var errorMessage = function (code, message) {
-                return 'Error n°' + code + ' ApplicationManagerException: ' + message;
-            };
+            return 'Error n°' + code + ' ApplicationManagerException: ' + message;
+        };
         it("ApplicationManager.Init throws exception when wrong params are provided", function () {
             try {
                 Core.ApplicationManager.init();
@@ -124,7 +135,7 @@ define(["tb.core"], function (Core) {
                     done();
                 }, 500);
             } catch (e) {
-                Core.logger.debug(e);
+                Core.component('logger').debug(e);
             }
         });
 
@@ -145,7 +156,7 @@ define(["tb.core"], function (Core) {
                     done();
                 }, 500);
             } catch (e) {
-                Core.logger.debug(e);
+                Core.component('logger').debug(e);
                 expect(true).toBe(false);
             }
         });
@@ -153,10 +164,10 @@ define(["tb.core"], function (Core) {
         it("Should fail because wrong.routes can't be found", function (done) {
             var callBack = {
                 routesReady: function () {
-                    Core.logger.debug("route has errors");
+                    return;
                 },
                 appError: function () {
-                    Core.logger.debug("appError because a route can't be found");
+                    return;
                 }
             };
             spyOn(callBack, "routesReady");
@@ -198,38 +209,18 @@ define(["tb.core"], function (Core) {
                     lastAppIsLaunched: function (app) {
                         currentApp = app;
                     },
-                    appFailToLaunch: function () {Core.logger.debug("$noop"); },
-                    appHasError: function () {Core.logger.debug("$noop"); }
+                    appFailToLaunch: function () {return; },
+                    appHasError: function () {return; }
                 };
                 /*app Layout*/
                 try {
-                    Core.ApplicationManager.registerApplication("LayoutApplication", {
-                        onInit: function () {Core.logger.debug("$noop"); },
-                        onStart: function () {Core.logger.debug("$noop"); },
-                        onStop: function () {Core.logger.debug("$noop"); },
-                        onResume: function () {Core.logger.debug("$noop"); },
-                        onError: function () {Core.logger.debug("$noop"); }
-                    });
+                    Core.ApplicationManager.registerApplication("LayoutApplication", new BasicAppliaction());
 
                     /*app Content*/
-                    Core.ApplicationManager.registerApplication("ContentApplication", {
-                        onInit: function () {Core.logger.debug("$noop"); },
-                        onStart: function () {Core.logger.debug("$noop"); },
-                        onStop: function () {Core.logger.debug("$noop"); },
-                        onResume: function () {Core.logger.debug("$noop"); },
-                        onError: function () {Core.logger.debug("$noop"); }
-                    });
+                    Core.ApplicationManager.registerApplication("ContentApplication", new BasicAppliaction());
 
                     /*app Last*/
-                    Core.ApplicationManager.registerApplication("LastApplication", {
-                        onInit: function () {
-                            Core.logger.debug("onInit is Started");
-                        },
-                        onStart: function () {Core.logger.debug("$noop"); },
-                        onStop: function () {Core.logger.debug("$noop"); },
-                        onResume: function () {Core.logger.debug("$noop"); },
-                        onError: function () {Core.logger.debug("$noop"); }
-                    });
+                    Core.ApplicationManager.registerApplication("LastApplication", new BasicAppliaction());
 
                     /* register a controller ContentApplication*/
                     Core.ControllerManager.registerController('ContentController', {
@@ -238,7 +229,7 @@ define(["tb.core"], function (Core) {
                             imports: []
                         },
                         onInit: function () {
-                            Core.logger.debug("inside ContentController");
+                            return;
                         },
                         fooAction: function () {
                             this.value = 'foo';
@@ -248,20 +239,12 @@ define(["tb.core"], function (Core) {
                             barAction = 'bar';
                         }
                     });
-                } catch (e) { Core.logger.debug(e); }
+                } catch (e) { Core.component('logger').debug(e); }
             });
 
             it("Should fail because application already exists", function () {
                 try {
-                    Core.ApplicationManager.registerApplication("LayoutApplication", {
-                        onInit: function () {Core.logger.debug("$noop"); },
-                        onStart: function () {Core.logger.debug("$noop"); },
-                        onStop: function () {
-                            Core.logger.debug("onStop radical once");
-                        },
-                        onResume: function () {Core.logger.debug("$noop"); },
-                        onError: function () {Core.logger.debug("$noop"); }
-                    });
+                    Core.ApplicationManager.registerApplication("LayoutApplication", new BasicAppliaction());
                     expect(true).toBe(false);
                 } catch (e) {
                     expect(e).toEqual(errorMessage(50007, 'An application named [LayoutApplication] already exists.'));
@@ -350,9 +333,8 @@ define(["tb.core"], function (Core) {
                 Core.ApplicationManager.on("appError", function () {
                     controllerHasError = true;
                 });
-                Core.ApplicationManager.launchApplication("LastApplication", {}).fail(function (reason) {
-                    Core.logger.debug(reason);
-                    Core.logger.debug("Error:" + reason);
+                Core.ApplicationManager.launchApplication("LastApplication", {}).fail(function () {
+                    return;
                 });
                 Core.ApplicationManager.invoke("LastApplication:ContenstController:bar");
                 setTimeout(function () {
@@ -366,11 +348,10 @@ define(["tb.core"], function (Core) {
                 Core.ApplicationManager.reset();
                 Core.ApplicationManager.on("appError", function (e) {
                     controllerHasError = true;
-                    Core.logger.debug(e);
+                    Core.component('logger').debug(e);
                 });
-                Core.ApplicationManager.launchApplication("LastApplication", {}).fail(function (reason) {
-                    Core.logger.debug(reason);
-                    Core.logger.debug("Error:" + reason);
+                Core.ApplicationManager.launchApplication("LastApplication", {}).fail(function () {
+                    return;
                 });
                 Core.ApplicationManager.invoke("LastApplication:ContentController:baz");
                 setTimeout(function () {
@@ -380,9 +361,9 @@ define(["tb.core"], function (Core) {
             });
 
             it("Application.invoke should execute Controller action", function (done) {
-                Core.ApplicationManager.on("appError", function () {Core.logger.debug("$noop"); });
-                Core.ApplicationManager.launchApplication("LastApplication", {}).fail(function (reason) {
-                    Core.logger.debug("Error:" + reason);
+                Core.ApplicationManager.on("appError", function () {return; });
+                Core.ApplicationManager.launchApplication("LastApplication", {}).fail(function () {
+                    return;
                 });
                 Core.ApplicationManager.invoke("LastApplication:ContentController:bar");
                 setTimeout(function () {

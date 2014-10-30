@@ -16,20 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-require.config({
-    baseUrl: 'resources/',
-    catchError: true,
-    paths: {
-        'jquery': 'lib/jquery/jquery',
-        'jsclass' : 'lib/jsclass/class',
-        'underscore': 'lib/underscore/underscore',
-        'tb.core': 'build/main.min', // 'src/tb/main',
-        'tb.component': 'src/tb/component/component',
-        'BackBone': 'lib/backbone/backbone',
-        'moment': 'lib/moment/moment',
-        'URIjs': 'lib/uri.js'
-    },
-    'shim': {
-        'BackBone': {}
-    }
-});
+(function () {
+    'use strict';
+    require.config({
+        paths: {
+            'tb.component': 'src/tb/component/'
+        }
+    });
+
+    define(
+        'tb.component',
+        [
+            'tb.component/logger/main'
+        ],
+        function () {
+            return;
+        }
+    );
+}());

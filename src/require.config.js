@@ -19,6 +19,7 @@
 require.config({
     baseUrl: 'resources/',
     catchError: true,
+    urlArgs: 'cb=' + Math.random(),
     paths: {
         'jquery': 'lib/jquery/jquery',
         'jqueryui': 'lib/jquery-ui/jquery-ui',
@@ -26,6 +27,7 @@ require.config({
         'underscore': 'lib/underscore/underscore',
         'handlebars': 'lib/handlebars/handlebars',
         'tb.core': 'src/tb/main',
+        'tb.component': 'src/tb/component/component',
         'BackBone': 'lib/backbone/backbone',
         'nunjucks': 'lib/nunjucks/nunjucks.min',
         'moment': 'lib/moment/moment',

@@ -8,6 +8,7 @@ require.config({
         'underscore': 'lib/underscore/underscore',
         'nunjucks': 'lib/nunjucks/nunjucks.min',
         'tb.core': 'src/tb/main',
+        'tb.component': 'src/tb/component/component',
         'handlebars': 'lib/handlebars/handlebars',
         'BackBone': 'lib/backbone/backbone',
         'jasmine': 'node_modules/grunt-contrib-jasmine/vendor/jasmine-2.0.0/jasmine',

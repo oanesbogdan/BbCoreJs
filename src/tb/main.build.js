@@ -36,7 +36,6 @@
             'tb.core.RequestHandler': 'src/toolbar.core',
             'tb.core.Response': 'src/toolbar.core',
             'tb.core.RestDriver': 'src/toolbar.core',
-            'tb.core.Logger': 'src/toolbar.core',
             'tb.core.PopIn': 'src/toolbar.core',
             'tb.core.PopInManager': 'src/toolbar.core',
             'tb.core.Scope': 'src/toolbar.core'
@@ -54,7 +53,6 @@
             'tb.core.ControllerManager',
             'tb.core.Utils',
             'tb.core.Exception',
-            'tb.core.Logger',
             'tb.core.Scope'
         ],
         function (Core) {
