@@ -1,5 +1,5 @@
 <div class="form-group">
-    <label class="sr-only" for="">{{ element.getLabel() }}</label>
+    <label for="">{{ element.getLabel() }}</label>
     <select name="{{ element.getKey() }}"
             {% if element.isDisabled() %}disabled{% endif %}
             {% if element.isMultiple() %}multiple{% endif %}

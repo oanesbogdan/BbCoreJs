@@ -17,26 +17,25 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('form.element.Email', ['form.Element', 'jsclass'], function (Element) {
+define(['tb.core.ViewManager', 'BackBone'], function (ViewManager, Backbone) {
     'use strict';
 
-    /**
-     * ElementEmail object
-     */
-    var Email = new JS.Class(Element, {
+    var TextView = Backbone.View.extend({
 
-        initialize: function (key, config, formTag, view, template) {
-            this.callSuper(key, config, formTag);
-            this.view = view;
+        initialize: function (template, formTag, element) {
+            this.el = formTag;
             this.template = template;
+            this.element = element;
         },
 
+        /**
+         * Render the template into the DOM with the ViewManager
+         * @returns {String} html
+         */
         render: function () {
-            var view = new this.view(this.template, this.formTag, this);
-
-            return view.render();
+            return ViewManager.render(this.template, {element: this.element});
         }
     });
 
-    return Email;
+    return TextView;
 });

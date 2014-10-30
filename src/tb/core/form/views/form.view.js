@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('form.view', ['tb.core.ViewManager', 'BackBone'], function (ViewManager, Backbone) {
+define(['tb.core.ViewManager', 'BackBone', 'jquery'], function (ViewManager, Backbone, jQuery) {
     'use strict';
 
     var FormView = Backbone.View.extend({

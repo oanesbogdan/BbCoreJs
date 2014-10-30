@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('form.element.Password', ['form.Element', 'jsclass'], function (Element) {
+define(['form.Element', 'jsclass'], function (Element) {
     'use strict';
 
     /**

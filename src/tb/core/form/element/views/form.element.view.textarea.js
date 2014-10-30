@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('form.element.view.textarea', ['tb.core.ViewManager', 'BackBone'], function (ViewManager, Backbone) {
+define(['tb.core.ViewManager', 'BackBone'], function (ViewManager, Backbone) {
     'use strict';
 
     var TextareaView = Backbone.View.extend({

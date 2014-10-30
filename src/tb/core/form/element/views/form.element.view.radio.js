@@ -17,10 +17,10 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('form.element.view.password', ['tb.core.ViewManager', 'BackBone'], function (ViewManager, Backbone) {
+define(['tb.core.ViewManager', 'BackBone'], function (ViewManager, Backbone) {
     'use strict';
 
-    var PasswordView = Backbone.View.extend({
+    var RadioView = Backbone.View.extend({
 
         initialize: function (template, formTag, element) {
             this.el = formTag;
@@ -37,5 +37,5 @@ define('form.element.view.password', ['tb.core.ViewManager', 'BackBone'], functi
         }
     });
 
-    return PasswordView;
+    return RadioView;
 });

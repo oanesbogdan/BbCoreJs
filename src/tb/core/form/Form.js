@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('form.Form', ['underscore', 'BackBone', 'underscore', 'tb.core', 'jsclass'], function (Underscore, Backbone, us, Core) {
+define('form.Form', ['tb.core', 'underscore', 'BackBone', 'jsclass'], function (Core, us, Backbone) {
     'use strict';
 
     /**
@@ -31,7 +31,9 @@ define('form.Form', ['underscore', 'BackBone', 'underscore', 'tb.core', 'jsclass
          * Initialize of Form
          */
         initialize: function (config) {
-            Underscore.extend(this, Backbone.Events);
+
+            us.extend(this, Backbone.Events);
+
             this.elements = {};
             this.config = config;
 
@@ -53,13 +55,13 @@ define('form.Form', ['underscore', 'BackBone', 'underscore', 'tb.core', 'jsclass
             if (!config.hasOwnProperty('template')) {
                 Core.exception('MissingPropertyException', 500, 'Property "template" not found in form');
             } else {
-                this.template = require(config.template);
+                this.template = config.template;
             }
 
             if (!config.hasOwnProperty('view')) {
                 Core.exception('MissingPropertyException', 500, 'Property "view" not found in form');
             } else {
-                this.view = require(config.view);
+                this.view = config.view;
             }
         },
 
@@ -132,7 +134,7 @@ define('form.Form', ['underscore', 'BackBone', 'underscore', 'tb.core', 'jsclass
                     !element.hasOwnProperty('view') ||
                     !element.hasOwnProperty('template')) {
 
-                    Core.exception('MissingPropertyException', 500, 'One or more property not found on add element in form');
+                    Core.exception('MissingPropertyException', 500, 'One or more property not found on add element in form for: ' + key);
                 }
                 this.elements[key] = element;
             }
@@ -180,28 +182,31 @@ define('form.Form', ['underscore', 'BackBone', 'underscore', 'tb.core', 'jsclass
          */
         render: function () {
             var key,
-                element,
                 items = [],
+                View,
                 view,
+                template,
                 elementConfig,
                 elementClass,
                 elementView,
                 elementTemplate;
+
+            View = require(this.view);
+            template = require('text!' + this.template);
 
             for (key in this.elements) {
                 if (this.elements.hasOwnProperty(key)) {
                     elementConfig = this.elements[key];
 
                     elementClass = require(elementConfig.class);
-                    elementTemplate = require(elementConfig.template);
+                    elementTemplate = require('text!' + elementConfig.template);
                     elementView = require(elementConfig.view);
 
                     items.push((new elementClass(key,  elementConfig, this.id, elementView, elementTemplate)).render());
                 }
             }
+            view = new View(template, items, this);
 
-            view = new this.view(this.template, items, this);
-            
             return view.render();
         }
     });

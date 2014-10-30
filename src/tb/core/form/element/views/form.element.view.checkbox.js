@@ -17,10 +17,10 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('form.element.view.color', ['tb.core.ViewManager', 'BackBone'], function (ViewManager, Backbone) {
+define(['tb.core.ViewManager', 'BackBone'], function (ViewManager, Backbone) {
     'use strict';
 
-    var ColorView = Backbone.View.extend({
+    var CheckboxView = Backbone.View.extend({
 
         initialize: function (template, formTag, element) {
             this.el = formTag;
@@ -37,5 +37,5 @@ define('form.element.view.color', ['tb.core.ViewManager', 'BackBone'], function 
         }
     });
 
-    return ColorView;
+    return CheckboxView;
 });
