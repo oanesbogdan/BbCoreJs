@@ -1,4 +1,4 @@
-define(['tb.core.PopIn'], function (PopIn) {
+define(['tb.component/popin/PopIn'], function (PopIn) {
     'use strict';
 
     describe('PopIn specs', function () {
