@@ -71,7 +71,8 @@ define('form.Form', ['tb.core', 'underscore', 'BackBone', 'jsclass'], function (
          */
         computeDefaultValue: function (config) {
 
-            this.id = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+            this.id = 'toto';
+            //this.id = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
 
             this.method = 'POST';
             if (config.hasOwnProperty('method') && us.contains(this.AVAILABLE_METHOD, config.method)) {

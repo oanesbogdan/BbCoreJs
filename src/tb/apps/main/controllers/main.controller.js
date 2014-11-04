@@ -16,19 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
+
 define(['tb.core', 'jquery'], function (bbCore, jQuery) {
     'use strict';
 
     bbCore.ControllerManager.registerController('MainController', {
         appName: 'main',
-        imports: [],
+        config: {
+            imports: []
+        },
 
         onInit: function () {
             console.log('on init is called');
         },
 
         indexAction: function () {
-            jQuery('.jumbotron').html(jQuery('<p> app: layout <br/> controller: MainController <br> action: homeAction</p>'));
+            console.log('main index');
         }
     });
 });

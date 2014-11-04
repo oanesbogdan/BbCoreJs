@@ -17,16 +17,73 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core.ViewManager', 'BackBone', 'jquery'], function (ViewManager, Backbone, jQuery) {
+define(['tb.core', 'tb.core.ViewManager', 'BackBone', 'jquery', 'tb.core.RouteManager'], function (Core, ViewManager, Backbone, jQuery, RouterManager) {
     'use strict';
 
     var FormView = Backbone.View.extend({
 
+        /**
+         * Initialize of FormView
+         * @param {String} template
+         * @param {Object} elements
+         * @param {Object} form
+         */
         initialize: function (template, elements, form) {
             this.el = '#bb5-ui';
+            this.form_button_id = '#bb-submit-form';
             this.template = template;
             this.elements = elements;
             this.form = form;
+        },
+
+        /**
+         * Events of view
+         */
+        bindUiEvents: function () {
+            jQuery(this.el).on('click', this.form_button_id, jQuery.proxy(this.computeForm, this));
+        },
+
+        /**
+         * Compute the data of form and build Object
+         * @param {Object} form
+         * @returns {unresolved}
+         */
+        computeData: function (form) {
+            var paramObj = {};
+
+            jQuery.each(form.serializeArray(), function(i, field) {
+                if (paramObj.hasOwnProperty(field.name)) {
+                    paramObj[field.name] = jQuery.makeArray(paramObj[field.name]);
+                    paramObj[field.name].push(field.value);
+                }
+                else {
+                    paramObj[field.name] = field.value;
+                }
+            });
+
+            return paramObj;
+        },
+
+        /**
+         * Compute the form
+         */
+        computeForm: function () {
+            var jqueryForm = jQuery('form#' + this.form.id),
+                data = this.computeData(jqueryForm);
+
+            this.sent(data);
+        },
+
+        /**
+         * Sent data to action of the form and navigate to the controller
+         * @param {Object} data
+         */
+        sent: function (data) {
+            var routeName = 'bundle:index';
+
+            Core.set(this.form.id, data);
+
+            RouterManager.navigateByName(routeName, false);
         },
 
         /**
@@ -34,6 +91,8 @@ define(['tb.core.ViewManager', 'BackBone', 'jquery'], function (ViewManager, Bac
          * @returns {String} html
          */
         render: function () {
+            this.bindUiEvents();
+
             return ViewManager.render(this.template, {elements: this.elements, form: this.form});
         }
     });

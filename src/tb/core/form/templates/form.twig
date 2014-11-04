@@ -1,9 +1,10 @@
 <form id="{{ form.getId() }}"
       role="form" method="{{ form.getMethod() }}"
       {% if form.getAction() != null %}action="{{ form.getAction() }}"{% endif %}
+      onsubmit="return false;"
 >
   {% for element in elements %}
       {{ element }}
   {% endfor %}
-  <button type="submit" class="btn btn-default">{{ form.getSubmitLabel() }}</button>
+  <button id="bb-submit-form" type="submit" class="btn btn-default">{{ form.getSubmitLabel() }}</button>
 </form>
