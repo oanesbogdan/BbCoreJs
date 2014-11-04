@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core', 'tb.core.ViewManager', 'BackBone', 'jquery', 'tb.core.RouteManager'], function (Core, ViewManager, Backbone, jQuery, RouterManager) {
+define(['tb.core', 'tb.core.ViewManager', 'BackBone', 'jquery'], function (Core, ViewManager, Backbone, jQuery) {
     'use strict';
 
     var FormView = Backbone.View.extend({
@@ -71,19 +71,7 @@ define(['tb.core', 'tb.core.ViewManager', 'BackBone', 'jquery', 'tb.core.RouteMa
             var jqueryForm = jQuery('form#' + this.form.id),
                 data = this.computeData(jqueryForm);
 
-            this.sent(data);
-        },
-
-        /**
-         * Sent data to action of the form and navigate to the controller
-         * @param {Object} data
-         */
-        sent: function (data) {
-            var routeName = 'bundle:index';
-
-            Core.set(this.form.id, data);
-
-            RouterManager.navigateByName(routeName, false);
+            this.form.onSubmit(data);
         },
 
         /**

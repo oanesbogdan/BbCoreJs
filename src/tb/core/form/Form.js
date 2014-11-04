@@ -52,6 +52,11 @@ define('form.Form', ['tb.core', 'underscore', 'BackBone', 'jsclass'], function (
                 Core.exception('MissingConfigException', 500, 'Config must be set');
             }
 
+            if (!config.hasOwnProperty('onSubmit')) {
+                Core.exception('MissingPropertyException', 500, 'Property "onSubmit" not found in form');
+            }
+            this.onSubmit = config.onSubmit;
+
             if (!config.hasOwnProperty('template')) {
                 Core.exception('MissingPropertyException', 500, 'Property "template" not found in form');
             } else {

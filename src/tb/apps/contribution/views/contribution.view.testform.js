@@ -62,6 +62,9 @@ define(['tb.core', 'tb.core.FormBuilder', 'tb.core.PopInManager'], function (Cor
                             options: {'cgv': 'Conditions générales de ventes'},
                             inline: true
                         }
+                    },
+                    onSubmit: function (data) {
+                        console.log('onSubmit', data);
                     }
                 };
 

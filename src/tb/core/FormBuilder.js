@@ -42,7 +42,7 @@ define('tb.core.FormBuilder', ['tb.core', 'jquery', 'form.Form', 'tb.core.Utils'
          * @param {type} config
          * @returns {undefined}
          */
-        renderForm: function (config, callback) {
+        renderForm: function (config) {
 
             var key,
                 elements,
@@ -67,6 +67,13 @@ define('tb.core.FormBuilder', ['tb.core', 'jquery', 'form.Form', 'tb.core.Utils'
             if (!config.hasOwnProperty('form')) {
                 config.form = {};
             }
+
+            if (typeof config.onSubmit !== 'function') {
+                config.onSubmit = function () {
+                    
+                };
+            }
+            config.form.onSubmit = config.onSubmit;
 
             if (!config.form.hasOwnProperty('template')) {
                 keyFormTemplate = 'form/template';
