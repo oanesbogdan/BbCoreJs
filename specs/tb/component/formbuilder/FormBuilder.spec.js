@@ -1,8 +1,11 @@
-define(['tb.core.FormBuilder'], function (FormBuilder) {
+define(['tb.core'], function (Core) {
     'use strict';
 
 
     describe('Testing FormBuilder', function () {
+
+        var FormBuilder = Core.component('formbuilder');
+
         it('Testing load method', function () {
 
             var config = {
@@ -18,8 +21,7 @@ define(['tb.core.FormBuilder'], function (FormBuilder) {
                             value: ''
                         }
                     }
-                },
-                form;
+                };
 
             expect(typeof FormBuilder.form).toBe('undefined');
 

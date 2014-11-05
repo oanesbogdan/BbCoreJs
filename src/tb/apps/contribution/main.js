@@ -5,7 +5,7 @@ require.config({
 
         //Views
         'contribution.view.index': 'src/tb/apps/contribution/views/contribution.view.index',
-        'contribution.view.testform': 'src/tb/apps/contribution/views/contribution.view.testform',
+
         //Templates
         'contribution/tpl/index': 'src/tb/apps/contribution/templates/index.twig'
     }

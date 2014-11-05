@@ -17,13 +17,13 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['form.Element', 'jsclass'], function (Element) {
+define(['tb.component/formbuilder/form/element/Element', 'jsclass'], function (Element) {
     'use strict';
 
     /**
-     * ElementText object
+     * ElementRadio object
      */
-    var Checkbox = new JS.Class(Element, {
+    var Radio = new JS.Class(Element, {
 
         initialize: function (key, config, formTag, view, template) {
             this.callSuper(key, config, formTag);
@@ -64,5 +64,5 @@ define(['form.Element', 'jsclass'], function (Element) {
         }
     });
 
-    return Checkbox;
+    return Radio;
 });

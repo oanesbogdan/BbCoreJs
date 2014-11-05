@@ -1,6 +1,5 @@
-define(['form.Element'], function (ElementConstructor) {
+define(['tb.component/formbuilder/form/element/Element'], function (ElementConstructor) {
     'use strict';
-
 
     describe('Testing FormElement', function () {
 

@@ -17,7 +17,8 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core', 'tb.core.ViewManager', 'BackBone', 'jquery'], function (Core, ViewManager, Backbone, jQuery) {
+define(['tb.core.ViewManager', 'BackBone', 'jquery'], function (ViewManager, Backbone, jQuery) {
+
     'use strict';
 
     var FormView = Backbone.View.extend({
@@ -49,15 +50,15 @@ define(['tb.core', 'tb.core.ViewManager', 'BackBone', 'jquery'], function (Core,
          * @returns {unresolved}
          */
         computeData: function (form) {
-            var paramObj = {};
+            var paramObj = {},
+                formSerialized = form.serializeArray();
 
-            jQuery.each(form.serializeArray(), function(i, field) {
-                if (paramObj.hasOwnProperty(field.name)) {
-                    paramObj[field.name] = jQuery.makeArray(paramObj[field.name]);
-                    paramObj[field.name].push(field.value);
-                }
-                else {
-                    paramObj[field.name] = field.value;
+            jQuery.each(formSerialized, function (i) {
+                if (paramObj.hasOwnProperty(formSerialized[i].name)) {
+                    paramObj[formSerialized[i].name] = jQuery.makeArray(paramObj[formSerialized[i].name]);
+                    paramObj[formSerialized[i].name].push(formSerialized[i].value);
+                } else {
+                    paramObj[formSerialized[i].name] = formSerialized[i].value;
                 }
             });
 

@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core', 'jquery'], function (bbCore, jQuery) {
+define(['tb.core'], function (bbCore) {
     'use strict';
 
     bbCore.ControllerManager.registerController('MainController', {

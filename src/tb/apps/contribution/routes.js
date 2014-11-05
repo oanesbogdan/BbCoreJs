@@ -10,10 +10,6 @@ define(["tb.core"], function (BbCore) {
             'index': {
                 url: '/index',
                 action: 'MainController:index'
-            },
-            'testform': {
-                url: '/testform',
-                action: 'MainController:testform'
             }
         }
     });

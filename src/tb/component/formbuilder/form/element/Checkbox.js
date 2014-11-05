@@ -17,26 +17,52 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['form.Element', 'jsclass'], function (Element) {
+define(['tb.component/formbuilder/form/element/Element', 'jsclass'], function (Element) {
     'use strict';
 
     /**
      * ElementText object
      */
-    var Text = new JS.Class(Element, {
+    var Checkbox = new JS.Class(Element, {
 
         initialize: function (key, config, formTag, view, template) {
             this.callSuper(key, config, formTag);
             this.view = view;
             this.template = template;
+
+            this.buildCustomConfig(config);
         },
 
         render: function () {
             var view = new this.view(this.template, this.formTag, this);
 
             return view.render();
+        },
+
+        buildCustomConfig: function (config) {
+            this.options = {};
+            if (config.hasOwnProperty('options')) {
+                this.options = config.options;
+            }
+
+            if (config.hasOwnProperty('checked')) {
+                this.setValue(config.checked);
+            }
+
+            this.inline = false;
+            if (config.hasOwnProperty('inline') && config.inline === true) {
+                this.inline = config.inline;
+            }
+        },
+
+        getOptions: function () {
+            return this.options;
+        },
+
+        isInline: function () {
+            return this.inline;
         }
     });
 
-    return Text;
+    return Checkbox;
 });

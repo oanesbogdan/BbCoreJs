@@ -38,9 +38,7 @@
             'tb.core.PopIn': 'src/tb/core/PopIn',
             'tb.core.PopInManager': 'src/tb/core/PopInManager',
             'tb.core.Scope': 'src/tb/core/Scope',
-            'tb.core.FormBuilder': 'src/tb/core/FormBuilder',
-            'form.Form': 'src/tb/core/form/Form',
-            'form.Element': 'src/tb/core/form/element/Element'
+            'tb.component.core': 'src/tb/component/component'
         }
     });
     define('tb.core', [
@@ -53,7 +51,8 @@
         'tb.core.ControllerManager',
         'tb.core.Utils',
         'tb.core.Exception',
-        'tb.core.Scope'
+        'tb.core.Scope',
+        'tb.component.core'
     ], function (Core) {
         return Object.freeze(Core);
     });

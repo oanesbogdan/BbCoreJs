@@ -41,7 +41,6 @@ define(['tb.core', 'bundle.view.list', 'bundle.view.index'], function (Core, Lis
          * Show the first bundle in toolbar
          */
         indexAction: function () {
-            console.log('rec', Core.get('toto'));
             this.listAndRender(IndexView);
         },
 

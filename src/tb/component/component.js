@@ -25,9 +25,10 @@
     });
 
     define(
-        'tb.component',
+        'tb.component.core',
         [
-            'tb.component/logger/main'
+            'tb.component/logger/main',
+            'tb.component/formbuilder/main'
         ],
         function () {
             return;

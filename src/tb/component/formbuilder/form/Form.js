@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('form.Form', ['tb.core', 'underscore', 'BackBone', 'jsclass'], function (Core, us, Backbone) {
+define(['tb.core.Api', 'underscore', 'BackBone', 'jsclass'], function (Core, us, Backbone) {
     'use strict';
 
     /**
@@ -53,21 +53,21 @@ define('form.Form', ['tb.core', 'underscore', 'BackBone', 'jsclass'], function (
             }
 
             if (!config.hasOwnProperty('onSubmit')) {
-                Core.exception('MissingPropertyException', 500, 'Property "onSubmit" not found in form');
+                config.onSubmit = function () {
+                    return;
+                };
             }
             this.onSubmit = config.onSubmit;
 
             if (!config.hasOwnProperty('template')) {
                 Core.exception('MissingPropertyException', 500, 'Property "template" not found in form');
-            } else {
-                this.template = config.template;
             }
+            this.template = config.template;
 
             if (!config.hasOwnProperty('view')) {
                 Core.exception('MissingPropertyException', 500, 'Property "view" not found in form');
-            } else {
-                this.view = config.view;
             }
+            this.view = config.view;
         },
 
         /**
@@ -76,8 +76,7 @@ define('form.Form', ['tb.core', 'underscore', 'BackBone', 'jsclass'], function (
          */
         computeDefaultValue: function (config) {
 
-            this.id = 'toto';
-            //this.id = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+            this.id = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
 
             this.method = 'POST';
             if (config.hasOwnProperty('method') && us.contains(this.AVAILABLE_METHOD, config.method)) {
@@ -136,9 +135,7 @@ define('form.Form', ['tb.core', 'underscore', 'BackBone', 'jsclass'], function (
         add: function (key, element) {
             if (!this.elements.hasOwnProperty(key)) {
 
-                if (!element.hasOwnProperty('class') ||
-                    !element.hasOwnProperty('view') ||
-                    !element.hasOwnProperty('template')) {
+                if (!element.hasOwnProperty('class') || !element.hasOwnProperty('view') || !element.hasOwnProperty('template')) {
 
                     Core.exception('MissingPropertyException', 500, 'One or more property not found on add element in form for: ' + key);
                 }
@@ -193,7 +190,7 @@ define('form.Form', ['tb.core', 'underscore', 'BackBone', 'jsclass'], function (
                 view,
                 template,
                 elementConfig,
-                elementClass,
+                ElementClass,
                 elementView,
                 elementTemplate;
 
@@ -204,11 +201,11 @@ define('form.Form', ['tb.core', 'underscore', 'BackBone', 'jsclass'], function (
                 if (this.elements.hasOwnProperty(key)) {
                     elementConfig = this.elements[key];
 
-                    elementClass = require(elementConfig.class);
+                    ElementClass = require(elementConfig.class);
                     elementTemplate = require('text!' + elementConfig.template);
                     elementView = require(elementConfig.view);
 
-                    items.push((new elementClass(key,  elementConfig, this.id, elementView, elementTemplate)).render());
+                    items.push((new ElementClass(key,  elementConfig, this.id, elementView, elementTemplate)).render());
                 }
             }
             view = new View(template, items, this);

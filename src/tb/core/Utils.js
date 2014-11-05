@@ -266,7 +266,7 @@ define('tb.core.Utils', ['jquery', 'tb.core.Api'], function (jQuery, Api) {
             if (keepRequireContext) {
 
                 dep.splice(0, 0, 'require');
-                
+
                 require(dep, function (req) {
                     def.resolve.call(this, req);
                 }, function (reason) {
