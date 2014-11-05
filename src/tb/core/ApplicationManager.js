@@ -159,6 +159,9 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 coreApi.exception('ApplicationManagerException', 50007, 'An application named [' + appname + '] already exists.');
             }
             AppDefContainer[appname] = ApplicationConstructor;
+            if (appname === "TestApplication") {
+                console.log("sd", JSON.stringify(ApplicationConstructor));
+            }
         },
         registerAppRoutes = function (routes) {
             var def = new $.Deferred();
@@ -273,6 +276,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
             if (underscore.size(config.applications) === 0) {
                 coreApi.exception('ApplicationManagerException', 50006, 'InvalidAppConfig at least one application config should be provided');
             }
+
             $.each(config.applications, function (appname, appConfig) {
                 appPaths.push(config.appPath + '/' + appname + '/main.js');
                 /*handle alt route path here */
@@ -306,10 +310,65 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                     });
                 });
             });
+        },
+        invokeService = function (servicePath) {
+            var dfd = new $.Deferred(),
+                serviceInfos,
+                appname,
+                methods,
+                serviceName,
+                params,
+                appInstance,
+                controllerName,
+                Application,
+                applicationInfos;
+            if (!servicePath || typeof servicePath !== "string") {
+                coreApi.exception("ApplicationManagerException", 50011, 'invokeService expects parameter one to be a string.');
+            }
+            params = $.merge([], arguments);
+            params.shift();
+            serviceInfos = servicePath.split('.');
+            if (serviceInfos.length !== 3) {
+                coreApi.exception("ApplicationManagerException", 50012, '');
+            }
+            /* we suppose the has been */
+            appname = serviceInfos[0];
+            serviceName = serviceInfos[2];
+            controllerName = serviceInfos[1];
+            Application = AppDefContainer[appname];
+            if (!Application) {
+                coreApi.exception("ApplicationManagerException", 50011, 'Application definition can\'t be found');
+            }
+            applicationInfos = AppContainer.getByAppInfosName(appname);
+            if (applicationInfos && applicationInfos.hasOwnProperty("instance")) {
+                appInstance = applicationInfos.instance;
+            } else {
+                appInstance = new Application(config);
+                applicationInfos = {
+                    instance: appInstance,
+                    name: appname
+                };
+                AppContainer.register(applicationInfos);
+            }
+            if (appInstance) {
+                ControllerManager.loadControllerByShortName(appInstance.getName(), controllerName).done(function (controller) {
+                    serviceName = serviceName + 'Service';
+                    methods = controller.methods();
+                    if (methods.indexOf(serviceName) === -1) {
+                        coreApi.exception("ApplicationManagerException", 50013, 'invokeService Service ' + serviceName + ' doesn\'t exist in ' + appname + ':' + controllerName);
+                    }
+                    dfd.resolve(controller[serviceName].apply(controller, params));
+                }).fail(function (reason) {
+                    console.log("reason...", reason);
+                    dfd.reject(reason);
+                });
+            }
+            return dfd.promise();
         };
     Api = {
         registerApplication: registerApplication,
         invoke: invoke,
+        invokeService: invokeService,
         launchApplication: launchApplication,
         init: init,
         reset: reset

@@ -22,12 +22,10 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
     var Api = require('tb.core.Api'),
 
         jQuery = require('jquery'),
-
         utils = require('tb.core.Utils'),
-
         appContainer = require('tb.core.ApplicationContainer'),
-
         controllerContainer = {},
+        shortNameMap = {},
 
         controllerInstance = {},
 
@@ -72,7 +70,6 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
                 } else {
                     def.resolve();
                 }
-
                 return def.promise();
             },
 
@@ -100,6 +97,9 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
              */
             invoke: function (action, params) {
                 var actionName = action + 'Action';
+                if (typeof this[actionName] !== 'function') {
+                    exception(15001, actionName + ' Action Doesnt Exists in ' + this.getName() + ' Controller');
+                }
 
                 if (typeof this[actionName] !== 'function') {
                     exception(15001, actionName + ' Action Doesnt Exists in ' + this.getName() + ' Cotroller');
@@ -126,7 +126,6 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
             if (enabledController) {
                 enabledController.onDisabled();
             }
-
             enabledController = currentController;
             enabledController.onEnabled();
         },
@@ -138,9 +137,7 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
          */
         computeControllerName = function (controllerName) {
             var ctlName = '',
-
                 controllerPos = -1;
-
             if ('string' === typeof controllerName) {
                 controllerPos = controllerName.indexOf('Controller');
             }
@@ -153,10 +150,8 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
             if (ctlName.length === 0) {
                 exception(15004, 'Controller name do not respect {name}Controller style declaration');
             }
-
             return ctlName;
         },
-
         /**
          * Automatique controller initialiser before action call execution
          * @param  {String} appName
@@ -165,17 +160,25 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
          * @return {False}
          */
         initController = function (appName, controllerName, def) {
-            var currentController,
-                fullControllerName = appName + '.' + computeControllerName(controllerName);
-
+            var currentController, fullControllerName = appName + '.' + computeControllerName(controllerName);
+            //controllerShortName = getControllerShortName(controllerName);
             currentController = new controllerContainer[appName][controllerName]();
             controllerInstance[fullControllerName] = currentController;
-
             currentController.handleImport().then(function () {
                 currentController.onInit(require);
                 updateEnabledController(currentController);
                 def.resolve(currentController);
             });
+        },
+        /**
+         * Return a short name for the controller. IE MainController will
+         * @param {string} controllerFullName
+         */
+        getControllerShortName = function (controllerFullName) {
+            var controllerName, controllerNameInfos = computeControllerName(controllerFullName);
+            controllerNameInfos = controllerNameInfos.split(".");
+            controllerName = controllerNameInfos[0];
+            return controllerName;
         },
 
         /**
@@ -185,59 +188,53 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
          * @return {False}
          */
         registerController = function (controllerName, ControllerDef) {
-
+            var appName = ControllerDef.appName,
+                controllerShortName = getControllerShortName(controllerName),
+                Constructor = {};
             if (false === ControllerDef.hasOwnProperty('appName')) {
                 exception(15003, 'Controller should be attached to an App');
             }
-
-            var appName = ControllerDef.appName,
-
-                Constructor = {};
-
             if (ControllerDef.hasOwnProperty('initialize')) {
                 delete ControllerDef.initialize;
             }
-
             Constructor = new JS.Class(AbstractController, ControllerDef);
-
             Constructor.define('initialize', (function (config) {
                 return function () {
                     this.callSuper(config);
                 };
             }(ControllerDef.config)));
-
             Constructor.define('getName', (function (name) {
                 return function () {
                     return name;
                 };
             }(controllerName)));
-
             if (!controllerContainer[appName]) {
                 controllerContainer[appName] = {};
             }
-
             controllerContainer[appName][controllerName] = Constructor;
+            /*Save controller shortname so that it can be used to load services*/
+            /*controllerShortName =  controllerName.toLowerCase(controllerName);
+        controllerShortName = controllerShortName.replace("controller","");*/
+            controllerShortName = controllerShortName.toLowerCase();
+            shortNameMap[appName + ':' + controllerShortName] = {
+                constructor: Constructor,
+                originalName: controllerName
+            };
         },
-
         /**
-         * Load controller and retrieve it if is allready loaded
+         * Load controller and retrieve it if its already been loaded
          * @param  {String} appName
          * @param  {String} controllerName
          * @return {Object}
          */
         loadController = function (appName, controllerName) {
             var fullControllerName = appName + '.' + computeControllerName(controllerName),
-
                 def = jQuery.Deferred(),
-
                 cInstance = '';
-
             if (!appName || typeof appName !== 'string') {
                 exception(15005, 'appName have to be defined as String');
             }
-
             cInstance = controllerInstance[fullControllerName];
-
             if (cInstance) {
                 updateEnabledController(cInstance);
                 def.resolve(cInstance);
@@ -250,10 +247,24 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
                     }).fail(def.reject);
                 }
             }
-
             return def.promise();
         },
-
+        /*
+         * For every controller a short name is registered that is
+         * loadControllerByShortName allows us to find the controller by using this
+         *
+         **/
+        loadControllerByShortName = function (appName, shortControllerName) {
+            if (!appName || typeof appName !== 'string') {
+                exception(15005, 'appName have to be defined as String');
+            }
+            if (!appName || typeof appName !== 'string') {
+                exception(15006, 'shortControllerName have to be defined as String');
+            }
+            //shortControllerName = shortControllerName.toLowerCase();
+            var controllerName = shortNameMap[appName + ":" + shortControllerName].originalName;
+            return loadController(appName, controllerName);
+        },
         /**
          * Return the controler corresponding at the current application actualy launched
          * @param  {String} appName
@@ -263,21 +274,17 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
             if (controllerContainer.hasOwnProperty(appName)) {
                 return controllerContainer[appName];
             }
-
             exception(15006, 'Controller Not Found');
         },
-
         /**
          * Controller manager api exposition
          * @type {Object}
          */
         ControllerManager = {
             registerController: registerController,
-
             loadController: loadController,
-
+            loadControllerByShortName: loadControllerByShortName,
             getAppControllers: getAppControllers,
-
             getAllControllers: function () {
                 return controllerContainer;
             }

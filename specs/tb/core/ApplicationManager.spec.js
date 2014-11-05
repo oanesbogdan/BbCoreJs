@@ -1,15 +1,42 @@
 define(["tb.core"], function (Core) {
     'use strict';
 
-    var BasicAppliaction = function () {
-        return {
-            onInit: function () {return; },
-            onStart: function () {return; },
-            onStop: function () {return; },
-            onResume: function () {return; },
-            onError: function () {return; }
+    var BasicApplication = function () {
+            return {
+                onInit: function () {
+                    return;
+                },
+                onStart: function () {
+                    return;
+                },
+                onStop: function () {
+                    return;
+                },
+                onResume: function () {
+                    return;
+                },
+                onError: function () {
+                    return;
+                }
+            };
+        },
+        BasicController = function (appName) {
+            return {
+                appName: appName,
+                config: {
+                    imports: []
+                },
+                onInit: function () {
+                    return;
+                },
+                initialize: function () {
+                    return;
+                },
+                sayHelloService: function () {
+                    return "hello";
+                }
+            };
         };
-    };
 
     describe("ApplicationManager test", function () {
         beforeEach(function () {
@@ -55,8 +82,9 @@ define(["tb.core"], function (Core) {
             Core.ApplicationManager.reset();
         });
         var errorMessage = function (code, message) {
-            return 'Error n°' + code + ' ApplicationManagerException: ' + message;
-        };
+                return 'Error n°' + code + ' ApplicationManagerException: ' + message;
+            };
+
         it("ApplicationManager.Init throws exception when wrong params are provided", function () {
             try {
                 Core.ApplicationManager.init();
@@ -106,7 +134,9 @@ define(["tb.core"], function (Core) {
 
         it("Should trigger appIsReady event", function (done) {
             var callBack = {
-                onInit: function () {return; }
+                onInit: function () {
+                    return;
+                }
             };
             spyOn(callBack, 'onInit');
             try {
@@ -123,7 +153,9 @@ define(["tb.core"], function (Core) {
 
         it("Should trigger appLoadingError event", function (done) {
             var callBack = {
-                onError: function () {return; }
+                onError: function () {
+                    return;
+                }
             };
             spyOn(callBack, 'onError');
             Core.ApplicationManager.reset();
@@ -136,6 +168,37 @@ define(["tb.core"], function (Core) {
                 }, 500);
             } catch (e) {
                 Core.component('logger').debug(e);
+            }
+        });
+
+        it("Should invoke a service", function (done) {
+            try {
+                var callBack = {
+                    appIsFailed: function () {
+                        return;
+                    },
+                    appIsStarted: function () {
+                        return;
+                    },
+                    onResult: function () {
+                        return;
+                    }
+                };
+                spyOn(callBack, "onResult").and.callThrough();
+                Core.ApplicationManager.reset();
+                Core.ApplicationManager.registerApplication("srvApp", new BasicApplication());
+                Core.ControllerManager.registerController("BasicController", new BasicController("srvApp"));
+                /* start application */
+                Core.ApplicationManager.invokeService("srvApp.basic.sayHello").done(callBack.onResult).fail(function () {
+                    expect(true).toBe(false);
+                });
+                setTimeout(function () {
+                    expect(callBack.onResult).toHaveBeenCalled();
+                    done();
+                }, 2000);
+            } catch (e) {
+                console.log("erreur", e);
+                expect(true).toBe(false);
             }
         });
 
@@ -209,19 +272,20 @@ define(["tb.core"], function (Core) {
                     lastAppIsLaunched: function (app) {
                         currentApp = app;
                     },
-                    appFailToLaunch: function () {return; },
-                    appHasError: function () {return; }
+                    appFailToLaunch: function () {
+                        return;
+                    },
+                    appHasError: function () {
+                        return;
+                    }
                 };
                 /*app Layout*/
                 try {
-                    Core.ApplicationManager.registerApplication("LayoutApplication", new BasicAppliaction());
-
+                    Core.ApplicationManager.registerApplication("LayoutApplication", new BasicApplication());
                     /*app Content*/
-                    Core.ApplicationManager.registerApplication("ContentApplication", new BasicAppliaction());
-
+                    Core.ApplicationManager.registerApplication("ContentApplication", new BasicApplication());
                     /*app Last*/
-                    Core.ApplicationManager.registerApplication("LastApplication", new BasicAppliaction());
-
+                    Core.ApplicationManager.registerApplication("LastApplication", new BasicApplication());
                     /* register a controller ContentApplication*/
                     Core.ControllerManager.registerController('ContentController', {
                         appName: 'LastApplication',
@@ -239,12 +303,13 @@ define(["tb.core"], function (Core) {
                             barAction = 'bar';
                         }
                     });
-                } catch (e) { Core.component('logger').debug(e); }
+                } catch (e) {
+                    Core.component('logger').debug(e);
+                }
             });
-
             it("Should fail because application already exists", function () {
                 try {
-                    Core.ApplicationManager.registerApplication("LayoutApplication", new BasicAppliaction());
+                    Core.ApplicationManager.registerApplication("LayoutApplication", new BasicApplication());
                     expect(true).toBe(false);
                 } catch (e) {
                     expect(e).toEqual(errorMessage(50007, 'An application named [LayoutApplication] already exists.'));
@@ -361,7 +426,10 @@ define(["tb.core"], function (Core) {
             });
 
             it("Application.invoke should execute Controller action", function (done) {
-                Core.ApplicationManager.on("appError", function () {return; });
+                Core.ApplicationManager.on("appError", function () {
+                    return;
+                });
+
                 Core.ApplicationManager.launchApplication("LastApplication", {}).fail(function () {
                     return;
                 });

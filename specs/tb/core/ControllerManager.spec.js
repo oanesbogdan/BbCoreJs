@@ -2,7 +2,6 @@ define(['require', 'tb.core', 'tb.core.ApplicationContainer'], function () {
     'use strict';
 
     var api = require('tb.core'),
-
         apps = require('tb.core.ApplicationContainer'),
 
         /**
@@ -39,28 +38,30 @@ define(['require', 'tb.core', 'tb.core.ApplicationContainer'], function () {
                 api.ControllerManager.registerController('SpecCtrl', {});
                 expect(false).toBe(true);
             } catch (e) {
+                expect(e).toBe(errorMessage(15004, 'Controller name do not respect {name}Controller style declaration'));
+            }
+            try {
+                api.ControllerManager.registerController('SpecCtrlController', {});
+                expect(false).toBe(true);
+            } catch (e) {
                 expect(e).toBe(errorMessage(15003, 'Controller should be attached to an App'));
             }
-
             try {
                 api.ControllerManager.getAppControllers('SpecCtrl');
                 expect(false).toBe(true);
             } catch (e) {
                 expect(e).toBe(errorMessage(15006, 'Controller Not Found'));
             }
-
             try {
                 api.ControllerManager.loadController('', '');
             } catch (e) {
                 expect(e).toBe(errorMessage(15004, 'Controller name do not respect {name}Controller style declaration'));
             }
-
             try {
                 api.ControllerManager.loadController(null, {});
             } catch (e) {
                 expect(e).toBe(errorMessage(15004, 'Controller name do not respect {name}Controller style declaration'));
             }
-
             try {
                 api.ControllerManager.loadController(null, 'suspiciousController');
             } catch (e) {
@@ -69,36 +70,29 @@ define(['require', 'tb.core', 'tb.core.ApplicationContainer'], function () {
         });
 
         it('Controller contructor generation', function () {
-            var SpecCtrlClass,
-
-                SpecCtrl;
-
+            var SpecCtrlClass, SpecCtrl;
             try {
-                apps.getInstance().register({name: 'SpecApp', instance: {}});
-                api.ControllerManager.registerController('SpecCtrl', controller);
+                apps.getInstance().register({
+                    name: 'SpecApp',
+                    instance: {}
+                });
+                api.ControllerManager.registerController('SpecController', controller);
             } catch (e) {
                 expect(e).toBe(false);
             }
-
             expect(controller.initialize).toBe(undefined);
-
             try {
-                SpecCtrlClass = api.ControllerManager.getAppControllers('SpecApp').SpecCtrl;
+                SpecCtrlClass = api.ControllerManager.getAppControllers('SpecApp').SpecController;
                 SpecCtrl = new SpecCtrlClass({});
             } catch (e) {
                 expect(e).toBe(false);
             }
-
-            expect(SpecCtrl.getName()).toBe('SpecCtrl');
+            expect(SpecCtrl.getName()).toBe('SpecController');
         });
-
         it('Test controller action invoke', function () {
-            var SpecCtrlClass,
-
-                SpecCtrl;
-
+            var SpecCtrlClass, SpecCtrl;
             try {
-                SpecCtrlClass = api.ControllerManager.getAllControllers().SpecApp.SpecCtrl;
+                SpecCtrlClass = api.ControllerManager.getAllControllers().SpecApp.SpecController;
                 SpecCtrl = new SpecCtrlClass({});
             } catch (e) {
                 expect(e).toBe(false);
@@ -106,19 +100,16 @@ define(['require', 'tb.core', 'tb.core.ApplicationContainer'], function () {
             try {
                 SpecCtrl.invoke('notExistant', {});
             } catch (e) {
-                expect(e).toBe(errorMessage(15001, 'notExistantAction' + ' Action Doesnt Exists in ' + 'SpecCtrl' + ' Cotroller'));
+                expect(e).toBe(errorMessage(15001, 'notExistantAction' + ' Action Doesnt Exists in ' + 'SpecController' + ' Controller'));
             }
-
             try {
                 SpecCtrl.invoke('test', [true]);
             } catch (e) {
-                expect(e).toBe(errorMessage(15002, 'Error while executing [' + 'testAction' + '] in ' + 'SpecCtrl' + ' controller with message: ' + 'Test is working'));
+                expect(e).toBe(errorMessage(15002, 'Error while executing [' + 'testAction' + '] in ' + 'SpecController' + ' controller with message: ' + 'Test is working'));
             }
         });
-
         xit('Test multi controller instance', function () {
             var SpecCtrl;
-
             try {
                 SpecCtrl = api.ControllerManager.getAllControllers().SpecApp.SpecCtrlController;
                 // SpecCtrl = new SpecCtrlClass({});
@@ -127,15 +118,12 @@ define(['require', 'tb.core', 'tb.core.ApplicationContainer'], function () {
             }
             spyOn(SpecCtrl, 'onDisabled');
 
-
             api.ControllerManager.registerController('SpecCtrl2', {
                 config: {
                     imports: []
                 },
-
                 appName: 'SpecApp'
             });
-
             api.ControllerManager.loadController('SpecApp', 'SpecCtrl2Controler');
             expect(controller.onDisabled).toHaveBeenCalled();
         });

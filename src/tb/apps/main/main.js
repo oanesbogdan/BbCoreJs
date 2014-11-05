@@ -30,7 +30,6 @@ require.config({
 });
 
 define('app.main', ['tb.core', 'main.view.index', 'jquery'], function (core, MainViewIndex, jQuery) {
-
     'use strict';
 
     /**
