@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define('tb.core.Api', ['require', 'tb.component'], function (require) {
+define('tb.core.Api', ['require'], function (require) {
     'use strict';
 
     var container = {},
@@ -46,7 +46,23 @@ define('tb.core.Api', ['require', 'tb.component'], function (require) {
             },
 
             component: function (name) {
-                return require('tb.component/' + name + '/main');
+                var component = require('tb.component/' + name + '/main'),
+                    dependencies = [],
+                    key;
+
+                if (component.coreDependencies !== undefined && Array.isArray(component.coreDependencies)) {
+                    for (key = 0; key < component.coreDependencies.length; key = key + 1) {
+                        dependencies.push(api[component.coreDependencies[key]]);
+                    }
+
+                    if (component.initCoreDependencies !== undefined) {
+                        component.initCoreDependencies.apply(component, dependencies);
+                    } else {
+                        api.exception('MissingFunctionException', 500, 'Function initCoreDepencies must be set in component');
+                    }
+                }
+
+                return component;
             }
         };
 

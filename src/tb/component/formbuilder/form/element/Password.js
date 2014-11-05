@@ -16,23 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-(function () {
+
+define(['tb.component/formbuilder/form/element/Element', 'jsclass'], function (Element) {
     'use strict';
-    require.config({
-        paths: {
-            'tb.component': 'src/tb/component/'
+
+    /**
+     * ElementPassword object
+     */
+    var Password = new JS.Class(Element, {
+
+        initialize: function (key, config, formTag, view, template) {
+            this.callSuper(key, config, formTag);
+            this.view = view;
+            this.template = template;
+        },
+
+        render: function () {
+            var view = new this.view(this.template, this.formTag, this);
+
+            return view.render();
         }
     });
 
-    define(
-        'tb.component.core',
-        [
-            'tb.component/logger/main',
-            'tb.component/popin/main',
-            'tb.component/formbuilder/main'
-        ],
-        function () {
-            return;
-        }
-    );
-}());
+    return Password;
+});

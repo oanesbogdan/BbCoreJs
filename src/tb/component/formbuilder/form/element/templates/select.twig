@@ -1,0 +1,15 @@
+<div class="form-group">
+    <label for="">{{ element.getLabel() }}</label>
+    <select name="{{ element.getKey() }}"
+            {% if element.isDisabled() %}disabled{% endif %}
+            {% if element.isMultiple() %}multiple{% endif %}
+            class="form-control"
+    >
+        {% for key, item in element.getOptions() %}
+            <option {% if key in element.getValue() %}selected{% endif %}
+                    value="{{ key }}">
+                {{ item }}
+            </option>
+        {% endfor %}
+    </select>
+</div>

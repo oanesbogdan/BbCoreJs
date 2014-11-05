@@ -16,23 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-(function () {
+
+define(['tb.core.ViewManager', 'BackBone'], function (ViewManager, Backbone) {
     'use strict';
-    require.config({
-        paths: {
-            'tb.component': 'src/tb/component/'
+
+    var SelectView = Backbone.View.extend({
+
+        initialize: function (template, formTag, element) {
+            this.el = formTag;
+            this.template = template;
+            this.element = element;
+        },
+
+        /**
+         * Render the template into the DOM with the ViewManager
+         * @returns {String} html
+         */
+        render: function () {
+            return ViewManager.render(this.template, {element: this.element});
         }
     });
 
-    define(
-        'tb.component.core',
-        [
-            'tb.component/logger/main',
-            'tb.component/popin/main',
-            'tb.component/formbuilder/main'
-        ],
-        function () {
-            return;
-        }
-    );
-}());
+    return SelectView;
+});
