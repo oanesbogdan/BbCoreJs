@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2011-2013 Lp digital system
+ *
+ * This file is part of BackBuilder5.
+ *
+ * BackBuilder5 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * BackBuilder5 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
+ */
 /**
  * bb.ApplicationManager
  * Responsability
@@ -141,6 +159,9 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 coreApi.exception('ApplicationManagerException', 50007, 'An application named [' + appname + '] already exists.');
             }
             AppDefContainer[appname] = ApplicationConstructor;
+            if (appname === "TestApplication") {
+                console.log("sd", JSON.stringify(ApplicationConstructor));
+            }
         },
         registerAppRoutes = function (routes) {
             var def = new $.Deferred();
@@ -179,6 +200,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                             currentApplication.onStop();
                         }
                         AppContainer.register(applicationInfos);
+                        applicationInfos.instance.onInit();
                         applicationInfos.instance.onStart();
                         instance = applicationInfos.instance;
                     } else {
@@ -287,14 +309,70 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                     });
                 });
             });
+        },
+        invokeService = function (servicePath) {
+            var dfd = new $.Deferred(),
+                serviceInfos,
+                appname,
+                methods,
+                serviceName,
+                params,
+                appInstance,
+                controllerName,
+                Application,
+                applicationInfos;
+            if (!servicePath || typeof servicePath !== "string") {
+                coreApi.exception("ApplicationManagerException", 50011, 'invokeService expects parameter one to be a string.');
+            }
+            params = $.merge([], arguments);
+            params.shift();
+            serviceInfos = servicePath.split('.');
+            if (serviceInfos.length !== 3) {
+                coreApi.exception("ApplicationManagerException", 50012, '');
+            }
+            /* we suppose the has been */
+            appname = serviceInfos[0];
+            serviceName = serviceInfos[2];
+            controllerName = serviceInfos[1];
+            Application = AppDefContainer[appname];
+            if (!Application) {
+                coreApi.exception("ApplicationManagerException", 50011, 'Application definition can\'t be found');
+            }
+            applicationInfos = AppContainer.getByAppInfosName(appname);
+            if (applicationInfos && applicationInfos.hasOwnProperty("instance")) {
+                appInstance = applicationInfos.instance;
+            } else {
+                appInstance = new Application(config);
+                applicationInfos = {
+                    instance: appInstance,
+                    name: appname
+                };
+                AppContainer.register(applicationInfos);
+            }
+            if (appInstance) {
+                ControllerManager.loadControllerByShortName(appInstance.getName(), controllerName).done(function (controller) {
+                    serviceName = serviceName + 'Service';
+                    methods = controller.methods();
+                    if (methods.indexOf(serviceName) === -1) {
+                        coreApi.exception("ApplicationManagerException", 50013, 'invokeService Service ' + serviceName + ' doesn\'t exist in ' + appname + ':' + controllerName);
+                    }
+                    dfd.resolve(controller[serviceName].apply(controller, params));
+                }).fail(function (reason) {
+                    console.log("reason...", reason);
+                    dfd.reject(reason);
+                });
+            }
+            return dfd.promise();
         };
     Api = {
         registerApplication: registerApplication,
         invoke: invoke,
+        invokeService: invokeService,
         launchApplication: launchApplication,
         init: init,
         reset: reset
     };
+    /* application as an Event emitter */
     underscore.extend(Api, Backbone.Events);
     coreApi.register('ApplicationManager', Api);
     return Api;

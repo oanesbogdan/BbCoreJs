@@ -1,8 +1,28 @@
+/*
+ * Copyright (c) 2011-2013 Lp digital system
+ *
+ * This file is part of BackBuilder5.
+ *
+ * BackBuilder5 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * BackBuilder5 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
+ */
 module.exports = function (grunt) {
     'use strict';
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+
+        license: '/*\n * Copyright (c) 2011-2013 Lp digital system\n *\n * This file is part of BackBuilder5.\n *\n * BackBuilder5 is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * BackBuilder5 is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n * GNU General Public License for more details.\n *\n * You should have received a copy of the GNU General Public License\n * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.\n */\n',
 
         /**
          * toolbar files and directories
@@ -65,7 +85,7 @@ module.exports = function (grunt) {
 
         uglify: {
             options: {
-                banner: '/*! <%= pkg.name %> <%= pkg.version %> */\n'
+                banner: '/*! <%= pkg.name %> <%= pkg.version %> */\n<%= license %>'
             },
             core: {
                 files: {
@@ -75,18 +95,6 @@ module.exports = function (grunt) {
             main: {
                 files: {
                     '<%= dir.build %>/main.min.js': ['<%= dir.src %>/main.build.js']
-                }
-            },
-            libs: {
-                files: {
-                    '<%= dir.build %>/libs.min.js': [
-                        '<%= dir.lib %>/<%= libs.jquery %>',
-                        '<%= dir.lib %>/<%= libs.underscore %>',
-                        '<%= dir.lib %>/<%= libs.jsclass %>',
-                        '<%= dir.lib %>/<%= libs.backbone %>',
-                        '<%= dir.lib %>/<%= libs.parallel %>',
-                        '<%= dir.lib %>/<%= libs.handlebars %>'
-                    ]
                 }
             },
             config: {
@@ -144,7 +152,9 @@ module.exports = function (grunt) {
                         'before',
                         'beforeEach',
                         'after',
-                        'afterEach'
+                        'afterEach',
+                        'xit',
+                        'xdescribe'
                     ]
                 }
             },
@@ -158,8 +168,7 @@ module.exports = function (grunt) {
                         'define',
                         'require',
                         'module',
-                        'Handlebars',
-                        'xdescribe',
+                        'Backbone',
                         'JS',
                         'load' // temp remove it
                     ]
@@ -182,7 +191,7 @@ module.exports = function (grunt) {
         jasmine: {
 
             test: {
-                src: '<%= dir.src %>/core/**/*.js',
+                src: ['<%= dir.src %>/core/**/*.js', '<%= dir.src %>/component/**/*.js'],
                 options: {
                     specs: '<%= dir.specs %>/**/*.spec.js',
                     helpers: '<%= dir.specs %>/**/*.helper.js',

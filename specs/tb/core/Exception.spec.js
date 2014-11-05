@@ -1,10 +1,16 @@
 define(['require', 'tb.core', 'tb.core.Exception', 'tb.core.Api'], function (require) {
     'use strict';
 
-    var api = require('tb.core.Api');
+    var api = require('tb.core.Api'),
+
+        baseCount = 0;
+
 
     describe('Exceptions spec', function () {
+
         it('Raise new Exception', function () {
+            baseCount = api.get('errors') ? api.get('errors').length : 0;
+
             try {
                 api.exception('test', 101, 'test message');
                 expect(false).toBe(true);
@@ -18,7 +24,7 @@ define(['require', 'tb.core', 'tb.core.Exception', 'tb.core.Api'], function (req
 
             expect(api.get('lastError')).not.toBe(null);
 
-            expect(errors.length).toBe(1);
+            expect(errors.length).toBe(baseCount + 1);
         });
 
         it('Retreive multi log errors', function () {
@@ -33,7 +39,7 @@ define(['require', 'tb.core', 'tb.core.Exception', 'tb.core.Api'], function (req
 
             expect(api.get('lastError')).not.toBe(null);
 
-            expect(errors.length).toBe(2);
+            expect(errors.length).toBe(baseCount + 2);
             expect(errors[errors.length - 1]).toBe(api.get('lastError'));
         });
 

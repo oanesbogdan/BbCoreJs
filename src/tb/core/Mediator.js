@@ -1,8 +1,21 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2011-2013 Lp digital system
+ *
+ * This file is part of BackBuilder5.
+ *
+ * BackBuilder5 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * BackBuilder5 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-
 define('tb.core.Mediator', ['tb.core.Api'], function (Api) {
     'use strict';
 
@@ -82,7 +95,7 @@ define('tb.core.Mediator', ['tb.core.Api'], function (Api) {
                 try {
                     this.topics[topic][i].execute.apply(this.topics[topic][i], args);
                 } catch (e) {
-                    Api.logger.error('Mediator as catch an error on "' + topic + '" topic with the following message: "' + e + '"');
+                    Api.exception.silent('MediatorException', 12201, 'Mediator as catch an error on "' + topic + '" topic with the following message: "' + e + '"');
                 }
             }
         }

@@ -22,7 +22,12 @@
     "cryptojs": "*",
     "bootstrap": "*",
     "jsclass": "4.0.5",
-    "moment": "~2.8.3"
+    "moment": "~2.8.3",
+    "font-awesome": "*",
+    "i18next": "*",
+    "bower": "*",
+    "nunjucks": "~1.1.0",
+    "jquery-ui": "~1.11.2"
   },
   "devDependencies": {
     "uri.js": "~1.14.1"

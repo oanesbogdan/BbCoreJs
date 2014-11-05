@@ -1,8 +1,8 @@
 define(['require', 'tb.core', "tb.core.Utils"], function (require) {
     "use strict";
-    var smartList, core, bbUtils;
-    core = require("tb.core");
-    bbUtils = require("tb.core.Utils");
+    var smartList,
+        core = require("tb.core"),
+        bbUtils = require("tb.core.Utils");
     describe("Utils spec", function () {
         /* setup */
         it("Creates a SmartList", function () {
@@ -167,6 +167,7 @@ define(['require', 'tb.core', "tb.core.Utils"], function (require) {
                 done();
             }, 1000);
         });
+
         describe("Asycronous require with Promise", function () {
             var test = "";
             beforeEach(function (done) {

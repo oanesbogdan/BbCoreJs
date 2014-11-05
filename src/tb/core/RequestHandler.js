@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2011-2013 Lp digital system
+ *
+ * This file is part of BackBuilder5.
+ *
+ * BackBuilder5 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * BackBuilder5 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
+ */
 define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.Response', 'jsclass'], function (jQuery, Underscore, Backbone, TbResponse) {
     'use strict';
 
@@ -16,8 +34,9 @@ define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.R
          * a Response object
          * @returns Response
          */
-        send: function (request, callback) {
+        send: function (request, callback, context) {
             var self = this;
+            context = context || this;
 
             if (null !== request) {
 
@@ -41,7 +60,7 @@ define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.R
                     self.trigger('request:send:done', response);
 
                     if (callback !== undefined) {
-                        callback(response.getDatas());
+                        callback.call(context || this, response.getDatas(), response);
                     }
                 }).fail(function (xhr, textStatus, errorThrown) {
                     var response = self.buildResponse(
@@ -56,7 +75,7 @@ define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.R
                     self.trigger('request:send:fail', response);
 
                     if (callback !== undefined) {
-                        callback(response.getDatas());
+                        callback.call(context || this, response.getDatas(), response);
                     }
                 });
             }

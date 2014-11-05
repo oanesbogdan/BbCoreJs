@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2011-2013 Lp digital system
+ *
+ * This file is part of BackBuilder5.
+ *
+ * BackBuilder5 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * BackBuilder5 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
+ */
 define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIjs/URI', 'jsclass'], function (Request, RequestHandler, URI) {
     'use strict';
 
@@ -16,7 +34,7 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
                  * Request object used to build every REST request
                  * @type {Object}
                  */
-                this.request = new Request();
+                this.request = null;
 
                 // Lack of authentification process to add to request header
             },
@@ -41,6 +59,7 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
                 var url = new URI(this.baseUrl),
                     range;
 
+                this.request = new Request();
                 this.request.headers = {};
                 this.request.setContentType('application/json');
 
@@ -54,7 +73,11 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
                     this.computeCriterias(url, datas);
 
                     if (datas.hasOwnProperty('datas')) {
-                        this.request.setDatas(datas.datas);
+                        if ('patch' === action) {
+                            this.request.setDatas(this.computePatchOperations(datas.datas));
+                        } else {
+                            this.request.setDatas(datas.datas);
+                        }
                     }
                 } else if ('create' === action) {
                     this.request.setMethod('POST');
@@ -71,6 +94,10 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
                 }
 
                 this.request.setUrl(url.normalize().toString());
+
+                if (null !== this.request.getDatas()) {
+                    this.request.setDatas(JSON.stringify(this.request.getDatas()));
+                }
 
                 RequestHandler.send(this.request, callback);
             },
@@ -100,6 +127,30 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
                 }
 
                 return this;
+            },
+
+            /**
+             * Format request datas to match with path operations standard (RFC 6902: http://tools.ietf.org/html/rfc6902)
+             * @param  {Object} datas patch raw datas
+             * @return {Object}       formatted patch datas
+             */
+            computePatchOperations: function (datas) {
+                var operations = [],
+                    key;
+
+                for (key in datas) {
+                    if (datas.hasOwnProperty(key)) {
+                        operations.push({
+                            op: 'replace',
+                            path: '/' + key,
+                            value: datas[key]
+                        });
+                    }
+                }
+
+                return {
+                    operations: operations
+                };
             }
         }),
         rest = new RestDriver();
