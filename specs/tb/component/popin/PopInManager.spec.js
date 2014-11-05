@@ -1,5 +1,7 @@
-define(['tb.core.PopInManager', 'tb.core.PopIn'], function (PopInManager, PopIn) {
+define(['tb.core.Api', 'tb.component/popin/PopIn'], function (Api, PopIn) {
     'use strict';
+
+    var PopInManager = Api.component('popin');
 
     describe('PopInManager specs', function () {
 
