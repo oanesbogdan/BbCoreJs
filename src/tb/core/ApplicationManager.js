@@ -276,6 +276,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
             if (underscore.size(config.applications) === 0) {
                 coreApi.exception('ApplicationManagerException', 50006, 'InvalidAppConfig at least one application config should be provided');
             }
+
             $.each(config.applications, function (appname, appConfig) {
                 appPaths.push(config.appPath + '/' + appname + '/main.js');
                 /*handle alt route path here */

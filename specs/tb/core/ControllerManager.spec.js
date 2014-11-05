@@ -1,7 +1,9 @@
 define(['require', 'tb.core', 'tb.core.ApplicationContainer'], function () {
     'use strict';
+
     var api = require('tb.core'),
         apps = require('tb.core.ApplicationContainer'),
+
         /**
          * Basic controller for the specs
          * @type {Object}
@@ -10,21 +12,27 @@ define(['require', 'tb.core', 'tb.core.ApplicationContainer'], function () {
             config: {
                 imports: []
             },
+
             appName: 'SpecApp',
+
             testAction: function (test) {
                 if (test === true) {
                     throw 'Test is working';
                 }
                 return 'It expected';
             },
+
             initialize: function () {
                 return true;
             }
         },
+
         errorMessage = function (code, message) {
             return 'Error n°' + code + ' ControllerManagerException: ' + message;
         };
+
     describe('Controller manager spec', function () {
+
         it('Test throw errors', function () {
             try {
                 api.ControllerManager.registerController('SpecCtrl', {});
@@ -60,6 +68,7 @@ define(['require', 'tb.core', 'tb.core.ApplicationContainer'], function () {
                 expect(e).toBe(errorMessage(15005, 'appName have to be defined as String'));
             }
         });
+
         it('Controller contructor generation', function () {
             var SpecCtrlClass, SpecCtrl;
             try {
@@ -108,6 +117,7 @@ define(['require', 'tb.core', 'tb.core.ApplicationContainer'], function () {
                 expect(e).toBe(false);
             }
             spyOn(SpecCtrl, 'onDisabled');
+
             api.ControllerManager.registerController('SpecCtrl2', {
                 config: {
                     imports: []

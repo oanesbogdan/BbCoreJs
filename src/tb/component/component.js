@@ -27,7 +27,8 @@
     define(
         'tb.component',
         [
-            'tb.component/logger/main'
+            'tb.component/logger/main',
+            'tb.component/popin/main'
         ],
         function () {
             return;
