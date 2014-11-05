@@ -35,8 +35,6 @@
             'tb.core.RequestHandler': 'src/tb/core/RequestHandler',
             'tb.core.Response': 'src/tb/core/Response',
             'tb.core.RestDriver': 'src/tb/core/RestDriver',
-            'tb.core.PopIn': 'src/tb/core/PopIn',
-            'tb.core.PopInManager': 'src/tb/core/PopInManager',
             'tb.core.Scope': 'src/tb/core/Scope',
             'tb.component.core': 'src/tb/component/component'
         }

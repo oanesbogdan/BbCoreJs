@@ -28,6 +28,7 @@
         'tb.component.core',
         [
             'tb.component/logger/main',
+            'tb.component/popin/main',
             'tb.component/formbuilder/main'
         ],
         function () {

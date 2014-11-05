@@ -16,7 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define('tb.core.PopInManager', ['tb.core.PopIn', 'jquery', 'jsclass', 'jqueryui'], function (PopIn, jQuery) {
+
+define(['tb.component/popin/PopIn', 'jquery', 'jqueryui', 'jsclass'], function (PopIn, jQuery) {
     'use strict';
 
     /**
@@ -136,11 +137,11 @@ define('tb.core.PopInManager', ['tb.core.PopIn', 'jquery', 'jsclass', 'jqueryui'
             /**
              * Add mask() method to tb.core.PopIn to display loader overlay on top of dialog
              */
-            popIn.mask = function () {
+            popIn.mask = function (message) {
                 var popInId = '#' + popIn.getId(),
                     element = jQuery('<div/>', {
                         class: 'loader'
-                    }).html('<i class="fa fa-spin fa-spinner"></i> Chargement en cours');
+                    }).html('<i class="fa fa-spin fa-spinner"></i>' + (message || 'Chargement en cours'));
 
                 element.css('background-color', 'rgba(0, 0, 0, .7)');
                 element.css('color', 'white');
@@ -152,6 +153,7 @@ define('tb.core.PopInManager', ['tb.core.PopIn', 'jquery', 'jsclass', 'jqueryui'
                 element.css('text-align', 'center');
                 element.css('top', '0');
                 element.css('width', '100%');
+                jQuery(popInId).parent().find('div.loader').remove();
                 element.appendTo(jQuery(popInId).parent());
             };
 
