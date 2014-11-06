@@ -61,16 +61,8 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 this.state = 0;
                 underscore.extend(this, Backbone.Events);
                 this.config = $.extend(true, this.config, config);
-                //this.appControllers = this.registerControllers();
                 this.onInit();
             },
-            /*  registerControllers: function () {
-                try {
-                    return ControllerManager.getAppControllers();
-                } catch (e) {
-                    console.log('registerControllers', e);
-                }
-            },*/
             getMainRoute: function () {
                 return this.config.mainRoute;
             },
@@ -91,6 +83,23 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 });
                 return def.promise();
             },
+
+            invokeControllerService: function (controller, service, params) {
+                var dfd = new $.Deferred(),
+                    serviceName;
+                ControllerManager.loadControllerByShortName(this.getName(), controller).done(function (controller) {
+                    try {
+                        serviceName = service + "Service";
+                        dfd.resolve(controller[serviceName].apply(controller, params));
+                    } catch (reason) {
+                        dfd.reject(reason);
+                    }
+                }).fail(function (reason) {
+                    dfd.reject(reason);
+                });
+                return dfd.promise();
+            },
+
             /**
              * @TODO finalise setter
              *
@@ -159,9 +168,6 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 coreApi.exception('ApplicationManagerException', 50007, 'An application named [' + appname + '] already exists.');
             }
             AppDefContainer[appname] = ApplicationConstructor;
-            if (appname === "TestApplication") {
-                console.log("sd", JSON.stringify(ApplicationConstructor));
-            }
         },
         registerAppRoutes = function (routes) {
             var def = new $.Deferred();
@@ -172,6 +178,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 def.reject(reason);
             });
         },
+
         launchApplication = function (appname, config) {
             var dfd = new $.Deferred(),
                 applicationInfos = AppContainer.getByAppInfosName(appname),
@@ -217,11 +224,16 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
             }
             return dfd.promise();
         },
-        load = function (appname, config) {
+        load = function (appname, config, launchApp) {
             var def = new $.Deferred(),
+                doLaunchApp = (typeof launchApp === "boolean") ? launchApp : true,
                 completeAppname = ['app.' + appname];
             bbUtils.requireWithPromise(completeAppname).done(function () {
-                launchApplication(appname, config).done(def.resolve);
+                if (doLaunchApp) {
+                    launchApplication(appname, config).done(def.resolve);
+                } else {
+                    def.resolve.apply(arguments);
+                }
             }).fail(function () {
                 def.reject('Application[' + completeAppname + '] can\'t be found');
             });
@@ -259,6 +271,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
             }
             var routePaths = [],
                 routeName = '',
+                appModuleName = [],
                 appPaths = [];
             config = configuration;
             if (!config.hasOwnProperty('appPath')) {
@@ -276,11 +289,11 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
             if (underscore.size(config.applications) === 0) {
                 coreApi.exception('ApplicationManagerException', 50006, 'InvalidAppConfig at least one application config should be provided');
             }
-
             $.each(config.applications, function (appname, appConfig) {
                 appPaths.push(config.appPath + '/' + appname + '/main.js');
-                /*handle alt route path here */
+                /* handle alt route path here */
                 routeName = appname + '.routes';
+                appModuleName.push("app." + appname);
                 if (appConfig.config.hasOwnProperty('routePath') && typeof appConfig.config.routePath === 'string') {
                     routeName = appConfig.config.routePath;
                 }
@@ -311,17 +324,38 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 });
             });
         },
+        getAppInstance = function (appName, config) {
+            config = config || {};
+            if (typeof appName !== "string") {
+                coreApi.exception("ApplicationManagerException", 50009, "appName should be a strign and config should be an object");
+            }
+            var AppDef, appInstance = null,
+                applicationInfos;
+            applicationInfos = AppContainer.getByAppInfosName(appName);
+            if (applicationInfos && applicationInfos.hasOwnProperty("instance")) {
+                appInstance = applicationInfos.instance;
+            } else {
+                AppDef = AppDefContainer[appName];
+                if (!AppDef) {
+                    return appInstance;
+                }
+                appInstance = new AppDef(config);
+                applicationInfos = {
+                    instance: appInstance,
+                    name: appName
+                };
+                AppContainer.register(applicationInfos);
+            }
+            return appInstance;
+        },
         invokeService = function (servicePath) {
             var dfd = new $.Deferred(),
                 serviceInfos,
                 appname,
-                methods,
                 serviceName,
                 params,
                 appInstance,
-                controllerName,
-                Application,
-                applicationInfos;
+                controllerName;
             if (!servicePath || typeof servicePath !== "string") {
                 coreApi.exception("ApplicationManagerException", 50011, 'invokeService expects parameter one to be a string.');
             }
@@ -331,36 +365,21 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
             if (serviceInfos.length !== 3) {
                 coreApi.exception("ApplicationManagerException", 50012, '');
             }
-            /* we suppose the has been */
             appname = serviceInfos[0];
             serviceName = serviceInfos[2];
             controllerName = serviceInfos[1];
-            Application = AppDefContainer[appname];
-            if (!Application) {
-                coreApi.exception("ApplicationManagerException", 50011, 'Application definition can\'t be found');
-            }
-            applicationInfos = AppContainer.getByAppInfosName(appname);
-            if (applicationInfos && applicationInfos.hasOwnProperty("instance")) {
-                appInstance = applicationInfos.instance;
-            } else {
-                appInstance = new Application(config);
-                applicationInfos = {
-                    instance: appInstance,
-                    name: appname
-                };
-                AppContainer.register(applicationInfos);
-            }
+            appInstance = getAppInstance(appname);
             if (appInstance) {
-                ControllerManager.loadControllerByShortName(appInstance.getName(), controllerName).done(function (controller) {
-                    serviceName = serviceName + 'Service';
-                    methods = controller.methods();
-                    if (methods.indexOf(serviceName) === -1) {
-                        coreApi.exception("ApplicationManagerException", 50013, 'invokeService Service ' + serviceName + ' doesn\'t exist in ' + appname + ':' + controllerName);
-                    }
-                    dfd.resolve(controller[serviceName].apply(controller, params));
+                appInstance.invokeControllerService(controllerName, serviceName, params).done(dfd.resolve).fail(dfd.reject);
+            } else {
+                /* We assume that the application has not been loaded yet */
+                load(appname, {}, false).done(function () {
+                    appInstance = getAppInstance(appname);
+                    appInstance.invokeControllerService(controllerName, serviceName, params).done(dfd.resolve).fail(dfd.reject);
                 }).fail(function (reason) {
-                    console.log("reason...", reason);
-                    dfd.reject(reason);
+                    Api.trigger("appError", {
+                        reason: reason
+                    });
                 });
             }
             return dfd.promise();

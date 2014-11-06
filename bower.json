@@ -27,7 +27,8 @@
     "i18next": "*",
     "bower": "*",
     "nunjucks": "~1.1.0",
-    "jquery-ui": "~1.11.2"
+    "jquery-ui": "~1.11.2",
+    "jqtree": "~0.22.0"
   },
   "devDependencies": {
     "uri.js": "~1.14.1"
