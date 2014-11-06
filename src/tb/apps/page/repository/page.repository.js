@@ -1,4 +1,4 @@
-define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'jsclass'], function (CoreDriverHandler, CoreRestDriver) {
+define(['tb.core.Api', 'tb.core.DriverHandler', 'tb.core.RestDriver', 'jsclass'], function (Api, CoreDriverHandler, CoreRestDriver) {
     'use strict';
 
     //Build the default parameters
