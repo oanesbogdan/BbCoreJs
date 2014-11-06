@@ -1,4 +1,4 @@
-define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'jsclass'], function (CoreDriverHandler, CoreRestDriver) {
+define(['tb.core.Api', 'tb.core.DriverHandler', 'tb.core.RestDriver', 'jsclass'], function (Api, CoreDriverHandler, CoreRestDriver) {
     'use strict';
 
     //Build the default parameters
@@ -40,6 +40,10 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'jsclass'], function (Cor
                 CoreDriverHandler.read(this.TYPE, {'id': uid}, orderBy, start, limit, callback);
             },
 
+            create: function (data, callback) {
+                CoreDriverHandler.create(this.TYPE, data, callback);
+            },
+
             /**
              * Change the state of page
              * @param {String} uid
@@ -51,6 +55,16 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'jsclass'], function (Cor
 
             delete: function (uid, callback) {
                 CoreDriverHandler.delete(this.TYPE, {'id': uid}, orderBy, start, limit, callback);
+            },
+
+            findLayouts: function (callback) {
+                this.findCurrentPage(function (data) {
+                    if (data.hasOwnProperty(0)) {
+                        data = data[0];
+                    }
+
+                    CoreDriverHandler.read('layout', {'site_uid': data.site_uid}, orderBy, start, limit, callback);
+                });
             }
         });
 

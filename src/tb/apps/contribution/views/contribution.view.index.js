@@ -1,4 +1,4 @@
-define(['jquery', 'tb.core.ViewManager', 'text!contribution/tpl/index'], function (jQuery, ViewManager, template) {
+define(['jquery', 'tb.core.ApplicationManager', 'tb.core.ViewManager', 'text!contribution/tpl/index'], function (jQuery, ApplicationManager, ViewManager, template) {
 
     'use strict';
 
@@ -25,6 +25,11 @@ define(['jquery', 'tb.core.ViewManager', 'text!contribution/tpl/index'], functio
          */
         bindUiEvents: function () {
             jQuery(this.el).on('click', 'ul#edit-tab li', this.manageMenu);
+            jQuery(this.el).on('click', 'a#new-page', this.showNewPage);
+        },
+
+        showNewPage: function () {
+            ApplicationManager.invokeService('page.main.createPage');
         },
 
         manageMenu: function (event) {

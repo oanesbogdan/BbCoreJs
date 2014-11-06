@@ -44,7 +44,7 @@ define(['tb.core', 'page.view.contribution.index', 'page.view.delete', 'page.vie
             view.render();
         },
 
-        newAction: function () {
+        createPageService: function (parent) {
             var view = new NewView();
             view.render();
         }

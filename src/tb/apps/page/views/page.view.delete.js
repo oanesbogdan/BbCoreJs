@@ -1,4 +1,4 @@
-define(['jquery', 'page.repository', 'tb.core.PopInManager'], function (jQuery, PageRepository, PopInManager) {
+define(['tb.core.Api', 'jquery', 'page.repository'], function (Api, jQuery, PageRepository) {
 
     'use strict';
 
@@ -12,7 +12,7 @@ define(['jquery', 'page.repository', 'tb.core.PopInManager'], function (jQuery, 
          * Initialize of PageViewDelete
          */
         initialize: function (uid) {
-            this.popin = PopInManager.createPopIn();
+            this.popin = Api.component('popin').createPopIn();
             this.uid = uid;
         },
 
@@ -23,7 +23,7 @@ define(['jquery', 'page.repository', 'tb.core.PopInManager'], function (jQuery, 
         onDelete: function () {
             var self = this;
             var callback = function () {
-                PopInManager.hide(self.popin);
+                self.popin.hide();
                 jQuery(location).attr('href', '/');
             };
 
@@ -35,7 +35,7 @@ define(['jquery', 'page.repository', 'tb.core.PopInManager'], function (jQuery, 
          * Close the popin
          */
         onCancel: function () {
-            PopInManager.hide(this.popin);
+            this.popin.hide();
         },
 
         /**
@@ -48,7 +48,7 @@ define(['jquery', 'page.repository', 'tb.core.PopInManager'], function (jQuery, 
             this.popin.addButton('Supprimer', jQuery.proxy(this.onDelete, this));
             this.popin.addButton('Annuler', jQuery.proxy(this.onCancel, this));
 
-            PopInManager.display(this.popin);
+            this.popin.display(this.popin);
 
             return this;
         }

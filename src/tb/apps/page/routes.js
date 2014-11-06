@@ -14,10 +14,6 @@ define(["tb.core"], function (BbCore) {
             'delete': {
                 url: '/delete/:uid',
                 action: 'MainController:delete'
-            },
-            'new': {
-                url: '/new',
-                action: 'MainController:new'
             }
         }
     });

@@ -1,4 +1,4 @@
-define(['jquery', 'page.repository', 'tb.core.PopInManager'], function (jQuery, PageRepository, PopInManager) {
+define(['tb.core.Api', 'jquery', 'page.repository'], function (Api, jQuery, PageRepository) {
 
     'use strict';
 
@@ -12,21 +12,31 @@ define(['jquery', 'page.repository', 'tb.core.PopInManager'], function (jQuery, 
          * Initialize of PageViewNew
          */
         initialize: function () {
-            this.popin = PopInManager.createPopIn();
+            this.popin = Api.component('popin').createPopIn();
+            this.formBuilder = Api.component('formbuilder');
         },
 
-        onSave: function () {
-            console.log('save');
-            PopInManager.hide(this.popin);
+        computeLayouts: function (layouts) {
+            var key,
+                layout,
+                data = {'': ''};
+
+            for (key in layouts) {
+                if (layouts.hasOwnProperty(key)) {
+                    layout = layouts[key];
+                    data[layout.uid] = layout.label;
+                }
+            }
+
+            return data;
         },
 
-        /**
-         * Occurs when user cancel deletion
-         * Close the popin
-         */
-        onCancel: function () {
-            console.log('cancel');
-            PopInManager.hide(this.popin);
+        onSubmit: function (data) {
+            var self = this;
+
+            PageRepository.create(data, function () {
+                self.popin.hide();
+            });
         },
 
         /**
@@ -34,11 +44,53 @@ define(['jquery', 'page.repository', 'tb.core.PopInManager'], function (jQuery, 
          * @returns {Object} PageViewNew
          */
         render: function () {
-            this.popin.setTitle('Créer une page');
-            this.popin.addButton('Enregistrer', jQuery.proxy(this.onSave, this));
-            this.popin.addButton('Annuler', jQuery.proxy(this.onCancel, this));
 
-            PopInManager.display(this.popin);
+            var config = {
+                    elements: {
+                        title: {
+                            type: 'text',
+                            label: 'Title'
+                        },
+                        alt_title: {
+                            type: 'text',
+                            label: 'Alt title'
+                        },
+                        target: {
+                            type: 'select',
+                            label: 'Target',
+                            options: {
+                                '_self': '_self',
+                                '_blank': '_blank',
+                                '_parent': '_parent',
+                                '_top': '_top'
+                            }
+                        },
+                        redirect: {
+                            type: 'text',
+                            label: 'Redirect to'
+                        },
+                        layout_uid: {
+                            type: 'select',
+                            label: 'Template',
+                            options: {}
+                        }
+                    },
+                    onSubmit: jQuery.proxy(this.onSubmit, this)
+                },
+                self = this;
+
+            this.popin.setTitle('Create page');
+
+            PageRepository.findLayouts(function (data) {
+
+                config.elements.layout_uid.options = self.computeLayouts(data);
+                self.formBuilder.renderForm(config).done(function (html) {
+                    self.popin.setContent(html);
+                    self.popin.display();
+                }).fail(function (e) {
+                    console.log(e);
+                });
+            });
 
             return this;
         }
