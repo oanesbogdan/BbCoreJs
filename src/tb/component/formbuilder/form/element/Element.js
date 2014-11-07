@@ -30,10 +30,11 @@ define(['tb.core', 'jsclass'], function (Core) {
          * @param {String} key
          * @param {Object} config
          */
-        initialize: function (key, config, formTag) {
+        initialize: function (key, config, formTag, error) {
             this.key = key;
             this.config = config;
             this.formTag = formTag;
+            this.error = error;
 
             this.computeMandatoryConfig(config);
 
@@ -138,6 +139,14 @@ define(['tb.core', 'jsclass'], function (Core) {
          */
         getValue: function () {
             return this.value;
+        },
+
+        /**
+         * Get error of element
+         * @returns {String}
+         */
+        getError: function () {
+            return this.error;
         },
 
         /**

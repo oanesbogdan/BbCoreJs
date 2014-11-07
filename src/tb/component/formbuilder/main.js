@@ -51,7 +51,7 @@ define(['jquery', 'tb.component/formbuilder/form/Form', 'tb.core.Utils', 'jsclas
          * @param {type} config
          */
         renderForm: function (config) {
-            console.log('yolo');
+
             var key,
                 elements,
                 elementConfig,
@@ -78,6 +78,10 @@ define(['jquery', 'tb.component/formbuilder/form/Form', 'tb.core.Utils', 'jsclas
 
             if (typeof config.onSubmit === 'function') {
                 config.form.onSubmit = config.onSubmit;
+            }
+
+            if (typeof config.onValidate === 'function') {
+                config.form.onValidate = config.onValidate;
             }
 
             if (!config.form.hasOwnProperty('template')) {

@@ -1,0 +1,73 @@
+/*
+ * Copyright (c) 2011-2013 Lp digital system
+ *
+ * This file is part of BackBuilder5.
+ *
+ * BackBuilder5 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * BackBuilder5 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+define(['page.abstract.form', 'jquery', 'jsclass'], function (Form, jQuery) {
+    'use strict';
+
+    var PageForm = new JS.Class(Form, {
+
+        create: function () {
+            var dfd = jQuery.Deferred(),
+                config = {
+                    elements: {
+                        title: this.form.title,
+                        alt_title: this.form.alt_title,
+                        target: this.form.target,
+                        redirect: this.form.redirect,
+                        layout_uid: this.form.layout_uid
+                    }
+                };
+
+            this.getLayoutsObject().done(function (layoutObject) {
+                config.elements.layout_uid = layoutObject;
+                dfd.resolve(config);
+            });
+
+            return dfd.promise();
+        },
+
+        edit: function (page_uid) {
+            var dfd = jQuery.Deferred(),
+                config = {
+                    elements: {
+                        title: this.form.title,
+                        alt_title: this.form.alt_title,
+                        url: this.form.url,
+                        target: this.form.target,
+                        redirect: this.form.redirect,
+                        layout_uid: this.form.layout_uid
+                    }
+                },
+                self = this;
+
+            this.getPage(page_uid).done(function (page) {
+                self.getLayoutsObject().done(function (layoutObject) {
+                    config.elements.layout_uid = layoutObject;
+                    self.map(page, config);
+                    dfd.resolve(config);
+                });
+            });
+
+            return dfd.promise();
+        }
+
+    });
+
+    return new JS.Singleton(PageForm);;
+});

@@ -25,8 +25,8 @@ define(['tb.component/formbuilder/form/element/Element', 'jsclass'], function (E
      */
     var Checkbox = new JS.Class(Element, {
 
-        initialize: function (key, config, formTag, view, template) {
-            this.callSuper(key, config, formTag);
+        initialize: function (key, config, formTag, view, template, error) {
+            this.callSuper(key, config, formTag, error);
             this.view = view;
             this.template = template;
 

@@ -41,7 +41,7 @@ define(['tb.core.ViewManager', 'BackBone', 'jquery'], function (ViewManager, Bac
          * Events of view
          */
         bindUiEvents: function () {
-            jQuery(this.el).on('click', this.form_button_id, jQuery.proxy(this.computeForm, this));
+            jQuery(this.el).off().on('click', this.form_button_id, jQuery.proxy(this.computeForm, this));
         },
 
         /**
@@ -62,6 +62,8 @@ define(['tb.core.ViewManager', 'BackBone', 'jquery'], function (ViewManager, Bac
                 }
             });
 
+            this.form.onValidate(this.form, paramObj);
+
             return paramObj;
         },
 
@@ -72,7 +74,23 @@ define(['tb.core.ViewManager', 'BackBone', 'jquery'], function (ViewManager, Bac
             var jqueryForm = jQuery('form#' + this.form.id),
                 data = this.computeData(jqueryForm);
 
-            this.form.onSubmit(data);
+            if (this.form.isValid()) {
+                this.form.onSubmit(data);
+            } else {
+                this.replaceForm(data);
+            }
+        },
+
+        /**
+         * Replace html form if form has errors
+         * @param {Object} data
+         */
+        replaceForm: function (data) {
+            var html = this.form.render(data),
+                jqueryForm = jQuery('form#' + this.form.id),
+                parent = jqueryForm.parent();
+
+            parent.html(html);
         },
 
         /**

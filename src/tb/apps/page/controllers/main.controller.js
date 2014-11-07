@@ -1,4 +1,32 @@
-define(['tb.core', 'page.view.contribution.index', 'page.view.delete', 'page.view.new'], function (Core, ContributionIndexView, DeleteView, NewView) {
+/*
+ * Copyright (c) 2011-2013 Lp digital system
+ *
+ * This file is part of BackBuilder5.
+ *
+ * BackBuilder5 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * BackBuilder5 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+define(
+        [
+            'tb.core',
+            'page.view.contribution.index',
+            'page.view.delete',
+            'page.view.create',
+            'page.view.edit'
+        ],
+        function (Core, ContributionIndexView, DeleteView, NewView, EditView) {
+
     'use strict';
 
     Core.ControllerManager.registerController('MainController', {
@@ -45,7 +73,12 @@ define(['tb.core', 'page.view.contribution.index', 'page.view.delete', 'page.vie
         },
 
         createPageService: function (parent) {
-            var view = new NewView();
+            var view = new NewView(parent);
+            view.render();
+        },
+
+        editPageService: function (page_uid) {
+            var view = new EditView(page_uid);
             view.render();
         }
     });
