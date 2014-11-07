@@ -18,29 +18,22 @@
  */
 define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.ApplicationContainer', 'jquery', 'jsclass', 'tb.core.Utils'], function (require) {
     'use strict';
-
     var Api = require('tb.core.Api'),
-
         jQuery = require('jquery'),
         utils = require('tb.core.Utils'),
         appContainer = require('tb.core.ApplicationContainer'),
         controllerContainer = {},
         shortNameMap = {},
-
         controllerInstance = {},
-
         enabledController = null,
-
         exception = function (code, message) {
             Api.exception('ControllerManagerException', code, message);
         },
-
         /**
          *  Controller abstract class
          *  @type {Object}
          */
         AbstractController = new JS.Class({
-
             /**
              * Controller contructor
              * @return {AbstractController} [description]
@@ -51,14 +44,12 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
                 var appInfos = appContainer.getInstance().getByAppInfosName(this.appName);
                 this.mainApp = appInfos.instance;
             },
-
             /**
              * Depencies loader
              * @return {promise}
              */
             handleImport: function () {
                 var def = new jQuery.Deferred();
-
                 if (jQuery.isArray(this.config.imports) && this.config.imports.length) {
                     utils.requireWithPromise(this.config.imports).done(def.resolve).fail(function (reason) {
                         var error = {
@@ -72,7 +63,6 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
                 }
                 return def.promise();
             },
-
             /**
              * Action automaticly call when the Controller is Enabled
              * @return {false}
@@ -80,7 +70,6 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
             onEnabled: function () {
                 this.enabled = true;
             },
-
             /**
              * Action automaticly call when the Controller is Disabled
              * @return {false}
@@ -88,7 +77,6 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
             onDisabled: function () {
                 this.enabled = false;
             },
-
             /**
              * Function used to call controller action
              * @param  {String} action
@@ -100,11 +88,9 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
                 if (typeof this[actionName] !== 'function') {
                     exception(15001, actionName + ' Action Doesnt Exists in ' + this.getName() + ' Controller');
                 }
-
                 if (typeof this[actionName] !== 'function') {
                     exception(15001, actionName + ' Action Doesnt Exists in ' + this.getName() + ' Cotroller');
                 }
-
                 try {
                     this[actionName].apply(this, params);
                 } catch (e) {
@@ -112,7 +98,6 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
                 }
             }
         }),
-
         /**
          * Change the current controller
          * @param  {AbstractController} currentController
@@ -122,14 +107,12 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
             if (currentController === enabledController) {
                 return;
             }
-
             if (enabledController) {
                 enabledController.onDisabled();
             }
             enabledController = currentController;
             enabledController.onEnabled();
         },
-
         /**
          * Compute the controller name used into ControllerContainer
          * @param  {String} controllerName
@@ -141,12 +124,10 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
             if ('string' === typeof controllerName) {
                 controllerPos = controllerName.indexOf('Controller');
             }
-
             if (controllerPos !== -1) {
                 controllerName = controllerName.substring(0, controllerPos);
                 ctlName = controllerName.toLowerCase() + '.controller';
             }
-
             if (ctlName.length === 0) {
                 exception(15004, 'Controller name do not respect {name}Controller style declaration');
             }
@@ -180,7 +161,6 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
             controllerName = controllerNameInfos[0];
             return controllerName;
         },
-
         /**
          * Register a new controller
          * @param  {String} controllerName
@@ -252,18 +232,28 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
         /*
          * For every controller a short name is registered that is
          * loadControllerByShortName allows us to find the controller by using this
-         *
          **/
         loadControllerByShortName = function (appName, shortControllerName) {
+            var dfd = new jQuery.Deferred(),
+                completeControllerName,
+                controllerInfos,
+                ctlFileName = appName + '.' + shortControllerName + '.controller';
             if (!appName || typeof appName !== 'string') {
                 exception(15005, 'appName have to be defined as String');
             }
             if (!appName || typeof appName !== 'string') {
                 exception(15006, 'shortControllerName have to be defined as String');
             }
-            //shortControllerName = shortControllerName.toLowerCase();
-            var controllerName = shortNameMap[appName + ":" + shortControllerName].originalName;
-            return loadController(appName, controllerName);
+            controllerInfos = shortNameMap[appName + ':' + shortControllerName];
+            if (controllerInfos) {
+                return loadController(appName, controllerInfos.originalName);
+            }
+            /*first, because of the use shortName, we need load the controller*/
+            utils.requireWithPromise([ctlFileName]).done(function () {
+                completeControllerName = shortNameMap[appName + ':' + shortControllerName].orginalName;
+                return loadController(appName, completeControllerName).done(dfd.resolve).fail(dfd.reject);
+            }).fail(dfd.reject);
+            return dfd.promise();
         },
         /**
          * Return the controler corresponding at the current application actualy launched
@@ -289,8 +279,6 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
                 return controllerContainer;
             }
         };
-
     Api.register('ControllerManager', ControllerManager);
-
     return ControllerManager;
 });
