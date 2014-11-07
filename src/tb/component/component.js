@@ -29,7 +29,8 @@
         [
             'tb.component/logger/main',
             'tb.component/popin/main',
-            'tb.component/formbuilder/main'
+            'tb.component/formbuilder/main',
+            'tb.component/treeview/main'
         ],
         function () {
             return;

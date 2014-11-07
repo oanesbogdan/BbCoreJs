@@ -188,7 +188,6 @@ define(["tb.core"], function (Core) {
                 Core.ApplicationManager.reset();
                 Core.ApplicationManager.registerApplication("srvApp", new BasicApplication());
                 Core.ControllerManager.registerController("BasicController", new BasicController("srvApp"));
-                /* start application */
                 Core.ApplicationManager.invokeService("srvApp.basic.sayHello").done(callBack.onResult).fail(function () {
                     expect(true).toBe(false);
                 });
