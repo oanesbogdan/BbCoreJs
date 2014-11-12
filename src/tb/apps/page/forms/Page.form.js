@@ -22,12 +22,12 @@ define(['page.abstract.form', 'jquery', 'jsclass'], function (Form, jQuery) {
 
     var PageForm = new JS.Class(Form, {
 
-        create: function () {
+        new: function () {
             var dfd = jQuery.Deferred(),
                 config = {
                     elements: {
                         title: this.form.title,
-                        alt_title: this.form.alt_title,
+                        alttitle: this.form.alttitle,
                         target: this.form.target,
                         redirect: this.form.redirect,
                         layout_uid: this.form.layout_uid
@@ -47,11 +47,12 @@ define(['page.abstract.form', 'jquery', 'jsclass'], function (Form, jQuery) {
                 config = {
                     elements: {
                         title: this.form.title,
-                        alt_title: this.form.alt_title,
+                        alttitle: this.form.alttitle,
                         url: this.form.url,
                         target: this.form.target,
                         redirect: this.form.redirect,
-                        layout_uid: this.form.layout_uid
+                        layout_uid: this.form.layout_uid,
+                        state: this.form.state
                     }
                 },
                 self = this;
@@ -69,5 +70,5 @@ define(['page.abstract.form', 'jquery', 'jsclass'], function (Form, jQuery) {
 
     });
 
-    return new JS.Singleton(PageForm);;
+    return new JS.Singleton(PageForm);
 });

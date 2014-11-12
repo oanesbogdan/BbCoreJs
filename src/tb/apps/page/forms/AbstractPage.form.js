@@ -27,7 +27,7 @@ define(['jquery', 'page.repository', 'jsclass'], function (jQuery, PageRepositor
                 type: 'text',
                 label: 'Title'
             },
-            alt_title: {
+            alttitle: {
                 type: 'text',
                 label: 'Alt title'
             },
@@ -46,10 +46,13 @@ define(['jquery', 'page.repository', 'jsclass'], function (jQuery, PageRepositor
                 label: 'URL',
                 disabled: true
             },
-
             redirect: {
                 type: 'text',
                 label: 'Redirect to'
+            },
+            state: {
+                type: 'hidden',
+                label: 'State of page'
             }
         },
 
@@ -104,7 +107,7 @@ define(['jquery', 'page.repository', 'jsclass'], function (jQuery, PageRepositor
                     element = object[key];
                     if (config.hasOwnProperty('elements')) {
                         if (config.elements.hasOwnProperty(key)) {
-                            config.elements[key]['value'] = element;
+                            config.elements[key].value = element;
                         }
                     }
                 }

@@ -18,68 +18,85 @@
  */
 
 define(
-        [
-            'tb.core',
-            'page.view.contribution.index',
-            'page.view.delete',
-            'page.view.create',
-            'page.view.edit'
-        ],
-        function (Core, ContributionIndexView, DeleteView, NewView, EditView) {
+    [
+        'tb.core',
+        'page.view.contribution.index',
+        'page.view.delete',
+        'page.view.new',
+        'page.view.edit'
+    ],
+    function (Core, ContributionIndexView, DeleteView, NewView, EditView) {
 
-    'use strict';
+        'use strict';
 
-    Core.ControllerManager.registerController('MainController', {
+        Core.ControllerManager.registerController('MainController', {
 
-        appName: 'page',
+            appName: 'page',
 
-        config: {
-            imports: ['page.repository']
-        },
+            config: {
+                imports: ['page.repository']
+            },
 
-        /**
-         * Initialize of Page Controller
-         */
-        onInit: function () {
-            this.mainApp =  Core.get('application.main');
-            this.repository = require('page.repository');
-        },
+            /**
+             * Initialize of Page Controller
+             */
+            onInit: function () {
+                this.mainApp =  Core.get('application.main');
+                this.repository = require('page.repository');
+            },
 
-        /**
-         * Index action
-         * Show the index in the edit contribution toolbar
-         */
-        contributionIndexAction: function () {
-            var callback = function (data) {
-                if (data.hasOwnProperty(0)) {
-                    data = data[0];
+            /**
+             * Index action
+             * Show the index in the edit contribution toolbar
+             */
+            contributionIndexAction: function () {
+                var callback = function (data) {
+                    if (data.hasOwnProperty(0)) {
+                        data = data[0];
+                    }
+
+                    var view = new ContributionIndexView({'data': data});
+                    view.render();
+                };
+
+                this.repository.findCurrentPage(callback);
+            },
+
+            /**
+             * Delete action
+             * Delete page with uid
+             * @param {String} uid
+             */
+            deleteAction: function (uid) {
+                try {
+                    var view = new DeleteView(uid);
+                    view.render();
+                } catch (e) {
+                    console.log(e);
                 }
+            },
 
-                var view = new ContributionIndexView({'data': data});
-                view.render();
-            };
+            findCurrentPageService: function (callback) {
+                this.repository.findCurrentPage(callback);
+            },
 
-            this.repository.findCurrentPage(callback);
-        },
+            newPageService: function (parent) {
+                try {
+                    var view = new NewView(parent);
+                    view.render();
+                } catch (e) {
+                    console.log(e);
+                }
+            },
 
-        /**
-         * Delete action
-         * Delete page with uid
-         * @param {String} uid
-         */
-        deleteAction: function (uid) {
-            var view = new DeleteView(uid);
-            view.render();
-        },
-
-        createPageService: function (parent) {
-            var view = new NewView(parent);
-            view.render();
-        },
-
-        editPageService: function (page_uid) {
-            var view = new EditView(page_uid);
-            view.render();
-        }
-    });
-});
+            editPageService: function (page_uid) {
+                try {
+                    var view = new EditView(page_uid);
+                    view.render();
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+        });
+    }
+);

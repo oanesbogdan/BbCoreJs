@@ -51,6 +51,7 @@ define(['tb.core.ViewManager', 'BackBone', 'jquery'], function (ViewManager, Bac
          */
         computeData: function (form) {
             var paramObj = {},
+                disabled = form.find(':input:disabled').removeAttr('disabled'),
                 formSerialized = form.serializeArray();
 
             jQuery.each(formSerialized, function (i) {
@@ -61,6 +62,8 @@ define(['tb.core.ViewManager', 'BackBone', 'jquery'], function (ViewManager, Bac
                     paramObj[formSerialized[i].name] = formSerialized[i].value;
                 }
             });
+
+            disabled.attr('disabled', 'disabled');
 
             this.form.onValidate(this.form, paramObj);
 

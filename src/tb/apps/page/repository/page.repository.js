@@ -17,14 +17,10 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core.Api', 'tb.core.DriverHandler', 'tb.core.RestDriver', 'jsclass'], function (Api, CoreDriverHandler, CoreRestDriver) {
+define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'jsclass'], function (CoreDriverHandler, CoreRestDriver) {
     'use strict';
 
-    //Build the default parameters
-    var criterias = {},
-        orderBy = {},
-        start = 0,
-        limit = null,
+    var putMandatoriesAttribute = ['title', 'alttitle', 'url', 'target', 'state', 'redirect', 'layout_uid'],
 
         PageMap = {
             id: 'uid',
@@ -52,25 +48,55 @@ define(['tb.core.Api', 'tb.core.DriverHandler', 'tb.core.RestDriver', 'jsclass']
                 CoreDriverHandler.addDriver('rest', CoreRestDriver);
             },
 
+            isPutMethod: function (data) {
+                var key,
+                    mandatory,
+                    isValid = true;
+
+                for (key in putMandatoriesAttribute) {
+                    if (putMandatoriesAttribute.hasOwnProperty(key)) {
+                        mandatory = putMandatoriesAttribute[key];
+                        if (!data.hasOwnProperty(mandatory)) {
+                            isValid = false;
+                            break;
+                        }
+                    }
+                }
+
+                return isValid;
+            },
+
+            /**
+             * Find the current page
+             * @todo change this method for get the current page with a rest service
+             * @param {Function} callback
+             */
+            findCurrentPage: function (callback) {
+                CoreDriverHandler.read(this.TYPE, {}, {}, 0, 1, callback);
+            },
+
             /**
              * Get the page by uid
              * @param {Function} callback
              */
             find: function (uid, callback) {
-                CoreDriverHandler.read(this.TYPE, {'id': uid}, orderBy, start, limit, callback);
+                CoreDriverHandler.read(this.TYPE, {'id': uid}, {}, 0, null, callback);
             },
 
             save: function (data, callback) {
                 if (data.hasOwnProperty('uid')) {
-                    console.log(data);
-                    CoreDriverHandler.patch(this.TYPE, data, {'id': data.uid});
+                    if (this.isPutMethod(data)) {
+                        CoreDriverHandler.update(this.TYPE, data, {'id': data.uid}, {}, 0, null, callback);
+                    } else {
+                        CoreDriverHandler.patch(this.TYPE, data, {'id': data.uid}, callback);
+                    }
                 } else {
                     CoreDriverHandler.create(this.TYPE, data, callback);
                 }
             },
 
             delete: function (uid, callback) {
-                CoreDriverHandler.delete(this.TYPE, {'id': uid}, orderBy, start, limit, callback);
+                CoreDriverHandler.delete(this.TYPE, {'id': uid}, {}, 0, null, callback);
             },
 
             /**
@@ -84,11 +110,11 @@ define(['tb.core.Api', 'tb.core.DriverHandler', 'tb.core.RestDriver', 'jsclass']
 
             findLayouts: function (callback) {
                 this.findCurrentPage(function (data) {
+
                     if (data.hasOwnProperty(0)) {
                         data = data[0];
                     }
-
-                    CoreDriverHandler.read('layout', {'site_uid': data.site_uid}, orderBy, start, limit, callback);
+                    CoreDriverHandler.read('layout', {'site_uid': data.site_uid}, {}, 0, null, callback);
                 });
             }
         });
