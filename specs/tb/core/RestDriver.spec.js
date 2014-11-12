@@ -117,16 +117,14 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
                 var d = jQuery.Deferred();
                 expect(req.url).toEqual(baseUrl + type + '/' + uid);
                 expect(req.type).toEqual('PATCH');
-                expect(req.data).toEqual(JSON.stringify({
-                    operations: [
-                        {
-                            op: 'replace',
-                            path: '/title',
-                            value: 'Test RestDriver'
+                expect(req.data).toEqual(JSON.stringify([
+                    {
+                        op: 'replace',
+                        path: '/title',
+                        value: 'Test RestDriver'
 
-                        }
-                    ]
-                }));
+                    }
+                ]));
                 expect(req.headers).toEqual({'Content-Type': 'application/json'});
                 d.resolve('', '', fakeXhr);
 
