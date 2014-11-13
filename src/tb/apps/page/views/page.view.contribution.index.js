@@ -17,58 +17,82 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jquery', 'tb.core.ViewManager', 'text!page/tpl/contribution/index', 'page.repository'], function (jQuery, ViewManager, template, PageRepository) {
+define(
+    [
+        'jquery',
+        'tb.core.ApplicationManager',
+        'tb.core.ViewManager',
+        'text!page/tpl/contribution/index',
+        'page.repository',
+    ],
+    function (jQuery, ApplicationManager, ViewManager, template, PageRepository) {
 
-    'use strict';
-
-    /**
-     * View of page contribution index
-     * @type {Object} Backbone.View
-     */
-    var PageViewContributionIndex = Backbone.View.extend({
-
-        /**
-         * Point of Toolbar in DOM
-         */
-        el: '#contrib-tab-apps',
+        'use strict';
 
         /**
-         * Initialize of PageViewContributionIndex
+         * View of page contribution index
+         * @type {Object} Backbone.View
          */
-        initialize: function (config) {
-            this.currentPage = config.data;
+        var PageViewContributionIndex = Backbone.View.extend({
 
-            this.bindUiEvents();
-        },
+            /**
+             * Point of Toolbar in DOM
+             */
+            el: '#contrib-tab-apps',
 
-        /**
-         * Events of view
-         */
-        bindUiEvents: function () {
-            jQuery(this.el).on('change', '#page-state-select', jQuery.proxy(this.manageState, this));
-        },
+            /**
+             * Initialize of PageViewContributionIndex
+             */
+            initialize: function (config) {
+                this.currentPage = config.data;
 
-        /**
-         * Change the state of the page
-         * @param {Object} event
-         */
-        manageState: function (event) {
-            var self = jQuery(event.currentTarget),
-                optionSelected = self.children('option:selected');
+                this.bindUiEvents();
+            },
 
-            PageRepository.save({uid: this.currentPage.uid, state: optionSelected.val()});
-        },
+            /**
+             * Events of view
+             */
+            bindUiEvents: function () {
+                jQuery(this.el).on('change', '#page-state-select', jQuery.proxy(this.manageState, this));
+                jQuery(this.el).on('click', '#contribution-clone-page', jQuery.proxy(this.manageClone, this));
+            },
 
-        /**
-         * Render the template into the DOM with the ViewManager
-         * @returns {Object} PageViewContributionIndex
-         */
-        render: function () {
-            jQuery(this.el).html(ViewManager.render(template, {'page': this.currentPage}));
+            /**
+             * Change the state of the page
+             * @param {Object} event
+             */
+            manageState: function (event) {
+                var self = jQuery(event.currentTarget),
+                    optionSelected = self.children('option:selected');
 
-            return this;
-        }
-    });
+                PageRepository.save({uid: this.currentPage.uid, state: optionSelected.val()});
+            },
 
-    return PageViewContributionIndex;
-});
+            /**
+             * Clone the page
+             * @param {Object} event
+             */
+            manageClone: function (event) {
+                ApplicationManager.invokeService('page.main.findCurrentPage', function (data) {
+                    if (data.hasOwnProperty(0)) {
+                        data = data[0];
+                    }
+
+                    ApplicationManager.invokeService('page.main.clonePage', data.uid);
+                });
+            },
+
+            /**
+             * Render the template into the DOM with the ViewManager
+             * @returns {Object} PageViewContributionIndex
+             */
+            render: function () {
+                jQuery(this.el).html(ViewManager.render(template, {'page': this.currentPage}));
+
+                return this;
+            }
+        });
+
+        return PageViewContributionIndex;
+    }
+);

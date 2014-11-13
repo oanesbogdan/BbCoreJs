@@ -57,7 +57,8 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
              */
             handle: function (action, type, datas, callback) {
                 var url = new URI(this.baseUrl),
-                    range;
+                    range,
+                    beforeSendCallback;
 
                 this.request = new Request();
                 this.request.headers = {};
@@ -97,6 +98,20 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
 
                 if (null !== this.request.getDatas()) {
                     this.request.setDatas(JSON.stringify(this.request.getDatas()));
+                }
+
+                if (typeof callback === 'object') {
+                    if (callback.hasOwnProperty('beforeSend')) {
+                        beforeSendCallback = callback.beforeSend;
+                    }
+
+                    if (callback.hasOwnProperty('onSend')) {
+                        callback = callback.onSend;
+                    }
+                }
+
+                if (typeof beforeSendCallback === 'function') {
+                    beforeSendCallback(this.request);
                 }
 
                 RequestHandler.send(this.request, callback);

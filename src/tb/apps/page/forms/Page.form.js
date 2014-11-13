@@ -66,6 +66,23 @@ define(['page.abstract.form', 'jquery', 'jsclass'], function (Form, jQuery) {
             });
 
             return dfd.promise();
+        },
+
+        clone: function (page_uid) {
+            var dfd = jQuery.Deferred(),
+                config = {
+                    elements: {
+                        title: this.form.title
+                    }
+                },
+                self = this;
+
+            this.getPage(page_uid).done(function (page) {
+                self.map(page, config);
+                dfd.resolve(config);
+            });
+
+            return dfd.promise();
         }
 
     });

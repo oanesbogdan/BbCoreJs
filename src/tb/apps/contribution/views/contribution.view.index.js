@@ -1,6 +1,7 @@
 define(
     [
-        'jquery', 'tb.core.ApplicationManager',
+        'jquery',
+        'tb.core.ApplicationManager',
         'tb.core.ViewManager',
         'text!contribution/tpl/index'
     ],

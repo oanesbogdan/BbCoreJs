@@ -25,10 +25,10 @@ define(['tb.core.Api', 'jquery', 'page.repository', 'page.form'], function (Api,
      * View of new page
      * @type {Object} Backbone.View
      */
-    var PageViewEdit = Backbone.View.extend({
+    var PageViewClone = Backbone.View.extend({
 
         /**
-         * Initialize of PageViewEdit
+         * Initialize of PageViewClone
          */
         initialize: function (page_uid) {
             if (typeof page_uid !== 'string') {
@@ -43,11 +43,8 @@ define(['tb.core.Api', 'jquery', 'page.repository', 'page.form'], function (Api,
         onSubmit: function (data) {
             var self = this;
 
-            if (typeof this.page_uid === 'string') {
-                data.uid = this.page_uid;
-            }
-             this.popin.mask();
-            PageRepository.save(data, function () {
+            this.popin.mask();
+            PageRepository.clone(this.page_uid, data, function () {
                 self.popin.unmask();
                 self.popin.hide();
             });
@@ -57,23 +54,19 @@ define(['tb.core.Api', 'jquery', 'page.repository', 'page.form'], function (Api,
             if (!data.hasOwnProperty('title') || data.title.trim().length === 0) {
                 form.addError('title', 'Title is required');
             }
-
-            if (!data.hasOwnProperty('layout_uid') || data.layout_uid.trim().length === 0) {
-                form.addError('layout_uid', 'Template is required.');
-            }
         },
 
         /**
          * Render the template into the DOM with the ViewManager
-         * @returns {Object} PageViewEdit
+         * @returns {Object} PageViewClone
          */
         render: function () {
 
             var self = this;
 
-            this.popin.setTitle('Edit page');
+            this.popin.setTitle('Clone page');
 
-            PageForm.edit(this.page_uid).done(function (configForm) {
+            PageForm.clone(this.page_uid).done(function (configForm) {
                 configForm.onSubmit = jQuery.proxy(self.onSubmit, self);
                 configForm.onValidate = self.onValidate;
                 self.formBuilder.renderForm(configForm).done(function (html) {
@@ -88,5 +81,5 @@ define(['tb.core.Api', 'jquery', 'page.repository', 'page.form'], function (Api,
         }
     });
 
-    return PageViewEdit;
+    return PageViewClone;
 });

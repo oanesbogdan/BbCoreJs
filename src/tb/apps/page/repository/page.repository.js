@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'jsclass'], function (CoreDriverHandler, CoreRestDriver) {
+define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'URIjs/URI', 'jsclass'], function (CoreDriverHandler, CoreRestDriver , URI) {
     'use strict';
 
     var putMandatoriesAttribute = ['title', 'alttitle', 'url', 'target', 'state', 'redirect', 'layout_uid'],
@@ -99,13 +99,19 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'jsclass'], function (Cor
                 CoreDriverHandler.delete(this.TYPE, {'id': uid}, {}, 0, null, callback);
             },
 
-            /**
-             * Find the current page
-             * @todo change this method for get the current page with a rest service
-             * @param {Function} callback
-             */
-            findCurrentPage: function(callback) {
-                CoreDriverHandler.read(this.TYPE, criterias, orderBy, 0, 1, callback);
+            clone: function (uid, data, callback) {
+                var callbacks = {
+                    beforeSend: function (request) {
+                        var url = new URI(request.url);
+                        url.segment(uid);
+                        url.segment('clone');
+
+                        request.url = url.normalize().toString();
+                    },
+                    onSend: callback
+                };
+
+                CoreDriverHandler.create(this.TYPE, data, callbacks);
             },
 
             findLayouts: function (callback) {

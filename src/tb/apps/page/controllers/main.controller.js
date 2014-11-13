@@ -23,9 +23,10 @@ define(
         'page.view.contribution.index',
         'page.view.delete',
         'page.view.new',
-        'page.view.edit'
+        'page.view.edit',
+        'page.view.clone'
     ],
-    function (Core, ContributionIndexView, DeleteView, NewView, EditView) {
+    function (Core, ContributionIndexView, DeleteView, NewView, EditView, CloneView) {
 
         'use strict';
 
@@ -67,9 +68,9 @@ define(
              * Delete page with uid
              * @param {String} uid
              */
-            deleteAction: function (uid) {
+            deleteAction: function (page_uid) {
                 try {
-                    var view = new DeleteView(uid);
+                    var view = new DeleteView(page_uid);
                     view.render();
                 } catch (e) {
                     console.log(e);
@@ -78,6 +79,15 @@ define(
 
             findCurrentPageService: function (callback) {
                 this.repository.findCurrentPage(callback);
+            },
+
+            clonePageService: function (page_uid) {
+                try {
+                    var view = new CloneView(page_uid);
+                    view.render();
+                } catch (e) {
+                    console.log(e);
+                }
             },
 
             newPageService: function (parent) {

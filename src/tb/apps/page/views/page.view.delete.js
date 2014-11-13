@@ -42,10 +42,12 @@ define(['tb.core.Api', 'jquery', 'page.repository'], function (Api, jQuery, Page
         onDelete: function () {
             var self = this,
                 callback = function () {
+                    self.popin.unmask();
                     self.popin.hide();
                     jQuery(location).attr('href', '/');
                 };
 
+            this.popin.mask();
             PageRepository.delete(this.uid, callback);
         },
 

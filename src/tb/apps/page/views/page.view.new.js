@@ -39,7 +39,9 @@ define(['tb.core.Api', 'jquery', 'page.repository', 'page.form'], function (Api,
                 data.parent_uid = this.parent_uid;
             }
 
+             this.popin.mask();
             PageRepository.save(data, function () {
+                self.popin.unmask();
                 self.popin.hide();
             });
         },
