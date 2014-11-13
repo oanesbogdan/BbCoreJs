@@ -133,7 +133,7 @@ define(['jquery', 'tb.core.ViewManager', 'text!main/tpl/toolbar'], function (jQu
                     {
                         label: 'pages',
                         text: 'Unpublished pages',
-                        url: '#/page/unpusblished',
+                        url: '#/page/review',
                         active: false,
                         items: [
                             {

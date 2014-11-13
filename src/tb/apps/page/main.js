@@ -36,6 +36,7 @@ require.config({
         'page.view.edit': 'src/tb/apps/page/views/page.view.edit',
         'page.view.new': 'src/tb/apps/page/views/page.view.new',
         'page.view.clone': 'src/tb/apps/page/views/page.view.clone',
+        'page.view.review': 'src/tb/apps/page/views/page.view.review',
 
         //Templates
         'page/tpl/contribution/index': 'src/tb/apps/page/templates/contribution.index.twig',

@@ -34,9 +34,9 @@ define(["tb.core"], function (BbCore) {
                 url: '/delete/:uid',
                 action: 'MainController:delete'
             }, 
-            'unpusblished': {
-                url: '/unpusblished',
-                action: 'MainController:unpusblished'
+            'review': {
+                url: '/review',
+                action: 'MainController:review'
             },
         }
     });

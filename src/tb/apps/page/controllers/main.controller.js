@@ -25,9 +25,10 @@ define(
         'page.view.new',
         'page.view.edit',
         'page.view.clone',
+        'page.view.review',
         'jquery'
     ],
-    function (Core, ContributionIndexView, DeleteView, NewView, EditView, CloneView, jQuery) {
+    function (Core, ContributionIndexView, DeleteView, NewView, EditView, CloneView, ReviewView, jQuery) {
 
         'use strict';
 
@@ -52,7 +53,12 @@ define(
              * Show the index in the edit contribution toolbar
              */
             contributionIndexAction: function () {
+<<<<<<< HEAD
                 this.repository.findCurrentPage().done(function (data) {
+=======
+                alert(0);
+                var callback = function (data) {
+>>>>>>> 2e74d68... #2359 added view
                     if (data.hasOwnProperty(0)) {
                         data = data[0];
                     }
@@ -118,8 +124,14 @@ define(
             /**
              * Unpublished pages action
              */
-            unpusblishedAction: function () {
-                alert(1);
+            reviewAction: function () {
+                console.log(ReviewView);
+                try {
+                    var view = new ReviewView();
+                    view.render();
+                } catch (e) {
+                    console.log(e);
+                }
             },
         });
     }
