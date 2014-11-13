@@ -148,9 +148,7 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
                     }
                 }
 
-                return {
-                    operations: operations
-                };
+                return operations;
             }
         }),
         rest = new RestDriver();
