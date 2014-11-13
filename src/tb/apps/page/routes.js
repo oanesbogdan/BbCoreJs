@@ -33,7 +33,11 @@ define(["tb.core"], function (BbCore) {
             'delete': {
                 url: '/delete/:uid',
                 action: 'MainController:delete'
-            }
+            }, 
+            'unpusblished': {
+                url: '/unpusblished',
+                action: 'MainController:unpusblished'
+            },
         }
     });
 });

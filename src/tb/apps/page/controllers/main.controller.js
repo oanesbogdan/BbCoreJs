@@ -113,7 +113,14 @@ define(
                 } catch (e) {
                     console.log(e);
                 }
-            }
+            },
+            
+            /**
+             * Unpublished pages action
+             */
+            unpusblishedAction: function () {
+                alert(1);
+            },
         });
     }
 );
