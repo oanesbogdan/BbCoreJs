@@ -89,8 +89,13 @@ define(['tb.core.Api', 'underscore', 'BackBone', 'jsclass'], function (Core, us,
             }
 
             this.submitLabel = 'Submit';
-            if (config.hasOwnProperty('submit_label')) {
-                this.submitLabel = config.submit_label;
+            if (config.hasOwnProperty('submitLabel')) {
+                this.submitLabel = config.submitLabel;
+            }
+
+            this.error = null;
+            if (config.hasOwnProperty('error')) {
+                this.error = config.error;
             }
         },
 
@@ -124,6 +129,10 @@ define(['tb.core.Api', 'underscore', 'BackBone', 'jsclass'], function (Core, us,
          */
         getId: function () {
             return this.id;
+        },
+
+        getError: function () {
+
         },
 
         /**
