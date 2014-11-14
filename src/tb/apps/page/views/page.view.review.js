@@ -67,22 +67,19 @@ define(['tb.core.Api', 'jquery', 'page.repository', 'page.form'], function (Api,
             self.popin.mask();
             
             PageRepository.search({state: 1}, 0, 50, function(data){
-                window.setTimeout(function(){
-                    var content = '<table><thead><tr><th>Title</th></tr></thead>><tbody>';
-                    
-                    for(var i in data) {
-                        var page = data[i];
-                        content += ''
-                            + '<tr>'
-                            + '<td>' + page.title + '</td>'
-                            + '</tr>'
-                        ;
-                    }
-                    content += '</tbody></table>';
-                    console.log(content);
-                    self.popin.setContent(content);
-                    self.popin.unmask();
-                },1100);
+                var content = '<table><thead><tr><th>Title</th></tr></thead>><tbody>';
+
+                for(var i in data) {
+                    var page = data[i];
+                    content += ''
+                        + '<tr>'
+                        + '<td>' + page.title + '</td>'
+                        + '</tr>'
+                    ;
+                }
+                content += '</tbody></table>';
+                self.popin.setContent(content);
+                self.popin.unmask();
             });
             
             return this;
