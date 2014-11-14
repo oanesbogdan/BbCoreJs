@@ -42,7 +42,7 @@ define(['tb.component/popin/PopIn', 'jquery', 'jqueryui', 'jsclass'], function (
             /**
              * @type {String}
              */
-            toolbarId: 'body',
+            toolbarId: '#bb5-ui',
 
             /**
              * @type {String}

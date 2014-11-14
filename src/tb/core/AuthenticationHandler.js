@@ -23,9 +23,11 @@ define(
         'tb.core.DriverHandler',
         'tb.core.RestDriver',
         'jquery',
+        'underscore',
+        'BackBone',
         'jsclass'
     ],
-    function (Api, DriverHandler, RestDriver, jQuery) {
+    function (Api, DriverHandler, RestDriver, jQuery, Underscore, Backbone) {
 
         'use strict';
 
@@ -35,11 +37,13 @@ define(
         var AuthenticationHandler = new JS.Class({
 
             initialize: function ()  {
+                Underscore.extend(this, Backbone.Events);
                 Api.requesthandler.on('request:send:before', jQuery.proxy(this.onBeforeSend, this));
                 Api.requesthandler.on('request:send:done', jQuery.proxy(this.onRequestDone, this));
                 Api.requesthandler.on('request:send:fail', jQuery.proxy(this.onRequestFail, this));
 
-                this.popin = Api.component('popin').createPopIn();
+                this.popinManager = Api.component('popin');
+                this.popin = this.popinManager.createPopIn();
                 this.formBuilder = Api.component('formbuilder');
             },
 
@@ -64,6 +68,8 @@ define(
             authenticate: function (username, password) {
                 var self = this;
 
+                this.removeToken();
+
                 RestDriver.setBaseUrl('/rest/1/');
                 DriverHandler.addDriver('rest', RestDriver);
                 DriverHandler.create('security/authentication', {"username":username, "password":password}, function () {
@@ -76,11 +82,14 @@ define(
              * Remove connexion to the Session storage and reload the page.
              */
             logOut: function () {
+                this.removeToken();
+                document.location.reload();
+            },
+
+            removeToken: function () {
                 if (null !== sessionStorage.getItem('bb5-session-auth')) {
                     sessionStorage.removeItem('bb5-session-auth');
                 }
-
-                document.location.reload();
             },
 
             /**
@@ -113,11 +122,15 @@ define(
              * @param {Object} response
              */
             onRequestDone: function (response) {
+
                 var apiKey = response.getHeader(this.HEADER_API_KEY),
                     apiSignature = response.getHeader(this.HEADER_API_SIGNATURE);
-                console.log(apiKey, apiSignature);
+
                 if (null !== apiKey && null !== apiSignature) {
+
                     sessionStorage.setItem('bb5-session-auth', apiKey + ';' + apiSignature);
+
+                    this.trigger('onSuccessLogin');
                 }
             },
 
@@ -134,15 +147,17 @@ define(
                 console.log('on request fail');
 
                 if (response.getStatus === 403) {
-                    //@todo
-                    //Create popin with forbidden message
-                    console.log('403');
+                    var popin = this.popinManager.createPopin();
+
+                    popin.setTitle('Connexion');
+                    popin.setContent('Permission denied');
+                    popin.display();
+
                 } else if (response.getStatus() === 401) {
-                    //@todo
-                    //Show popin to authenticate and use authenticate function
-                    // or logout if click in cancel
-                    console.log('401');
-                    this.showForm();
+
+                    Api.set('is_connected', false);
+
+                    this.showForm('Bad credentials');
                 }
                 return response;
             },
@@ -171,7 +186,7 @@ define(
                 }
             },
 
-            showForm: function () {
+            showForm: function (error) {
                 var self = this,
                     configForm = {
                         elements: {
@@ -185,7 +200,8 @@ define(
                             }
                         },
                         form: {
-                            submitLabel: 'Connexion'
+                            submitLabel: 'Connexion',
+                            error: error
                         },
                         onSubmit: jQuery.proxy(this.onSubmitForm, this),
                         onValidate: jQuery.proxy(this.onSubmitForm, this)
