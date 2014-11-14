@@ -149,7 +149,7 @@ define(['tb.core.Api', 'underscore', 'BackBone', 'jsclass'], function (Core, us,
          * Get the error
          * @returns {String}
          */
-        getError: function () {
+        getFormError: function () {
             return this.error;
         },
 
@@ -277,7 +277,7 @@ define(['tb.core.Api', 'underscore', 'BackBone', 'jsclass'], function (Core, us,
                     items.push(Element.render());
                 }
             }
-            
+
             view = new View(template, items, this);
 
             return view.render();

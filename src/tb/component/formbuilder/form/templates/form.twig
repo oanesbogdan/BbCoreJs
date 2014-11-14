@@ -4,8 +4,8 @@
       onsubmit="return false;"
       >
 
-    {% if form.error != null %}
-        <span class="help-block">{{ form.error }}</span>
+    {% if form.getFormError() != null %}
+        <span class="help-block">{{ form.getFormError() }}</span>
     {% endif %}
 
     {% for element in elements %}
