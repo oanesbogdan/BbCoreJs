@@ -29,13 +29,13 @@ require.config({
     }
 });
 
-define('app.main', ['tb.core', 'main.view.index', 'jquery'], function (core, MainViewIndex, jQuery) {
+define('app.main', ['tb.core', 'main.view.index', 'jquery'], function (Core, MainViewIndex, jQuery) {
     'use strict';
 
     /**
      * Main application defining default templates and themes
      */
-    core.ApplicationManager.registerApplication('main', {
+    Core.ApplicationManager.registerApplication('main', {
 
         /**
          * occurs on initialization of main application
@@ -49,9 +49,9 @@ define('app.main', ['tb.core', 'main.view.index', 'jquery'], function (core, Mai
                 throw 'Selector "' + this.config.tbSelector + '" does not exists, MainApplication cannot be initialized.';
             }
 
-            core.set('application.main', this);
+            Core.set('application.main', this);
 
-            core.component('popin').init(this.config.tbSelector);
+            Core.component('popin').init(this.config.tbSelector);
 
             console.log(' MainApplication is initialized ');
         },
@@ -60,6 +60,8 @@ define('app.main', ['tb.core', 'main.view.index', 'jquery'], function (core, Mai
          * occurs on start of main application
          */
         onStart: function () {
+            var view = new MainViewIndex(this.config);
+            view.render();
             console.log(' MainApplication onStart...');
         },
 
@@ -75,11 +77,6 @@ define('app.main', ['tb.core', 'main.view.index', 'jquery'], function (core, Mai
          */
         onError: function () {
             console.log(' MainApplication onError...');
-        },
-
-        start: function () {
-            var view = new MainViewIndex(this.config);
-            view.render();
         }
     });
 });

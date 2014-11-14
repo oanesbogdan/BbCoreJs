@@ -39,7 +39,7 @@ define('tb.core.RequestHandler', ['tb.core.Api', 'jquery', 'underscore', 'BackBo
             context = context || this;
 
             if (null !== request) {
-                
+
                 self.trigger('request:send:before', request);
 
                 jQuery.ajax({
@@ -71,7 +71,7 @@ define('tb.core.RequestHandler', ['tb.core.Api', 'jquery', 'underscore', 'BackBo
                             textStatus,
                             errorThrown
                         );
-
+                        
                     self.trigger('request:send:fail', response);
 
                     if (callback !== undefined) {

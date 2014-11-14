@@ -145,8 +145,12 @@ define(['tb.core.Api', 'underscore', 'BackBone', 'jsclass'], function (Core, us,
             return this.id;
         },
 
+        /**
+         * Get the error
+         * @returns {String}
+         */
         getError: function () {
-
+            return this.error;
         },
 
         /**
@@ -273,6 +277,7 @@ define(['tb.core.Api', 'underscore', 'BackBone', 'jsclass'], function (Core, us,
                     items.push(Element.render());
                 }
             }
+            
             view = new View(template, items, this);
 
             return view.render();
