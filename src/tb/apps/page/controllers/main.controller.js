@@ -53,12 +53,7 @@ define(
              * Show the index in the edit contribution toolbar
              */
             contributionIndexAction: function () {
-<<<<<<< HEAD
                 this.repository.findCurrentPage().done(function (data) {
-=======
-                alert(0);
-                var callback = function (data) {
->>>>>>> 2e74d68... #2359 added view
                     if (data.hasOwnProperty(0)) {
                         data = data[0];
                     }

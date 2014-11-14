@@ -1,4 +1,11 @@
-define(['tb.core.Api', 'jquery', 'page.repository', 'page.form'], function (Api, jQuery, PageRepository, PageForm) {
+define([
+    'tb.core.Api', 
+    'jquery', 
+    'page.repository', 
+    'page.form',
+    'tb.core.ViewManager',
+    'text!page/tpl/review_list'
+], function (Api, jQuery, PageRepository, PageForm, ViewManager, template) {
 
     'use strict';
 
@@ -45,10 +52,6 @@ define(['tb.core.Api', 'jquery', 'page.repository', 'page.form'], function (Api,
         },
 
         onValidate: function (form, data) {
-            if (!data.hasOwnProperty('title') || data.title.trim().length === 0) {
-                form.addError('title', 'Title is required');
-            }
-
             if (!data.hasOwnProperty('layout_uid') || data.layout_uid.trim().length === 0) {
                 form.addError('layout_uid', 'Template is required.');
             }
@@ -63,21 +66,17 @@ define(['tb.core.Api', 'jquery', 'page.repository', 'page.form'], function (Api,
 
             self.popin.setTitle('Review pages');
             self.popin.setContent('');
+            self.popin.setOptions({
+                "height" : 700 > $(window).height()-(20*2) ? $(window).height()-(20*2) : 700 ,
+		"width" : 1244 > $(window).width()-(20*2) ? $(window).width()-(20*2) : 1244,
+            });
             self.popin.display();
             self.popin.mask();
             
-            PageRepository.search({state: 1}, 0, 50, function(data){
-                var content = '<table><thead><tr><th>Title</th></tr></thead>><tbody>';
-
-                for(var i in data) {
-                    var page = data[i];
-                    content += ''
-                        + '<tr>'
-                        + '<td>' + page.title + '</td>'
-                        + '</tr>'
-                    ;
-                }
-                content += '</tbody></table>';
+            
+            
+            PageRepository.search({state: 1}, 0, 50, function(pages){
+                var content = ViewManager.render(template, {'pages': pages});
                 self.popin.setContent(content);
                 self.popin.unmask();
             });

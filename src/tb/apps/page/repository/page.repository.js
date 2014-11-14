@@ -87,6 +87,7 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
             
             /**
              * Search pages
+             * 
              * @param array filters
              * @param int start
              * @param int count
