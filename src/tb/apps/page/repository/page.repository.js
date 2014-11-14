@@ -17,20 +17,10 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'URIjs/URI', 'jsclass'], function (CoreDriverHandler, CoreRestDriver , URI) {
+define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'URIjs/URI', 'jsclass'], function (CoreDriverHandler, CoreRestDriver, URI) {
     'use strict';
 
     var putMandatoriesAttribute = ['title', 'alttitle', 'url', 'target', 'state', 'redirect', 'layout_uid'],
-
-        PageMap = {
-            id: 'uid',
-            state: {
-                key: 'state',
-                value: 2
-            }
-
-
-        },
 
         /**
          * Page repository class

@@ -23,7 +23,7 @@ define(
         'tb.core.ApplicationManager',
         'tb.core.ViewManager',
         'text!page/tpl/contribution/index',
-        'page.repository',
+        'page.repository'
     ],
     function (jQuery, ApplicationManager, ViewManager, template, PageRepository) {
 
@@ -72,7 +72,7 @@ define(
              * Clone the page
              * @param {Object} event
              */
-            manageClone: function (event) {
+            manageClone: function () {
                 ApplicationManager.invokeService('page.main.findCurrentPage', function (data) {
                     if (data.hasOwnProperty(0)) {
                         data = data[0];

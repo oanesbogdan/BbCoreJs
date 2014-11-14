@@ -46,7 +46,8 @@ define(['tb.core.Api', 'jquery', 'page.repository', 'page.form'], function (Api,
             if (typeof this.page_uid === 'string') {
                 data.uid = this.page_uid;
             }
-             this.popin.mask();
+
+            this.popin.mask();
             PageRepository.save(data, function () {
                 self.popin.unmask();
                 self.popin.hide();
