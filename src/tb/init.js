@@ -54,36 +54,47 @@ define(['jquery'], function (jQuery) {
             }
         },
 
+        toolBarDisplayed: false,
+
         listen: function () {
             jQuery(document).bind('keyup', jQuery.proxy(this.manageAccess, this));
         },
 
         manageAccess: function (event) {
-            var self = this;
-
-            if (!event.altKey || !event.ctrlKey || 66 !== event.keyCode) {
-                return;
-            } else {
-                console.log('connected ! :D');
-
-                require(['tb.core'], function (Core) {
-
-                    var router = null;
-
-                    Core.ApplicationManager.on('routesLoaded', function () {
-                        /*cf http://backbonejs.org/#Router for available options */
-                        router = Core.RouteManager.initRouter({silent: true});
-                    });
-
-                    Core.ApplicationManager.on('appIsReady', function (app) {
-                        router.navigate(app.getMainRoute());
-
-                        Core.authentication.showForm();
-                    });
-
-                    Core.ApplicationManager.init(self.applicationConfig);
-                }, self.onError);
+            if (!this.toolBarDisplayed) {
+                if (!event.altKey || !event.ctrlKey || 66 !== event.keyCode) {
+                    return;
+                } else {
+                    this.load();
+                }
             }
+        },
+
+        load: function () {
+            var self = this;
+            require(['tb.core'], function (Core) {
+
+                Core.set('is_connected', false);
+
+                var router = null;
+
+                Core.ApplicationManager.on('routesLoaded', function () {
+                    /*cf http://backbonejs.org/#Router for available options */
+                    router = Core.RouteManager.initRouter({silent: true});
+                });
+
+                Core.ApplicationManager.on('appIsReady', function (app) {
+                    router.navigate(app.getMainRoute());
+                });
+
+                Core.authentication.on('onSuccessLogin', function () {
+                    self.toolBarDisplayed = true;
+                    Core.ApplicationManager.init(self.applicationConfig);
+                });
+
+                Core.authentication.showForm();
+
+            }, this.onError);
         },
 
         onError: function (error) {
