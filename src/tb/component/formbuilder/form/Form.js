@@ -277,7 +277,11 @@ define(['tb.core.Api', 'underscore', 'BackBone', 'jsclass'], function (Core, us,
                     items.push(Element.render());
                 }
             }
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 23d7fc08660599844e700af52aab18a229ae9785
             view = new View(template, items, this);
 
             return view.render();
