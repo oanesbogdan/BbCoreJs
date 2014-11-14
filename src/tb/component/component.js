@@ -23,7 +23,6 @@
             'tb.component': 'src/tb/component/'
         }
     });
-
     define(
         'tb.component.core',
         [

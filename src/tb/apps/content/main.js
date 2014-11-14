@@ -63,5 +63,3 @@ define("app.content", ["tb.core", "content.home.controller", "content.test.contr
 
 });
 
-console.log("fragile, la force de l'art");
-
