@@ -60,9 +60,6 @@ define('app.main', ['tb.core', 'main.view.index', 'jquery'], function (core, Mai
          * occurs on start of main application
          */
         onStart: function () {
-            var view = new MainViewIndex(this.config);
-            view.render();
-
             console.log(' MainApplication onStart...');
         },
 
@@ -78,6 +75,11 @@ define('app.main', ['tb.core', 'main.view.index', 'jquery'], function (core, Mai
          */
         onError: function () {
             console.log(' MainApplication onError...');
+        },
+
+        start: function () {
+            var view = new MainViewIndex(this.config);
+            view.render();
         }
     });
 });

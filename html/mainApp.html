@@ -46,56 +46,8 @@
     <script src="resources/bower_components/requirejs/require.js"></script>
     <script src="resources/src/require.config.js"></script>
     <script>
-        /* sample to put in a yml file*/
-        var _errorHandler = function(error){
-            console.log(error);
-        }
-        var applicationConfig = {
-            appPath: 'resources/src/tb/apps',
-            /*ne charge que les onglets qui se trouvent dans 'applications'*/
-            active: 'main',
-            route: '', // to change: App should know
-            applications: {
-                main : {
-                    label  : 'Main',
-                    config : { mainRoute : 'appMain/index'}
-                },
-                layout : {
-                    label  : 'Layout',
-                    config : { mainRoute : 'appLayout/home'}
-                },
-                content: {
-                    label  : 'Edition du contenu',
-                    config : { }
-                },
-                bundle: {
-                    label: 'Bundle',
-                    config: {mainRoute: 'bundle/index'}
-                },
-                contribution: {
-                    label: 'Contribution',
-                    config: {mainRoute: 'contribution/index'}
-                },
-                page: {
-                    label: 'Page',
-                    config: { }
-                }
-            }
-        };
-
-        require(['tb.core'], function (core) {
-            var router = null;
-
-            core.ApplicationManager.on('routesLoaded', function () {
-                /*cf http://backbonejs.org/#Router for available options */
-                router = core.RouteManager.initRouter({silent:true});
-            });
-
-            core.ApplicationManager.on('appIsReady',function(app){
-                router.navigate(app.getMainRoute());
-            });
-
-            core.ApplicationManager.init(applicationConfig);
-        }, _errorHandler);
+        require(['src/tb/init'], function (init) {
+            init.listen();
+        });
     </script>
 </html>
