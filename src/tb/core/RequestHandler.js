@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.Response', 'jsclass'], function (jQuery, Underscore, Backbone, TbResponse) {
+define('tb.core.RequestHandler', ['tb.core.Api', 'jquery', 'underscore', 'BackBone', 'tb.core.Response', 'jsclass'], function (Api, jQuery, Underscore, Backbone, TbResponse) {
     'use strict';
 
     /**
@@ -39,7 +39,7 @@ define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.R
             context = context || this;
 
             if (null !== request) {
-
+                
                 self.trigger('request:send:before', request);
 
                 jQuery.ajax({
@@ -130,7 +130,11 @@ define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.R
                 }
             }
         }
-    });
+    }),
 
-    return new JS.Singleton(RequestHandler);
+    returnClass = new JS.Singleton(RequestHandler);
+
+    Api.register('requesthandler', returnClass);
+
+    return returnClass;
 });
