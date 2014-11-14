@@ -1,4 +1,4 @@
-<div class="form-group">
+<div class="form-group {% if element.getError() != null %}has-error{% endif %}">
     <label for="">{{ element.getLabel() }}</label>
     <select name="{{ element.getKey() }}"
             {% if element.isDisabled() %}disabled{% endif %}
@@ -12,4 +12,7 @@
             </option>
         {% endfor %}
     </select>
+    {% if element.getError() != null %}
+        <span class="help-block">{{ element.getError() }}</span>
+    {% endif %}
 </div>

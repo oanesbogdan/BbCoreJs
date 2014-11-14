@@ -21,9 +21,9 @@ define(['tb.component/formbuilder/form/element/Element', 'jsclass'], function (E
     'use strict';
 
     /**
-     * ElementPassword object
+     * ElementHidden object
      */
-    var Password = new JS.Class(Element, {
+    var Hidden = new JS.Class(Element, {
 
         initialize: function (key, config, formTag, view, template, error) {
             this.callSuper(key, config, formTag, error);
@@ -38,5 +38,5 @@ define(['tb.component/formbuilder/form/element/Element', 'jsclass'], function (E
         }
     });
 
-    return Password;
+    return Hidden;
 });

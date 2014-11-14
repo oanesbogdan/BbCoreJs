@@ -17,26 +17,25 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.component/formbuilder/form/element/Element', 'jsclass'], function (Element) {
+define(['tb.core.ViewManager', 'BackBone'], function (ViewManager, Backbone) {
     'use strict';
 
-    /**
-     * ElementPassword object
-     */
-    var Password = new JS.Class(Element, {
+    var HiddenView = Backbone.View.extend({
 
-        initialize: function (key, config, formTag, view, template, error) {
-            this.callSuper(key, config, formTag, error);
-            this.view = view;
+        initialize: function (template, formTag, element) {
+            this.el = formTag;
             this.template = template;
+            this.element = element;
         },
 
+        /**
+         * Render the template into the DOM with the ViewManager
+         * @returns {String} html
+         */
         render: function () {
-            var view = new this.view(this.template, this.formTag, this);
-
-            return view.render();
+            return ViewManager.render(this.template, {element: this.element});
         }
     });
 
-    return Password;
+    return HiddenView;
 });

@@ -35,6 +35,8 @@ define(['tb.core.Api', 'underscore', 'BackBone', 'jsclass'], function (Core, us,
             us.extend(this, Backbone.Events);
 
             this.elements = {};
+            this.errors = {};
+
             this.config = config;
 
             this.computeMandatoryConfig(config);
@@ -48,6 +50,8 @@ define(['tb.core.Api', 'underscore', 'BackBone', 'jsclass'], function (Core, us,
          */
         computeMandatoryConfig: function (config) {
 
+            var self = this;
+
             if (config === undefined) {
                 Core.exception('MissingConfigException', 500, 'Config must be set');
             }
@@ -58,6 +62,16 @@ define(['tb.core.Api', 'underscore', 'BackBone', 'jsclass'], function (Core, us,
                 };
             }
             this.onSubmit = config.onSubmit;
+
+            if (!config.hasOwnProperty('onValidate')) {
+                config.onValidate = function () {
+                    return true;
+                };
+            }
+            this.onValidate = function (form, data) {
+                self.resetErrors();
+                config.onValidate(form, data);
+            };
 
             if (!config.hasOwnProperty('template')) {
                 Core.exception('MissingPropertyException', 500, 'Property "template" not found in form');
@@ -180,10 +194,43 @@ define(['tb.core.Api', 'underscore', 'BackBone', 'jsclass'], function (Core, us,
         },
 
         /**
+         * Add error on the input corresponding with the key
+         * @param {String} key
+         * @param {String} error
+         * @returns {Object} Form
+         */
+        addError: function (key, error) {
+            if (!this.errors.hasOwnProperty(key)) {
+                this.errors[key] = error;
+            }
+
+            return this;
+        },
+
+        /**
+         * Return the error of the input corresponding
+         * @param {String} key
+         * @returns {String}
+         */
+        getError: function (key) {
+            return this.errors[key];
+        },
+
+        resetErrors: function () {
+            this.errors = {};
+
+            return this;
+        },
+
+        isValid: function () {
+            return Object.getOwnPropertyNames(this.errors).length === 0;
+        },
+
+        /**
          * Render each element in form
          * @returns {String} HTML
          */
-        render: function () {
+        render: function (data) {
             var key,
                 items = [],
                 View,
@@ -191,6 +238,7 @@ define(['tb.core.Api', 'underscore', 'BackBone', 'jsclass'], function (Core, us,
                 template,
                 elementConfig,
                 ElementClass,
+                Element,
                 elementView,
                 elementTemplate;
 
@@ -205,7 +253,15 @@ define(['tb.core.Api', 'underscore', 'BackBone', 'jsclass'], function (Core, us,
                     elementTemplate = require('text!' + elementConfig.template);
                     elementView = require(elementConfig.view);
 
-                    items.push((new ElementClass(key,  elementConfig, this.id, elementView, elementTemplate)).render());
+                    Element = new ElementClass(key,  elementConfig, this.id, elementView, elementTemplate, this.getError(key));
+
+                    if (data !== undefined) {
+                        if (data.hasOwnProperty(key)) {
+                            Element.value = data[key];
+                        }
+                    }
+
+                    items.push(Element.render());
                 }
             }
             view = new View(template, items, this);

@@ -1,0 +1,53 @@
+<div class="tab-pane active" id="messages">
+    <div class="row">
+        <div class="col-bb5-56 bb5-border-right">
+            <p>Statut de la page :
+                <select id="page-state-select" class="form-inline input-xs" name="state">
+                    <option value="1" {% if page.state == 1 %}selected{% endif %}>En ligne et visible dans le menu</option>
+                    <option value="3" {% if page.state == 3 %}selected{% endif %}>En ligne et non visible dans le menu</option>
+                    <option value="0" {% if page.state == 0 or page.state == 2 %}selected{% endif %}>Hors ligne</option>
+                </select>
+                <button type="button" class="btn btn-default-grey btn-xs">SEO de la page</button>
+            </p>
+            <p class="position-bottom">
+                <button id="scheduling-publication-btn" type="button" class="btn btn-transparent btn-xs btn-toggle btn-show">
+                    <i class="fa fa-angle-down"></i> Programmer la publication / l'archivage
+                </button>
+            </p>
+        </div>
+        <div class="col-bb5-24 bb5-border-right">
+            <p>
+                <button type="button" class="btn btn-simple btn-xs btn-block">
+                    <i class="fa fa-pencil-square-o"></i> Créer un brouillon
+                </button>
+            </p>
+            <p>
+                <button id="contribution-clone-page" type="button" class="btn btn-simple btn-xs btn-block">
+                    <i class="fa fa-file-o"></i> Dupliquer
+                </button>
+            </p>
+            <p>
+                <a type="button" href="#page/delete/{{ page.uid }}" class="btn btn-simple btn-xs btn-block">
+                    <i class="fa fa-trash-o"></i> Supprimer
+                </a>
+            </p>
+        </div>
+        <div class="col-bb5-20">
+            <p>
+                <label>
+                    <input type="checkbox" name="grid"> Afficher
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input type="checkbox" name="grid"> Afficher contenu externe
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input type="checkbox" name="grid"> Afficher les liens
+                </label>
+            </p>
+        </div>
+    </div><!--/.row-->
+</div>

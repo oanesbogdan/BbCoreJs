@@ -80,6 +80,10 @@ define(['jquery', 'tb.component/formbuilder/form/Form', 'tb.core.Utils', 'jsclas
                 config.form.onSubmit = config.onSubmit;
             }
 
+            if (typeof config.onValidate === 'function') {
+                config.form.onValidate = config.onValidate;
+            }
+
             if (!config.form.hasOwnProperty('template')) {
                 keyFormTemplate = 'form/template';
                 mappingRequire[keyFormTemplate] = 'src/tb/component/formbuilder/form/templates/form.twig';
@@ -118,6 +122,7 @@ define(['jquery', 'tb.component/formbuilder/form/Form', 'tb.core.Utils', 'jsclas
                     this.form.add(key, elementConfig);
                 }
             }
+
 
             require.config({paths: mappingRequire});
 

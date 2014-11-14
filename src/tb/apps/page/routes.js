@@ -17,26 +17,23 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.component/formbuilder/form/element/Element', 'jsclass'], function (Element) {
+define(["tb.core"], function (BbCore) {
     'use strict';
 
     /**
-     * ElementPassword object
+     * Register every routes of page application into BbCore.routeManager
      */
-    var Password = new JS.Class(Element, {
-
-        initialize: function (key, config, formTag, view, template, error) {
-            this.callSuper(key, config, formTag, error);
-            this.view = view;
-            this.template = template;
-        },
-
-        render: function () {
-            var view = new this.view(this.template, this.formTag, this);
-
-            return view.render();
+    BbCore.RouteManager.registerRoute('page', {
+        prefix: 'page',
+        routes: {
+            'contribution.index': {
+                url: '/contribution/index',
+                action: 'MainController:contributionIndex'
+            },
+            'delete': {
+                url: '/delete/:uid',
+                action: 'MainController:delete'
+            }
         }
     });
-
-    return Password;
 });
