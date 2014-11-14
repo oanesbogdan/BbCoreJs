@@ -247,7 +247,7 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
             }
             /*first, because of the use shortName, we need load the controller*/
             utils.requireWithPromise([ctlFileName]).done(function () {
-                completeControllerName = shortNameMap[appName + ':' + shortControllerName].orginalName;
+                completeControllerName = shortNameMap[appName + ':' + shortControllerName].originalName;
                 return loadController(appName, completeControllerName).done(dfd.resolve).fail(dfd.reject);
             }).fail(dfd.reject);
             return dfd.promise();
