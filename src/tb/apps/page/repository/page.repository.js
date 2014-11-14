@@ -84,6 +84,27 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
             find: function (uid) {
                 return CoreDriverHandler.read(this.TYPE, {'id': uid}, {}, 0, null);
             },
+            
+            /**
+             * Search pages
+             * @param array filters
+             * @param int start
+             * @param int count
+             * @param {Function} callback
+             */
+            search: function (filters, start, count, callback) {
+                var qs = filters;
+                
+                if (typeof start !== "undefined" && start !== null) {
+                    qs.start = start;
+                }
+                
+                if (typeof count !== "undefined" && count !== null) {
+                    qs.count = count;
+                }
+                
+                CoreDriverHandler.read(this.TYPE, qs, {}, 0, null, callback);
+            },
 
             save: function (data) {
                 var result,

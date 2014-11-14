@@ -126,6 +126,17 @@ define(['tb.component/popin/PopIn', 'jquery', 'jqueryui', 'jsclass'], function (
             popIn.display = function () {
                 self.display(popIn);
             };
+            /**
+             * Add setContent() method to tb.core.PopIn
+             */
+            popIn.setContent = function (content) {
+                popIn.content = content;
+                
+                if(popIn.isOpen()) {
+                    // popin is open, update html
+                    jQuery('#' + popIn.getId()).html(popIn.getContent());
+                }
+            };
 
             /**
              * Add hide() method to tb.core.PopIn to call tb.core.PopInManager::hide()

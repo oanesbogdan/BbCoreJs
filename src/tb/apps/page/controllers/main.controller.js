@@ -125,7 +125,6 @@ define(
              * Unpublished pages action
              */
             reviewAction: function () {
-                console.log(ReviewView);
                 try {
                     var view = new ReviewView();
                     view.render();
