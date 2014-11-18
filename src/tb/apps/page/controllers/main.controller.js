@@ -25,10 +25,10 @@ define(
         'page.view.new',
         'page.view.edit',
         'page.view.clone',
-        'page.view.review',
+        'page.view.manage',
         'jquery'
     ],
-    function (Core, ContributionIndexView, DeleteView, NewView, EditView, CloneView, ReviewView, jQuery) {
+    function (Core, ContributionIndexView, DeleteView, NewView, EditView, CloneView, ManageView, jQuery) {
 
         'use strict';
 
@@ -117,11 +117,11 @@ define(
             },
             
             /**
-             * Unpublished pages action
+             * Manage pages action
              */
-            reviewAction: function () {
+            manageAction: function () {
                 try {
-                    var view = new ReviewView();
+                    var view = new ManageView();
                     view.render();
                 } catch (e) {
                     console.log(e);

@@ -4,8 +4,9 @@ define([
     'page.repository', 
     'page.form',
     'tb.core.ViewManager',
-    'text!page/tpl/review_list'
-], function (Api, jQuery, PageRepository, PageForm, ViewManager, template) {
+    'text!page/tpl/manage_list',
+    'jquery-layout'
+], function (Api, jQuery, PageRepository, PageForm, ViewManager, template, Layout) {
 
     'use strict';
 
@@ -72,6 +73,10 @@ define([
             });
             self.popin.display();
             self.popin.mask();
+            
+            
+            jQuery('#content-library').layout({ applyDefaultStyles: true });
+            
             
             
             

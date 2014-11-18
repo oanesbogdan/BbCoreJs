@@ -36,12 +36,13 @@ require.config({
         'page.view.edit': 'src/tb/apps/page/views/page.view.edit',
         'page.view.new': 'src/tb/apps/page/views/page.view.new',
         'page.view.clone': 'src/tb/apps/page/views/page.view.clone',
-        'page.view.review': 'src/tb/apps/page/views/page.view.review',
+        'page.view.manage': 'src/tb/apps/page/views/page.view.manage',
 
         //Templates
         'page/tpl/contribution/index': 'src/tb/apps/page/templates/contribution.index.twig',
         'page/tpl/contribution/scheduling_publication': 'src/tb/apps/page/templates/contribution-scheduling.dialog.twig',
-        'page/tpl/review_list': 'src/tb/apps/page/templates/review.list.twig'
+        'page/tpl/manage_list': 'src/tb/apps/page/templates/manage.list.twig'
+
     }
 });
 
