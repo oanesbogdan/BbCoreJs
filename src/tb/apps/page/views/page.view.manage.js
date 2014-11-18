@@ -75,14 +75,16 @@ define([
             self.popin.mask();
             
             
-            jQuery('#content-library').layout({ applyDefaultStyles: true });
-            
-            
-            
             
             PageRepository.search({state: 1}, 0, 50, function(pages){
                 var content = ViewManager.render(template, {'pages': pages});
                 self.popin.setContent(content);
+                
+                jQuery('#content-library-pane-wrapper').layout({
+                    applyDefaultStyles: true, 
+                    closable:false
+                });
+                
                 self.popin.unmask();
             });
             
