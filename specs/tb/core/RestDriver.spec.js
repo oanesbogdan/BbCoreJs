@@ -17,9 +17,12 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
             title: 'Test RestDriver'
         };
 
-    Rest.setBaseUrl(baseUrl);
-
     describe('RestDriver spec', function () {
+
+        beforeEach(function () {
+            Rest.setBaseUrl(baseUrl);
+        });
+
         it('Get page\'s collection', function () {
             spyOn(jQuery, 'ajax').and.callFake(function (req) {
                 var d = jQuery.Deferred();

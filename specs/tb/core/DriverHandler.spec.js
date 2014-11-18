@@ -1,14 +1,13 @@
 define(['require', 'tb.core.DriverHandler', 'tb.core.RestDriver'], function (require, dh) {
     'use strict';
 
-    dh.reset();
-
     describe('DriverHandler spec', function () {
         it('Checks of DriverHandler AVAILABLE_ACTIONS constant value', function () {
             expect(dh.AVAILABLE_ACTIONS).toEqual(['create', 'read', 'update', 'delete', 'patch', 'link']);
         });
 
         it('Has and get on unknown driver', function () {
+            dh.reset();
             expect(dh.hasDriver('rest')).toBe(false);
             expect(dh.getDriver('rest')).toBe(null);
         });

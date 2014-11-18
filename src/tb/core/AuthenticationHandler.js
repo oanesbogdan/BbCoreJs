@@ -23,11 +23,9 @@ define(
         'tb.core.DriverHandler',
         'tb.core.RestDriver',
         'jquery',
-        'underscore',
-        'BackBone',
         'jsclass'
     ],
-    function (Api, DriverHandler, RestDriver, jQuery, Underscore, Backbone) {
+    function (Api, DriverHandler, RestDriver, jQuery) {
 
         'use strict';
 
@@ -36,11 +34,13 @@ define(
          */
         var AuthenticationHandler = new JS.Class({
 
-            initialize: function ()  {
-                Underscore.extend(this, Backbone.Events);
-                Api.requesthandler.on('request:send:before', jQuery.proxy(this.onBeforeSend, this));
-                Api.requesthandler.on('request:send:done', jQuery.proxy(this.onRequestDone, this));
-                Api.requesthandler.on('request:send:fail', jQuery.proxy(this.onRequestFail, this));
+            /**
+             * Initialize of AuthenticationHandler
+             */
+            initialize: function () {
+                Api.Mediator.subscribe('request:send:before', jQuery.proxy(this.onBeforeSend, this));
+                Api.Mediator.subscribe('request:send:done', jQuery.proxy(this.onRequestDone, this));
+                Api.Mediator.subscribe('request:send:fail', jQuery.proxy(this.onRequestFail, this));
 
                 this.popinManager = Api.component('popin');
                 this.popin = this.popinManager.createPopIn();
@@ -72,7 +72,7 @@ define(
 
                 RestDriver.setBaseUrl('/rest/1/');
                 DriverHandler.addDriver('rest', RestDriver);
-                DriverHandler.create('security/authentication', {"username":username, "password":password}, function () {
+                DriverHandler.create('security/authentication', {"username": username, "password": password}, function () {
                     self.popin.unmask();
                     self.popin.hide();
                 });
@@ -86,6 +86,9 @@ define(
                 document.location.reload();
             },
 
+            /**
+             * Remove the token from session storage
+             */
             removeToken: function () {
                 if (null !== sessionStorage.getItem('bb5-session-auth')) {
                     sessionStorage.removeItem('bb5-session-auth');
@@ -99,7 +102,6 @@ define(
              * @param {Object} Request
              */
             onBeforeSend: function (Request) {
-                console.log('on before send');
                 var authentication,
                     identifierPos,
                     apiKey,
@@ -130,7 +132,7 @@ define(
 
                     sessionStorage.setItem('bb5-session-auth', apiKey + ';' + apiSignature);
 
-                    this.trigger('onSuccessLogin');
+                    Api.Mediator.publish('onSuccessLogin');
                 }
             },
 
@@ -144,14 +146,11 @@ define(
              * @param {Object} response
              */
             onRequestFail: function (response) {
-                console.log('on request fail');
 
-                if (response.getStatus === 403) {
-                    var popin = this.popinManager.createPopin();
-
-                    popin.setTitle('Connexion');
-                    popin.setContent('Permission denied');
-                    popin.display();
+                if (response.getStatus() === 403) {
+                    this.popin.setTitle('Connexion');
+                    this.popin.setContent('Permission denied');
+                    this.popin.display();
 
                 } else if (response.getStatus() === 401) {
 
@@ -159,6 +158,7 @@ define(
 
                     this.showForm('Bad credentials');
                 }
+
                 return response;
             },
 
@@ -171,11 +171,20 @@ define(
                 this.logOut();
             },
 
+            /**
+             * Function called when the form is submit
+             * @param {Object} data
+             */
             onSubmitForm: function (data) {
                 this.popin.mask();
                 this.authenticate(data.username, data.password);
             },
 
+            /**
+             * Function called when the form is validate
+             * @param {Object} form
+             * @param {Object} data
+             */
             onValidateForm: function (form, data) {
                 if (!data.hasOwnProperty('username') || data.username.trim().length === 0) {
                     form.addError('username', 'Username is required');
@@ -186,6 +195,10 @@ define(
                 }
             },
 
+            /**
+             * Display the form in a popin
+             * @param {String} error
+             */
             showForm: function (error) {
                 var self = this,
                     configForm = {
@@ -204,7 +217,7 @@ define(
                             error: error
                         },
                         onSubmit: jQuery.proxy(this.onSubmitForm, this),
-                        onValidate: jQuery.proxy(this.onSubmitForm, this)
+                        onValidate: jQuery.proxy(this.onValidateForm, this)
                     };
 
                 this.popin.setTitle('Connexion');
@@ -216,7 +229,7 @@ define(
                 });
             }
         }),
-        returnClass = new JS.Singleton(AuthenticationHandler);
+            returnClass = new JS.Singleton(AuthenticationHandler);
 
         Api.register('authentication', returnClass);
 

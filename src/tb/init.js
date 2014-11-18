@@ -19,6 +19,8 @@
 
 define(['jquery'], function (jQuery) {
 
+    'use strict';
+
     var init = {
 
         applicationConfig: {
@@ -47,6 +49,10 @@ define(['jquery'], function (jQuery) {
                     label: 'Bundle',
                     config: {mainRoute: 'bundle/index'}
                 },
+                page: {
+                    label: 'Page',
+                    config: {mainRoute: 'page/index'}
+                },
                 contribution: {
                     label: 'Contribution',
                     config: {mainRoute: 'contribution/index'}
@@ -64,9 +70,8 @@ define(['jquery'], function (jQuery) {
             if (!this.toolBarDisplayed) {
                 if (!event.altKey || !event.ctrlKey || 66 !== event.keyCode) {
                     return;
-                } else {
-                    this.load();
                 }
+                this.load();
             }
         },
 
@@ -87,8 +92,11 @@ define(['jquery'], function (jQuery) {
                     router.navigate(app.getMainRoute());
                 });
 
-                Core.authentication.on('onSuccessLogin', function () {
+                Core.Mediator.subscribe('onSuccessLogin', function () {
                     self.toolBarDisplayed = true;
+                    /*
+                     * @TODO: Load config by a rest when user connected
+                     */
                     Core.ApplicationManager.init(self.applicationConfig);
                 });
 

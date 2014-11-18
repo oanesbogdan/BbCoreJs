@@ -23,12 +23,14 @@ define('tb.core.RequestHandler', ['tb.core.Api', 'jquery', 'underscore', 'BackBo
      * RequestHandler object
      */
     var RequestHandler = new JS.Class({
+
         /**
          * Initialize of RequestHandler
          */
         initialize: function () {
             Underscore.extend(this, Backbone.Events);
         },
+
         /**
          * Send the request to the server and build
          * a Response object
@@ -40,7 +42,7 @@ define('tb.core.RequestHandler', ['tb.core.Api', 'jquery', 'underscore', 'BackBo
 
             if (null !== request) {
 
-                self.trigger('request:send:before', request);
+                Api.Mediator.publish('request:send:before', request);
 
                 jQuery.ajax({
                     url: request.getUrl(),
@@ -57,7 +59,7 @@ define('tb.core.RequestHandler', ['tb.core.Api', 'jquery', 'underscore', 'BackBo
                             ''
                         );
 
-                    self.trigger('request:send:done', response);
+                    Api.Mediator.publish('request:send:done', response);
 
                     if (callback !== undefined) {
                         callback.call(context || this, response.getDatas(), response);
@@ -71,8 +73,8 @@ define('tb.core.RequestHandler', ['tb.core.Api', 'jquery', 'underscore', 'BackBo
                             textStatus,
                             errorThrown
                         );
-                        
-                    self.trigger('request:send:fail', response);
+
+                    Api.Mediator.publish('request:send:fail', response);
 
                     if (callback !== undefined) {
                         callback.call(context || this, response.getDatas(), response);
@@ -80,6 +82,7 @@ define('tb.core.RequestHandler', ['tb.core.Api', 'jquery', 'underscore', 'BackBo
                 });
             }
         },
+
         /**
          * Build the Response Object
          * @param {String} headers
@@ -102,6 +105,7 @@ define('tb.core.RequestHandler', ['tb.core.Api', 'jquery', 'underscore', 'BackBo
 
             return Response;
         },
+
         /**
          * Build String headers, split \r to have all key/value
          * and split each with ":" for have a key and value
@@ -131,8 +135,7 @@ define('tb.core.RequestHandler', ['tb.core.Api', 'jquery', 'underscore', 'BackBo
             }
         }
     }),
-
-    returnClass = new JS.Singleton(RequestHandler);
+        returnClass = new JS.Singleton(RequestHandler);
 
     Api.register('requesthandler', returnClass);
 

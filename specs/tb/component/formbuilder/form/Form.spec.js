@@ -42,7 +42,7 @@ define(
                     view: 'tb.component/formbuilder/form/views/form.view',
                     method: 'GET',
                     action: 'foo.php',
-                    submit_label: 'Save'
+                    submitLabel: 'Save'
                 };
 
             it('Testing config form errors (no config)', function () {
@@ -78,7 +78,7 @@ define(
 
                 expect(form.getMethod()).toEqual(config.method);
                 expect(form.getAction()).toEqual(config.action);
-                expect(form.getSubmitLabel()).toEqual(config.submit_label);
+                expect(form.getSubmitLabel()).toEqual(config.submitLabel);
             });
 
             it('Testing CRUD of element', function () {
