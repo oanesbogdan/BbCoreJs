@@ -142,7 +142,6 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
          */
         initController = function (appName, controllerName, def) {
             var currentController, fullControllerName = appName + '.' + computeControllerName(controllerName);
-            //controllerShortName = getControllerShortName(controllerName);
             currentController = new controllerContainer[appName][controllerName]();
             controllerInstance[fullControllerName] = currentController;
             currentController.handleImport().then(function () {
@@ -193,8 +192,6 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
             }
             controllerContainer[appName][controllerName] = Constructor;
             /*Save controller shortname so that it can be used to load services*/
-            /*controllerShortName =  controllerName.toLowerCase(controllerName);
-        controllerShortName = controllerShortName.replace("controller","");*/
             controllerShortName = controllerShortName.toLowerCase();
             shortNameMap[appName + ':' + controllerShortName] = {
                 constructor: Constructor,
@@ -250,7 +247,7 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
             }
             /*first, because of the use shortName, we need load the controller*/
             utils.requireWithPromise([ctlFileName]).done(function () {
-                completeControllerName = shortNameMap[appName + ':' + shortControllerName].orginalName;
+                completeControllerName = shortNameMap[appName + ':' + shortControllerName].originalName;
                 return loadController(appName, completeControllerName).done(dfd.resolve).fail(dfd.reject);
             }).fail(dfd.reject);
             return dfd.promise();
