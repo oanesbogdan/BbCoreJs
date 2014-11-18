@@ -1,7 +1,7 @@
-define(['tb.core.AuthenticationHandler', 'tb.core.Request', 'tb.core.Response', 'jquery'], function (TbAuthenticationHandler, TbRequest, TbResponse, jQuery) {
+define(['tb.core.Api', 'tb.core.AuthenticationHandler', 'tb.core.Request', 'tb.core.Response', 'jquery'], function (Api, AuthenticationHandler, Request, Response, jQuery) {
     'use strict';
 
-    var request = new TbRequest(),
+    var request = new Request(),
         apiKey = '12345jtf6',
         apiSignature = '548zeeaT',
         fakeXhr = {
@@ -15,14 +15,15 @@ define(['tb.core.AuthenticationHandler', 'tb.core.Request', 'tb.core.Response', 
     sessionStorage.clear();
 
     describe('Authentication handler test', function () {
+
         it('Testing onBeforeSend event', function () {
-            TbAuthenticationHandler.onBeforeSend(request);
+            AuthenticationHandler.onBeforeSend(request);
             expect(request.getHeader('X-API-KEY')).toBe(null);
             expect(request.getHeader('X-API-SIGNATURE')).toBe(null);
 
             sessionStorage.setItem('bb5-session-auth', apiKey + ';' + apiSignature);
 
-            TbAuthenticationHandler.onBeforeSend(request);
+            AuthenticationHandler.onBeforeSend(request);
             expect(request.getHeader('X-API-KEY')).toEqual(apiKey);
             expect(request.getHeader('X-API-SIGNATURE')).toEqual(apiSignature);
         });
@@ -36,7 +37,7 @@ define(['tb.core.AuthenticationHandler', 'tb.core.Request', 'tb.core.Response', 
                     password: password
                 };
 
-            spyOn(jQuery, "ajax").and.callFake(function () {
+            spyOn(jQuery, 'ajax').and.callFake(function () {
                 var d = jQuery.Deferred();
 
                 d.resolve(data, '', fakeXhr);
@@ -47,20 +48,31 @@ define(['tb.core.AuthenticationHandler', 'tb.core.Request', 'tb.core.Response', 
                 return d.promise();
             });
 
-            TbAuthenticationHandler.authenticate(username, password);
+            AuthenticationHandler.authenticate(username, password);
             expect(callback).toHaveBeenCalled();
         });
 
         it('Testing onRequestDone event', function () {
-            var response = new TbResponse();
+            var response = new Response();
 
             response.addHeader('X-API-KEY', apiKey);
             response.addHeader('X-API-SIGNATURE', apiSignature);
 
             sessionStorage.clear();
 
-            TbAuthenticationHandler.onRequestDone(response);
+            AuthenticationHandler.onRequestDone(response);
             expect(sessionStorage.getItem('bb5-session-auth')).toEqual(apiKey + ';' + apiSignature);
+        });
+
+        it('Testing onRequestFail event', function () {
+            var response = new Response();
+
+            response.setStatus(401);
+            AuthenticationHandler.onRequestFail(response);
+            expect(Api.get('is_connected')).toEqual(false);
+
+            response.setStatus(403);
+            AuthenticationHandler.onRequestFail(response);
         });
 
         it('Testing logOut function', function () {
@@ -70,7 +82,7 @@ define(['tb.core.AuthenticationHandler', 'tb.core.Request', 'tb.core.Response', 
                 return false;
             };
 
-            TbAuthenticationHandler.logOut();
+            AuthenticationHandler.logOut();
             expect(sessionStorage.getItem('bb5-session-auth')).toEqual(null);
         });
 
@@ -81,7 +93,7 @@ define(['tb.core.AuthenticationHandler', 'tb.core.Request', 'tb.core.Response', 
                 return false;
             };
 
-            TbAuthenticationHandler.onLogOut();
+            AuthenticationHandler.onLogOut();
             expect(sessionStorage.getItem('bb5-session-auth')).toEqual(null);
         });
     });

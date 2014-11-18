@@ -1,4 +1,4 @@
-define(['tb.core.RequestHandler', 'jquery', 'tb.core.Request'], function (RequestHandler, jQuery, TbRequest) {
+define(['tb.core.Api', 'tb.core.RequestHandler', 'jquery', 'tb.core.Request'], function (Api, RequestHandler, jQuery, TbRequest) {
     'use strict';
 
     var Response,
@@ -12,6 +12,7 @@ define(['tb.core.RequestHandler', 'jquery', 'tb.core.Request'], function (Reques
         };
 
     describe('Request handler spec', function () {
+
         it('Testing buildResponse function, he build a Response object with a data\'s callback of ajax', function () {
             var headers = 'Content-Type: application/json \r Range: 5, 10',
                 datas = [{'foo': 'bar'}, {'bar': 'foo'}],
@@ -40,7 +41,7 @@ define(['tb.core.RequestHandler', 'jquery', 'tb.core.Request'], function (Reques
                 return d.promise();
             });
 
-            RequestHandler.on('request:send:before', callBackTrigger);
+            Api.Mediator.subscribe('request:send:before', callBackTrigger);
 
             RequestHandler.send(Request);
             expect(callBackTrigger).toHaveBeenCalled();
@@ -58,7 +59,7 @@ define(['tb.core.RequestHandler', 'jquery', 'tb.core.Request'], function (Reques
                 return d.promise();
             });
 
-            RequestHandler.on('request:send:done', callBackTrigger);
+            Api.Mediator.subscribe('request:send:done', callBackTrigger);
 
             RequestHandler.send(Request, callback);
             expect(callback).toHaveBeenCalled();
@@ -76,7 +77,7 @@ define(['tb.core.RequestHandler', 'jquery', 'tb.core.Request'], function (Reques
                 return d.promise();
             });
 
-            RequestHandler.on('request:send:fail', callBackTrigger);
+            Api.Mediator.subscribe('request:send:fail', callBackTrigger);
 
             RequestHandler.send(Request, callback);
             expect(callback).toHaveBeenCalled();

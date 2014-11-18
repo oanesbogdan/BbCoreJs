@@ -23,6 +23,7 @@
             'tb.core.Api': 'src/tb/core/Api',
             'tb.core.ApplicationManager': 'src/tb/core/ApplicationManager',
             'tb.core.ApplicationContainer': 'src/tb/core/ApplicationContainer',
+            'tb.core.AuthenticationHandler': 'src/tb/core/AuthenticationHandler',
             'tb.core.Mediator': 'src/tb/core/Mediator',
             'tb.core.RouteManager': 'src/tb/core/RouteManager',
             'tb.core.ViewManager': 'src/tb/core/ViewManager',
@@ -42,6 +43,7 @@
     define('tb.core', [
         'tb.core.Api',
         'tb.core.ApplicationManager',
+        'tb.core.AuthenticationHandler',
         'tb.core.Mediator',
         'tb.core.RouteManager',
         'tb.core.ViewManager',

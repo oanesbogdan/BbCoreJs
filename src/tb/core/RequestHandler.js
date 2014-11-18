@@ -16,19 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.Response', 'jsclass'], function (jQuery, Underscore, Backbone, TbResponse) {
+define('tb.core.RequestHandler', ['tb.core.Api', 'jquery', 'underscore', 'BackBone', 'tb.core.Response', 'jsclass'], function (Api, jQuery, Underscore, Backbone, TbResponse) {
     'use strict';
 
     /**
      * RequestHandler object
      */
     var RequestHandler = new JS.Class({
+
         /**
          * Initialize of RequestHandler
          */
         initialize: function () {
             Underscore.extend(this, Backbone.Events);
         },
+
         /**
          * Send the request to the server and build
          * a Response object
@@ -40,7 +42,7 @@ define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.R
 
             if (null !== request) {
 
-                self.trigger('request:send:before', request);
+                Api.Mediator.publish('request:send:before', request);
 
                 jQuery.ajax({
                     url: request.getUrl(),
@@ -57,7 +59,7 @@ define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.R
                             ''
                         );
 
-                    self.trigger('request:send:done', response);
+                    Api.Mediator.publish('request:send:done', response);
 
                     if (callback !== undefined) {
                         callback.call(context || this, response.getDatas(), response);
@@ -72,7 +74,7 @@ define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.R
                             errorThrown
                         );
 
-                    self.trigger('request:send:fail', response);
+                    Api.Mediator.publish('request:send:fail', response);
 
                     if (callback !== undefined) {
                         callback.call(context || this, response.getDatas(), response);
@@ -80,6 +82,7 @@ define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.R
                 });
             }
         },
+
         /**
          * Build the Response Object
          * @param {String} headers
@@ -102,6 +105,7 @@ define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.R
 
             return Response;
         },
+
         /**
          * Build String headers, split \r to have all key/value
          * and split each with ":" for have a key and value
@@ -130,7 +134,10 @@ define('tb.core.RequestHandler', ['jquery', 'underscore', 'BackBone', 'tb.core.R
                 }
             }
         }
-    });
+    }),
+        returnClass = new JS.Singleton(RequestHandler);
 
-    return new JS.Singleton(RequestHandler);
+    Api.register('requesthandler', returnClass);
+
+    return returnClass;
 });
