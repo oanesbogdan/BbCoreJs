@@ -105,7 +105,7 @@ define('tb.core.Mediator', ['tb.core.Api'], function (Api) {
      * Publish a topic and keep this topic in memory
      * @return {undefined}
      */
-    Mediator.prototype.percistantPublish = function mediatorPercistantPublish() {
+    Mediator.prototype.persistentPublish = function mediatorPersistentPublish() {
         var args = Array.prototype.slice.call(arguments),
             topic = args.shift();
 

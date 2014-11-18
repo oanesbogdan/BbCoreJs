@@ -40,23 +40,23 @@ define(['require', 'tb.core'], function (require) {
             expect(console.info).not.toHaveBeenCalled();
         });
 
-        it('Percistant publish an post subscribe', function () {
-            api.Mediator.percistantPublish('percistant fake event', argument);
+        it('Persistent publish an post subscribe', function () {
+            api.Mediator.persistentPublish('persistent fake event', argument);
 
             spyOn(fake, 'withoutThis');
 
-            api.Mediator.subscribe('percistant fake event', fake.withoutThis, fake);
+            api.Mediator.subscribe('persistent fake event', fake.withoutThis, fake);
 
             expect(fake.withoutThis).toHaveBeenCalledWith(argument);
 
         });
 
-        it('Remove percistant publish an post subscribe', function () {
-            api.Mediator.removePublish('percistant fake event');
+        it('Remove persistent publish an post subscribe', function () {
+            api.Mediator.removePublish('persistent fake event');
 
             spyOn(fake, 'withoutThis');
 
-            api.Mediator.subscribe('percistant fake event', fake.withoutThis, fake);
+            api.Mediator.subscribe('persistent fake event', fake.withoutThis, fake);
 
             expect(fake.withoutThis).not.toHaveBeenCalledWith(argument);
 
