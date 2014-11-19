@@ -32,16 +32,16 @@ define(
              */
             bindUiEvents: function () {
                 jQuery(this.el).on('click', 'ul#edit-tab li', this.manageMenu);
-                jQuery(this.el).on('click', 'a#new-page', this.showNewPage);
+                jQuery(this.el).on('click', '#new-page', this.showNewPage);
             },
 
             showNewPage: function () {
-                ApplicationManager.invokeService('page.main.findCurrentPage', function (data) {
+                ApplicationManager.invokeService('page.main.findCurrentPage').done(function (data) {
                     if (data.hasOwnProperty(0)) {
                         data = data[0];
                     }
 
-                    ApplicationManager.invokeService('page.main.newPage', data.uid);
+                    return ApplicationManager.invokeService('page.main.newPage', data.uid);
                 });
             },
 

@@ -24,9 +24,10 @@ define(
         'page.view.delete',
         'page.view.new',
         'page.view.edit',
-        'page.view.clone'
+        'page.view.clone',
+        'jquery'
     ],
-    function (Core, ContributionIndexView, DeleteView, NewView, EditView, CloneView) {
+    function (Core, ContributionIndexView, DeleteView, NewView, EditView, CloneView, jQuery) {
 
         'use strict';
 
@@ -51,16 +52,14 @@ define(
              * Show the index in the edit contribution toolbar
              */
             contributionIndexAction: function () {
-                var callback = function (data) {
+                this.repository.findCurrentPage().done(function (data) {
                     if (data.hasOwnProperty(0)) {
                         data = data[0];
                     }
 
                     var view = new ContributionIndexView({'data': data});
                     view.render();
-                };
-
-                this.repository.findCurrentPage(callback);
+                });
             },
 
             /**
@@ -68,7 +67,7 @@ define(
              * Delete page with uid
              * @param {String} uid
              */
-            deleteAction: function (page_uid) {
+            deletePageService: function (page_uid) {
                 try {
                     var view = new DeleteView(page_uid);
                     view.render();
@@ -77,8 +76,15 @@ define(
                 }
             },
 
-            findCurrentPageService: function (callback) {
-                this.repository.findCurrentPage(callback);
+            findCurrentPageService: function () {
+                var dfd = jQuery.Deferred();
+                this.repository.findCurrentPage().done(function (data) {
+                    dfd.resolve(data);
+                }).fail(function (e) {
+                    dfd.reject(e);
+                });
+
+                return dfd.promise();
             },
 
             clonePageService: function (page_uid) {
@@ -91,6 +97,7 @@ define(
             },
 
             newPageService: function (parent) {
+
                 try {
                     var view = new NewView(parent);
                     view.render();

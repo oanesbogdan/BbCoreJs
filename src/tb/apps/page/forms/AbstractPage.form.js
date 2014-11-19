@@ -65,9 +65,11 @@ define(['jquery', 'page.repository', 'jsclass'], function (jQuery, PageRepositor
                     options: {}
                 };
 
-            PageRepository.findLayouts(function (data) {
-                layout_uid.options = self.computeLayouts(data);
-                dfd.resolve(layout_uid);
+            PageRepository.findCurrentPage().done(function (page) {
+                PageRepository.findLayouts(page.site_uid).done(function (data) {
+                    layout_uid.options = self.computeLayouts(data);
+                    dfd.resolve(layout_uid);
+                });
             });
 
             return dfd.promise();
@@ -89,13 +91,7 @@ define(['jquery', 'page.repository', 'jsclass'], function (jQuery, PageRepositor
         },
 
         getPage: function (page_uid) {
-            var dfd = jQuery.Deferred();
-
-            PageRepository.find(page_uid, function (data) {
-                dfd.resolve(data);
-            });
-
-            return dfd.promise();
+            return PageRepository.find(page_uid);
         },
 
         map: function (object, config) {

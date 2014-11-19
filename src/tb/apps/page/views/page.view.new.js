@@ -40,7 +40,7 @@ define(['tb.core.Api', 'jquery', 'page.repository', 'page.form'], function (Api,
             }
 
             this.popin.mask();
-            PageRepository.save(data, function () {
+            PageRepository.save(data).done(function () {
                 self.popin.unmask();
                 self.popin.hide();
             });
@@ -64,7 +64,6 @@ define(['tb.core.Api', 'jquery', 'page.repository', 'page.form'], function (Api,
             var self = this;
 
             this.popin.setTitle('Create page');
-
             PageForm.new().done(function (configForm) {
                 configForm.onSubmit = jQuery.proxy(self.onSubmit, self);
                 configForm.onValidate = self.onValidate;

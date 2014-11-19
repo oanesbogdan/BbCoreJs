@@ -33,20 +33,22 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'jsclass'], function (Cor
 
             TYPE: 'bundle',
 
+            DEFAULT_DRIVER_KEY: 'rest',
+
             /**
              * Initialize of Bundle repository
              */
             initialize: function () {
                 CoreRestDriver.setBaseUrl('/rest/1/');
-                CoreDriverHandler.addDriver('rest', CoreRestDriver);
+                CoreDriverHandler.addDriver(this.DEFAULT_DRIVER_KEY, CoreRestDriver);
             },
 
             /**
              * List bundles
              * @param {Function} callback
              */
-            list: function (callback) {
-                CoreDriverHandler.read(this.TYPE, criterias, orderBy, start, limit, callback);
+            list: function () {
+                return CoreDriverHandler.read(this.TYPE, criterias, orderBy, start, limit);
             },
 
             /**
@@ -55,7 +57,7 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'jsclass'], function (Cor
              * @param {String} bundleId
              */
             active: function (active, bundleId) {
-                CoreDriverHandler.patch(this.TYPE, {'enable': active}, {'id': bundleId});
+                return CoreDriverHandler.patch(this.TYPE, {'enable': active}, {'id': bundleId});
             }
         });
 

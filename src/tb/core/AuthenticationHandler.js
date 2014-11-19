@@ -72,7 +72,7 @@ define(
 
                 RestDriver.setBaseUrl('/rest/1/');
                 DriverHandler.addDriver('rest', RestDriver);
-                DriverHandler.create('security/authentication', {"username": username, "password": password}, function () {
+                DriverHandler.create('security/authentication', {"username": username, "password": password}).done(function () {
                     self.popin.unmask();
                     self.popin.hide();
                 });

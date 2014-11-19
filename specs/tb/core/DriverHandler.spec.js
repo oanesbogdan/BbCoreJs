@@ -1,4 +1,4 @@
-define(['require', 'tb.core.DriverHandler', 'tb.core.RestDriver'], function (require, dh) {
+define(['require', 'tb.core.DriverHandler', 'jquery', 'tb.core.RestDriver'], function (require, dh, jQuery) {
     'use strict';
 
     describe('DriverHandler spec', function () {
@@ -101,13 +101,13 @@ define(['require', 'tb.core.DriverHandler', 'tb.core.RestDriver'], function (req
         });
 
         it('create, read, update, delete, link and patch will always perform your request and then provide the result to your callback', function () {
-            var message = '',
-                callback = function (result) {
-                    message = result;
-                },
-                driver = {
-                    handle: function (action, type, datas, callback) {
-                        callback(type + ' ' + action, datas);
+            var driver = {
+                    handle: function (action, type) {
+                        var dfd = jQuery.Deferred();
+
+                        dfd.resolve(type + ' ' + action);
+
+                        return dfd.promise();
                     }
                 };
 
@@ -121,23 +121,29 @@ define(['require', 'tb.core.DriverHandler', 'tb.core.RestDriver'], function (req
                 { action: 'patch', drivers: ['random'] }
             ]);
 
-            dh.create('content', {}, callback);
-            expect(message).toEqual('content create');
+            dh.create('content', {}).done(function (message) {
+                expect(message).toEqual('content create');
+            });
 
-            dh.read('content', {}, {}, null, null, callback);
-            expect(message).toEqual('content read');
+            dh.read('content', {}, {}, null, null).done(function (message) {
+                expect(message).toEqual('content read');
+            });
 
-            dh.update('content', {}, {}, {}, null, null, callback);
-            expect(message).toEqual('content update');
+            dh.update('content', {}, {}, {}, null, null).done(function (message) {
+                expect(message).toEqual('content update');
+            });
 
-            dh.delete('content', {}, {}, null, null, callback);
-            expect(message).toEqual('content delete');
+            dh.delete('content', {}, {}, null, null).done(function (message) {
+                expect(message).toEqual('content delete');
+            });
 
-            dh.link('content', {}, {}, {}, null, null, callback);
-            expect(message).toEqual('content link');
+            dh.link('content', {}, {}, {}, null, null).done(function (message) {
+                expect(message).toEqual('content link');
+            });
 
-            dh.patch('content', {}, {}, {}, null, null, callback);
-            expect(message).toEqual('content patch');
+            dh.patch('content', {}, {}, {}, null, null).done(function (message) {
+                expect(message).toEqual('content patch');
+            });
         });
     });
 });
