@@ -1,4 +1,4 @@
-define(['tb.core.Api', 'jquery', 'page.repository', 'page.form'], function (Api, jQuery, PageRepository, PageForm) {
+define(['require', 'jquery', 'page.repository', 'page.form', 'component!popin', 'component!formbuilder'], function (require, jQuery, PageRepository, PageForm) {
 
     'use strict';
 
@@ -12,8 +12,8 @@ define(['tb.core.Api', 'jquery', 'page.repository', 'page.form'], function (Api,
          * Initialize of PageViewNew
          */
         initialize: function (parent_uid) {
-            this.popin = Api.component('popin').createPopIn();
-            this.formBuilder = Api.component('formbuilder');
+            this.popin = require('component!popin').createPopIn();
+            this.formBuilder = require('component!formbuilder');
             this.parent_uid = parent_uid;
         },
 

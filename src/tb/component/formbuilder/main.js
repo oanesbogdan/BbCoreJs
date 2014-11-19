@@ -17,29 +17,13 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jquery', 'tb.component/formbuilder/form/Form', 'tb.core.Utils', 'jsclass'], function (jQuery, FormConstructor, Utils) {
+define(['tb.core.Api', 'jquery', 'tb.component/formbuilder/form/Form', 'tb.core.Utils', 'jsclass'], function (Core, jQuery, FormConstructor, Utils) {
     'use strict';
 
     /**
      * FormBuilder object
      */
     var FormBuilder = new JS.Class({
-
-        /**
-         * Initialize of FormBuilder
-         */
-        initialize: function () {
-            this.coreDependencies = ['exception'];
-        },
-
-        /**
-         * Load Core dependencies
-         * @param {Object} exception
-         */
-        initCoreDependencies: function (exception) {
-            this.exception = exception;
-        },
-
         /**
          *
          * config.elements:
@@ -68,7 +52,7 @@ define(['jquery', 'tb.component/formbuilder/form/Form', 'tb.core.Utils', 'jsclas
                 dfd = new jQuery.Deferred();
 
             if (!config.hasOwnProperty('elements')) {
-                this.exception('MissingPropertyException', 500, 'Property "elements" not found');
+                Core.exception('MissingPropertyException', 500, 'Property "elements" not found');
             }
 
             //Load form in config or a default form

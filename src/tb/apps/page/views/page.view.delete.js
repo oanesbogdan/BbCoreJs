@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core.Api', 'jquery', 'page.repository'], function (Api, jQuery, PageRepository) {
+define(['require', 'jquery', 'page.repository', 'component!popin'], function (require, jQuery, PageRepository) {
 
     'use strict';
 
@@ -31,7 +31,7 @@ define(['tb.core.Api', 'jquery', 'page.repository'], function (Api, jQuery, Page
          * Initialize of PageViewDelete
          */
         initialize: function (uid) {
-            this.popin = Api.component('popin').createPopIn();
+            this.popin = require('component!popin').createPopIn();
             this.uid = uid;
         },
 

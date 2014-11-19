@@ -19,13 +19,16 @@
 define(
     'tb.core.AuthenticationHandler',
     [
+        'require',
         'tb.core.Api',
         'tb.core.DriverHandler',
         'tb.core.RestDriver',
         'jquery',
-        'jsclass'
+        'jsclass',
+        'component!popin',
+        'component!formbuilder'
     ],
-    function (Api, DriverHandler, RestDriver, jQuery) {
+    function (require, Api, DriverHandler, RestDriver, jQuery) {
 
         'use strict';
 
@@ -42,9 +45,9 @@ define(
                 Api.Mediator.subscribe('request:send:done', jQuery.proxy(this.onRequestDone, this));
                 Api.Mediator.subscribe('request:send:fail', jQuery.proxy(this.onRequestFail, this));
 
-                this.popinManager = Api.component('popin');
+                this.popinManager = require('component!popin');
                 this.popin = this.popinManager.createPopIn();
-                this.formBuilder = Api.component('formbuilder');
+                this.formBuilder = require('component!formbuilder');
             },
 
             /**
