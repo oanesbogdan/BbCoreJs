@@ -18,15 +18,17 @@
  */
 (function () {
     'use strict';
+    require.config({
+        paths: {
+            'tb.component': 'src/tb/component/'
+        }
+    });
 
-    define(['tb.core'], function (Core) {
+    define(['tb.core.Api'], function (Core) {
         return {
             load: function (name, req, onload) {
                 req(['src/tb/component/' + name + '/main'], function (component) {
-                    if (
-                        Core.get('config:component:' + name) !== undefined &&
-                        'function' === typeof value.init
-                    ) {
+                    if (Core.get('config:component:' + name) !== undefined && 'function' === typeof component.init) {
                         component.init(Core.get('config:component:' + name));
                     }
 
