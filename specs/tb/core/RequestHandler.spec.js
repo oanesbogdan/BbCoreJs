@@ -47,9 +47,8 @@ define(['tb.core.Api', 'tb.core.RequestHandler', 'jquery', 'tb.core.Request'], f
             expect(callBackTrigger).toHaveBeenCalled();
         });
 
-        it("Testing Send::Success, should execute the callback function on success and test trigger event (request:send:done)", function () {
-            var callback = jasmine.createSpy(),
-                callBackTrigger = jasmine.createSpy(),
+        it("Testing Send::Success, should execute trigger event (request:send:done)", function () {
+            var callBackTrigger = jasmine.createSpy(),
                 datas = {foo: 'bar'};
 
             spyOn(jQuery, "ajax").and.callFake(function () {
@@ -61,14 +60,12 @@ define(['tb.core.Api', 'tb.core.RequestHandler', 'jquery', 'tb.core.Request'], f
 
             Api.Mediator.subscribe('request:send:done', callBackTrigger);
 
-            RequestHandler.send(Request, callback);
-            expect(callback).toHaveBeenCalled();
+            RequestHandler.send(Request);
             expect(callBackTrigger).toHaveBeenCalled();
         });
 
-        it("Testing Send::Fail, should execute the callback function on fail and test trigger event (request:send:fail)", function () {
-            var callback = jasmine.createSpy(),
-                callBackTrigger = jasmine.createSpy();
+        it("Testing Send::Fail, should execute trigger event (request:send:fail)", function () {
+            var callBackTrigger = jasmine.createSpy();
 
             spyOn(jQuery, "ajax").and.callFake(function () {
                 var d = jQuery.Deferred();
@@ -79,8 +76,7 @@ define(['tb.core.Api', 'tb.core.RequestHandler', 'jquery', 'tb.core.Request'], f
 
             Api.Mediator.subscribe('request:send:fail', callBackTrigger);
 
-            RequestHandler.send(Request, callback);
-            expect(callback).toHaveBeenCalled();
+            RequestHandler.send(Request);
             expect(callBackTrigger).toHaveBeenCalled();
         });
 

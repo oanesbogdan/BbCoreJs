@@ -36,9 +36,9 @@ define('tb.core.RequestHandler', ['tb.core.Api', 'jquery', 'underscore', 'BackBo
          * a Response object
          * @returns Response
          */
-        send: function (request, callback, context) {
-            var self = this;
-            context = context || this;
+        send: function (request) {
+            var self = this,
+                dfd = jQuery.Deferred();
 
             if (null !== request) {
 
@@ -61,9 +61,7 @@ define('tb.core.RequestHandler', ['tb.core.Api', 'jquery', 'underscore', 'BackBo
 
                     Api.Mediator.publish('request:send:done', response);
 
-                    if (callback !== undefined) {
-                        callback.call(context || this, response.getDatas(), response);
-                    }
+                    dfd.resolve(response.getDatas(), response);
                 }).fail(function (xhr, textStatus, errorThrown) {
                     var response = self.buildResponse(
                             xhr.getAllResponseHeaders(),
@@ -76,11 +74,11 @@ define('tb.core.RequestHandler', ['tb.core.Api', 'jquery', 'underscore', 'BackBo
 
                     Api.Mediator.publish('request:send:fail', response);
 
-                    if (callback !== undefined) {
-                        callback.call(context || this, response.getDatas(), response);
-                    }
+                    dfd.reject(response.getDatas(), response);
                 });
             }
+
+            return dfd.promise();
         },
 
         /**

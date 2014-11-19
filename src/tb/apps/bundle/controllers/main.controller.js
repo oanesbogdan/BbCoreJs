@@ -65,12 +65,12 @@ define(['tb.core', 'bundle.view.list', 'bundle.view.index'], function (Core, Lis
          * @returns {bundle.controller_L1.bundle.controllerAnonym$1}
          */
         listAndRender: function (ConstructorView) {
-            var self = this,
-                callback = function (datas) {
-                    self.bundles = {bundles: datas};
-                    self.renderView(ConstructorView, self.bundles);
-                };
-            this.repository.list(callback);
+            var self = this;
+
+            this.repository.list().done(function (datas) {
+                self.bundles = {bundles: datas};
+                self.renderView(ConstructorView, self.bundles);
+            });
         },
 
         /**

@@ -55,6 +55,7 @@ define(
             bindUiEvents: function () {
                 jQuery(this.el).on('change', '#page-state-select', jQuery.proxy(this.manageState, this));
                 jQuery(this.el).on('click', '#contribution-clone-page', jQuery.proxy(this.manageClone, this));
+                jQuery(this.el).on('click', '#contribution-delete-page', jQuery.proxy(this.manageDelete, this));
             },
 
             /**
@@ -73,13 +74,15 @@ define(
              * @param {Object} event
              */
             manageClone: function () {
-                ApplicationManager.invokeService('page.main.findCurrentPage', function (data) {
-                    if (data.hasOwnProperty(0)) {
-                        data = data[0];
-                    }
+                ApplicationManager.invokeService('page.main.clonePage', this.currentPage.uid);
+            },
 
-                    ApplicationManager.invokeService('page.main.clonePage', data.uid);
-                });
+            /**
+             * Delete the page
+             * @param {Object} event
+             */
+            manageDelete: function () {
+                ApplicationManager.invokeService('page.main.deletePage', this.currentPage.uid);
             },
 
             /**

@@ -44,7 +44,7 @@ define(['tb.core.Api', 'jquery', 'page.repository', 'page.form'], function (Api,
             var self = this;
 
             this.popin.mask();
-            PageRepository.clone(this.page_uid, data, function () {
+            PageRepository.clone(this.page_uid, data).done(function () {
                 self.popin.unmask();
                 self.popin.hide();
             });

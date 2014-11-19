@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIjs/URI', 'jsclass'], function (Request, RequestHandler, URI) {
+define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIjs/URI', 'tb.core.Api', 'jsclass'], function (Request, RequestHandler, URI, Core) {
     'use strict';
 
     var RestDriver = new JS.Class({
@@ -55,10 +55,9 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
              * @param  {Object} datas  datas contains request limit, start, criterias and datas
              * @return {Object}        the response data provided by performing your request
              */
-            handle: function (action, type, datas, callback) {
+            handle: function (action, type, datas) {
                 var url = new URI(this.baseUrl),
-                    range,
-                    beforeSendCallback;
+                    range;
 
                 this.request = new Request();
                 this.request.headers = {};
@@ -100,21 +99,9 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
                     this.request.setDatas(JSON.stringify(this.request.getDatas()));
                 }
 
-                if (typeof callback === 'object') {
-                    if (callback.hasOwnProperty('beforeSend')) {
-                        beforeSendCallback = callback.beforeSend;
-                    }
+                Core.Mediator.publish('rest:send:before', this.request);
 
-                    if (callback.hasOwnProperty('onSend')) {
-                        callback = callback.onSend;
-                    }
-                }
-
-                if (typeof beforeSendCallback === 'function') {
-                    beforeSendCallback(this.request);
-                }
-
-                RequestHandler.send(this.request, callback);
+                return RequestHandler.send(this.request);
             },
 
             /**
@@ -169,6 +156,7 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
         rest = new RestDriver();
 
     return {
+
         /**
          * Handle every user request and decide what kind of HTTP request to build depending on action and return
          * the response provided by server
@@ -177,8 +165,8 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
          * @param  {Object} datas  datas contains request limit, start, criterias and datas
          * @return {Object}        the response data provided by performing your request
          */
-        handle: function (action, type, datas, callback) {
-            rest.handle(action, type, datas, callback);
+        handle: function (action, type, datas) {
+            return rest.handle(action, type, datas);
         },
 
         /**

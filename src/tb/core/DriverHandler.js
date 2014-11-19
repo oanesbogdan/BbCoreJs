@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define('tb.core.DriverHandler', ['underscore', 'jsclass'], function (us) {
+define('tb.core.DriverHandler', ['underscore', 'jquery', 'jsclass'], function (us, jQuery) {
     'use strict';
 
     /**
@@ -172,10 +172,9 @@ define('tb.core.DriverHandler', ['underscore', 'jsclass'], function (us) {
          * Perform a create request
          * @param  {String}   type     type/namespace of your entity
          * @param  {Object}   datas    contains every datas required to create your entity
-         * @param  {Function} callback
          */
-        create: function (type, datas, callback) {
-            this.doGenericAction('create', type, {datas: datas}, callback);
+        create: function (type, datas) {
+            return this.doGenericAction('create', type, {datas: datas});
         },
 
         /**
@@ -185,10 +184,9 @@ define('tb.core.DriverHandler', ['underscore', 'jsclass'], function (us) {
          * @param  {Object}   orderBy
          * @param  {Number}   start
          * @param  {Number}   limit
-         * @param  {Function} callback
          */
-        read: function (type, criterias, orderBy, start, limit, callback) {
-            this.doGenericAction('read', type, this.formatDatas({}, criterias, orderBy, start, limit), callback);
+        read: function (type, criterias, orderBy, start, limit) {
+            return this.doGenericAction('read', type, this.formatDatas({}, criterias, orderBy, start, limit));
         },
 
         /**
@@ -199,10 +197,9 @@ define('tb.core.DriverHandler', ['underscore', 'jsclass'], function (us) {
          * @param  {Object}   orderBy
          * @param  {Number}   start
          * @param  {Number}   limit
-         * @param  {Function} callback
          */
-        update: function (type, datas, criterias, orderBy, start, limit, callback) {
-            this.doGenericAction('update', type, this.formatDatas(datas, criterias, orderBy, start, limit), callback);
+        update: function (type, datas, criterias, orderBy, start, limit) {
+            return this.doGenericAction('update', type, this.formatDatas(datas, criterias, orderBy, start, limit));
         },
 
         /**
@@ -212,10 +209,9 @@ define('tb.core.DriverHandler', ['underscore', 'jsclass'], function (us) {
          * @param  {Object}   orderBy
          * @param  {Number}   start
          * @param  {Number}   limit
-         * @param  {Function} callback
          */
-        delete: function (type, criterias, orderBy, start, limit, callback) {
-            this.doGenericAction('delete', type, this.formatDatas({}, criterias, orderBy, start, limit), callback);
+        delete: function (type, criterias, orderBy, start, limit) {
+            return this.doGenericAction('delete', type, this.formatDatas({}, criterias, orderBy, start, limit));
         },
 
         /**
@@ -226,10 +222,9 @@ define('tb.core.DriverHandler', ['underscore', 'jsclass'], function (us) {
          * @param  {Object}   orderBy
          * @param  {Number}   start
          * @param  {Number}   limit
-         * @param  {Function} callback
          */
-        link: function (type, datas, criterias, orderBy, start, limit, callback) {
-            this.doGenericAction('link', type, this.formatDatas(datas, criterias, orderBy, start, limit), callback);
+        link: function (type, datas, criterias, orderBy, start, limit) {
+            return this.doGenericAction('link', type, this.formatDatas(datas, criterias, orderBy, start, limit));
         },
 
         /**
@@ -240,10 +235,9 @@ define('tb.core.DriverHandler', ['underscore', 'jsclass'], function (us) {
          * @param  {Object}   orderBy
          * @param  {Number}   start
          * @param  {Number}   limit
-         * @param  {Function} callback
          */
-        patch: function (type, datas, criterias, orderBy, start, limit, callback) {
-            this.doGenericAction('patch', type, this.formatDatas(datas, criterias, orderBy, start, limit), callback);
+        patch: function (type, datas, criterias, orderBy, start, limit) {
+            return this.doGenericAction('patch', type, this.formatDatas(datas, criterias, orderBy, start, limit));
         },
 
         /**
@@ -272,15 +266,25 @@ define('tb.core.DriverHandler', ['underscore', 'jsclass'], function (us) {
          * @param  {Object}   datas
          * @param  {Function} callback
          */
-        doGenericAction: function (action, type, datas, callback) {
+        doGenericAction: function (action, type, datas) {
             var drivers = this.getDriversByTypeAndAction(type, action),
-                driver;
+                driver,
+                dfd = jQuery.Deferred(),
+                done = function (datas) {
+                    dfd.resolve(datas);
+                },
+                fail = function (e) {
+                    console.log(e);
+                    dfd.reject(e);
+                };
 
             for (driver in drivers) {
                 if (drivers.hasOwnProperty(driver)) {
-                    this.drivers[drivers[driver]].handle(action, type, datas, callback);
+                    this.drivers[drivers[driver]].handle(action, type, datas).done(done).fail(fail);
                 }
             }
+
+            return dfd.promise();
         },
 
         /**
