@@ -18,21 +18,21 @@
  */
 (function () {
     'use strict';
-    require.config({
-        paths: {
-            'tb.component': 'src/tb/component/'
-        }
+
+    define(['tb.core'], function (Core) {
+        return {
+            load: function (name, req, onload) {
+                req(['src/tb/component/' + name + '/main'], function (component) {
+                    if (
+                        Core.get('config:component:' + name) !== undefined &&
+                        'function' === typeof value.init
+                    ) {
+                        component.init(Core.get('config:component:' + name));
+                    }
+
+                    onload(component);
+                });
+            }
+        };
     });
-    define(
-        'tb.component.core',
-        [
-            'tb.component/logger/main',
-            'tb.component/popin/main',
-            'tb.component/formbuilder/main',
-            'tb.component/treeview/main'
-        ],
-        function () {
-            return;
-        }
-    );
 }());
