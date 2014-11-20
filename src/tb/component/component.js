@@ -23,16 +23,18 @@
             'tb.component': 'src/tb/component/'
         }
     });
-    define(
-        'tb.component.core',
-        [
-            'tb.component/logger/main',
-            'tb.component/popin/main',
-            'tb.component/formbuilder/main',
-            'tb.component/treeview/main'
-        ],
-        function () {
-            return;
-        }
-    );
+
+    define(['tb.core.Api'], function (Core) {
+        return {
+            load: function (name, req, onload) {
+                req(['src/tb/component/' + name + '/main'], function (component) {
+                    if (Core.get('config:component:' + name) !== undefined && 'function' === typeof component.init) {
+                        component.init(Core.get('config:component:' + name));
+                    }
+
+                    onload(component);
+                });
+            }
+        };
+    });
 }());

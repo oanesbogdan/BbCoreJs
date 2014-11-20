@@ -1,11 +1,8 @@
-define(['tb.core'], function (Core) {
+define(['component!formbuilder'], function (FormBuilder) {
     'use strict';
 
 
     describe('Testing FormBuilder', function () {
-
-        var FormBuilder = Core.component('formbuilder');
-
         it('Testing load method', function () {
 
             var config = {

@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core.Api', 'jquery', 'page.repository', 'page.form'], function (Api, jQuery, PageRepository, PageForm) {
+define(['require', 'tb.core.Api', 'jquery', 'page.repository', 'page.form', 'component!popin', 'component!formbuilder'], function (require, Api, jQuery, PageRepository, PageForm) {
 
     'use strict';
 
@@ -36,8 +36,8 @@ define(['tb.core.Api', 'jquery', 'page.repository', 'page.form'], function (Api,
             }
 
             this.page_uid = page_uid;
-            this.popin = Api.component('popin').createPopIn();
-            this.formBuilder = Api.component('formbuilder');
+            this.popin = require('component!popin').createPopIn();
+            this.formBuilder = require('component!formbuilder');
         },
 
         onSubmit: function (data) {

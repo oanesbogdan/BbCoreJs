@@ -1,4 +1,4 @@
-define(["tb.core"], function (Core) {
+define(['tb.core', 'component!logger'], function (Core, logger) {
     'use strict';
 
     var BasicApplication = function () {
@@ -167,7 +167,7 @@ define(["tb.core"], function (Core) {
                     done();
                 }, 500);
             } catch (e) {
-                Core.component('logger').debug(e);
+                logger.debug(e);
             }
         });
 
@@ -218,7 +218,7 @@ define(["tb.core"], function (Core) {
                     done();
                 }, 500);
             } catch (e) {
-                Core.component('logger').debug(e);
+                logger.debug(e);
                 expect(true).toBe(false);
             }
         });
@@ -303,7 +303,7 @@ define(["tb.core"], function (Core) {
                         }
                     });
                 } catch (e) {
-                    Core.component('logger').debug(e);
+                    logger.debug(e);
                 }
             });
             it("Should fail because application already exists", function () {
@@ -412,7 +412,7 @@ define(["tb.core"], function (Core) {
                 Core.ApplicationManager.reset();
                 Core.ApplicationManager.on("appError", function (e) {
                     controllerHasError = true;
-                    Core.component('logger').debug(e);
+                    logger.debug(e);
                 });
                 Core.ApplicationManager.launchApplication("LastApplication", {}).fail(function () {
                     return;

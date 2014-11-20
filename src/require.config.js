@@ -27,7 +27,7 @@ require.config({
         'underscore': 'lib/underscore/underscore',
         'handlebars': 'lib/handlebars/handlebars',
         'tb.core': 'src/tb/main',
-        'tb.component': 'src/tb/component/component',
+        'component': 'src/tb/component/component',
         'BackBone': 'lib/backbone/backbone',
         'nunjucks': 'lib/nunjucks/nunjucks.min',
         'moment': 'lib/moment/moment',

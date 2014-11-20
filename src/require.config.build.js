@@ -24,7 +24,7 @@ require.config({
         'jsclass' : 'lib/jsclass/class',
         'underscore': 'lib/underscore/underscore',
         'tb.core': 'build/main.min', // 'src/tb/main',
-        'tb.component': 'src/tb/component/component',
+        'component': 'src/tb/component/component',
         'BackBone': 'lib/backbone/backbone',
         'moment': 'lib/moment/moment',
         'URIjs': 'lib/uri.js'

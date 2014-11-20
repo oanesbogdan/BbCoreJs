@@ -29,7 +29,7 @@ require.config({
     }
 });
 
-define('app.main', ['tb.core', 'main.view.index', 'jquery'], function (Core, MainViewIndex, jQuery) {
+define('app.main', ['tb.core', 'main.view.index', 'jquery', 'component!popin'], function (Core, MainViewIndex, jQuery, Popin) {
     'use strict';
 
     /**
@@ -51,7 +51,7 @@ define('app.main', ['tb.core', 'main.view.index', 'jquery'], function (Core, Mai
 
             Core.set('application.main', this);
 
-            Core.component('popin').init(this.config.tbSelector);
+            Popin.init(this.config.tbSelector);
 
             console.log(' MainApplication is initialized ');
         },
