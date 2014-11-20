@@ -28,8 +28,8 @@
         return {
             load: function (name, req, onload) {
                 req(['src/tb/component/' + name + '/main'], function (component) {
-                    if (Core.get('config:component:' + name) !== undefined && 'function' === typeof component.init) {
-                        component.init(Core.get('config:component:' + name));
+                    if (Core.config('component:' + name) !== undefined && 'function' === typeof component.init) {
+                        component.init(Core.config('component:' + name));
                     }
 
                     onload(component);
