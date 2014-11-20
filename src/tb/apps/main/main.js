@@ -55,6 +55,8 @@ define('app.main', ['tb.core', 'main.view.index', 'jquery', 'jqueryui'], functio
 
             this.bindEvents();
 
+            this.bindEvents();
+
             console.log(' MainApplication is initialized ');
         },
 
