@@ -39,7 +39,7 @@ require.config({
 
         //Templates
         'page/tpl/contribution/index': 'src/tb/apps/page/templates/contribution.index.twig',
-        'page/tpl/contribution/scheduling_publication': 'src/tb/apps/page/templates/scheduling_publication.dialog.twig'
+        'page/tpl/contribution/scheduling_publication': 'src/tb/apps/page/templates/contribution-scheduling.dialog.twig'
     }
 });
 

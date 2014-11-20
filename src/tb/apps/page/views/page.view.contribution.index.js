@@ -19,13 +19,15 @@
 
 define(
     [
+        'tb.core.Api',
         'jquery',
         'tb.core.ApplicationManager',
         'tb.core.ViewManager',
         'text!page/tpl/contribution/index',
+        'text!page/tpl/contribution/scheduling_publication',
         'page.repository'
     ],
-    function (jQuery, ApplicationManager, ViewManager, template, PageRepository) {
+    function (Api, jQuery, ApplicationManager, ViewManager, template, schedulingTemplate, PageRepository) {
 
         'use strict';
 
@@ -40,12 +42,18 @@ define(
              */
             el: '#contrib-tab-apps',
 
+            schedulingFormTag: '#contribution-scheduling-form',
+            schedulingBtnTag: '#contribution-scheduling-btn',
+            schedulingTag: '#contribution-scheduling',
+            schedulingSubmitTag: '#contribution-scheduling-submit',
+
+            dialogContainerTag: '.bb5-dialog-container',
+
             /**
              * Initialize of PageViewContributionIndex
              */
             initialize: function (config) {
                 this.currentPage = config.data;
-
                 this.bindUiEvents();
             },
 
@@ -56,6 +64,7 @@ define(
                 jQuery(this.el).on('change', '#page-state-select', jQuery.proxy(this.manageState, this));
                 jQuery(this.el).on('click', '#contribution-clone-page', jQuery.proxy(this.manageClone, this));
                 jQuery(this.el).on('click', '#contribution-delete-page', jQuery.proxy(this.manageDelete, this));
+                jQuery(this.el).on('click', this.schedulingBtnTag, jQuery.proxy(this.manageSchedulingPublication, this));
             },
 
             /**
@@ -83,6 +92,56 @@ define(
              */
             manageDelete: function () {
                 ApplicationManager.invokeService('page.main.deletePage', this.currentPage.uid);
+            },
+
+            manageSchedulingPublication: function () {
+
+                var self = this,
+                    config = {
+                        elements: {
+                            publication: {
+                                label: 'Publication scheduled for',
+                                type: 'text',
+                                placeholder: 'dd/mm/aaaa',
+                                template: 'src/tb/apps/page/templates/elements/scheduling-input.twig'
+                            },
+                            archiving: {
+                                label: 'Archiving scheduled for',
+                                type: 'text',
+                                placeholder: 'dd/mm/aaaa',
+                                template: 'src/tb/apps/page/templates/elements/scheduling-input.twig'
+                            }
+                        }
+                    },
+                    formBuilder = Api.component('formbuilder');
+
+
+                if (jQuery(this.schedulingTag).length === 0) {
+
+                    jQuery(this.dialogContainerTag).html(ViewManager.render(schedulingTemplate));
+
+                    formBuilder.renderForm(config).done(function (html) {
+                        jQuery(self.schedulingTag).html(html);
+
+                        jQuery(self.schedulingTag).dialog({
+                            position: { my: "left top", at: "left+270 bottom+2", of: jQuery("#bb5-maintabsContent") },
+                            width: 406,
+                            height: 92,
+                            autoOpen: false,
+                            resizable: false,
+                            appendTo: "#bb5-ui .bb5-dialog-container",
+                            dialogClass: "ui-dialog-no-title ui-dialog-pinned-to-banner"
+                        });
+
+                        jQuery(self.schedulingTag).dialog("open");
+                    });
+
+                    /*if (jQuery(this.schedulingTag).dialog('isOpen')) {
+                        jQuery(this.schedulingTag).dialog("close");
+                    } else {
+                        jQuery(this.schedulingTag).dialog("open");
+                    }*/
+                }
             },
 
             /**

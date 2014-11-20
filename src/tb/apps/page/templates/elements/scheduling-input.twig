@@ -1,0 +1,19 @@
+<div class="row form-group">
+    <div class="col-bb5-40">{{ element.getLabel() }}</div>
+    <div class="col-bb5-33">
+        <div class="input-group input-group-xs">
+            <input type="text"
+                name="{{ element.getKey() }}"
+                {% if element.isDisabled() %}disabled{% endif %}
+                {#{% if element.getPlaceholder() is not empty %}placeholder="{{ element.getPlaceholder() }}"{% endif %}#}
+                value="{{ element.getValue() }}"
+                class="form-control input-xs bb5-datepicker"
+             >
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-default-grey">
+                    <i class="fa fa-calendar"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+</div>

@@ -19,7 +19,7 @@
 require.config({
     paths: {
         'main.routes': 'src/tb/apps/main/routes',
-        'main.controller': "src/tb/apps/main/controllers/main.controller",
+        'main.controller': 'src/tb/apps/main/controllers/main.controller',
 
         //Templates
         'main/tpl/toolbar': 'src/tb/apps/main/templates/toolbar.twig',
@@ -53,7 +53,31 @@ define('app.main', ['tb.core', 'main.view.index', 'jquery', 'component!popin'], 
 
             Popin.init(this.config.tbSelector);
 
+            this.bindEvents();
+
             console.log(' MainApplication is initialized ');
+        },
+
+        bindEvents: function () {
+            jQuery(this.config.tbSelector).on('click', '.bb5-datepicker', this.datePickerEvent);
+        },
+
+        datePickerEvent: function () {
+            var element =jQuery(this);
+
+            element.datepicker({
+               nextText: '',
+               prevText: ''
+            });
+
+            var widget = element.datepicker('widget');
+            jQuery('#bb5-ui').append(widget);
+
+            element.next().find('>.btn').on('click', function() {
+                jQuery(this).parent().prev().datepicker('show');
+            });
+
+            element.datepicker('show');
         },
 
         /**
