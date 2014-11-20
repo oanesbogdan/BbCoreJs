@@ -94,9 +94,14 @@ define(['tb.core.Api', 'jquery', 'tb.component/formbuilder/form/Form', 'tb.core.
                     elementConfig.class = keyClass;
                     mappingRequire[keyClass] = 'src/tb/component/formbuilder/form/element/' + typeFormated;
 
-                    keyTemplate = 'form/element/' + elementConfig.type + '/template';
+                    if (elementConfig.hasOwnProperty('template')) {
+                        keyTemplate = 'form/element/' + this.form.getId() + key + '/template';
+                        mappingRequire[keyTemplate] = elementConfig.template;
+                    } else {
+                        keyTemplate = 'form/element/' + elementConfig.type + '/template';
+                        mappingRequire[keyTemplate] = 'src/tb/component/formbuilder/form/element/templates/' + elementConfig.type + '.twig';
+                    }
                     elementConfig.template = keyTemplate;
-                    mappingRequire[keyTemplate] = 'src/tb/component/formbuilder/form/element/templates/' + elementConfig.type + '.twig';
                     mappingTemplate.push(keyTemplate);
 
                     keyView = 'form.element.view.' + elementConfig.type;
