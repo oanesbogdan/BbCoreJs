@@ -42,7 +42,6 @@ define(['jsclass'], function () {
                 this.children = [];
             },
 
-
             /**
              * Title property setter
              * @param {String} id
@@ -69,7 +68,6 @@ define(['jsclass'], function () {
              */
             setTitle: function (title) {
                 this.options.title = title;
-
                 return this;
             },
 
