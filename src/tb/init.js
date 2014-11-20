@@ -17,48 +17,11 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jquery'], function (jQuery) {
+define(['jquery'], function (jQuery, config) {
 
     'use strict';
 
     var init = {
-
-        applicationConfig: {
-
-            appPath: 'resources/src/tb/apps',
-
-            /*ne charge que les onglets qui se trouvent dans 'applications'*/
-            active: 'main',
-
-            route: '', // to change: App should know
-
-            applications: {
-                main: {
-                    label: 'Main',
-                    config: {mainRoute: 'appMain/index'}
-                },
-                layout: {
-                    label: 'Layout',
-                    config: {mainRoute: 'appLayout/home'}
-                },
-                content: {
-                    label: 'Edition du contenu',
-                    config: {}
-                },
-                bundle: {
-                    label: 'Bundle',
-                    config: {mainRoute: 'bundle/index'}
-                },
-                page: {
-                    label: 'Page',
-                    config: {mainRoute: 'page/index'}
-                },
-                contribution: {
-                    label: 'Contribution',
-                    config: {mainRoute: 'contribution/index'}
-                }
-            }
-        },
 
         toolBarDisplayed: false,
 
@@ -77,7 +40,7 @@ define(['jquery'], function (jQuery) {
 
         load: function () {
             var self = this;
-            require(['tb.core'], function (Core) {
+            require(['tb.core', 'src/tb/config'], function (Core) {
 
                 Core.set('is_connected', false);
 
@@ -97,7 +60,8 @@ define(['jquery'], function (jQuery) {
                     /*
                      * @TODO: Load config by a rest when user connected
                      */
-                    Core.ApplicationManager.init(self.applicationConfig);
+                    Core.initConfig(config);
+                    Core.ApplicationManager.init(config);
                 });
 
                 Core.authentication.showForm();
