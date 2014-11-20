@@ -37,10 +37,15 @@ define(['moment', 'tb.core.Api', 'jsclass'], function (moment) {
 
             logs: [],
 
-            initialize: function (minLevel, mode) {
-                this.devmode = !(mode === 'production' || mode === undefined);
-                this.minimalLevel = minLevel || 4;
+            initialize: function () {
+                this.devmode = false;
+                this.minimalLevel = 4;
                 this.tmpConf = false;
+            },
+
+            init: function (config) {
+                this.devmode = !(config.mode === 'production' || config.mode === undefined);
+                this.minimalLevel = config.level || this.minimalLevel;
             },
 
             pushLog: function (log) {
@@ -243,6 +248,11 @@ define(['moment', 'tb.core.Api', 'jsclass'], function (moment) {
          */
         restaureLogLevel: function () {
             logger.restaureLogLevel();
+        },
+
+        init: function (config) {
+            logger.init(config);
+            delete this.init;
         }
     };
 });

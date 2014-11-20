@@ -36,20 +36,32 @@ define('tb.core.Config', ['require', 'tb.core.Api'], function (require) {
             }
         },
 
+        setImutable = function (obj) {
+            var key;
+
+            for (key in obj) {
+                if (obj.hasOwnProperty(key) && ('object' === typeof obj[key])) {
+                    setImutable(obj[key]);
+                }
+            }
+            Object.freeze(obj);
+        },
+
         initConfig = function (config) {
             if (config.hasOwnProperty('core')) {
                 injectCoreConfig(config.core);
                 delete config.core;
             }
-            container = Object.freeze(config);
+
+            container = config;
+            setImutable(container);
         },
 
         find = function (sections, config) {
             var section = sections.pop();
 
             if (config.hasOwnProperty(section)) {
-
-                if (sections.length === 1) {
+                if (sections.length > 0) {
                     return find(sections, config[section]);
                 }
                 return config[section];
@@ -65,5 +77,5 @@ define('tb.core.Config', ['require', 'tb.core.Api'], function (require) {
 
 
     Core.register('initConfig', initConfig);
-    Core.register('Config', getConfig);
+    Core.register('config', getConfig);
 });
