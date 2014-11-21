@@ -25,9 +25,19 @@ define(
         'tb.core.ViewManager',
         'text!page/tpl/contribution/index',
         'text!page/tpl/contribution/scheduling_publication',
-        'page.repository'
+        'page.repository',
+        'component!formbuilder',
+        'moment'
     ],
-    function (Api, jQuery, ApplicationManager, ViewManager, template, schedulingTemplate, PageRepository) {
+    function (jQuery,
+              ApplicationManager,
+              ViewManager,
+              template,
+              schedulingTemplate,
+              PageRepository,
+              FormBuilder,
+              moment
+            ) {
 
         'use strict';
 
@@ -46,6 +56,7 @@ define(
             schedulingBtnTag: '#contribution-scheduling-btn',
             schedulingTag: '#contribution-scheduling',
             schedulingSubmitTag: '#contribution-scheduling-submit',
+            schedulingStateTag: '#contribution-scheduling-state',
 
             dialogContainerTag: '.bb5-dialog-container',
 
@@ -95,38 +106,65 @@ define(
             },
 
             manageSchedulingPublication: function () {
-
                 var self = this,
                     config = {
                         elements: {
-                            publication: {
+                            publishing: {
                                 label: 'Publication scheduled for',
-                                type: 'text',
+                                type: 'datetimepicker',
                                 placeholder: 'dd/mm/aaaa',
-                                template: 'src/tb/apps/page/templates/elements/scheduling-input.twig'
+                                template: 'src/tb/apps/page/templates/elements/scheduling-input.twig',
+                                value: this.getStateSchedulingAsString(this.currentPage.publishing)
                             },
                             archiving: {
                                 label: 'Archiving scheduled for',
-                                type: 'text',
+                                type: 'datetimepicker',
                                 placeholder: 'dd/mm/aaaa',
-                                template: 'src/tb/apps/page/templates/elements/scheduling-input.twig'
+                                template: 'src/tb/apps/page/templates/elements/scheduling-input.twig',
+                                value: this.getStateSchedulingAsString(this.currentPage.archiving)
                             }
-                        }
-                    },
-                    formBuilder = Api.component('formbuilder');
+                        },
+                        form: {
+                            submitLabel: 'Ok'
+                        },
+                        onSubmit: function (data) {
+                            var key,
+                                date;
 
+                            for (key in data) {
+                                if (data.hasOwnProperty(key)) {
+                                    date = new Date(data[key]);
+
+                                    if (isNaN(date.getTime())) {
+                                        delete data[key];
+                                    } else {
+                                        data[key] = date.getTime() / 1000;
+                                    }
+                                }
+                            }
+
+                            if (!jQuery.isEmptyObject(data)) {
+                                self.setStateScheduling(data);
+
+                                data.uid = self.currentPage.uid;
+                                PageRepository.save(data);
+                            }
+
+                            jQuery(self.schedulingTag).dialog('close');
+                        }
+                    };
 
                 if (jQuery(this.schedulingTag).length === 0) {
 
                     jQuery(this.dialogContainerTag).html(ViewManager.render(schedulingTemplate));
 
-                    formBuilder.renderForm(config).done(function (html) {
+                    FormBuilder.renderForm(config).done(function (html) {
                         jQuery(self.schedulingTag).html(html);
 
                         jQuery(self.schedulingTag).dialog({
                             position: { my: "left top", at: "left+270 bottom+2", of: jQuery("#bb5-maintabsContent") },
-                            width: 406,
-                            height: 92,
+                            width: 334,
+                            height: 120,
                             autoOpen: false,
                             resizable: false,
                             appendTo: "#bb5-ui .bb5-dialog-container",
@@ -136,12 +174,42 @@ define(
                         jQuery(self.schedulingTag).dialog("open");
                     });
 
-                    /*if (jQuery(this.schedulingTag).dialog('isOpen')) {
+                } else {
+                    if (jQuery(this.schedulingTag).dialog('isOpen')) {
                         jQuery(this.schedulingTag).dialog("close");
                     } else {
                         jQuery(this.schedulingTag).dialog("open");
-                    }*/
+                    }
                 }
+            },
+
+            getStateSchedulingAsString: function (value) {
+                var timestamp,
+                    day = '';
+
+                if (value !== undefined) {
+                    timestamp = moment.unix(value);
+                    day = timestamp.format('YYYY/MM/DD HH:mm');
+                }
+
+                return day;
+            },
+
+            setStateScheduling: function (config) {
+                var day,
+                    state;
+
+                if (config.hasOwnProperty('publishing') && config.publishing !== '') {
+                    day = moment.unix(config.publishing);
+                    state = 'from ' + day.format('DD/MM/YYYY HH:mm');
+                }
+
+                if (config.hasOwnProperty('archiving') && config.archiving !== '') {
+                    day = moment.unix(config.archiving);
+                    state += ' till ' + day.format('DD/MM/YYYY HH:mm');
+                }
+
+                jQuery(this.schedulingStateTag).html(state);
             },
 
             /**
@@ -150,6 +218,8 @@ define(
              */
             render: function () {
                 jQuery(this.el).html(ViewManager.render(template, {'page': this.currentPage}));
+
+                this.setStateScheduling(this.currentPage);
 
                 return this;
             }

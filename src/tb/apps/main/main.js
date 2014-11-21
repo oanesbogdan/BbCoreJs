@@ -29,7 +29,7 @@ require.config({
     }
 });
 
-define('app.main', ['tb.core', 'main.view.index', 'jquery', 'jqueryui'], function (Core, MainViewIndex, jQuery) {
+define('app.main', ['tb.core', 'main.view.index', 'jquery', 'component!popin', 'datetimepicker'], function (Core, MainViewIndex, jQuery, Popin) {
     'use strict';
 
     /**
