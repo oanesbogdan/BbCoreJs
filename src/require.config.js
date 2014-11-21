@@ -32,7 +32,8 @@ require.config({
         'nunjucks': 'lib/nunjucks/nunjucks.min',
         'moment': 'lib/moment/moment',
         'text': 'lib/requirejs-text/text',
-        'URIjs': 'lib/uri.js'
+        'URIjs': 'lib/uri.js',
+        'datetimepicker': 'lib/datetimepicker/jquery.datetimepicker'
     },
     'shim': {
         underscore: {

@@ -28,7 +28,8 @@
     "bower": "*",
     "nunjucks": "~1.1.0",
     "jquery-ui": "~1.11.2",
-    "jqtree": "~0.22.0"
+    "jqtree": "~0.22.0",
+    "datetimepicker": "~2.4.1"
   },
   "devDependencies": {
     "uri.js": "~1.14.1"
