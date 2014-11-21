@@ -86,13 +86,18 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
             },
 
             save: function (data) {
-                var result;
+                var result,
+                    uid;
 
                 if (data.hasOwnProperty('uid')) {
+                    uid = data.uid;
+
+                    delete data.uid;
+
                     if (this.isPutMethod(data)) {
-                        result = CoreDriverHandler.update(this.TYPE, data, {'id': data.uid}, {}, 0, null);
+                        result = CoreDriverHandler.update(this.TYPE, data, {'id': uid}, {}, 0, null);
                     } else {
-                        result = CoreDriverHandler.patch(this.TYPE, data, {'id': data.uid});
+                        result = CoreDriverHandler.patch(this.TYPE, data, {'id': uid});
                     }
                 } else {
                     result = CoreDriverHandler.create(this.TYPE, data);

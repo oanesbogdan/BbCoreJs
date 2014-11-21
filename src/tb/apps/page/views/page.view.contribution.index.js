@@ -19,7 +19,6 @@
 
 define(
     [
-        'tb.core.Api',
         'jquery',
         'tb.core.ApplicationManager',
         'tb.core.ViewManager',
@@ -139,6 +138,9 @@ define(
                                         delete data[key];
                                     } else {
                                         data[key] = date.getTime() / 1000;
+                                        if (data[key] === parseInt(self.currentPage[key])) {
+                                            delete data[key];
+                                        }
                                     }
                                 }
                             }
