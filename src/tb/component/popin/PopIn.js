@@ -201,7 +201,7 @@ define(['jsclass', 'jquery'], function (jsclass, jQuery) {
              * @return {PopIn} self
              */
             addOptions: function (options) {
-                jQuery.merge(this.options, options)
+                jQuery.extend(this.options, options)
 
                 return this;
             },
