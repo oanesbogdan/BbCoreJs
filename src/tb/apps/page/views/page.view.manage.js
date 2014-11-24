@@ -68,13 +68,12 @@ define([
 
             self.popin.setTitle('Review pages');
             self.popin.setContent('');
-            self.popin.setOptions({
+            self.popin.addOptions({
                 "height" : 700 > $(window).height()-(20*2) ? $(window).height()-(20*2) : 700 ,
-		"width" : 1244 > $(window).width()-(20*2) ? $(window).width()-(20*2) : 1244,
+                "width" : 1244 > $(window).width()-(20*2) ? $(window).width()-(20*2) : 1244
             });
             self.popin.display();
             self.popin.mask();
-            
             
             
             PageRepository.search({state: 1}, 0, 50).done(function(pages){
