@@ -104,7 +104,7 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
                     qs.count = count;
                 }
                 
-                CoreDriverHandler.read(this.TYPE, qs, {}, 0, null, callback);
+                return CoreDriverHandler.read(this.TYPE, qs, {}, 0, null, callback);
             },
 
             save: function (data) {

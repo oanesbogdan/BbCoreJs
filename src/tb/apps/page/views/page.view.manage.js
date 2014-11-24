@@ -5,7 +5,7 @@ define([
     'page.form',
     'tb.core.ViewManager',
     'text!page/tpl/manage_list',
-    'jquery-layout'
+    'jquery-layout',
 ], function (Api, jQuery, PageRepository, PageForm, ViewManager, template, Layout) {
 
     'use strict';
@@ -20,9 +20,10 @@ define([
          * Initialize of PageViewReview
          */
         initialize: function (parent_uid) {
-            this.popin = Api.component('popin').createPopIn();
             //this.formBuilder = Api.component('formbuilder');
             this.parent_uid = parent_uid;
+            
+            this.popin = require('component!popin').createPopIn();
         },
 
         computeLayouts: function (layouts) {
@@ -76,8 +77,8 @@ define([
             
             
             
-            PageRepository.search({state: 1}, 0, 50, function(pages){
-                var content = ViewManager.render(template, {'pages': pages});
+            PageRepository.search({state: 1}, 0, 50).done(function(pages){
+                var content = ViewManager.render(template, {"pages": pages});
                 self.popin.setContent(content);
                 
                 jQuery('#content-library-pane-wrapper').layout({
