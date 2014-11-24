@@ -27,6 +27,7 @@ define('tb.core.Mediator', ['tb.core.Api'], function (Api) {
         Mediator = function mediator() {
             this.topics = {};
             this.publicated = {};
+            this.subscribe_once = {};
         };
 
     /**
@@ -63,6 +64,18 @@ define('tb.core.Mediator', ['tb.core.Api'], function (Api) {
     };
 
     /**
+     * Publish a topic and keep this topic in memory
+     * @return {undefined}
+     */
+    Mediator.prototype.subscribeOnce = function mediatorSubscribeOnce(topic, callback, context) {
+        if (!this.topics.hasOwnProperty(topic)) {
+            this.subscribe_once[topic] = [];
+        }
+        this.subscribe_once[topic].push(callback);
+        this.subscribe(topic, callback, context);
+    };
+
+    /**
      * Unsubscribe to a topic
      * @param  {String}   topic    [description]
      * @param  {Function} callback [description]
@@ -88,14 +101,23 @@ define('tb.core.Mediator', ['tb.core.Api'], function (Api) {
     Mediator.prototype.publish = function mediatorPublish() {
         var args = Array.prototype.slice.call(arguments),
             topic = args.shift(),
-            i;
+            i,
+            callback;
 
         if (this.topics.hasOwnProperty(topic)) {
             for (i = 0; i < this.topics[topic].length; i = i + 1) {
+                callback = this.topics[topic][i].callback;
                 try {
                     this.topics[topic][i].execute.apply(this.topics[topic][i], args);
                 } catch (e) {
                     Api.exception.silent('MediatorException', 12201, 'Mediator as catch an error on "' + topic + '" topic with the following message: "' + e + '"');
+                }
+                if (this.subscribe_once.hasOwnProperty(topic)) {
+                    for (i = 0; i < this.subscribe_once[topic].length; i = i + 1) {
+                        if (this.subscribe_once[topic][i] === callback) {
+                            this.unsubscribe(topic, callback);
+                        }
+                    }
                 }
             }
         }

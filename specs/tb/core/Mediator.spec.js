@@ -61,5 +61,23 @@ define(['require', 'tb.core'], function (require) {
             expect(fake.withoutThis).not.toHaveBeenCalledWith(argument);
 
         });
+
+
+        it('Subscribe Once', function () {
+
+            spyOn(fake, 'withoutThis');
+
+            api.Mediator.subscribeOnce('fake event play once time', fake.withoutThis, fake);
+            api.Mediator.subscribeOnce('fake event play once time', fake.withThis, fake);
+
+            api.Mediator.publish('fake event play once time', argument);
+            spyOn(fake, 'withThis');
+
+            api.Mediator.publish('fake event play once time', argument);
+
+            expect(fake.withoutThis).toHaveBeenCalledWith(argument);
+            expect(fake.withThis).not.toHaveBeenCalledWith(argument);
+
+        });
     });
 });
