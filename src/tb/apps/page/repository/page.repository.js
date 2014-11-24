@@ -38,6 +38,11 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
                 CoreDriverHandler.addDriver('rest', CoreRestDriver);
             },
 
+            /**
+             * Verify if the method is put method with a mandatories attributes array
+             * @param {Object} data
+             * @returns {Boolean}
+             */
             isPutMethod: function (data) {
                 var key,
                     mandatory,
@@ -59,7 +64,7 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
             /**
              * Find the current page
              * @todo change this method for get the current page with a rest service
-             * @param {Function} callback
+             * @returns {Promise}
              */
             findCurrentPage: function () {
                 var dfd =  jQuery.Deferred();
@@ -75,6 +80,23 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
                 });
 
                 return dfd.promise();
+            },
+
+            /**
+             * Return the metadata of page
+             * @param {String} page_uid
+             * @returns {Promise}
+             */
+            getMetadata: function (page_uid) {
+                Core.Mediator.subscribe('rest:send:before', function (request) {
+                    var url = new URI(request.url);
+
+                    url.segment('metadata');
+
+                    request.url = url.normalize().toString();
+                });
+
+                return CoreDriverHandler.read(this.TYPE, {'id': page_uid}, {}, 0, null);
             },
 
             /**
@@ -130,6 +152,11 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
                 return CoreDriverHandler.read(this.TYPE, qs, {}, 0, null, callback);
             },
 
+            /**
+             * Save the page with a correctly method
+             * @param {Object} data
+             * @returns {Promise}
+             */
             save: function (data) {
                 var result,
                     uid;
@@ -151,10 +178,21 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
                 return result;
             },
 
+            /**
+             * Delete the page
+             * @param {String} uid
+             * @returns {Promise}
+             */
             delete: function (uid) {
                 return CoreDriverHandler.delete(this.TYPE, {'id': uid}, {}, 0, null);
             },
 
+            /**
+             * Clone the page
+             * @param {String} uid
+             * @param {Object} data
+             * @returns {Promise}
+             */
             clone: function (uid, data) {
                 Core.Mediator.subscribe('rest:send:before', function (request) {
                     var url = new URI(request.url);
@@ -168,29 +206,31 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
                 return CoreDriverHandler.create(this.TYPE, data);
             },
 
-            moveNode: function (page_uid, parent_uid, next_uid) {
-                var data = {};
+            /**
+             * Set the metadata to the page
+             * @param {String} uid
+             * @param {Object} data
+             * @returns {Promise}
+             */
+            setMetadata: function (uid, data) {
+                /**Core.Mediator.subscribe('rest:send:before', function (request) {
+                    console.log('aa');
+                    var url = new URI(request.url);
 
-                if (page_uid !== undefined && parent_uid !== undefined) {
-                    data.parent_uid = parent_uid;
+                    url.segment(uid);
+                    url.segment('metadata');
 
-                    if (next_uid !== undefined) {
-                        data.next_uid = next_uid;
-                    }
+                    request.url = url.normalize().toString();
+                });*/
 
-                    Core.Mediator.subscribeOnce('rest:send:before', function (request) {
-                        var url = new URI(request.url);
-
-                        url.segment('node');
-                        url.segment('move');
-
-                        request.url = url.normalize().toString();
-                    });
-
-                   return CoreDriverHandler.update(this.TYPE, data, {id: page_uid});
-                }
+                return CoreDriverHandler.update(this.TYPE, data, {'id': uid});
             },
 
+            /**
+             * Get the layouts of site
+             * @param {String} site_uid
+             * @returns {Promise}
+             */
             findLayouts: function (site_uid) {
                 return CoreDriverHandler.read('layout', {'site_uid': site_uid}, {}, 0, null);
             }

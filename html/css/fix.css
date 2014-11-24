@@ -21,26 +21,8 @@
     overflow: hidden;
 }
 
-
-#bb5-ui .bb5-context-menu {
-    z-index:1000;
-    background: #ebebeb;
-    border: 1px solid silver;
-}
-
-#bb5-ui .bb5-context-menu ul {
-    padding: 0;
-}
-
-#bb5-ui .bb5-context-menu ul li:hover {
-    background-color: #b03e00;
-    color: white !important;
-}
-
-#bb5-ui .bb5-context-menu ul li {
-    cursor: pointer;
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    display: block;
+#bb5-ui .form-group.custom-form-group {
+    border: 2px solid #ccc;
+    padding: 5px;
+    margin: 10px 0;
 }

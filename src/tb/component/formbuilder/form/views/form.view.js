@@ -29,11 +29,11 @@ define(['tb.core.ViewManager', 'BackBone', 'jquery'], function (ViewManager, Bac
          * @param {Object} elements
          * @param {Object} form
          */
-        initialize: function (template, elements, form) {
+        initialize: function (template, groups, form) {
             this.el = '#bb5-ui';
             this.form_button_id = '#bb-submit-form';
             this.template = template;
-            this.elements = elements;
+            this.groups = groups;
             this.form = form;
         },
 
@@ -102,8 +102,8 @@ define(['tb.core.ViewManager', 'BackBone', 'jquery'], function (ViewManager, Bac
          */
         render: function () {
             this.bindUiEvents();
-
-            return ViewManager.render(this.template, {elements: this.elements, form: this.form});
+            console.log(this.groups);
+            return ViewManager.render(this.template, {groups: this.groups, form: this.form});
         }
     });
 

@@ -26,6 +26,7 @@ define(
         'text!page/tpl/contribution/scheduling_publication',
         'page.repository',
         'component!formbuilder',
+        'component!popin',
         'moment'
     ],
     function (jQuery,
@@ -35,6 +36,7 @@ define(
               schedulingTemplate,
               PageRepository,
               FormBuilder,
+              PopinManager,
               moment
             ) {
 
@@ -75,6 +77,7 @@ define(
                 jQuery(this.el).on('click', '#contribution-clone-page', jQuery.proxy(this.manageClone, this));
                 jQuery(this.el).on('click', '#contribution-delete-page', jQuery.proxy(this.manageDelete, this));
                 jQuery(this.el).on('click', this.schedulingBtnTag, jQuery.proxy(this.manageSchedulingPublication, this));
+                jQuery(this.el).on('click', '#contribution-seo-page', jQuery.proxy(this.manageSeo, this));
             },
 
             /**
@@ -104,6 +107,10 @@ define(
                 ApplicationManager.invokeService('page.main.deletePage', this.currentPage.uid);
             },
 
+            /**
+             * On click, build the form and show him in the popin
+             * @returns
+             */
             manageSchedulingPublication: function () {
                 var self = this,
                     config = {
@@ -138,7 +145,7 @@ define(
                                         delete data[key];
                                     } else {
                                         data[key] = date.getTime() / 1000;
-                                        if (data[key] === parseInt(self.currentPage[key])) {
+                                        if (data[key] === parseInt(self.currentPage[key], 10)) {
                                             delete data[key];
                                         }
                                     }
@@ -185,6 +192,11 @@ define(
                 }
             },
 
+            /**
+             * Get the correcly format of date in string for datetimepicker
+             * @param {number} value
+             *
+             */
             getStateSchedulingAsString: function (value) {
                 var timestamp,
                     day = '';
@@ -197,6 +209,10 @@ define(
                 return day;
             },
 
+            /**
+             * Set the sheduling statut in contribution index as string
+             * @param {Object} config
+             */
             setStateScheduling: function (config) {
                 var day,
                     state;
@@ -212,6 +228,117 @@ define(
                 }
 
                 jQuery(this.schedulingStateTag).html(state);
+            },
+
+            /**
+             * Get the metadata of page, build form and show in popin
+             */
+            manageSeo: function () {
+                var self = this,
+                    popin = PopinManager.createPopIn();
+
+                popin.setTitle('SEO de la page');
+                PageRepository.getMetadata(this.currentPage.uid).done(function (metadata) {
+                    FormBuilder.renderForm(self.buildConfigSeoForm(metadata, popin)).done(function (html) {
+                        popin.setContent(html);
+                        popin.display();
+                    });
+                });
+
+            },
+
+            /**
+             * Compute SEO data for compatibility with REST
+             * @param {Object} data
+             * @returns {Object}
+             */
+            computeSeoData: function (data) {
+                var key,
+                    newKey,
+                    delimiter,
+                    value,
+                    isDefault = true,
+                    result = {};
+
+                for (key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        value = data[key];
+                        delimiter = key.indexOf('__');
+                        isDefault = true;
+
+                        if (-1 !== delimiter) {
+                            newKey = key.substring(delimiter + 2);
+                            key = key.substring(0, delimiter);
+                            isDefault = false;
+                        }
+
+                        if (!result.hasOwnProperty(key)) {
+                            result[key] = {};
+                        }
+
+                        if (isDefault === true) {
+                            result[key].content = value;
+                        } else {
+                            result[key][newKey] = value;
+                        }
+                    }
+                }
+
+                return result;
+            },
+
+            /**
+             * Build config of SEO form with REST data
+             * @param {Object} metadata
+             * @param {Object} popin
+             * @returns {Object}
+             */
+            buildConfigSeoForm: function (metadata, popin) {
+                var self = this,
+                    key,
+                    value,
+                    config = {},
+                    meta;
+
+                config.onSubmit = function (data) {
+                    popin.mask();
+                    PageRepository.setMetadata(self.currentPage.uid, self.computeSeoData(data)).done(function () {
+                        popin.unmask();
+                        popin.hide();
+                    });
+                };
+
+                config.elements = {};
+                for (key in metadata) {
+                    if (metadata.hasOwnProperty(key)) {
+                        meta = metadata[key];
+                        if (meta.hasOwnProperty('content')) {
+                            config.elements[key] = {
+                                label: key,
+                                type: 'textarea',
+                                value: meta.content
+                            };
+
+                            for (value in meta) {
+                                if (meta.hasOwnProperty(value)) {
+                                    if (value !== 'content') {
+                                        config.elements[key + '__' + value] = {
+                                            label: value,
+                                            type: 'textarea',
+                                            value: meta[value],
+                                            group: key
+                                        };
+
+                                        config.elements[key].label = 'Content';
+                                        config.elements[key].group = key;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return config;
             },
 
             /**

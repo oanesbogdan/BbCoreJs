@@ -245,13 +245,14 @@ define(['tb.core.Api', 'underscore', 'BackBone', 'jsclass'], function (Core, us,
          */
         render: function (data) {
             var key,
-                items = [],
+                items = {},
                 View,
                 view,
                 template,
                 elementConfig,
                 ElementClass,
                 Element,
+                group,
                 elementView,
                 elementTemplate;
 
@@ -267,6 +268,7 @@ define(['tb.core.Api', 'underscore', 'BackBone', 'jsclass'], function (Core, us,
                     elementView = require(elementConfig.view);
 
                     Element = new ElementClass(key,  elementConfig, this.id, elementView, elementTemplate, this.getError(key));
+                    group = Element.group;
 
                     if (data !== undefined) {
                         if (data.hasOwnProperty(key)) {
@@ -274,7 +276,10 @@ define(['tb.core.Api', 'underscore', 'BackBone', 'jsclass'], function (Core, us,
                         }
                     }
 
-                    items.push(Element.render());
+                    if (!items.hasOwnProperty(group)) {
+                        items[group] = [];
+                    }
+                    items[group].push(Element);
                 }
             }
 
