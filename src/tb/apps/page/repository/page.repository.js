@@ -82,12 +82,16 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
              * @param {Function} callback
              */
             find: function (uid) {
-                return CoreDriverHandler.read(this.TYPE, {'id': uid}, {}, 0, null);
+                return CoreDriverHandler.read(this.TYPE, {'id': uid});
             },
-            
+
+            findPageWithChildren: function (uid) {
+                return CoreDriverHandler.read(this.TYPE, {'depth': 1});
+            },
+
             /**
              * Search pages
-             * 
+             *
              * @param array filters
              * @param int start
              * @param int count
@@ -95,15 +99,15 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
              */
             search: function (filters, start, count, callback) {
                 var qs = filters;
-                
+
                 if (typeof start !== "undefined" && start !== null) {
                     qs.start = start;
                 }
-                
+
                 if (typeof count !== "undefined" && count !== null) {
                     qs.count = count;
                 }
-                
+
                 return CoreDriverHandler.read(this.TYPE, qs, {}, 0, null, callback);
             },
 

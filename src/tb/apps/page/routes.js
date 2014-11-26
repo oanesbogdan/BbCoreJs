@@ -30,14 +30,14 @@ define(["tb.core"], function (BbCore) {
                 url: '/contribution/index',
                 action: 'MainController:contributionIndex'
             },
-            'delete': {
-                url: '/delete/:uid',
-                action: 'MainController:delete'
-            }, 
+            'tree': {
+                url: '/tree',
+                action: 'MainController:tree'
+            },
             'manage': {
                 url: '/manage',
                 action: 'MainController:manage'
-            },
+            }
         }
     });
 });

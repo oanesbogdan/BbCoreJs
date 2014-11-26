@@ -26,9 +26,19 @@ define(
         'page.view.edit',
         'page.view.clone',
         'page.view.manage',
+        'page.view.tree',
         'jquery'
     ],
-    function (Core, ContributionIndexView, DeleteView, NewView, EditView, CloneView, ManageView, jQuery) {
+    function (Core,
+              ContributionIndexView,
+              DeleteView,
+              NewView,
+              EditView,
+              CloneView,
+              ManageView,
+              TreeView,
+              jQuery
+            ) {
 
         'use strict';
 
@@ -59,6 +69,20 @@ define(
                     }
 
                     var view = new ContributionIndexView({'data': data});
+                    view.render();
+                });
+            },
+
+            /**
+             * Show tree with pages
+             */
+            treeAction: function () {
+                this.repository.findCurrentPage().done(function (data) {
+                    if (data.hasOwnProperty(0)) {
+                        data = data[0];
+                    }
+
+                    var view = new TreeView(data.site_uid);
                     view.render();
                 });
             },
@@ -115,7 +139,7 @@ define(
                     console.log(e);
                 }
             },
-            
+
             /**
              * Manage pages action
              */
