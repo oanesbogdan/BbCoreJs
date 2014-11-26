@@ -102,7 +102,7 @@ define(['tb.core.ViewManager', 'BackBone', 'jquery'], function (ViewManager, Bac
          */
         render: function () {
             this.bindUiEvents();
-            console.log(this.groups);
+
             return ViewManager.render(this.template, {groups: this.groups, form: this.form});
         }
     });

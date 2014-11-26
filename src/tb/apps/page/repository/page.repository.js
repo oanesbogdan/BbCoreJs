@@ -88,7 +88,7 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
              * @returns {Promise}
              */
             getMetadata: function (page_uid) {
-                Core.Mediator.subscribe('rest:send:before', function (request) {
+                Core.Mediator.subscribeOnce('rest:send:before', function (request) {
                     var url = new URI(request.url);
 
                     url.segment('metadata');
@@ -194,7 +194,7 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
              * @returns {Promise}
              */
             clone: function (uid, data) {
-                Core.Mediator.subscribe('rest:send:before', function (request) {
+                Core.Mediator.subscribeOnce('rest:send:before', function (request) {
                     var url = new URI(request.url);
 
                     url.segment(uid);
@@ -213,15 +213,14 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
              * @returns {Promise}
              */
             setMetadata: function (uid, data) {
-                /**Core.Mediator.subscribe('rest:send:before', function (request) {
-                    console.log('aa');
+                Core.Mediator.subscribeOnce('rest:send:before', function (request) {
                     var url = new URI(request.url);
 
                     url.segment(uid);
                     url.segment('metadata');
 
                     request.url = url.normalize().toString();
-                });*/
+                });
 
                 return CoreDriverHandler.update(this.TYPE, data, {'id': uid});
             },
