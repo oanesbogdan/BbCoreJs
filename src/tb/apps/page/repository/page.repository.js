@@ -207,29 +207,22 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
             },
 
             /**
-             * Set the metadata to the page
+             * Get workflow of page
              * @param {String} uid
-             * @param {Object} data
+             * @todo move to layout application
              * @returns {Promise}
              */
-            setMetadata: function (uid, data) {
-                Core.Mediator.subscribeOnce('rest:send:before', function (request) {
+            getWorkflow: function (layout_uid) {
+                Core.Mediator.subscribe('rest:send:before', function (request) {
                     var url = new URI(request.url);
 
-                    url.segment(uid);
-                    url.segment('metadata');
+                    url.segment('workflow_state');
 
                     request.url = url.normalize().toString();
                 });
-
-                return CoreDriverHandler.update(this.TYPE, data, {'id': uid});
+                return CoreDriverHandler.read('layout', {'id': layout_uid});
             },
 
-            /**
-             * Get the layouts of site
-             * @param {String} site_uid
-             * @returns {Promise}
-             */
             findLayouts: function (site_uid) {
                 return CoreDriverHandler.read('layout', {'site_uid': site_uid}, {}, 0, null);
             }

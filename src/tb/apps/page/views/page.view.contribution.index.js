@@ -81,6 +81,45 @@ define(
             },
 
             /**
+             * BuildStateList
+             * @returns {Promise}
+             */
+            buildStateList: function () {
+                var self = this,
+                    dfd = jQuery.Deferred(),
+                    result = {};
+
+                PageRepository.getWorkflow(this.currentPage.layout_uid).done(function (workflowStates) {
+                    result = self.buildWorkflowStates(workflowStates);
+                    dfd.resolve(result);
+                }).fail(function (e) {
+                    dfd.reject(e);
+                });
+
+                return dfd.promise();
+            },
+
+            /**
+             * Build workflow state with state
+             * @param {Object} workflowStates
+             * @returns {Object}
+             */
+            buildWorkflowStates: function (workflowStates) {
+                var key,
+                    workflow,
+                    list = {'0': 'Hors ligne', '1': 'En ligne'};
+
+                for (key in workflowStates) {
+                    if (workflowStates.hasOwnProperty(key)) {
+                        workflow = workflowStates[key];
+                        list[workflow.uid] = workflow.label;
+                    }
+                }
+
+                return list;
+            },
+
+            /**
              * Change the state of the page
              * @param {Object} event
              */
@@ -346,11 +385,15 @@ define(
              * @returns {Object} PageViewContributionIndex
              */
             render: function () {
-                jQuery(this.el).html(ViewManager.render(template, {'page': this.currentPage}));
+                var self = this;
 
-                this.setStateScheduling(this.currentPage);
+                this.buildStateList().done(function (workflow) {
+                    jQuery(self.el).html(ViewManager.render(template, {'page': self.currentPage, 'states': workflow}));
 
-                return this;
+                    self.setStateScheduling(self.currentPage);
+                }).fail(function (e) {
+                    console.log(e);
+                });
             }
         });
 
