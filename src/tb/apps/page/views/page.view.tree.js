@@ -20,11 +20,13 @@
 define(
     [
         'tb.core.Api',
+        'tb.core.ApplicationManager',
         'jquery',
         'page.repository',
-        'component!treeview'
+        'component!treeview',
+        'component!contextmenu'
     ],
-    function (Api, jQuery, PageRepository, Tree) {
+    function (Api, ApplicationManager, jQuery, PageRepository, Tree, ContextMenu) {
 
     'use strict';
 
@@ -49,7 +51,9 @@ define(
 
         initializeTree: function () {
             var self = this,
-                config = {};
+                config = {
+                    dragAndDrop: true
+                };
 
             this.formatedData = [];
             config.open = function () {
@@ -60,9 +64,86 @@ define(
             this.bindTreeEvents();
         },
 
+        contextMenuConfig: {
+
+        },
+
+        buildContextMenuConfig: function () {
+            var self = this,
+                config = {
+                    domTag: '#bb5-ui',
+                    menuActions : [
+                        {
+                            btnCls: "bb5-context-menu-add",
+                            btnLabel: "Create",
+                            btnCallback: function () {
+                                ApplicationManager.invokeService('page.main.newPage', self.currentEvent.node.id);
+                            }
+                        },
+
+                        {
+                            btnCls: "bb5-context-menu-edit",
+                            btnLabel: "Edit",
+                            btnCallback: function () {
+                                ApplicationManager.invokeService('page.main.editPage', self.currentEvent.node.id);
+                            }
+                        },
+                        {
+                            btnCls: "bb5-context-menu-remove",
+                            btnLabel: "Remove",
+                            btnCallback: function () {
+                                ApplicationManager.invokeService('page.main.deletePage', self.currentEvent.node.id);
+                            }
+                        },
+                        {
+                            btnCls: "bb5-context-menu-copy",
+                            btnLabel: "Copy",
+                            btnCallback: function () {
+                            }
+                        },
+                        {
+                            btnCls: "bb5-context-menu-cut",
+                            btnLabel: "Cut",
+                            btnCallback: function () {
+                            }
+                        },
+                        {
+                            btnCls: "bb5-context-menu-flyto",
+                            btnLabel: "Browse to",
+                            btnCallback: function () {
+                            }
+                        }
+                    ]
+                };
+
+            return config;
+        },
+
         bindTreeEvents: function () {
+            var self = this,
+                contextMenu = new ContextMenu(this.buildContextMenuConfig());
+
+            this.currentEvent = null;
             this.tree.treeView.on('contextmenu', function (event) {
-               console.log(event.node);
+                self.currentEvent = event;
+                contextMenu.enable();
+                contextMenu.show(event.click_event);
+            });
+
+            this.tree.treeView.on('tree.move', function (event) {
+
+                event.move_info.do_move();
+
+                var moveInfo = event.move_info,
+                    page_uid = moveInfo.moved_node.id,
+                    parent_uid = moveInfo.moved_node.parent.id,
+                    next_uid = null;
+
+                if (moveInfo.position !== 'inside') {
+                    next_uid = moveInfo.target_node.id;
+                }
+
+                PageRepository.moveNode(page_uid, parent_uid, next_uid);
             });
         },
 

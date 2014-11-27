@@ -38,6 +38,7 @@ define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
                 jQuery("body").append(this.el);
                 this.useWrapper = true;
             }
+            console.log(userOptions);
             this.treeEl = jQuery(this.el).tree(this.options);
         },
         /* hasRoot */

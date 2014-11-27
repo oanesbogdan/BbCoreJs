@@ -85,8 +85,12 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
                 return CoreDriverHandler.read(this.TYPE, {'id': uid});
             },
 
+            /**
+             * Find pages with children
+             * @param {String} uid
+             */
             findPageWithChildren: function (uid) {
-                return CoreDriverHandler.read(this.TYPE, {'depth': 1});
+                return CoreDriverHandler.read(this.TYPE, {'depth': 1, 'order': 'leftnode', 'dir': 'asc', 'state': [0, 1, 2, 3]});
             },
 
             /**
@@ -147,6 +151,29 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
                 });
 
                 return CoreDriverHandler.create(this.TYPE, data);
+            },
+
+            moveNode: function (page_uid, parent_uid, next_uid) {
+                var data = {};
+
+                if (page_uid !== undefined && parent_uid !== undefined) {
+                    data.parent_uid = parent_uid;
+
+                    if (next_uid !== undefined) {
+                        data.next_uid = next_uid;
+                    }
+
+                    Core.Mediator.subscribeOnce('rest:send:before', function (request) {
+                        var url = new URI(request.url);
+
+                        url.segment('node');
+                        url.segment('move');
+
+                        request.url = url.normalize().toString();
+                    });
+
+                   return CoreDriverHandler.update(this.TYPE, data, {id: page_uid});
+                }
             },
 
             findLayouts: function (site_uid) {

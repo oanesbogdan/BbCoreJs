@@ -69,7 +69,8 @@ define(['jquery', 'jsclass'], function (jQuery) {
                 }
             ],
             menuCls : "bb5-ui bb5-context-menu",
-            actionBuilder : null
+            actionBuilder : null,
+            domTag: 'body'
         },
 
         /**
@@ -84,6 +85,9 @@ define(['jquery', 'jsclass'], function (jQuery) {
             this.beforeShow = null;
 
             this.settings = jQuery.extend(true, this.settings, userConfig);
+            if (this.settings.hasOwnProperty('defaultItemBuilder') && typeof this.settings.defaultItemBuilder === 'function') {
+                this.defaultItemBuilder = this.settings.defaultItemBuilder;
+            }
             this.contextMenu = this.buildContextmenu();
             this.beforeShow = (typeof this.settings.beforeShow === "function") ? this.settings.beforeShow : jQuery.noop;
             this.bindEvents();
@@ -117,7 +121,7 @@ define(['jquery', 'jsclass'], function (jQuery) {
             }
         },
 
-        defaultBuilder: function (btnInfo) {
+        defaultItemBuilder: function (btnInfo) {
             var self = this,
                 btnWrapper = jQuery("<li></li>").clone(),
                 btnTpl = jQuery("<button></button>");
@@ -145,13 +149,13 @@ define(['jquery', 'jsclass'], function (jQuery) {
 
             jQuery.each(this.settings.menuActions, function (btnType, item) {
                 item.btnType = btnType;
-                item = self.defaultBuilder(item);
+                item = self.defaultItemBuilder(item);
 
                 linksContainer.appendChild(jQuery(item).get(0));
             });
 
             jQuery(this.template).find('ul').html(linksContainer);
-            jQuery(this.template).hide().appendTo(jQuery("body"));
+            jQuery(this.template).hide().appendTo(jQuery(this.settings.domTag));
 
             return jQuery(this.template);
         },
@@ -174,12 +178,13 @@ define(['jquery', 'jsclass'], function (jQuery) {
             jQuery(this.contextMenu).css({
                 position: "absolute",
                 left: position.left + "px",
-                top: position.top + "px"
+                top: position.top + "px",
+                'z-index': '1000'
             });
 
             this.contextMenuTarget = jQuery(e.currentTarget);
             this.applyFilters(this.filters);
-
+            console.log(this.contextMenu);
             jQuery(this.contextMenu).show();
         },
 
