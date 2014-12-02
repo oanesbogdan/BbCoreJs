@@ -82,6 +82,18 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
                 return dfd.promise();
             },
 
+            setMetadata: function (page_uid, data) {
+                Core.Mediator.subscribeOnce('rest:send:before', function (request) {
+                    var url = new URI(request.url);
+
+                    url.segment('metadata');
+
+                    request.url = url.normalize().toString();
+                });
+
+                return CoreDriverHandler.update(this.TYPE, data, {'id': page_uid});
+            },
+
             /**
              * Return the metadata of page
              * @param {String} page_uid
@@ -212,8 +224,8 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
              * @todo move to layout application
              * @returns {Promise}
              */
-            getWorkflow: function (layout_uid) {
-                Core.Mediator.subscribe('rest:send:before', function (request) {
+            getWorkflowState: function (layout_uid) {
+                Core.Mediator.subscribeOnce('rest:send:before', function (request) {
                     var url = new URI(request.url);
 
                     url.segment('workflow_state');

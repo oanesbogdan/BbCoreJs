@@ -74,49 +74,15 @@ define(
              */
             bindUiEvents: function () {
                 jQuery(this.el).on('change', '#page-state-select', jQuery.proxy(this.manageState, this));
+                jQuery(this.el).on('click', '#page-visibility-input', jQuery.proxy(this.manageVisibilityPage, this));
                 jQuery(this.el).on('click', '#contribution-clone-page', jQuery.proxy(this.manageClone, this));
                 jQuery(this.el).on('click', '#contribution-delete-page', jQuery.proxy(this.manageDelete, this));
                 jQuery(this.el).on('click', this.schedulingBtnTag, jQuery.proxy(this.manageSchedulingPublication, this));
                 jQuery(this.el).on('click', '#contribution-seo-page', jQuery.proxy(this.manageSeo, this));
             },
 
-            /**
-             * BuildStateList
-             * @returns {Promise}
-             */
-            buildStateList: function () {
-                var self = this,
-                    dfd = jQuery.Deferred(),
-                    result = {};
-
-                PageRepository.getWorkflow(this.currentPage.layout_uid).done(function (workflowStates) {
-                    result = self.buildWorkflowStates(workflowStates);
-                    dfd.resolve(result);
-                }).fail(function (e) {
-                    dfd.reject(e);
-                });
-
-                return dfd.promise();
-            },
-
-            /**
-             * Build workflow state with state
-             * @param {Object} workflowStates
-             * @returns {Object}
-             */
-            buildWorkflowStates: function (workflowStates) {
-                var key,
-                    workflow,
-                    list = {'0': 'Hors ligne', '1': 'En ligne'};
-
-                for (key in workflowStates) {
-                    if (workflowStates.hasOwnProperty(key)) {
-                        workflow = workflowStates[key];
-                        list[workflow.uid] = workflow.label;
-                    }
-                }
-
-                return list;
+            manageVisibilityPage: function (event) {
+                var isChecked = event.currentTarget.checked;
             },
 
             /**
@@ -387,8 +353,9 @@ define(
             render: function () {
                 var self = this;
 
-                this.buildStateList().done(function (workflow) {
-                    jQuery(self.el).html(ViewManager.render(template, {'page': self.currentPage, 'states': workflow}));
+                PageRepository.getWorkflowState(this.currentPage.layout_uid).done(function (workflowStates) {
+                    console.log(self.currentPage);
+                    jQuery(self.el).html(ViewManager.render(template, {'page': self.currentPage, 'states': workflowStates}));
 
                     self.setStateScheduling(self.currentPage);
                 }).fail(function (e) {
