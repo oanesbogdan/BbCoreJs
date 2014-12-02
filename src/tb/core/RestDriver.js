@@ -93,6 +93,8 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
                     this.request.addHeader('Range',  range);
                 }
 
+                this.computeOrderBy(url, datas);
+
                 this.request.setUrl(url.normalize().toString());
 
                 if (null !== this.request.getDatas()) {
@@ -124,6 +126,26 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
                             url.segment(criterias[criteria]);
                         } else {
                             url.addSearch(criteria + (typeof criterias[criteria] === 'object' ? '[]' : ''), criterias[criteria]);
+                        }
+                    }
+                }
+
+                return this;
+            },
+
+            /**
+             * Checks if datas has orderBy and add them to url
+             * @param  {Object} url   object which must be type of URI which represent the request url
+             * @param  {Object} datas
+             * @return {Object}       self
+             */
+            computeOrderBy: function (url, datas) {
+                var order;
+
+                if (datas.hasOwnProperty('orderBy') && typeof datas.orderBy === 'object') {
+                    for (order in datas.orderBy) {
+                        if (datas.orderBy.hasOwnProperty(order)) {
+                            url.addSearch('order_by[' + order + ']', datas.orderBy[order]);
                         }
                     }
                 }
