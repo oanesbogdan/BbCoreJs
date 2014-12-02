@@ -178,7 +178,7 @@ define(['jquery', 'jsclass'], function (jQuery) {
             jQuery(this.contextMenu).css({
                 position: "absolute",
                 left: position.left + "px",
-                top: position.top + "px",
+                top: position.top + "px"
             });
 
             this.contextMenuTarget = jQuery(e.currentTarget);

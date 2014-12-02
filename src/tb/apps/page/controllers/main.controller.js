@@ -157,7 +157,7 @@ define(
                 } catch (e) {
                     console.log(e);
                 }
-            },
+            }
         });
     }
 );

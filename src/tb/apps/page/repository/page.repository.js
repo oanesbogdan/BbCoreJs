@@ -153,11 +153,11 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
             search: function (filters, start, count, callback) {
                 var qs = filters;
 
-                if (typeof start !== "undefined" && start !== null) {
+                if (start !== undefined && start !== null) {
                     qs.start = start;
                 }
 
-                if (typeof count !== "undefined" && count !== null) {
+                if (count !== undefined && count !== null) {
                     qs.count = count;
                 }
 

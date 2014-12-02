@@ -126,65 +126,73 @@ define('tb.core.Response', ['jsclass'], function () {
         getErrorText: function () {
             return this.errorText;
         },
+
         /**
          * Get range from
          *
-         * @returns int
+         * @returns {Numeric}
          */
-        getRangeFrom: function() {
-            var rangeHeader = this.getHeader('Content-Range');
-            if(null === rangeHeader) {
-                return null;
-            }
-            var res = rangeHeader.split('-');
-            if(typeof res[0] === 'undefined') {
+        getRangeFrom: function () {
+            var rangeHeader = this.getHeader('Content-Range'),
+                res;
+            if (null === rangeHeader) {
                 return null;
             }
 
-            return parseInt(res[0]);
+            res = rangeHeader.split('-');
+            if (res[0] === undefined) {
+                return null;
+            }
+
+            return parseInt(res[0], 10);
         },
 
         /**
          * Get range to
          *
-         * @returns int
+         * @returns {Numeric}
          */
-        getRangeTo: function() {
-            var rangeHeader = this.getHeader('Content-Range');
-            if(null === rangeHeader) {
+        getRangeTo: function () {
+            var rangeHeader = this.getHeader('Content-Range'),
+                res,
+                res2;
+
+            if (null === rangeHeader) {
                 return null;
             }
 
-            var res = rangeHeader.split('/');
-            if(typeof res[0] === 'undefined') {
+            res = rangeHeader.split('/');
+            if (res[0] === undefined) {
                 return null;
             }
 
-            var res2 = res[0].split('-');
-            if(typeof res2[1] === 'undefined') {
+            res2 = res[0].split('-');
+            if (res2[1] === undefined) {
                 return null;
             }
 
-            return parseInt(res2[1]);
+            return parseInt(res2[1], 10);
         },
 
         /**
          * Get range last
          *
-         * @returns int
+         * @returns {Numeric}
          */
-        getRangeTotal: function() {
-            var rangeHeader = this.getHeader('Content-Range');
-            if(null === rangeHeader) {
+        getRangeTotal: function () {
+            var rangeHeader = this.getHeader('Content-Range'),
+                res;
+
+            if (null === rangeHeader) {
                 return null;
             }
 
-            var res = rangeHeader.split('/');
-            if(typeof res[1] === 'undefined') {
+            res = rangeHeader.split('/');
+            if (res[1] === undefined) {
                 return null;
             }
 
-            return parseInt(res[1]);
+            return parseInt(res[1], 10);
         },
 
         /**

@@ -81,8 +81,9 @@ define(
                 jQuery(this.el).on('click', '#contribution-seo-page', jQuery.proxy(this.manageSeo, this));
             },
 
-            manageVisibilityPage: function (event) {
-                var isChecked = event.currentTarget.checked;
+            manageVisibilityPage: function () {
+                //var isChecked = event.currentTarget.checked;
+                return;
             },
 
             /**
