@@ -89,8 +89,23 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
              * Find pages with children
              * @param {String} uid
              */
-            findPageWithChildren: function (uid) {
-                return CoreDriverHandler.read(this.TYPE, {'depth': 1, 'order': 'leftnode', 'dir': 'asc', 'state': [0, 1, 2, 3]});
+            findPageWithChildren: function (parent_uid, start, limit) {
+                var criterias = {'depth': '0', 'order': 'leftnode', 'dir': 'asc', 'state': [0, 1, 2, 3]};
+
+                if (parent_uid !== undefined) {
+                    criterias.depth = 1;
+                    criterias.parent_uid = parent_uid;
+                }
+
+                if (start === undefined) {
+                    start = 0;
+                }
+
+                if (limit === undefined) {
+                    limit = 5;
+                }
+
+                return CoreDriverHandler.read(this.TYPE, criterias, {}, start, limit);
             },
 
             /**

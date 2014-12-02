@@ -20,13 +20,11 @@
 define(
     [
         'tb.core.Api',
-        'tb.core.ApplicationManager',
         'jquery',
         'page.repository',
-        'component!treeview',
-        'component!contextmenu'
+        'component!treeview'
     ],
-    function (Api, ApplicationManager, jQuery, PageRepository, Tree, ContextMenu) {
+    function (Api, jQuery, PageRepository, Tree) {
 
     'use strict';
 
@@ -34,25 +32,31 @@ define(
      * View of new page
      * @type {Object} Backbone.View
      */
-    var PageViewClone = Backbone.View.extend({
+    var PageViewTree = Backbone.View.extend({
 
         /**
          * Initialize of PageViewClone
          */
-        initialize: function (site_uid) {
-            if (typeof site_uid !== 'string') {
+        initialize: function (config) {
+
+            this.config = config;
+            if (typeof this.config.site_uid !== 'string') {
                 Api.exception('MissingPropertyException', 500, 'Property "site_uid" must be set to constructor');
             }
 
-            this.site_uid = site_uid;
+            this.site_uid = this.config.site_uid;
 
             this.initializeTree();
         },
 
+        /**
+         * Initialize tree
+         */
         initializeTree: function () {
             var self = this,
-                config = {
-                    dragAndDrop: true
+            config = {
+                    dragAndDrop: true,
+                    onCreateLi: this.onCreateLi
                 };
 
             this.formatedData = [];
@@ -60,140 +64,199 @@ define(
                 this.getTreeView().setData(self.formatedData);
             };
             this.tree = Tree.createPopinTreeView(config);
+            this.treeView = this.tree.treeView;
 
-            this.bindTreeEvents();
-        },
-
-        contextMenuConfig: {
-
-        },
-
-        buildContextMenuConfig: function () {
-            var self = this,
-                config = {
-                    domTag: '#bb5-ui',
-                    menuActions : [
-                        {
-                            btnCls: "bb5-context-menu-add",
-                            btnLabel: "Create",
-                            btnCallback: function () {
-                                ApplicationManager.invokeService('page.main.newPage', self.currentEvent.node.id);
-                            }
-                        },
-
-                        {
-                            btnCls: "bb5-context-menu-edit",
-                            btnLabel: "Edit",
-                            btnCallback: function () {
-                                ApplicationManager.invokeService('page.main.editPage', self.currentEvent.node.id);
-                            }
-                        },
-                        {
-                            btnCls: "bb5-context-menu-remove",
-                            btnLabel: "Remove",
-                            btnCallback: function () {
-                                ApplicationManager.invokeService('page.main.deletePage', self.currentEvent.node.id);
-                            }
-                        },
-                        {
-                            btnCls: "bb5-context-menu-copy",
-                            btnLabel: "Copy",
-                            btnCallback: function () {
-                            }
-                        },
-                        {
-                            btnCls: "bb5-context-menu-cut",
-                            btnLabel: "Cut",
-                            btnCallback: function () {
-                            }
-                        },
-                        {
-                            btnCls: "bb5-context-menu-flyto",
-                            btnLabel: "Browse to",
-                            btnCallback: function () {
-                            }
-                        }
-                    ]
-                };
-
-            return config;
-        },
-
-        bindTreeEvents: function () {
-            var self = this,
-                contextMenu = new ContextMenu(this.buildContextMenuConfig());
-
-            this.currentEvent = null;
-            this.tree.treeView.on('contextmenu', function (event) {
-                self.currentEvent = event;
-                contextMenu.enable();
-                contextMenu.show(event.click_event);
-            });
-
-            this.tree.treeView.on('tree.move', function (event) {
-
-                event.move_info.do_move();
-
-                var moveInfo = event.move_info,
-                    page_uid = moveInfo.moved_node.id,
-                    parent_uid = moveInfo.moved_node.parent.id,
-                    next_uid = null;
-
-                if (moveInfo.position !== 'inside') {
-                    next_uid = moveInfo.target_node.id;
-                }
-
-                PageRepository.moveNode(page_uid, parent_uid, next_uid);
-            });
-        },
-
-        formateData: function (data) {
-            var list = [],
-                key,
-                page,
-                root;
-
-            if (Array.isArray(data)) {
-                for (key in data) {
-                    if (data.hasOwnProperty(key)) {
-                        page = data[key];
-                        if (page.url === "/") {
-                            root = jQuery.merge({}, page);
-                            root.label = page.title;
-                            root.children = [];
-                            root.id = page.uid;
-                        } else {
-                            page.id = page.uid;
-                            page.label = page.title;
-                            page.children = [];
-                            root.children.push(page);
-                        }
-                    }
-                }
-
-                list.push(root);
-            }
-
-            return list;
+            this.bindDefaultEvents();
         },
 
         /**
-         * Render the template into the DOM with the ViewManager
-         * @returns {Object} PageViewClone
+         * Event trigged when LI is created
+         * @param {Object} node
+         * @param {Object} li
          */
-        render: function () {
-            var self = this,
-                config = {
-            };
+        onCreateLi: function (node, li) {
+            var title = li.find('.jqtree-title');
+            if (node.state === 0 || node.state === 2) {
+                title.css('color', 'red');
+            }
+        },
 
-            PageRepository.findPageWithChildren().done(function (data) {
-                self.formatedData = self.formateData(data);
-                self.tree.display();
+        /**
+         * Bind default events of tree
+         */
+        bindDefaultEvents: function () {
+            this.treeView.on('tree.click', jQuery.proxy(this.onClick, this));
+            this.treeView.on('tree.open', jQuery.proxy(this.onOpen, this));
+        },
+
+        /**
+         * Event trigged on click in tree
+         * @param {Object} event
+         */
+        onClick: function (event) {
+            var self = this,
+                parent = event.node.parent;
+
+            if (event.node.is_fake === true && self.config.do_pagination === true) {
+
+                self.findPages(parent.id, event, parent.range_to).done(function (data) {
+                    self.treeView.invoke('removeNode', event.node);
+                    self.insertDataInNode(data, parent);
+                });
+            }
+        },
+
+        /**
+         * Event trigged on click in arrow in tree
+         * @param {Object} event
+         */
+        onOpen: function (event) {
+            var self = this;
+
+            if (event.node.is_fake === true) {
+                return;
+            }
+
+            if (event.node.before_load) {
+                self.findPages(event.node.id, event).done(function (data) {
+                    self.insertDataInNode(data, event.node);
+                });
+            }
+        },
+
+        /**
+         * Find pages with page repository and add limit in current node
+         * @param {String} parent_uid
+         * @param {Object} event
+         * @param {Number} start
+         * @param {Number} limit
+         */
+        findPages: function (parent_uid, event, start, limit) {
+            var dfd = jQuery.Deferred(),
+                self = this;
+
+            PageRepository.findPageWithChildren(parent_uid, start, limit).done(function (data, response) {
+
+                self.updateLimit(event, response);
+
+                dfd.resolve(data);
+            }).fail(function (e) {
+                dfd.reject(e);
             });
 
-            return this;
+            return dfd.promise();
+        },
+
+        /**
+         * Update limit of node for create pagination
+         * @param {Object} event
+         * @param {Object} response
+         */
+        updateLimit: function (event, response) {
+            var target;
+
+            if (event.namespace === 'open') {
+                target = event.node;
+            } else if (event.namespace === 'click') {
+                target = event.node.parent;
+            }
+
+            if (target !== undefined) {
+                target.range_total = response.getRangeTotal();
+                target.range_to = response.getRangeTo();
+                target.range_from = response.getRangeFrom();
+            }
+        },
+
+        /**
+         * Formate Page object to Node object
+         * @param {Object} page
+         * @returns {Object}
+         */
+        formatePageToNode: function (page) {
+
+            page.id = page.uid;
+            page.label = page.title;
+            page.children = [];
+            page.before_load = false;
+            page.hasChildren = function () {
+                return this.children.length !== 0 || this.has_children === true;
+            };
+
+            if (page.has_children) {
+                page.before_load = true;
+                if (this.config.do_loading === true) {
+                    page.children.push(this.buildNode('Loading...', {'is_fake': true}));
+                }
+            }
+
+            return page;
+        },
+
+        /**
+         * Build a simple node
+         * @param {String} label
+         * @param {Object} properties
+         * @returns {Object}
+         */
+        buildNode: function (label, properties) {
+            var node = {},
+                property;
+
+            node.id = Math.random().toString(36).substr(2, 9);
+            node.label = label;
+            node.children = [];
+
+            for (property in properties) {
+                if (properties.hasOwnProperty(property)) {
+                    node[property] = properties[property];
+                }
+            }
+
+            return node;
+        },
+
+        /**
+         * Insert data in node, remove loader and add pagination if necessary
+         * @param {Object} data
+         * @param {Object} node
+         */
+        insertDataInNode: function (data, node) {
+            var key;
+
+            if (node.before_load) {
+                if (node.children.hasOwnProperty(0) && node.children[0].is_fake === true) {
+                    this.treeView.invoke('removeNode', node.children[0]);
+                }
+                node.before_load = false;
+            }
+
+            for (key in data) {
+               if (data.hasOwnProperty(key)) {
+                   this.treeView.invoke('appendNode', this.formatePageToNode(data[key]), node);
+               }
+            }
+
+            if (node.range_total > node.range_to && this.config.do_pagination === true) {
+                this.treeView.invoke('appendNode', this.buildNode('next results...', {'is_fake': true}), node);
+            }
+        },
+
+        /**
+         * Show tree in popin
+         */
+        render: function () {
+            var self = this;
+
+            PageRepository.findPageWithChildren().done(function (data) {
+                if (data.hasOwnProperty(0)) {
+                    self.formatedData = [self.formatePageToNode(data[0])];
+                }
+
+                self.tree.display();
+            });
         }
     });
 
-    return PageViewClone;
+    return PageViewTree;
 });

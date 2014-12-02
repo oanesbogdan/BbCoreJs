@@ -126,6 +126,66 @@ define('tb.core.Response', ['jsclass'], function () {
         getErrorText: function () {
             return this.errorText;
         },
+        /**
+         * Get range from
+         *
+         * @returns int
+         */
+        getRangeFrom: function() {
+            var rangeHeader = this.getHeader('Content-Range');
+            if(null === rangeHeader) {
+                return null;
+            }
+            var res = rangeHeader.split('-');
+            if(typeof res[0] === 'undefined') {
+                return null;
+            }
+
+            return parseInt(res[0]);
+        },
+
+        /**
+         * Get range to
+         *
+         * @returns int
+         */
+        getRangeTo: function() {
+            var rangeHeader = this.getHeader('Content-Range');
+            if(null === rangeHeader) {
+                return null;
+            }
+
+            var res = rangeHeader.split('/');
+            if(typeof res[0] === 'undefined') {
+                return null;
+            }
+
+            var res2 = res[0].split('-');
+            if(typeof res2[1] === 'undefined') {
+                return null;
+            }
+
+            return parseInt(res2[1]);
+        },
+
+        /**
+         * Get range last
+         *
+         * @returns int
+         */
+        getRangeTotal: function() {
+            var rangeHeader = this.getHeader('Content-Range');
+            if(null === rangeHeader) {
+                return null;
+            }
+
+            var res = rangeHeader.split('/');
+            if(typeof res[1] === 'undefined') {
+                return null;
+            }
+
+            return parseInt(res[1]);
+        },
 
         /**
          * Set all headers as object

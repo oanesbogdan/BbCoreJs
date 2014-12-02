@@ -68,7 +68,7 @@ define(['jquery', 'jsclass'], function (jQuery) {
                     }
                 }
             ],
-            menuCls : "bb5-ui bb5-context-menu",
+            menuCls : "bb5-context-menu",
             actionBuilder : null,
             domTag: 'body'
         },
@@ -179,7 +179,6 @@ define(['jquery', 'jsclass'], function (jQuery) {
                 position: "absolute",
                 left: position.left + "px",
                 top: position.top + "px",
-                'z-index': '1000'
             });
 
             this.contextMenuTarget = jQuery(e.currentTarget);

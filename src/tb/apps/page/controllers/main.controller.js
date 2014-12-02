@@ -26,7 +26,7 @@ define(
         'page.view.edit',
         'page.view.clone',
         'page.view.manage',
-        'page.view.tree',
+        'page.view.tree.contribution',
         'jquery'
     ],
     function (Core,
@@ -36,7 +36,7 @@ define(
               EditView,
               CloneView,
               ManageView,
-              TreeView,
+              PageTreeViewContribution,
               jQuery
             ) {
 
@@ -77,12 +77,19 @@ define(
              * Show tree with pages
              */
             treeAction: function () {
+                var config = {
+                    do_loading: true,
+                    do_pagination: true
+                };
+
                 this.repository.findCurrentPage().done(function (data) {
                     if (data.hasOwnProperty(0)) {
                         data = data[0];
                     }
 
-                    var view = new TreeView(data.site_uid);
+                    config.site_uid = data.site_uid;
+
+                    var view = new PageTreeViewContribution(config);
                     view.render();
                 });
             },
