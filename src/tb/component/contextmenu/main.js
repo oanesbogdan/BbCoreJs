@@ -183,7 +183,7 @@ define(['jquery', 'jsclass'], function (jQuery) {
 
             this.contextMenuTarget = jQuery(e.currentTarget);
             this.applyFilters(this.filters);
-            
+
             jQuery(this.contextMenu).show();
         },
 

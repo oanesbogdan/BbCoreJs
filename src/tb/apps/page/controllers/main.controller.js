@@ -26,8 +26,7 @@ define(
         'page.view.edit',
         'page.view.clone',
         'page.view.manage',
-        'page.view.tree.contribution',
-        'jquery'
+        'page.view.tree.contribution'
     ],
     function (Core,
               ContributionIndexView,
@@ -36,8 +35,7 @@ define(
               EditView,
               CloneView,
               ManageView,
-              PageTreeViewContribution,
-              jQuery
+              PageTreeViewContribution
             ) {
 
         'use strict';

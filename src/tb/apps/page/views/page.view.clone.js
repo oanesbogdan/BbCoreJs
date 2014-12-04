@@ -57,7 +57,7 @@ define(['require', 'tb.core.Api', 'jquery', 'page.repository', 'page.form', 'com
             this.popin.mask();
             PageRepository.clone(this.page_uid, data).done(function (res, response) {
                 if (typeof self.callbackAfterSubmit === 'function') {
-                    self.callbackAfterSubmit(data, response);
+                    self.callbackAfterSubmit(data, response, res);
                 }
 
                 self.popin.unmask();

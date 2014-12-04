@@ -213,7 +213,7 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
 
                     request.url = url.normalize().toString();
                 });
-                
+
                 return CoreDriverHandler.create(this.TYPE, data);
             },
 

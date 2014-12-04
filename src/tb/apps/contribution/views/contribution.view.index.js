@@ -37,7 +37,7 @@ define(
 
             showNewPage: function () {
                 ApplicationManager.invokeService('page.main.findCurrentPage').done(function (promise) {
-                    promise.done(function(data) {
+                    promise.done(function (data) {
                         if (data.hasOwnProperty(0)) {
                             data = data[0];
                         }

@@ -36,7 +36,7 @@ define(['require', 'tb.core.Api', 'jquery', 'page.repository', 'page.form', 'com
             }
 
             this.config = config;
-            
+
             this.page_uid = this.config.page_uid;
             this.callbackAfterSubmit = this.config.callbackAfterSubmit;
 
@@ -52,9 +52,9 @@ define(['require', 'tb.core.Api', 'jquery', 'page.repository', 'page.form', 'com
             }
 
             this.popin.mask();
-            PageRepository.save(data).done(function (result) {
+            PageRepository.save(data).done(function (result, response) {
                 if (typeof self.callbackAfterSubmit === 'function') {
-                    self.callbackAfterSubmit(data);
+                    self.callbackAfterSubmit(data, response, result);
                 }
 
                 self.popin.unmask();

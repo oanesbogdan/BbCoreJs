@@ -146,18 +146,19 @@ define(
                                 btnLabel: "Create",
                                 btnCallback: function () {
                                     var callback = function (data, response) {
-                                            RequestHandler.send(self.buildRequest(response.getHeader('Location'))).done(function (page) {
-                                                if (self.currentEvent.node.before_load === false) {
-                                                    self.treeView.invoke('appendNode', self.view.formatePageToNode(page), self.currentEvent.node);
-                                                }
-                                            });
-                                        },
-                                        config = {
-                                            'parent_uid': self.currentEvent.node.id,
-                                            'callbackAfterSubmit': callback
-                                        };
+                                        RequestHandler.send(self.buildRequest(response.getHeader('Location'))).done(function (page) {
+                                            if (self.currentEvent.node.before_load === false) {
+                                                self.treeView.invoke('appendNode', self.view.formatePageToNode(page), self.currentEvent.node);
+                                            }
+                                        });
 
-                                    ApplicationManager.invokeService('page.main.newPage', config);
+                                        return data;
+                                    }, serviceConfig = {
+                                        'parent_uid': self.currentEvent.node.id,
+                                        'callbackAfterSubmit': callback
+                                    };
+
+                                    ApplicationManager.invokeService('page.main.newPage', serviceConfig);
                                 }
                             },
 
@@ -172,14 +173,12 @@ define(
                                                 self.treeView.invoke('updateNode', self.currentEvent.node, page.title);
                                             }
                                         });
-                                    },
-
-                                    config = {
+                                    }, serviceConfig = {
                                         'page_uid': self.currentEvent.node.id,
                                         'callbackAfterSubmit': callback
                                     };
 
-                                    ApplicationManager.invokeService('page.main.editPage', config);
+                                    ApplicationManager.invokeService('page.main.editPage', serviceConfig);
                                 }
                             },
                             {
@@ -189,12 +188,12 @@ define(
                                     var callback = function () {
                                             self.treeView.invoke('removeNode', self.currentEvent.node);
                                         },
-                                        config = {
+                                        serviceConfig = {
                                             'uid': self.currentEvent.node.id,
                                             'callbackAfterSubmit': callback
                                         };
 
-                                    ApplicationManager.invokeService('page.main.deletePage', config);
+                                    ApplicationManager.invokeService('page.main.deletePage', serviceConfig);
                                 }
                             },
                             {
@@ -281,20 +280,22 @@ define(
                         data.page_uid = target.id;
                         data.callbackAfterSubmit = function (data, response) {
                             if ((copyFunc === 'appendNode' && currentNode.before_load === false) ||
-                                 copyFunc === 'addNodeBefore' ||
-                                 copyFunc === 'addNodeAfter') {
+                                    copyFunc === 'addNodeBefore' ||
+                                    copyFunc === 'addNodeAfter') {
 
                                 RequestHandler.send(self.buildRequest(response.getHeader('Location'))).done(function (page) {
                                     self.treeView.invoke(copyFunc, self.view.formatePageToNode(page), currentNode);
                                 });
                             }
+
+                            return data;
                         };
 
                         ApplicationManager.invokeService('page.main.clonePage', data);
                     } else {
                         if ((func === 'inside' && currentNode.before_load === false) ||
-                             func === 'before' ||
-                             func === 'after') {
+                                func === 'before' ||
+                                func === 'after') {
 
                             this.treeView.invoke('moveNode', target, currentNode, func);
                         } else {
