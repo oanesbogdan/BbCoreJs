@@ -127,6 +127,22 @@ define('tb.core.Response', ['jsclass'], function () {
             return this.errorText;
         },
 
+        getUidFromLocation: function () {
+            var locationHeader = this.getHeader('Location'),
+                res,
+                regex;
+
+            if (null === locationHeader) {
+                return null;
+            }
+
+            regex = new RegExp('[\/]([a-f0-9]{32}$)');
+
+            res = regex.exec(locationHeader);
+
+            return res[1];
+        },
+
         /**
          * Get range from
          *
