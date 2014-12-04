@@ -23,7 +23,9 @@ define(['tb.core.Api', 'jquery', 'tb.component/formbuilder/form/Form', 'tb.core.
     /**
      * FormBuilder object
      */
-    var FormBuilder = new JS.Class({
+    var formPath = 'src/tb/component/formbuilder/form/',
+
+        FormBuilder = new JS.Class({
         /**
          *
          * config.elements:
@@ -36,28 +38,41 @@ define(['tb.core.Api', 'jquery', 'tb.component/formbuilder/form/Form', 'tb.core.
          */
         renderForm: function (config) {
 
-            var key,
-                elements,
-                elementConfig,
-                typeFormated,
-                keyClass,
-                keyView,
-                self = this,
-                keyTemplate,
-                keyFormTemplate,
-                keyFormView,
-                mapKey,
-                mappingRequire = {},
-                mappingTemplate = [],
+            var form = {},
                 dfd = new jQuery.Deferred();
 
             if (!config.hasOwnProperty('elements')) {
                 Core.exception('MissingPropertyException', 500, 'Property "elements" not found');
             }
 
-            //Load form in config or a default form
+            config = jQuery.extend({}, config);
+
+            this.mappingRequire = {};
+            this.mappingTemplate = [];
+
+            this.parseGlobalConfig(config);
+            this.parseFormConfig(config.form);
+
+            form = new FormConstructor(config.form);
+
+            this.parseElementConfig(config.elements, form);
+
+            require.config({paths: this.mappingRequire});
+
+            this.mapTemplate();
+
+            Utils.requireWithPromise(Object.keys(this.mappingRequire)).done(function () {
+                dfd.resolve(form.render());
+            }).fail(function (e) {
+                dfd.reject(e);
+            });
+
+            return dfd.promise();
+        },
+
+        parseGlobalConfig: function (config) {
             if (!config.hasOwnProperty('form')) {
-                config.form = {};
+                config.form = jQuery.extend({}, {});
             }
 
             if (typeof config.onSubmit === 'function') {
@@ -67,77 +82,88 @@ define(['tb.core.Api', 'jquery', 'tb.component/formbuilder/form/Form', 'tb.core.
             if (typeof config.onValidate === 'function') {
                 config.form.onValidate = config.onValidate;
             }
+        },
 
-            if (!config.form.hasOwnProperty('template')) {
+        parseFormConfig: function (formConfig) {
+            var keyFormTemplate,
+                keyFormView;
+
+            if (!formConfig.hasOwnProperty('template')) {
                 keyFormTemplate = 'form/template';
-                mappingRequire[keyFormTemplate] = 'src/tb/component/formbuilder/form/templates/form.twig';
-                mappingTemplate.push(keyFormTemplate);
-                config.form.template = keyFormTemplate;
+                this.mappingRequire[keyFormTemplate] = formPath + 'templates/form.twig';
+                this.mappingTemplate.push(keyFormTemplate);
+                formConfig.template = keyFormTemplate;
             }
 
-            if (!config.form.hasOwnProperty('view')) {
+            if (!formConfig.hasOwnProperty('view')) {
                 keyFormView = 'form.view';
-                mappingRequire[keyFormView] = 'src/tb/component/formbuilder/form/views/form.view';
-                config.form.view = keyFormView;
+                this.mappingRequire[keyFormView] = formPath + 'views/form.view';
+                formConfig.view = keyFormView;
             }
+        },
 
-            //Set the config (template/view)
-            this.form = new FormConstructor(config.form);
+        parseElementConfig: function (elements, form) {
+            var key,
+                elementConfig,
+                typeFormated,
+                keyClass,
+                keyTemplate,
+                keyView;
 
-            elements = config.elements;
             for (key in elements) {
                 if (elements.hasOwnProperty(key)) {
-                    elementConfig = elements[key];
+                    elementConfig = jQuery.extend({}, elements[key]);
 
                     typeFormated = elementConfig.type.substr(0, 1).toUpperCase() + elementConfig.type.substr(1);
+
+                    //Class
                     keyClass = 'form.element.' + typeFormated;
                     elementConfig.class = keyClass;
-                    mappingRequire[keyClass] = 'src/tb/component/formbuilder/form/element/' + typeFormated;
+                    this.mappingRequire[keyClass] = formPath + 'element/' + typeFormated;
 
+
+                    //Template
                     if (elementConfig.hasOwnProperty('template')) {
-                        keyTemplate = 'form/element/' + this.form.getId() + key + '/template';
-                        mappingRequire[keyTemplate] = elementConfig.template;
+                        keyTemplate = 'form/element/' + form.getId() + key + '/template';
+                        this.mappingRequire[keyTemplate] = elementConfig.template;
                     } else {
                         keyTemplate = 'form/element/' + elementConfig.type + '/template';
-                        mappingRequire[keyTemplate] = 'src/tb/component/formbuilder/form/element/templates/' + elementConfig.type + '.twig';
+                        this.mappingRequire[keyTemplate] = formPath + 'element/templates/' + elementConfig.type + '.twig';
                     }
                     elementConfig.template = keyTemplate;
-                    mappingTemplate.push(keyTemplate);
+                    this.mappingTemplate.push(keyTemplate);
 
+
+                    //View
                     keyView = 'form.element.view.' + elementConfig.type;
                     elementConfig.view = keyView;
-                    mappingRequire[keyView] = 'src/tb/component/formbuilder/form/element/views/form.element.view.' + elementConfig.type;
+                    this.mappingRequire[keyView] = formPath + 'element/views/form.element.view.' + elementConfig.type;
 
-                    this.form.add(key, elementConfig);
+                    form.add(key, elementConfig);
                 }
             }
+        },
 
+        mapTemplate: function () {
+            var key,
+                mapKey,
+                keyTemplate;
 
-            require.config({paths: mappingRequire});
-
-            for (key in mappingTemplate) {
-                if (mappingTemplate.hasOwnProperty(key)) {
-                    for (mapKey in mappingRequire) {
-                        if (mappingRequire.hasOwnProperty(mapKey)) {
-                            if (mappingTemplate.hasOwnProperty(key)) {
-                                keyTemplate = mappingTemplate[key];
+            for (key in this.mappingTemplate) {
+                if (this.mappingTemplate.hasOwnProperty(key)) {
+                    for (mapKey in this.mappingRequire) {
+                        if (this.mappingRequire.hasOwnProperty(mapKey)) {
+                            if (this.mappingTemplate.hasOwnProperty(key)) {
+                                keyTemplate = this.mappingTemplate[key];
                                 if (mapKey === keyTemplate) {
-                                    mappingRequire['text!' + keyTemplate] = mappingRequire[mapKey];
-                                    delete mappingRequire[keyTemplate];
+                                    this.mappingRequire['text!' + keyTemplate] = this.mappingRequire[mapKey];
+                                    delete this.mappingRequire[keyTemplate];
                                 }
                             }
                         }
                     }
                 }
             }
-
-            Utils.requireWithPromise(Object.keys(mappingRequire)).done(function () {
-                dfd.resolve(self.form.render());
-            }).fail(function (e) {
-                dfd.reject(e);
-            });
-
-            return dfd.promise();
         }
     });
 
