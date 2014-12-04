@@ -135,7 +135,7 @@ define(
                 var dfd = jQuery.Deferred(),
                     self = this;
 
-                PageRepository.findPageWithChildren(parent_uid, start, limit).done(function (data, response) {
+                PageRepository.findChildren(parent_uid, start, limit).done(function (data, response) {
 
                     self.updateLimit(event, response);
 
@@ -200,20 +200,25 @@ define(
              * @returns {Object}
              */
             buildNode: function (label, properties) {
-                var node = {},
-                    property;
+                var node = {};
 
                 node.id = Math.random().toString(36).substr(2, 9);
                 node.label = label;
                 node.children = [];
+
+                this.updateNode(node, properties);
+
+                return node;
+            },
+
+            updateNode: function (node, properties) {
+                var property;
 
                 for (property in properties) {
                     if (properties.hasOwnProperty(property)) {
                         node[property] = properties[property];
                     }
                 }
-
-                return node;
             },
 
             /**
@@ -248,7 +253,7 @@ define(
             render: function () {
                 var self = this;
 
-                PageRepository.findPageWithChildren().done(function (data) {
+                PageRepository.findRoot().done(function (data) {
                     if (data.hasOwnProperty(0)) {
                         self.formatedData = [self.formatePageToNode(data[0])];
                     }

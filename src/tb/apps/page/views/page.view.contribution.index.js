@@ -81,9 +81,8 @@ define(
                 jQuery(this.el).on('click', '#contribution-seo-page', jQuery.proxy(this.manageSeo, this));
             },
 
-            manageVisibilityPage: function () {
-                //var isChecked = event.currentTarget.checked;
-                return;
+            manageVisibilityPage: function (event) {
+                PageRepository.save({uid: this.currentPage.uid, is_visible: event.currentTarget.checked});
             },
 
             /**
@@ -102,7 +101,7 @@ define(
              * @param {Object} event
              */
             manageClone: function () {
-                ApplicationManager.invokeService('page.main.clonePage', this.currentPage.uid);
+                ApplicationManager.invokeService('page.main.clonePage', {'page_uid': this.currentPage.uid});
             },
 
             /**
@@ -110,7 +109,7 @@ define(
              * @param {Object} event
              */
             manageDelete: function () {
-                ApplicationManager.invokeService('page.main.deletePage', this.currentPage.uid);
+                ApplicationManager.invokeService('page.main.deletePage', {'uid': this.currentPage.uid, 'doRedirect': true});
             },
 
             /**
@@ -355,7 +354,6 @@ define(
                 var self = this;
 
                 PageRepository.getWorkflowState(this.currentPage.layout_uid).done(function (workflowStates) {
-                    console.log(self.currentPage);
                     jQuery(self.el).html(ViewManager.render(template, {'page': self.currentPage, 'states': workflowStates}));
 
                     self.setStateScheduling(self.currentPage);

@@ -30,9 +30,14 @@ define(['require', 'jquery', 'page.repository', 'component!popin'], function (re
         /**
          * Initialize of PageViewDelete
          */
-        initialize: function (uid) {
+        initialize: function (config) {
+            this.config = config;
+
             this.popin = require('component!popin').createPopIn();
-            this.uid = uid;
+
+            this.uid = config.uid;
+            console.log(this.uid);
+            this.callbackAfterSubmit = config.callbackAfterSubmit;
         },
 
         /**
@@ -40,15 +45,21 @@ define(['require', 'jquery', 'page.repository', 'component!popin'], function (re
          * Delete page and redirect to home
          */
         onDelete: function () {
-            var self = this,
-                callback = function () {
-                    self.popin.unmask();
-                    self.popin.hide();
-                    jQuery(location).attr('href', '/');
-                };
+            var self = this;
 
             this.popin.mask();
-            PageRepository.delete(this.uid, callback);
+            PageRepository.delete(this.uid).done(function (data, response) {
+                if (typeof self.callbackAfterSubmit === 'function') {
+                    self.callbackAfterSubmit(data, response);
+                }
+
+                self.popin.unmask();
+                self.popin.hide();
+
+                if (self.config.doRedirect === true) {
+                    jQuery(location).attr('href', '/');
+                }
+            });
         },
 
         /**

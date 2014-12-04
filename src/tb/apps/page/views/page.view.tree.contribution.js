@@ -23,9 +23,11 @@ define(
         'page.view.tree',
         'component!contextmenu',
         'page.repository',
-        'jquery'
+        'jquery',
+        'tb.core.Request',
+        'tb.core.RequestHandler'
     ],
-    function (ApplicationManager, TreeView, ContextMenu, PageRepository, jQuery) {
+    function (ApplicationManager, TreeView, ContextMenu, PageRepository, jQuery, Request, RequestHandler) {
 
         'use strict';
 
@@ -50,11 +52,33 @@ define(
              */
             bindEvents: function () {
                 this.contextMenu = new ContextMenu(this.buildContextMenuConfig());
+                this.contextMenu.beforeShow = jQuery.proxy(this.beforeShow, this);
+
                 this.currentEvent = null;
 
                 this.treeView.on('contextmenu', jQuery.proxy(this.onRightClick, this));
                 this.treeView.on('tree.dblclick', this.onDoubleClick);
                 this.treeView.on('tree.move', jQuery.proxy(this.onMove, this));
+            },
+
+            beforeShow: function () {
+                var filters = [];
+
+                if (this.copied_node === undefined && this.cuted_node === undefined) {
+                    filters.push('bb5-context-menu-paste');
+                    filters.push('bb5-context-menu-paste-before');
+                    filters.push('bb5-context-menu-paste-after');
+                }
+
+                if (this.copied_node === this.currentEvent.node || this.cuted_node === this.currentEvent.node) {
+                    filters.push('bb5-context-menu-copy');
+                    filters.push('bb5-context-menu-cut');
+                    filters.push('bb5-context-menu-paste');
+                    filters.push('bb5-context-menu-paste-before');
+                    filters.push('bb5-context-menu-paste-after');
+                }
+
+                this.contextMenu.setFilters(filters);
             },
 
             /**
@@ -88,11 +112,24 @@ define(
              * @param {Object} event
              */
             onMove: function (event) {
-                if (event.node.is_fake === true) {
+                if (event.move_info.moved_node.is_fake === true) {
                     return;
                 }
 
-                this.doMoveNode(event, true);
+                event.move_info.do_move();
+
+                var moveInfo = event.move_info,
+                    page_uid = moveInfo.moved_node.id,
+                    parent_uid = moveInfo.moved_node.parent.id,
+                    data = {};
+
+                if (moveInfo.moved_node.getNextSibling() !== null) {
+                    data.sibling_uid = moveInfo.moved_node.getNextSibling().id;
+                } else {
+                    data.parent_uid = parent_uid;
+                }
+
+                PageRepository.moveNode(page_uid, data);
             },
 
             /**
@@ -108,7 +145,19 @@ define(
                                 btnCls: "bb5-context-menu-add",
                                 btnLabel: "Create",
                                 btnCallback: function () {
-                                    ApplicationManager.invokeService('page.main.newPage', self.currentEvent.node.id);
+                                    var callback = function (data, response) {
+                                            RequestHandler.send(self.buildRequest(response.getHeader('Location'))).done(function (page) {
+                                                if (self.currentEvent.node.before_load === false) {
+                                                    self.treeView.invoke('appendNode', self.view.formatePageToNode(page), self.currentEvent.node);
+                                                }
+                                            });
+                                        },
+                                        config = {
+                                            'parent_uid': self.currentEvent.node.id,
+                                            'callbackAfterSubmit': callback
+                                        };
+
+                                    ApplicationManager.invokeService('page.main.newPage', config);
                                 }
                             },
 
@@ -116,28 +165,73 @@ define(
                                 btnCls: "bb5-context-menu-edit",
                                 btnLabel: "Edit",
                                 btnCallback: function () {
-                                    ApplicationManager.invokeService('page.main.editPage', self.currentEvent.node.id);
+                                    var callback = function () {
+                                        PageRepository.find(self.currentEvent.node.uid).done(function (page) {
+                                            if (self.currentEvent.node.before_load === false) {
+                                                self.view.updateNode(self.currentEvent.node, page);
+                                                self.treeView.invoke('updateNode', self.currentEvent.node, page.title);
+                                            }
+                                        });
+                                    },
+
+                                    config = {
+                                        'page_uid': self.currentEvent.node.id,
+                                        'callbackAfterSubmit': callback
+                                    };
+
+                                    ApplicationManager.invokeService('page.main.editPage', config);
                                 }
                             },
                             {
                                 btnCls: "bb5-context-menu-remove",
                                 btnLabel: "Remove",
                                 btnCallback: function () {
-                                    ApplicationManager.invokeService('page.main.deletePage', self.currentEvent.node.id);
+                                    var callback = function () {
+                                            self.treeView.invoke('removeNode', self.currentEvent.node);
+                                        },
+                                        config = {
+                                            'uid': self.currentEvent.node.id,
+                                            'callbackAfterSubmit': callback
+                                        };
+
+                                    ApplicationManager.invokeService('page.main.deletePage', config);
                                 }
                             },
                             {
                                 btnCls: "bb5-context-menu-copy",
                                 btnLabel: "Copy",
                                 btnCallback: function () {
-                                    return;
+                                    self.copied_node = self.currentEvent.node;
+                                    self.cuted_node = undefined;
+                                }
+                            },
+                            {
+                                btnCls: "bb5-context-menu-paste",
+                                btnLabel: "Paste",
+                                btnCallback: function () {
+                                    self.doPaste('inside');
+                                }
+                            },
+                            {
+                                btnCls: "bb5-context-menu-paste-before",
+                                btnLabel: "Paste before",
+                                btnCallback: function () {
+                                    self.doPaste('before');
+                                }
+                            },
+                            {
+                                btnCls: "bb5-context-menu-paste-after",
+                                btnLabel: "Paste after",
+                                btnCallback: function () {
+                                    self.doPaste('after');
                                 }
                             },
                             {
                                 btnCls: "bb5-context-menu-cut",
                                 btnLabel: "Cut",
                                 btnCallback: function () {
-                                    return;
+                                    self.cuted_node = self.currentEvent.node;
+                                    self.copied_node = undefined;
                                 }
                             },
                             {
@@ -153,26 +247,74 @@ define(
                 return config;
             },
 
-            /**
-             * Do move node using tree.move and update data
-             * @param {Object} event
-             * @param {Boolean} doMove
-             */
-            doMoveNode: function (event, doMove) {
-                if (doMove) {
-                    event.move_info.do_move();
+            doPaste: function (func) {
+                var self = this,
+                    target,
+                    data = {},
+                    currentNode = this.currentEvent.node,
+                    copyFunc;
+
+                if (this.cuted_node !== undefined) {
+                    target = this.cuted_node;
+                } else if (this.copied_node !== undefined) {
+                    target = this.copied_node;
                 }
 
-                var moveInfo = event.move_info,
-                    page_uid = moveInfo.moved_node.id,
-                    parent_uid = moveInfo.moved_node.parent.id,
-                    next_uid = null;
+                if (target !== undefined) {
+                    if (func === 'before') {
+                        data.sibling_uid = currentNode.id;
+                        copyFunc = 'addNodeBefore';
+                    } else if (func === 'inside') {
+                        data.parent_uid = currentNode.id;
+                        copyFunc = 'appendNode';
+                    } else if (func === 'after') {
+                        if (currentNode.getNextSibling() === null) {
+                            data.parent_uid = currentNode.parent.id;
+                        } else {
+                            data.sibling_uid = currentNode.getNextSibling().id;
+                        }
 
-                if (moveInfo.moved_node.getPreviousSibling() !== null) {
-                    next_uid = moveInfo.moved_node.getPreviousSibling().id;
+                        copyFunc = 'addNodeAfter';
+                    }
+
+                    if (this.copied_node === target) {
+                        data.page_uid = target.id;
+                        data.callbackAfterSubmit = function (data, response) {
+                            if ((copyFunc === 'appendNode' && currentNode.before_load === false) ||
+                                 copyFunc === 'addNodeBefore' ||
+                                 copyFunc === 'addNodeAfter') {
+
+                                RequestHandler.send(self.buildRequest(response.getHeader('Location'))).done(function (page) {
+                                    self.treeView.invoke(copyFunc, self.view.formatePageToNode(page), currentNode);
+                                });
+                            }
+                        };
+
+                        ApplicationManager.invokeService('page.main.clonePage', data);
+                    } else {
+                        if ((func === 'inside' && currentNode.before_load === false) ||
+                             func === 'before' ||
+                             func === 'after') {
+
+                            this.treeView.invoke('moveNode', target, currentNode, func);
+                        } else {
+                            this.treeView.invoke('removeNode', target);
+                        }
+
+                        PageRepository.moveNode(target.id, data);
+                    }
                 }
 
-                PageRepository.moveNode(page_uid, parent_uid, next_uid);
+                this.copied_node = undefined;
+                this.cuted_node = undefined;
+            },
+
+            buildRequest: function (url) {
+                var request = new Request();
+
+                request.setUrl(url);
+
+                return request;
             },
 
             /**

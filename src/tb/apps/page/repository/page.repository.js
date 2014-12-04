@@ -113,7 +113,7 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
 
             /**
              * Get the page by uid
-             * @param {Function} callback
+             * @param {String} uid
              */
             find: function (uid) {
                 return CoreDriverHandler.read(this.TYPE, {'id': uid});
@@ -123,23 +123,22 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
              * Find pages with children
              * @param {String} uid
              */
-            findPageWithChildren: function (parent_uid, start, limit) {
-                var criterias = {'depth': '0', 'order': 'leftnode', 'dir': 'asc', 'state': [0, 1, 2, 3]};
-
-                if (parent_uid !== undefined) {
-                    criterias.depth = 1;
-                    criterias.parent_uid = parent_uid;
-                }
+            findChildren: function (parent_uid, start, limit) {
+                var criterias = {'state': [0, 1, 2, 3], 'parent_uid': parent_uid};
 
                 if (start === undefined) {
                     start = 0;
                 }
 
                 if (limit === undefined) {
-                    limit = 5;
+                    limit = 25;
                 }
 
-                return CoreDriverHandler.read(this.TYPE, criterias, {}, start, limit);
+                return CoreDriverHandler.read(this.TYPE, criterias, {'leftnode': 'asc'}, start, limit);
+            },
+
+            findRoot: function () {
+                return CoreDriverHandler.read(this.TYPE);
             },
 
             /**
@@ -214,8 +213,18 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
 
                     request.url = url.normalize().toString();
                 });
-
+                
                 return CoreDriverHandler.create(this.TYPE, data);
+            },
+
+            /**
+             * Move node
+             * @param {String} page_uid
+             * @param {String} parent_uid
+             * @param {String} next_uid
+             */
+            moveNode: function (page_uid, data) {
+                return CoreDriverHandler.patch(this.TYPE, data, {'id': page_uid});
             },
 
             /**
