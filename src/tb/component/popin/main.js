@@ -131,8 +131,8 @@ define(['tb.component/popin/PopIn', 'jquery', 'jqueryui', 'jsclass'], function (
              */
             popIn.setContent = function (content) {
                 popIn.content = content;
-                
-                if(popIn.isOpen()) {
+
+                if (popIn.isOpen()) {
                     // popin is open, update html
                     jQuery('#' + popIn.getId()).html(popIn.getContent());
                 }

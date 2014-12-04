@@ -1,12 +1,10 @@
 define([
-    'tb.core.Api', 
-    'jquery', 
-    'page.repository', 
-    'page.form',
+    'jquery',
+    'page.repository',
     'tb.core.ViewManager',
-    'text!page/tpl/manage_list',
-    'jquery-layout',
-], function (Api, jQuery, PageRepository, PageForm, ViewManager, template, Layout) {
+    'text!page/tpl/manage_list'
+
+], function (jQuery, PageRepository, ViewManager, template) {
 
     'use strict';
 
@@ -20,9 +18,8 @@ define([
          * Initialize of PageViewReview
          */
         initialize: function (parent_uid) {
-            //this.formBuilder = Api.component('formbuilder');
             this.parent_uid = parent_uid;
-            
+
             this.popin = require('component!popin').createPopIn();
         },
 
@@ -69,25 +66,25 @@ define([
             self.popin.setTitle('Review pages');
             self.popin.setContent('');
             self.popin.addOptions({
-                "height" : 700 > $(window).height()-(20*2) ? $(window).height()-(20*2) : 700 ,
-                "width" : 1244 > $(window).width()-(20*2) ? $(window).width()-(20*2) : 1244
+                "height" : 700 > jQuery(window).height() - 40 ? jQuery(window).height() - 40 : 700,
+                "width" : 1244 > jQuery(window).width() - 40 ? jQuery(window).width() - 40 : 1244
             });
             self.popin.display();
             self.popin.mask();
-            
-            
-            PageRepository.search({state: 1}, 0, 50).done(function(pages){
+
+
+            PageRepository.search({state: 1}, 0, 50).done(function (pages) {
                 var content = ViewManager.render(template, {"pages": pages});
                 self.popin.setContent(content);
-                
+
                 jQuery('#content-library-pane-wrapper').layout({
-                    applyDefaultStyles: true, 
-                    closable:false
+                    applyDefaultStyles: true,
+                    closable: false
                 });
-                
+
                 self.popin.unmask();
             });
-            
+
             return this;
         }
     });

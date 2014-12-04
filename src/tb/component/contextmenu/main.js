@@ -89,7 +89,7 @@ define(['jquery', 'jsclass'], function (jQuery) {
                 this.defaultItemBuilder = this.settings.defaultItemBuilder;
             }
             this.contextMenu = this.buildContextmenu();
-            this.beforeShow = (typeof this.settings.beforeShow === "function") ? this.settings.beforeShow : jQuery.noop;
+            this.beforeShow = (typeof this.settings.beforeShow === "function") ? jQuery.proxy(this.settings.beforeShow, this) : jQuery.noop;
             this.bindEvents();
         },
 
@@ -165,7 +165,7 @@ define(['jquery', 'jsclass'], function (jQuery) {
                 return false;
             }
 
-            this.beforeShow.call(this, e.currentTarget);
+            this.beforeShow(e.currentTarget);
 
             e.preventDefault();
             e.stopPropagation();
