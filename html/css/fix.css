@@ -26,3 +26,7 @@
     padding: 5px;
     margin: 10px 0;
 }
+
+#bb5-ui .bb5-context-menu {
+    z-index: 1000;
+}
