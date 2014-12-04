@@ -41,7 +41,7 @@ define(['tb.core.ViewManager', 'BackBone', 'jquery'], function (ViewManager, Bac
          * Events of view
          */
         bindUiEvents: function () {
-            jQuery(this.el).off('click.form').on('click.fprù', this.form_button_id, jQuery.proxy(this.computeForm, this));
+            jQuery(this.el).off('click.form').on('click.form', this.form_button_id, jQuery.proxy(this.computeForm, this));
         },
 
         /**
