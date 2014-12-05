@@ -83,7 +83,6 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 });
                 return def.promise();
             },
-
             invokeControllerService: function (controller, service, params) {
                 var dfd = new $.Deferred(),
                     serviceName;
@@ -99,7 +98,6 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 });
                 return dfd.promise();
             },
-
             /**
              * @TODO finalise setter
              *
@@ -178,7 +176,6 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 def.reject(reason);
             });
         },
-
         launchApplication = function (appname, config) {
             var dfd = new $.Deferred(),
                 applicationInfos = AppContainer.getByAppInfosName(appname),
@@ -350,12 +347,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
         },
         invokeService = function (servicePath) {
             var dfd = new $.Deferred(),
-                serviceInfos,
-                appname,
-                serviceName,
-                params,
-                appInstance,
-                controllerName;
+                serviceInfos, appname, serviceName, params, appInstance, controllerName;
             if (!servicePath || typeof servicePath !== "string") {
                 coreApi.exception("ApplicationManagerException", 50011, 'invokeService expects parameter one to be a string.');
             }

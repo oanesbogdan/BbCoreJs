@@ -16,29 +16,66 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define(['tb.core', "tb.component/treeview/main", 'jquery', 'tb.core.DriverHandler', 'tb.core.RestDriver'], function (bbCore, TreeViewMng, jQuery, CoreDriverHandler, CoreRestDriver) {
+define(['tb.core', "component!treeview", 'jquery', 'component!dataview', 'component!datastore', 'component!contentselector'], function (bbCore, TreeViewMng, jQuery, CoreDriverHandler, CoreRestDriver, ContentSelector) {
     'use strict';
+
+
     bbCore.ControllerManager.registerController('MainController', {
         appName: 'layout',
         config: {
             imports: []
         },
         onInit: function () {
-            this.rootView = jQuery(".jumbotron");
+            //this.rootView = jQuery(".jumbotron");
             this.tplRenderer = bbCore.TemplateRenderer.getInstance({});
-            this.bindEvents();
-            this.initRestDriver();
-            this.createTreeView();
-            this.createPopInTreeView();
+            //this.initRestDriver();
+            //this.createTreeView();
+            //this.createPopInTreeView();
+            //this.dataListView = this.createDataViewList();
+            this.contentSelector = this.createContentSelector();
+            //this.bindEvents();
         },
+
         initRestDriver: function () {
-            CoreRestDriver.setBaseUrl('/rest/1/');
-            CoreDriverHandler.addDriver('rest', CoreRestDriver);
+            // CoreRestDriver.setBaseUrl('/rest/1/');
+            // CoreDriverHandler.addDriver('rest', CoreRestDriver);
         },
+
+        createContentSelector: function () {
+           return ContentSelector.createContentSelector();
+        },
+
         onEnabled: function () {
             console.log("layout:MainController Inside onEnabled method");
         },
+
+        createDataViewList: function () {
+            var DataStore = require('component!datastore');
+            this.contentDataStore = new DataStore.RestDataStore({
+                resourceEndpoint: "classcontent",
+                restBaseUrl: "/rest/1",
+                defaultCriteria: {}
+            });
+
+            /* test DataStore */
+            return require('component!dataview').createDataView({
+                allowMultiSelection: false,
+                dataStore: this.contentDataStore,
+                selectedItemCls: "selected",
+                templatePath: "/template/path",
+                itemRenderer: function (renderMode, item) {
+                    if (renderMode == "list") {
+                        return $('<li class="bb5-selector-item">' + '<p><a href=""><img alt=" VendÃƒÂ©e Globe" src="http://bb5-demo.lp-digital.fr/images/62d83ec318257f1c28d34586518a0a51.jpg?1392309184"></a></p>' + '<p><a href=""> Vendée Globe</a></p>' + '<p><span data-i18n="mediaselector.width">L :</span> 312px, <span data-i18n="mediaselector.height">H :</span> 156px, 7.51 kB</p>' + '<p><button class="btn btn-simple btn-xs"><i class="fa fa-eye"></i> Voir</button> <button class="btn btn-simple btn-xs"><i class="fa fa-pencil"></i> Éditer</button> <button class="btn btn-simple btn-xs"><i class="fa fa-trash-o"></i> Supprimer</button></p>' + '</li>');
+                    }
+                    if (renderMode == "grid") {
+                        return $('<li class="bb5-selector-item">This is my item, francophonie, plus avancée</li>');
+                    }
+                }
+            });
+        },
+
         formatResponse: function (data) {
+            
             var response = [],
                 root;
             if (Array.isArray(data)) {
@@ -74,7 +111,17 @@ define(['tb.core', "tb.component/treeview/main", 'jquery', 'tb.core.DriverHandle
                         id: 15,
                         children: [{
                             label: "feuille 1",
-                            id: 12
+                            id: 12,
+                            children: [{
+                                id: 19,
+                                label: "Sub 1"
+                            }, {
+                                id: 96,
+                                label: "Sub 2"
+                            }, {
+                                id: 78,
+                                label: "Sub 3"
+                            }]
                         }, {
                             label: "feuille 2",
                             id: 23
@@ -103,6 +150,7 @@ define(['tb.core', "tb.component/treeview/main", 'jquery', 'tb.core.DriverHandle
                 console.log("element", e.node.element);
             });
         },
+
         createTreeView: function (renderContainer, data) {
             if (this.treeView) {
                 return;
@@ -114,9 +162,11 @@ define(['tb.core', "tb.component/treeview/main", 'jquery', 'tb.core.DriverHandle
             });
             bbCore.set("TestTreeView", this.treeView);
         },
+
         loadFail: function () {
             console.log("radical blaze");
         },
+
         genId: (function () {
             var compteur = 0;
             return function () {
@@ -124,9 +174,26 @@ define(['tb.core', "tb.component/treeview/main", 'jquery', 'tb.core.DriverHandle
                 return inCpt;
             };
         }()),
+
         bindEvents: function () {
             var self = this,
                 data;
+            this.dataListView.on("itemSelected", function (target, data){
+
+            });
+
+            jQuery(this.rootView).on("click", ".data-list-btn", function () {
+                self.dataListView.render("#data-list");
+                setTimeout(function(){
+
+                    self.contentDataStore.on("onDataStateUpdate", function (data) {
+                        self.dataListView.setData(data);
+                    });
+
+                    self.contentDataStore.applyFilter("category","article").execute();
+                },5000);
+            });
+
             jQuery(this.rootView).on("click", ".show-tree-view", function () {
                 var criterias = {},
                     orderBy = {},
@@ -138,6 +205,7 @@ define(['tb.core', "tb.component/treeview/main", 'jquery', 'tb.core.DriverHandle
                     self.treeView.setData(data);
                 });
             });
+
             jQuery(this.rootView).on("click", ".add_node_after", function () {
                 var nodeToAdd = {
                     label: "node_" + self.genId(),
@@ -146,6 +214,7 @@ define(['tb.core', "tb.component/treeview/main", 'jquery', 'tb.core.DriverHandle
                     selectedNode = self.popInTreeView.treeView.getSelectedNode();
                 self.popInTreeView.treeView.addNode(nodeToAdd, "after", selectedNode);
             });
+
             jQuery(this.rootView).on("click", ".add_node_before", function () {
                 var nodeToAdd = {
                     label: "node_" + self.genId(),
@@ -154,6 +223,7 @@ define(['tb.core', "tb.component/treeview/main", 'jquery', 'tb.core.DriverHandle
                     selectedNode = self.popInTreeView.treeView.getSelectedNode();
                 self.popInTreeView.treeView.addNode(nodeToAdd, "before", selectedNode);
             });
+
             jQuery(this.rootView).on("click", ".add_node_append", function () {
                 var nodeToAdd = {
                     label: "node_" + self.genId(),
@@ -167,15 +237,20 @@ define(['tb.core', "tb.component/treeview/main", 'jquery', 'tb.core.DriverHandle
                 self.popInTreeView.treeView.addNode(nodeToAdd, "append", selectedNode);
             });
         },
+
         onDisabled: function () {
             return;
         },
+
         layoutListAction: function () {
             console.log(arguments);
         },
+
         homeAction: function () {
             try {
-                var responseHtml, data = {
+                var self = this;
+                var responseHtml,
+                    data = {
                     appName: 'Indeed',
                     templateName: 'homeTemplate',
                     radical: 'staying'
@@ -184,14 +259,19 @@ define(['tb.core', "tb.component/treeview/main", 'jquery', 'tb.core.DriverHandle
                     data: data
                 }); //action append, replace
                 jQuery(this.rootView).html(responseHtml);
+                setTimeout(function(){
+                    self.contentSelector.display();
+                },2000);
             } catch (e) {
                 console.log(e);
             }
         },
+
         listAction: function (page, section) {
             console.log(page, section);
             jQuery('.jumbotron').html(jQuery('<p> app: layout <br/> controller: MainController <br> action: listAction</p>'));
         },
+
         paramsAction: function (p, s, d, u) {
             this.p = p;
             this.s = s;
