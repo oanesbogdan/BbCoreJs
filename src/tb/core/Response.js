@@ -127,6 +127,90 @@ define('tb.core.Response', ['jsclass'], function () {
             return this.errorText;
         },
 
+        getUidFromLocation: function () {
+            var locationHeader = this.getHeader('Location'),
+                res,
+                regex;
+
+            if (null === locationHeader) {
+                return null;
+            }
+
+            regex = new RegExp('[\/]([a-f0-9]{32}$)');
+
+            res = regex.exec(locationHeader);
+
+            return res[1];
+        },
+
+        /**
+         * Get range from
+         *
+         * @returns {Numeric}
+         */
+        getRangeFrom: function () {
+            var rangeHeader = this.getHeader('Content-Range'),
+                res;
+            if (null === rangeHeader) {
+                return null;
+            }
+
+            res = rangeHeader.split('-');
+            if (res[0] === undefined) {
+                return null;
+            }
+
+            return parseInt(res[0], 10);
+        },
+
+        /**
+         * Get range to
+         *
+         * @returns {Numeric}
+         */
+        getRangeTo: function () {
+            var rangeHeader = this.getHeader('Content-Range'),
+                res,
+                res2;
+
+            if (null === rangeHeader) {
+                return null;
+            }
+
+            res = rangeHeader.split('/');
+            if (res[0] === undefined) {
+                return null;
+            }
+
+            res2 = res[0].split('-');
+            if (res2[1] === undefined) {
+                return null;
+            }
+
+            return parseInt(res2[1], 10);
+        },
+
+        /**
+         * Get range last
+         *
+         * @returns {Numeric}
+         */
+        getRangeTotal: function () {
+            var rangeHeader = this.getHeader('Content-Range'),
+                res;
+
+            if (null === rangeHeader) {
+                return null;
+            }
+
+            res = rangeHeader.split('/');
+            if (res[1] === undefined) {
+                return null;
+            }
+
+            return parseInt(res[1], 10);
+        },
+
         /**
          * Set all headers as object
          * @param {Object} headers

@@ -33,7 +33,8 @@ require.config({
         'moment': 'lib/moment/moment',
         'text': 'lib/requirejs-text/text',
         'URIjs': 'lib/uri.js',
-        'datetimepicker': 'lib/datetimepicker/jquery.datetimepicker'
+        'datetimepicker': 'lib/datetimepicker/jquery.datetimepicker',
+        "jquery-layout" : 'lib/jquery.layout/jquery.layout-latest'
     },
     'shim': {
         underscore: {
@@ -44,6 +45,9 @@ require.config({
             exports: 'Backbone'
         },
         Bootstrap: {
+            deps: ['jquery']
+        },
+        "jquery-layout": {
             deps: ['jquery']
         }
 

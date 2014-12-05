@@ -11,9 +11,7 @@ define(["jquery", "tb.component/treeview/TreeView", "tb.component/popin/main"], 
             initialize: function (options) {
                 this.options = jQuery.extend({}, this.defaultConfig, options);
                 this.isLoaded = false;
-                this.treeView = TreeViewMng.createTreeView({
-                    options: this.options
-                });
+                this.treeView = TreeViewMng.createTreeView(null, this.options);
                 this.checkParameters();
                 this.popIn = this.createPopIn();
                 this.popIn.setContent(popInTemplate);

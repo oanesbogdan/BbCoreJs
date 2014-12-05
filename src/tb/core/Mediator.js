@@ -68,9 +68,10 @@ define('tb.core.Mediator', ['tb.core.Api'], function (Api) {
      * @return {undefined}
      */
     Mediator.prototype.subscribeOnce = function mediatorSubscribeOnce(topic, callback, context) {
-        if (!this.topics.hasOwnProperty(topic)) {
+        if (!this.subscribe_once.hasOwnProperty(topic)) {
             this.subscribe_once[topic] = [];
         }
+
         this.subscribe_once[topic].push(callback);
         this.subscribe(topic, callback, context);
     };

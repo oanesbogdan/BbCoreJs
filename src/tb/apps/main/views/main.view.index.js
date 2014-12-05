@@ -131,6 +131,14 @@ define(['jquery', 'tb.core.ViewManager', 'text!main/tpl/toolbar'], function (jQu
                         ]
                     },
                     {
+                        label: 'pages',
+                        text: 'Gestion des pages',
+                        url: '#/page/manage',
+                        active: false,
+                        items: [
+                        ]
+                    },
+                    {
                         label: 'bundle',
                         text: 'Extensions',
                         url: '#/bundle/index',

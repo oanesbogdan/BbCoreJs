@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define(['jsclass'], function () {
+define(['jquery', 'jsclass'], function (jQuery) {
     'use strict';
 
     /**
@@ -191,6 +191,17 @@ define(['jsclass'], function () {
              */
             setOptions: function (options) {
                 this.options = options;
+
+                return this;
+            },
+
+            /**
+             * Add options
+             * @param {Object} options
+             * @return {PopIn} self
+             */
+            addOptions: function (options) {
+                jQuery.extend(this.options, options);
 
                 return this;
             },

@@ -66,6 +66,11 @@ define(['tb.core', 'jsclass'], function (Core) {
             if (config.hasOwnProperty('disabled') && true === config.disabled) {
                 this.disabled = true;
             }
+
+            this.group = this.key;
+            if (config.hasOwnProperty('group')) {
+                this.group = config.group;
+            }
         },
 
         /**
@@ -147,6 +152,14 @@ define(['tb.core', 'jsclass'], function (Core) {
          */
         getError: function () {
             return this.error;
+        },
+
+        /**
+         * Get group of element
+         * @returns {String}
+         */
+        getGroup: function () {
+            return this.group;
         },
 
         /**

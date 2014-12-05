@@ -25,9 +25,18 @@ define(
         'page.view.new',
         'page.view.edit',
         'page.view.clone',
-        'jquery'
+        'page.view.manage',
+        'page.view.tree.contribution'
     ],
-    function (Core, ContributionIndexView, DeleteView, NewView, EditView, CloneView, jQuery) {
+    function (Core,
+              ContributionIndexView,
+              DeleteView,
+              NewView,
+              EditView,
+              CloneView,
+              ManageView,
+              PageTreeViewContribution
+            ) {
 
         'use strict';
 
@@ -63,13 +72,34 @@ define(
             },
 
             /**
+             * Show tree with pages
+             */
+            treeAction: function () {
+                var config = {
+                    do_loading: true,
+                    do_pagination: true
+                };
+
+                this.repository.findCurrentPage().done(function (data) {
+                    if (data.hasOwnProperty(0)) {
+                        data = data[0];
+                    }
+
+                    config.site_uid = data.site_uid;
+
+                    var view = new PageTreeViewContribution(config);
+                    view.render();
+                });
+            },
+
+            /**
              * Delete action
              * Delete page with uid
              * @param {String} uid
              */
-            deletePageService: function (page_uid) {
+            deletePageService: function (config) {
                 try {
-                    var view = new DeleteView(page_uid);
+                    var view = new DeleteView(config);
                     view.render();
                 } catch (e) {
                     console.log(e);
@@ -77,38 +107,43 @@ define(
             },
 
             findCurrentPageService: function () {
-                var dfd = jQuery.Deferred();
-                this.repository.findCurrentPage().done(function (data) {
-                    dfd.resolve(data);
-                }).fail(function (e) {
-                    dfd.reject(e);
-                });
-
-                return dfd.promise();
+                return this.repository.findCurrentPage();
             },
 
-            clonePageService: function (page_uid) {
+            clonePageService: function (config) {
                 try {
-                    var view = new CloneView(page_uid);
+                    var view = new CloneView(config);
                     view.render();
                 } catch (e) {
                     console.log(e);
                 }
             },
 
-            newPageService: function (parent) {
+            newPageService: function (config) {
 
                 try {
-                    var view = new NewView(parent);
+                    var view = new NewView(config);
                     view.render();
                 } catch (e) {
                     console.log(e);
                 }
             },
 
-            editPageService: function (page_uid) {
+            editPageService: function (config) {
                 try {
-                    var view = new EditView(page_uid);
+                    var view = new EditView(config);
+                    view.render();
+                } catch (e) {
+                    console.log(e);
+                }
+            },
+
+            /**
+             * Manage pages action
+             */
+            manageAction: function () {
+                try {
+                    var view = new ManageView();
                     view.render();
                 } catch (e) {
                     console.log(e);

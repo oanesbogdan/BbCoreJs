@@ -19,7 +19,7 @@
 require.config({
     paths: {
         'main.routes': 'src/tb/apps/main/routes',
-        'main.controller': "src/tb/apps/main/controllers/main.controller",
+        'main.controller': 'src/tb/apps/main/controllers/main.controller',
 
         //Templates
         'main/tpl/toolbar': 'src/tb/apps/main/templates/toolbar.twig',
@@ -29,7 +29,7 @@ require.config({
     }
 });
 
-define('app.main', ['tb.core', 'main.view.index', 'jquery', 'component!popin'], function (Core, MainViewIndex, jQuery, Popin) {
+define('app.main', ['tb.core', 'main.view.index', 'jquery', 'component!popin', 'datetimepicker'], function (Core, MainViewIndex, jQuery, Popin) {
     'use strict';
 
     /**

@@ -36,10 +36,15 @@ require.config({
         'page.view.edit': 'src/tb/apps/page/views/page.view.edit',
         'page.view.new': 'src/tb/apps/page/views/page.view.new',
         'page.view.clone': 'src/tb/apps/page/views/page.view.clone',
+        'page.view.manage': 'src/tb/apps/page/views/page.view.manage',
+        'page.view.tree': 'src/tb/apps/page/views/page.view.tree',
+        'page.view.tree.contribution': 'src/tb/apps/page/views/page.view.tree.contribution',
 
         //Templates
         'page/tpl/contribution/index': 'src/tb/apps/page/templates/contribution.index.twig',
-        'page/tpl/contribution/scheduling_publication': 'src/tb/apps/page/templates/scheduling_publication.dialog.twig'
+        'page/tpl/contribution/scheduling_publication': 'src/tb/apps/page/templates/contribution-scheduling.dialog.twig',
+        'page/tpl/manage_list': 'src/tb/apps/page/templates/manage.list.twig'
+
     }
 });
 
@@ -49,34 +54,6 @@ define('app.page', ['tb.core'], function (BbCore) {
     /**
      * page application declaration
      */
-    BbCore.ApplicationManager.registerApplication('page', {
-        /**
-         * occurs on initialization of page application
-         */
-        onInit: function () {
-            console.log('init page application');
-        },
-
-        /**
-         * occurs on start of page application
-         */
-        onStart: function () {
-            console.log('start page application');
-        },
-
-        /**
-         * occurs on stop of page application
-         */
-        onStop: function () {
-            console.log('stop page application');
-        },
-
-        /**
-         * occurs on error of page application
-         */
-        onError: function () {
-            console.log('error in page application');
-        }
-    });
+    BbCore.ApplicationManager.registerApplication('page', {});
 
 });

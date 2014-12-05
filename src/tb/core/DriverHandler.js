@@ -270,8 +270,8 @@ define('tb.core.DriverHandler', ['underscore', 'jquery', 'jsclass'], function (u
             var drivers = this.getDriversByTypeAndAction(type, action),
                 driver,
                 dfd = jQuery.Deferred(),
-                done = function (datas) {
-                    dfd.resolve(datas);
+                done = function (datas, response) {
+                    dfd.resolve(datas, response);
                 },
                 fail = function (e) {
                     console.log(e);

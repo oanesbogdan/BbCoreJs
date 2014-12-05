@@ -20,3 +20,13 @@
     font-size: 0.75em;
     overflow: hidden;
 }
+
+#bb5-ui .form-group.custom-form-group {
+    border: 2px solid #ccc;
+    padding: 5px;
+    margin: 10px 0;
+}
+
+#bb5-ui .bb5-context-menu {
+    z-index: 1000;
+}

@@ -30,12 +30,16 @@ define(['require', 'tb.core.Api', 'jquery', 'page.repository', 'page.form', 'com
         /**
          * Initialize of PageViewEdit
          */
-        initialize: function (page_uid) {
-            if (typeof page_uid !== 'string') {
+        initialize: function (config) {
+            if (typeof config.page_uid !== 'string') {
                 Api.exception('MissingPropertyException', 500, 'Property "page_uid" must be set to constructor');
             }
 
-            this.page_uid = page_uid;
+            this.config = config;
+
+            this.page_uid = this.config.page_uid;
+            this.callbackAfterSubmit = this.config.callbackAfterSubmit;
+
             this.popin = require('component!popin').createPopIn();
             this.formBuilder = require('component!formbuilder');
         },
@@ -48,7 +52,11 @@ define(['require', 'tb.core.Api', 'jquery', 'page.repository', 'page.form', 'com
             }
 
             this.popin.mask();
-            PageRepository.save(data, function () {
+            PageRepository.save(data).done(function (result, response) {
+                if (typeof self.callbackAfterSubmit === 'function') {
+                    self.callbackAfterSubmit(data, response, result);
+                }
+
                 self.popin.unmask();
                 self.popin.hide();
             });

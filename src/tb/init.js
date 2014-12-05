@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jquery'], function (jQuery, config) {
+define(['jquery'], function (jQuery) {
 
     'use strict';
 
@@ -40,7 +40,7 @@ define(['jquery'], function (jQuery, config) {
 
         load: function () {
             var self = this;
-            require(['tb.core', 'src/tb/config'], function (Core) {
+            require(['tb.core', 'src/tb/config'], function (Core, config) {
 
                 Core.set('is_connected', false);
 
@@ -61,7 +61,6 @@ define(['jquery'], function (jQuery, config) {
                      * @TODO: Load config by a rest when user connected
                      */
                     Core.initConfig(config);
-                    Core.ApplicationManager.init(config);
                 });
 
                 Core.authentication.showForm();

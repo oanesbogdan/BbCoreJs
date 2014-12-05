@@ -36,12 +36,14 @@ define(
             },
 
             showNewPage: function () {
-                ApplicationManager.invokeService('page.main.findCurrentPage').done(function (data) {
-                    if (data.hasOwnProperty(0)) {
-                        data = data[0];
-                    }
+                ApplicationManager.invokeService('page.main.findCurrentPage').done(function (promise) {
+                    promise.done(function (data) {
+                        if (data.hasOwnProperty(0)) {
+                            data = data[0];
+                        }
 
-                    return ApplicationManager.invokeService('page.main.newPage', data.uid);
+                        return ApplicationManager.invokeService('page.main.newPage', {'parent_uid': data.uid});
+                    });
                 });
             },
 

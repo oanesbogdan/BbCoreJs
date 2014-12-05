@@ -1,16 +1,23 @@
 <div class="tab-pane active" id="messages">
     <div class="row">
         <div class="col-bb5-56 bb5-border-right">
-            <p>Statut de la page :
+            <p>Statut de la page : 
                 <select id="page-state-select" class="form-inline input-xs" name="state">
-                    <option value="1" {% if page.state == 1 %}selected{% endif %}>En ligne et visible dans le menu</option>
-                    <option value="3" {% if page.state == 3 %}selected{% endif %}>En ligne et non visible dans le menu</option>
-                    <option value="0" {% if page.state == 0 or page.state == 2 %}selected{% endif %}>Hors ligne</option>
+                     {% for state in states %}
+                        <option {% if page.state_code == state.code %}selected{% endif %} value="{{ state.code }}">{{ state.label }}</option>
+                    {% endfor %}
                 </select>
-                <button type="button" class="btn btn-default-grey btn-xs">SEO de la page</button>
+                <button id="contribution-seo-page" type="button" class="btn btn-default-grey btn-xs">SEO de la page</button>
+            </p>
+            <p>
+                <label>
+                    <input {% if page.is_hidden == false %}checked{% endif %} id="page-visibility-input" type="checkbox" name="menu_visibility" /> Visible dans les menus
+                </label>
             </p>
             <p class="position-bottom">
-                <button id="scheduling-publication-btn" type="button" class="btn btn-transparent btn-xs btn-toggle btn-show">
+                Scheduling :
+                <span id="contribution-scheduling-state">Aucune</span>
+                <button id="contribution-scheduling-btn" type="button" class="btn btn-transparent btn-xs btn-toggle btn-show">
                     <i class="fa fa-angle-down"></i> Programmer la publication / l'archivage
                 </button>
             </p>

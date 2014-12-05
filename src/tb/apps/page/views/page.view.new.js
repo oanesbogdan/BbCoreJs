@@ -11,10 +11,14 @@ define(['require', 'jquery', 'page.repository', 'page.form', 'component!popin', 
         /**
          * Initialize of PageViewNew
          */
-        initialize: function (parent_uid) {
+        initialize: function (config) {
             this.popin = require('component!popin').createPopIn();
             this.formBuilder = require('component!formbuilder');
-            this.parent_uid = parent_uid;
+
+            this.config = config;
+
+            this.parent_uid = this.config.parent_uid;
+            this.callbackAfterSubmit = this.config.callbackAfterSubmit;
         },
 
         computeLayouts: function (layouts) {
@@ -40,7 +44,12 @@ define(['require', 'jquery', 'page.repository', 'page.form', 'component!popin', 
             }
 
             this.popin.mask();
-            PageRepository.save(data).done(function () {
+
+            PageRepository.save(data).done(function (data, response) {
+                if (typeof self.callbackAfterSubmit === 'function') {
+                    self.callbackAfterSubmit(data, response);
+                }
+
                 self.popin.unmask();
                 self.popin.hide();
             });
