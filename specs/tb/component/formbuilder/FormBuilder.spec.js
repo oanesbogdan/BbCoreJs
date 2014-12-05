@@ -1,4 +1,4 @@
-define(['component!formbuilder'], function (FormBuilder) {
+define(['tb.component/formbuilder/main'], function (FormBuilder) {
     'use strict';
 
 
@@ -30,7 +30,6 @@ define(['component!formbuilder'], function (FormBuilder) {
             }
 
             FormBuilder.renderForm(config);
-            expect(typeof FormBuilder.form).toBe('object');
         });
     });
 });
