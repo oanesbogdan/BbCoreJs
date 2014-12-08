@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core.ViewManager', 'BackBone', 'jquery'], function (ViewManager, Backbone, jQuery) {
+define(['tb.core.Renderer', 'BackBone', 'jquery'], function (Renderer, Backbone, jQuery) {
     'use strict';
 
     var DatetimepickerView = Backbone.View.extend({
@@ -43,13 +43,13 @@ define(['tb.core.ViewManager', 'BackBone', 'jquery'], function (ViewManager, Bac
         },
 
         /**
-         * Render the template into the DOM with the ViewManager
+         * Render the template into the DOM with the Renderer
          * @returns {String} html
          */
         render: function () {
             this.bindEvents();
 
-            return ViewManager.render(this.template, {element: this.element});
+            return Renderer.render(this.template, {element: this.element});
         }
     });
 

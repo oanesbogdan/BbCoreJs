@@ -27,6 +27,8 @@ define('tb.core.Renderer', ['require', 'nunjucks', 'jquery', 'tb.core.Api', 'tb.
 
         config = {},
 
+        instance,
+
         Renderer = new JS.Class({
             initialize: function () {
                 var error_tpl = config.error_tpl || '<p>Error while loading template</p>',
@@ -49,7 +51,7 @@ define('tb.core.Renderer', ['require', 'nunjucks', 'jquery', 'tb.core.Api', 'tb.
                 config.action = config.action || 'html';
 
                 if (!path || typeof path !== "string") {
-                    throw 'TemplateManager:render [path] should be a string';
+                    throw 'Renderer:asyncRender [path] parameter should be a string';
                 }
                 Utils.requireWithPromise(['text!' + path]).then(
                     jQuery.proxy(this.onTemplateReady, this, config, params),
@@ -75,7 +77,10 @@ define('tb.core.Renderer', ['require', 'nunjucks', 'jquery', 'tb.core.Api', 'tb.
         }),
 
         getInstance = function () {
-            return new Renderer();
+            if (instance === undefined) {
+                instance = new Renderer();
+            }
+            return instance;
         },
 
         initRenderer = function (conf) {
@@ -84,13 +89,10 @@ define('tb.core.Renderer', ['require', 'nunjucks', 'jquery', 'tb.core.Api', 'tb.
 
         ApiRender = {
             init: initRenderer,
-            getEngine: getInstance().getEngine,
-            render: getInstance().render,
-            asyncRender: getInstance().asyncRender
+            getEngine: getInstance().getEngine.bind(getInstance()),
+            render: getInstance().render.bind(getInstance()),
+            asyncRender: getInstance().asyncRender.bind(getInstance())
         };
-
-
-    Api.register('Renderer', ApiRender);
 
     return ApiRender;
 });

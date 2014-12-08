@@ -21,7 +21,7 @@ define(
     [
         'jquery',
         'tb.core.ApplicationManager',
-        'tb.core.ViewManager',
+        'tb.core.Renderer',
         'text!page/tpl/contribution/index',
         'text!page/tpl/contribution/scheduling_publication',
         'page.repository',
@@ -347,7 +347,7 @@ define(
             },
 
             /**
-             * Render the template into the DOM with the ViewManager
+             * Render the template into the DOM with the Renderer
              * @returns {Object} PageViewContributionIndex
              */
             render: function () {
