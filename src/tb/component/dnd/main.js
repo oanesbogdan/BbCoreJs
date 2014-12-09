@@ -19,5 +19,27 @@
 define(['tb.core'], function (Core) {
     'use strict';
 
+    var mediator = Core.Mediator,
 
+        process = [
+            'dragstart',
+            'drag',
+            'dragenter',
+            'dragleave',
+            'dragover',
+            'drop',
+            'dragend'
+        ],
+
+        dnd = {
+            bindEl: function (el) {
+                var key;
+                for (key = process.length - 1; key >= 0; key = key - 1) {
+                    process[key]
+                };
+            },
+
+        };
+
+    return dnd;
 });
