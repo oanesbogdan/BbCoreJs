@@ -353,7 +353,7 @@ define(
             render: function () {
                 var self = this;
 
-                PageRepository.getWorkflowState(this.currentPage.layout_uid).done(function (workflowStates) {
+                PageRepository.getWorkflowState(this.currentPage.layout_uid).done(function (workflowStates) {
                     jQuery(self.el).html(Renderer.render(template, {'page': self.currentPage, 'states': workflowStates}));
 
                     self.setStateScheduling(self.currentPage);
