@@ -298,7 +298,7 @@ define(
              * @param {Object} popin
              * @returns {Object}
              */
-            buildConfigSeoForm: function (metadata, popin) {
+            buildConfigSeoForm: function (metadata, popin) {
                 var self = this,
                     key,
                     value,
