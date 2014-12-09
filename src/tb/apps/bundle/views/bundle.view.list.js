@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define(['jquery', 'tb.core.ViewManager', 'text!bundle/tpl/list', 'bundle.view.index', 'jqueryui'], function (jQuery, ViewManager, template, ListView) {
+define(['jquery', 'tb.core.Renderer', 'text!bundle/tpl/list', 'bundle.view.index', 'jqueryui'], function (jQuery, Renderer, template, ListView) {
     'use strict';
 
     /**
@@ -140,11 +140,11 @@ define(['jquery', 'tb.core.ViewManager', 'text!bundle/tpl/list', 'bundle.view.in
         },
 
         /**
-         * Render the template into the DOM with the ViewManager
+         * Render the template into the DOM with the Renderer
          * @returns {Object} BundleViewList
          */
         render: function () {
-            jQuery(this.el).html(ViewManager.render(template, {categories: this.categories}));
+            jQuery(this.el).html(Renderer.render(template, {categories: this.categories}));
 
             this.computeDialog();
 

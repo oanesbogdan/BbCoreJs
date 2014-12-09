@@ -2,10 +2,10 @@ define(
     [
         'jquery',
         'tb.core.ApplicationManager',
-        'tb.core.ViewManager',
+        'tb.core.Renderer',
         'text!contribution/tpl/index'
     ],
-    function (jQuery, ApplicationManager, ViewManager, template) {
+    function (jQuery, ApplicationManager, Renderer, template) {
 
         'use strict';
 
@@ -54,11 +54,11 @@ define(
             },
 
             /**
-             * Render the template into the DOM with the ViewManager
+             * Render the template into the DOM with the Renderer
              * @returns {Object} BundleViewIndex
              */
             render: function () {
-                jQuery(this.el).html(ViewManager.render(template, this.contribution));
+                jQuery(this.el).html(Renderer.render(template, this.contribution));
 
                 return this;
             }

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define(['jquery', 'tb.core.ViewManager', 'text!main/tpl/toolbar'], function (jQuery, ViewManager, template) {
+define(['jquery', 'tb.core.Renderer', 'text!main/tpl/toolbar'], function (jQuery, Renderer, template) {
 
     'use strict';
 
@@ -182,11 +182,11 @@ define(['jquery', 'tb.core.ViewManager', 'text!main/tpl/toolbar'], function (jQu
         },
 
         /**
-         * Render the template into the DOM with the ViewManager
+         * Render the template into the DOM with the Renderer
          * @returns {Object} MainViewIndex
          */
         render: function () {
-            jQuery(this.el).html(ViewManager.render(template, this.toolbar));
+            jQuery(this.el).html(Renderer.render(template, this.toolbar));
 
             return this;
         }

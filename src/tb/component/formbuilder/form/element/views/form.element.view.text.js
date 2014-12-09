@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core.ViewManager', 'BackBone'], function (ViewManager, Backbone) {
+define(['tb.core.Renderer', 'BackBone'], function (Renderer, Backbone) {
     'use strict';
 
     var TextView = Backbone.View.extend({
@@ -29,11 +29,11 @@ define(['tb.core.ViewManager', 'BackBone'], function (ViewManager, Backbone) {
         },
 
         /**
-         * Render the template into the DOM with the ViewManager
+         * Render the template into the DOM with the Renderer
          * @returns {String} html
          */
         render: function () {
-            return ViewManager.render(this.template, {element: this.element});
+            return Renderer.render(this.template, {element: this.element});
         }
     });
 
