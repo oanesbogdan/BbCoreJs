@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/backbee/BbCoreJs.png?label=ready&title=Ready)](https://waffle.io/backbee/BbCoreJs)
 [![Code Climate](https://codeclimate.com/github/Lp-digital/BbCoreJs/badges/gpa.svg)](https://codeclimate.com/github/Lp-digital/BbCoreJs) [![Dependency Status](https://gemnasium.com/Lp-digital/BbCoreJs.svg)](https://gemnasium.com/Lp-digital/BbCoreJs)
 
 # BB Core JS
