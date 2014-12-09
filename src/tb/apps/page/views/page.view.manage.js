@@ -51,7 +51,7 @@ define([
         },
 
         onValidate: function (form, data) {
-            if (!data.hasOwnProperty('layout_uid') || data.layout_uid.trim().length === 0) {
+            if (!data.hasOwnProperty('layout_uid') || data.layout_uid.trim().length === 0) {
                 form.addError('layout_uid', 'Template is required.');
             }
         },

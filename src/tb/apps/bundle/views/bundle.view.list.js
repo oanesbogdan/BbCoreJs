@@ -88,7 +88,7 @@ define(['jquery', 'tb.core.Renderer', 'text!bundle/tpl/list', 'bundle.view.index
 
         /**
          * Sort the list of bundles with them categories.
-         * If an bundle don't have category, an category 'Défaut' is created
+         * If an bundle don't have category, an default category is created
          * @param {Object} data
          * @returns {Object}
          */
@@ -114,10 +114,10 @@ define(['jquery', 'tb.core.Renderer', 'text!bundle/tpl/list', 'bundle.view.index
                             }
                         }
                     } else {
-                        if (!categoriesArray.hasOwnProperty('Défaut')) {
-                            categoriesArray['Défaut'] = [];
+                        if (!categoriesArray.hasOwnProperty('default')) {
+                            categoriesArray.default = [];
                         }
-                        categoriesArray['Défaut'].push(bundle);
+                        categoriesArray.default.push(bundle);
                     }
                 }
             }

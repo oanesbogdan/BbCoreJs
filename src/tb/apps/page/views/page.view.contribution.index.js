@@ -157,7 +157,7 @@ define(
                                 }
                             }
 
-                            if (!jQuery.isEmptyObject(data)) {
+                            if (!jQuery.isEmptyObject(data)) {
                                 self.setStateScheduling(data);
 
                                 data.uid = self.currentPage.uid;
@@ -172,7 +172,7 @@ define(
 
                     jQuery(this.dialogContainerTag).html(Renderer.render(schedulingTemplate));
 
-                    FormBuilder.renderForm(config).done(function (html) {
+                    FormBuilder.renderForm(config).done(function (html) {
                         jQuery(self.schedulingTag).html(html);
 
                         jQuery(self.schedulingTag).dialog({
@@ -185,14 +185,14 @@ define(
                             dialogClass: "ui-dialog-no-title ui-dialog-pinned-to-banner"
                         });
 
-                        jQuery(self.schedulingTag).dialog("open");
+                        jQuery(self.schedulingTag).dialog('open');
                     });
 
                 } else {
                     if (jQuery(this.schedulingTag).dialog('isOpen')) {
-                        jQuery(this.schedulingTag).dialog("close");
+                        jQuery(this.schedulingTag).dialog('close');
                     } else {
-                        jQuery(this.schedulingTag).dialog("open");
+                        jQuery(this.schedulingTag).dialog('open');
                     }
                 }
             },
@@ -242,7 +242,7 @@ define(
                 var self = this,
                     popin = PopinManager.createPopIn();
 
-                popin.setTitle('SEO de la page');
+                popin.setTitle('Page SEO');
                 PageRepository.getMetadata(this.currentPage.uid).done(function (metadata) {
                     FormBuilder.renderForm(self.buildConfigSeoForm(metadata, popin)).done(function (html) {
                         popin.setContent(html);
