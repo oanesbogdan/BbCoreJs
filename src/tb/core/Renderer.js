@@ -16,14 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define('tb.core.Renderer', ['require', 'nunjucks', 'jquery', 'tb.core.Api', 'tb.core.Utils', 'jsclass'], function (require, nunjucks) {
+define('tb.core.Renderer', ['require', 'nunjucks', 'jquery', 'tb.core.Utils', 'jsclass'], function (require, nunjucks) {
     'use strict';
 
     var jQuery = require('jquery'),
-
-        Api = require('tb.core.Api'),
-
-        Utils = require('tb.core.Utils'),
 
         config = {},
 
@@ -53,7 +49,7 @@ define('tb.core.Renderer', ['require', 'nunjucks', 'jquery', 'tb.core.Api', 'tb.
                 if (!path || typeof path !== "string") {
                     throw 'Renderer:asyncRender [path] parameter should be a string';
                 }
-                Utils.requireWithPromise(['text!' + path]).then(
+                require('tb.core.Utils').requireWithPromise(['text!' + path]).then(
                     jQuery.proxy(this.onTemplateReady, this, config, params),
                     jQuery.proxy(this.errorRenderer, this, config)
                 );
@@ -61,7 +57,7 @@ define('tb.core.Renderer', ['require', 'nunjucks', 'jquery', 'tb.core.Api', 'tb.
                 return jQuery(config.placeholder);
             },
 
-            render: function(template, params) {
+            render: function (template, params) {
                 params = params || {};
 
                 return this.engine.renderString(template, params);
@@ -87,11 +83,20 @@ define('tb.core.Renderer', ['require', 'nunjucks', 'jquery', 'tb.core.Api', 'tb.
             config = conf;
         },
 
+        invocMethod = function (method_name) {
+            return (function (instance) {
+                return function () {
+                    var args = Array.prototype.slice.call(arguments);
+                    return instance[method_name].apply(instance, args);
+                };
+            }(getInstance()));
+        },
+
         ApiRender = {
             init: initRenderer,
-            getEngine: getInstance().getEngine.bind(getInstance()),
-            render: getInstance().render.bind(getInstance()),
-            asyncRender: getInstance().asyncRender.bind(getInstance())
+            getEngine: invocMethod('getEngine'),
+            render: invocMethod('render'),
+            asyncRender: invocMethod('asyncRender')
         };
 
     return ApiRender;

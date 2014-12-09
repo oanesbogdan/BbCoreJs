@@ -31,7 +31,7 @@ define(
     ],
     function (jQuery,
               ApplicationManager,
-              ViewManager,
+              Renderer,
               template,
               schedulingTemplate,
               PageRepository,
@@ -170,7 +170,7 @@ define(
 
                 if (jQuery(this.schedulingTag).length === 0) {
 
-                    jQuery(this.dialogContainerTag).html(ViewManager.render(schedulingTemplate));
+                    jQuery(this.dialogContainerTag).html(Renderer.render(schedulingTemplate));
 
                     FormBuilder.renderForm(config).done(function (html) {
                         jQuery(self.schedulingTag).html(html);
@@ -354,7 +354,7 @@ define(
                 var self = this;
 
                 PageRepository.getWorkflowState(this.currentPage.layout_uid).done(function (workflowStates) {
-                    jQuery(self.el).html(ViewManager.render(template, {'page': self.currentPage, 'states': workflowStates}));
+                    jQuery(self.el).html(Renderer.render(template, {'page': self.currentPage, 'states': workflowStates}));
 
                     self.setStateScheduling(self.currentPage);
                 }).fail(function (e) {
