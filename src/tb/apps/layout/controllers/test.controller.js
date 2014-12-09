@@ -26,7 +26,9 @@ define(['tb.core'], function (bbCore) {
             imports: ['test.manager', 'rte.manager']
         },
 
-        /*Appelle init après les dépendences*/
+        /**
+         * onInit is called after dependencies loading
+         */
         onInit: function (require) {
             console.log(require);
         },

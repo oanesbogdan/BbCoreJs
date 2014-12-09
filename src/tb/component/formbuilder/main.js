@@ -38,7 +38,7 @@ define(['tb.core.Api', 'jquery', 'tb.component/formbuilder/form/Form', 'tb.core.
              */
             renderForm: function (config) {
 
-                var form = {},
+                var form = {},
                     dfd = new jQuery.Deferred();
 
                 if (!config.hasOwnProperty('elements')) {

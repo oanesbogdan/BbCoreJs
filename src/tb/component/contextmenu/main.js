@@ -41,28 +41,28 @@ define(['jquery', 'jsclass'], function (jQuery) {
 
                 {
                     btnCls: "bb5-button bb5-ico-parameter",
-                    btnLabel: "Paramètres",
+                    btnLabel: "Settings",
                     btnCallback: function () {
                         return;
                     }
                 },
                 {
                     btnCls: "bb5-button bb5-ico-select",
-                    btnLabel: "Selectionner",
+                    btnLabel: "Select",
                     btnCallback: function () {
                         return;
                     }
                 },
                 {
                     btnCls: "bb5-button bb5-ico-lib",
-                    btnLabel: "Sélecteur de contenus",
+                    btnLabel: "Content selector",
                     btnCallback: function () {
                         return;
                     }
                 },
                 {
                     btnCls: "bb5-button bb5-ico-del",
-                    btnLabel: "Effacer",
+                    btnLabel: "Delete",
                     btnCallback: function () {
                         return;
                     }
