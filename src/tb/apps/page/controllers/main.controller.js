@@ -129,7 +129,7 @@ define(
                 }
             },
 
-            editPageService: function (config) {
+            editPageService: function (config) {
                 try {
                     var view = new EditView(config);
                     view.render();

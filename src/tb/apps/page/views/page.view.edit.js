@@ -63,11 +63,11 @@ define(['require', 'tb.core.Api', 'jquery', 'page.repository', 'page.form', 'com
         },
 
         onValidate: function (form, data) {
-            if (!data.hasOwnProperty('title') || data.title.trim().length === 0) {
+            if (!data.hasOwnProperty('title') || data.title.trim().length === 0) {
                 form.addError('title', 'Title is required');
             }
 
-            if (!data.hasOwnProperty('layout_uid') || data.layout_uid.trim().length === 0) {
+            if (!data.hasOwnProperty('layout_uid') || data.layout_uid.trim().length === 0) {
                 form.addError('layout_uid', 'Template is required.');
             }
         },
