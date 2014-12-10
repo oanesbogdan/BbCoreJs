@@ -21,7 +21,7 @@ define(['tb.core'], function (Core) {
 
     var mediator = Core.Mediator,
 
-        process = [
+        dnd_process = [
             'dragstart',
             'drag',
             'dragenter',
@@ -31,14 +31,59 @@ define(['tb.core'], function (Core) {
             'dragend'
         ],
 
+        cleanEl = function (el) {
+            if (el instanceof Node) {
+                return el;
+            }
+            return el.get(0);
+        },
+
+        eventPropagation = function (process, event) {
+            var content_type = event.target.getAttribute('data-dnd-type') || 'undefined';
+            mediator.publish('on:' + content_type + ':' + process, event);
+        },
+
+        bindEl = function (el, process) {
+            el.addEventListener(process, function (event) {
+                eventPropagation(process, event);
+            });
+        },
+
         dnd = {
-            bindEl: function (el) {
-                var key;
-                for (key = process.length - 1; key >= 0; key = key - 1) {
-                    process[key]
-                };
+            defineAsDraggable: function (el) {
+                el = cleanEl(el);
+                el.addEventListener(dnd_process[0], function (event) {
+                    event.dataTransfer.effectAllowed = 'move';
+                    eventPropagation(dnd_process[0], event);
+                    return true;
+                });
+                bindEl(el, dnd_process[1]);
+                bindEl(el, dnd_process[6]);
             },
 
+            defineAsDropzone: function (el) {
+                var i, j;
+                el = cleanEl(el);
+                for (i = 0; i < 4; i = i + 1) {
+                    j = i + 2;
+                    (function (process) {
+                        bindEl(el, process);
+                    }(dnd_process[j]));
+                }
+            },
+
+            addListeners: function (parent) {
+                var draggable = cleanEl(parent).querySelectorAll('*[draggable="true"]'),
+                    dropzone = cleanEl(parent).querySelectorAll('*[dropzone="true"]'),
+                    i;
+
+                for (i = 0; i < draggable.length; i = i + 1) {
+                    this.defineAsDraggable(draggable[i]);
+                }
+                for (i = 0; i < dropzone.length; i = i + 1) {
+                    this.defineAsDropzone(dropzone[i]);
+                }
+            }
         };
 
     return dnd;

@@ -1,0 +1,94 @@
+<?php header('Access-Control-Allow-Origin: *'); ?>
+<!DOCTYPE html>
+<html lang="en_EN">
+    <head>
+        <meta encoding="utf8">
+        <title>DnD</title>
+        <link rel="stylesheet" href="resources/html/css/style_reset.css">
+        <link rel="stylesheet" href="resources/bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="resources/html/css/bb5-skin03.css">
+        <link rel="stylesheet" href="resources/html/css/jquery-ui.css">
+        <link rel="stylesheet" href="resources/html/css/font-awesome.min.css">
+        <link rel="stylesheet" href="resources/html/css/bb5-ui.css">
+        <script src="resources/bower_components/requirejs/require.js"></script>
+        <script src="resources/src/require.config.js"></script>
+        <style type="text/css">
+            #boxA, #boxB, #boxC {
+                float:left; width:200px; height:200px; padding:10px; margin:10px;
+            }
+            #boxA { background-color: blue; }
+            #boxB { background-color: green; }
+            #boxC { background-color: yellow; }
+            #drag, #drag2, #drag3 {
+                width:50px; height:50px; padding:5px; margin:5px;
+                -moz-user-select:none;
+            }
+            #drag { background-color: red;}
+            #drag2 { background-color: orange;}
+            #drag3 { background-color: purple; border:3px brown solid;}
+        </style>
+    </head>
+    <body>
+        <div id="container" class="container">
+            <div id="boxA" dropzone="true">
+                <div id="drag" data-dnd-type="content" draggable="true">drag me</div>
+                <div id="drag2" draggable="true">drag me</div>
+                <div id="drag3" draggable="true">drag me</div>
+            </div>
+            <div id="boxB" dropzone="true"></div>
+            <div id="boxC" dropzone="true"></div>
+        </div>
+
+        <script>
+            /* sample to put in a yml file*/
+            var _errorHandler = function (error) {
+                console.log("error", error);
+            }
+            var config = {
+                ApplicationManager: {
+                    appPath: 'resources/src/tb/apps',
+                    /*ne charge que les onglets qui se trouvent dans 'applications'*/
+                    active: 'layout',
+                    route: '', // to change: App should know
+                    applications: {
+                        layout : {
+                            label  : 'Layout',
+                            config : { mainRoute : 'appLayout/home'}
+                        },
+                        content: {
+                            label  : 'Edition du contenu',
+                            config : {}
+                        }
+                    }
+                },
+                component: {
+                    logger: {
+                        loglevel: 5,
+                        debug: true
+                    }
+                }
+            };
+
+
+            require(['tb.core', 'component!dnd', 'jquery'], function (core, dnd, jquery) {
+                // var container = document.querySelector('#container');
+                var container = jquery('#container');
+
+                core.Mediator.subscribe('on:content:dragstart', function (event) {
+                    console.log('content', event);
+                    event.dataTransfer.setData('text/html', event.target);
+                    event.dataTransfer.setDragImage(event.target,0,0);
+                });
+
+                core.Mediator.subscribe('on:undefined:dragstart', function (event) {
+                    console.log('undefined', typeof event);
+                    event.dataTransfer.setData('text/html', event.target);
+                    event.dataTransfer.setDragImage(event.target,0,0);
+                });
+
+                dnd.addListeners(container);
+            }, _errorHandler);
+
+        </script>
+    </body>
+</html>
