@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
+/*global Node */
 define(['tb.core'], function (Core) {
     'use strict';
 
@@ -38,14 +39,12 @@ define(['tb.core'], function (Core) {
             return el.get(0);
         },
 
-        eventPropagation = function (context, process, event) {
-            mediator.publish('on:' + context + ':' + process, event);
-        },
-
         bindEl = function (el, context, process) {
-            el.addEventListener(process, function (event) {
-                eventPropagation(context, process, event);
-            });
+            (function (el, process, context) {
+                el.addEventListener(process, function (event) {
+                    mediator.publish('on:' + context + ':' + process, event);
+                });
+            }(el, process, context));
         },
 
         dnd = {
@@ -58,21 +57,17 @@ define(['tb.core'], function (Core) {
                     if (i === 2) {
                         i = i + 4;
                     }
-                    (function (process, context) {
-                        bindEl(el, context, process);
-                    }(dnd_process[i], context));
+                    bindEl(el, context, dnd_process[i]);
                 }
             },
 
             defineAsDropzone: function (el, context) {
-                var i, j;
+                var i;
                 el = cleanEl(el);
                 context = context || 'undefined';
 
                 for (i = 0; i < 4; i = i + 1) {
-                    (function (process, context) {
-                        bindEl(el, context, process);
-                    }(dnd_process[i + 2], context));
+                    bindEl(el, context, dnd_process[i + 2]);
                 }
             },
 
