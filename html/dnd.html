@@ -35,8 +35,8 @@
                 <div id="drag2" draggable="true">drag me</div>
                 <div id="drag3" draggable="true">drag me</div>
             </div>
-            <div id="boxB" dropzone="true"></div>
-            <div id="boxC" dropzone="true"></div>
+            <div id="boxB" dropzone="true" data-dnd-type="droptrue"></div>
+            <div id="boxC" dropzone="true" data-dnd-type="droptrue"></div>
         </div>
 
         <script>
@@ -75,18 +75,28 @@
                 var container = jquery('#container');
 
                 core.Mediator.subscribe('on:content:dragstart', function (event) {
-                    console.log('content', event);
-                    event.dataTransfer.setData('text/html', event.target);
+                    event.dataTransfer.effectAllowed = 'move';
+                    event.dataTransfer.setData('text', event.target.getAttribute('id'));
                     event.dataTransfer.setDragImage(event.target,0,0);
                 });
 
-                core.Mediator.subscribe('on:undefined:dragstart', function (event) {
-                    console.log('undefined', typeof event);
-                    event.dataTransfer.setData('text/html', event.target);
-                    event.dataTransfer.setDragImage(event.target,0,0);
+                core.Mediator.subscribe('on:content:dragover', function (event) {
+                    if (event.target.getAttribute('dropzone')) {
+                        event.preventDefault();
+                    }
                 });
 
-                dnd.addListeners(container);
+                core.Mediator.subscribe('on:content:drop', function (event) {
+                    var idelt = event.dataTransfer.getData('text');
+                    event.target.appendChild(document.getElementById(idelt));
+                    event.stopPropagation();
+                });
+
+                core.Mediator.subscribe('on:content:dragend', function (event) {
+                    event.dataTransfer.clearData('text');
+                });
+
+                dnd.addListeners(container, 'content');
             }, _errorHandler);
 
         </script>

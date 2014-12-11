@@ -38,50 +38,55 @@ define(['tb.core'], function (Core) {
             return el.get(0);
         },
 
-        eventPropagation = function (process, event) {
-            var content_type = event.target.getAttribute('data-dnd-type') || 'undefined';
-            mediator.publish('on:' + content_type + ':' + process, event);
+        eventPropagation = function (context, process, event) {
+            mediator.publish('on:' + context + ':' + process, event);
         },
 
-        bindEl = function (el, process) {
+        bindEl = function (el, context, process) {
             el.addEventListener(process, function (event) {
-                eventPropagation(process, event);
+                eventPropagation(context, process, event);
             });
         },
 
         dnd = {
-            defineAsDraggable: function (el) {
+            defineAsDraggable: function (el, context) {
+                var i;
                 el = cleanEl(el);
-                el.addEventListener(dnd_process[0], function (event) {
-                    event.dataTransfer.effectAllowed = 'move';
-                    eventPropagation(dnd_process[0], event);
-                    return true;
-                });
-                bindEl(el, dnd_process[1]);
-                bindEl(el, dnd_process[6]);
-            },
+                context = context || 'undefined';
 
-            defineAsDropzone: function (el) {
-                var i, j;
-                el = cleanEl(el);
-                for (i = 0; i < 4; i = i + 1) {
-                    j = i + 2;
-                    (function (process) {
-                        bindEl(el, process);
-                    }(dnd_process[j]));
+                for (i = 0; i < 3; i = i + 1) {
+                    if (i === 2) {
+                        i = i + 4;
+                    }
+                    (function (process, context) {
+                        bindEl(el, context, process);
+                    }(dnd_process[i], context));
                 }
             },
 
-            addListeners: function (parent) {
+            defineAsDropzone: function (el, context) {
+                var i, j;
+                el = cleanEl(el);
+                context = context || 'undefined';
+
+                for (i = 0; i < 4; i = i + 1) {
+                    (function (process, context) {
+                        bindEl(el, context, process);
+                    }(dnd_process[i + 2], context));
+                }
+            },
+
+            addListeners: function (parent, context) {
                 var draggable = cleanEl(parent).querySelectorAll('*[draggable="true"]'),
                     dropzone = cleanEl(parent).querySelectorAll('*[dropzone="true"]'),
                     i;
+                context = context || 'undefined';
 
                 for (i = 0; i < draggable.length; i = i + 1) {
-                    this.defineAsDraggable(draggable[i]);
+                    this.defineAsDraggable(draggable[i], context);
                 }
                 for (i = 0; i < dropzone.length; i = i + 1) {
-                    this.defineAsDropzone(dropzone[i]);
+                    this.defineAsDropzone(dropzone[i], context);
                 }
             }
         };
