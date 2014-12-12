@@ -41,8 +41,14 @@ define(['require', 'jsclass', 'jquery', 'underscore', 'BackBone'], function (req
 
         },
 
-        select: function (range) {
-
+        select: function (val, silent) {
+            val = parseInt(val);
+            silent = (typeof silent==='boolean') ? silent : false;
+            this.widget.val(val);
+            this.currentStep = val;
+            if (!silent) {
+                this.handleChange.call(this, this, {});
+            }
         },
 
         setRange: function (range) {
@@ -52,10 +58,9 @@ define(['require', 'jsclass', 'jquery', 'underscore', 'BackBone'], function (req
         handleChange: function (selector, e) {
             selector.currentStep = this.val();
             selector.trigger('pageRangeSelectorChange', selector.currentStep);
-            console.log(selector);
         },
 
-        getSelection: function () {
+        getValue: function () {
             return this.currentStep;
         },
 

@@ -19,8 +19,13 @@ define(['component!datastore'], function(DataStore) {
         return restParams;
     });
 
-    restDataStore.addFilter("byType", function (value, restParams){
-        restParams.criterias['type'] = value;
+    restDataStore.addFilter("byBeforeDate", function (value, restParams){
+        restParams.criterias['beforeDate'] = value;
+        return restParams;
+    });
+
+    restDataStore.addFilter("byAfterDate", function (value, restParams){
+        restParams.criterias['afterDate'] = value;
         return restParams;
     });
 

@@ -11,9 +11,10 @@ require.config({
     }
 });
 
-define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin/main', 'component!dataview', 'text!cs-templates/layout.test.tpl', 'content.renderer', 'cs-control/pageselector.control', 'jqLayout', "component!datastore", "component!treeview", "category.formater", 'nunjucks', 'content.datastore'], function (require, jQuery, layout, PopInMng) {
+define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin/main', 'component!dataview', 'text!cs-templates/layout.test.tpl', 'content.renderer', 'cs-control/searchengine.control', 'cs-control/pageselector.control', 'jqLayout', "component!datastore", "component!treeview", "component!pagination", "category.formater", 'nunjucks', 'content.datastore'], function (require, jQuery, layout, PopInMng) {
     var formater = require('category.formater'),
         ContentRenderer = require('content.renderer'),
+        Pagination = require('component!pagination'),
         ContentSelectorWidget = new JS.Class({
             defautConfig: {
                 autoDisplay: true,
@@ -25,25 +26,46 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
                     height: $(window).height() - (20 * 2),
                     width: $(window).width() - (20 * 2)
                 },
-                pageRange: [1, 10 , 1]
+                pageRange: [1, 10 , 1],
+                itemsByPage: 2
             },
 
             initialize: function (userConfig) {
+                /* The purpose is to setup child components*/
                 this.config = jQuery.extend({}, this.defautConfig, userConfig);
                 this.isLoaded = false;
+                this.state = {};
+                this.handleComponentState();
                 this.widget = $(require('text!cs-templates/layout.test.tpl')).clone();
                 this.popIn = this.initPopIn();
-                this.bbContentLayout = this.initLayout();
                 this.popIn.addOption("open", jQuery.proxy(this.onOpen, null, this)); //best of both world: this-->popin first arg --> selector
                 this.options = jQuery({}, this.defautConfig, userConfig);
                 this.contentRenderer = new ContentRenderer();
                 this.initComponents();
                 this.initControls();
                 this.bindEvents();
+                this.bbContentLayout = this.initLayout();
+            },
+
+            handleComponentState: function () {
+                this.componentState = {
+                    pagination: {},
+                    pageSelector: {},
+                    categoryTreeView: {},
+                    contentDataView: {},
+                    searchEngine: {}
+                }
             },
 
             initControls : function () {
               this.pageRangeSelector = require("cs-control/pageselector.control").createPageRangeSelector({range : this.config.pageRange});
+              var self = this;
+
+              setTimeout(function(){
+                  self.pageRangeSelector.select(1,true);
+                  self.contentPagination.setItemsOnPage(1);
+              }, 1000);
+              this.searchEngine = require("cs-control/searchengine.control").createSearchEngine(this.componentState.searchEngine);
             },
 
             /* create components */
@@ -52,12 +74,12 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
                 this.categoryTreeView = this.createCategoryTreeView();
                 this.contentRestDataStore.on("dataStateUpdate", function(){});
                 this.contentDataView = this.createDataView();
-                this.pager = this.createPager();
+                this.contentPagination = this.createPagination();
             },
 
             createDataView: function () {
                 return require('component!dataview').createDataView({
-                    allowMultiSelection: false,
+                    allowMultiSelection: true,
                     dataStore: this.contentRestDataStore,
                     selectedItemCls: "selected",
                     css: {
@@ -68,7 +90,11 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
                     itemRenderer: jQuery.proxy(this.contentRenderer.render, this.contentRenderer)
                 });
             },
-            createPager: function () {},
+
+            createPagination: function () {
+                return require('component!pagination').createPagination({itemsOnPage : 5});
+            },
+
             createCategoryTreeView: function () {
                 return require('component!treeview').createTreeView({});
             },
@@ -84,10 +110,16 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
                 var self = this;
                 var catTreeCtn = $(this.widget).find('.bb5-windowpane-tree .bb5-treeview').eq(0),
                     contentViewCtn = $(this.widget).find('.data-list-ctn').eq(0),
-                    pageRangeCtn =  $(this.widget).find('.max-per-page-selector').eq(0);
+                    pageRangeCtn =  $(this.widget).find('.max-per-page-selector').eq(0),
+                    paginationCtn = $(this.widget).find('.content-selection-pagination').eq(0),
+                    searchEnginerCtn = $(this.widget).find(".bb5-form-wrapper").eq(0);
                 this.categoryTreeView.render(catTreeCtn);
                 this.contentDataView.render(contentViewCtn);
+                this.contentPagination.render(paginationCtn, 'replaceWith');
                 this.pageRangeSelector.render(pageRangeCtn, 'replaceWith');
+                this.searchEngine.render(searchEnginerCtn, 'html');
+
+
                 $.ajax({
                     url: 'http://bb.corejs.local/rest/1/classcontent/category'
                 }).done(function (data) {
@@ -115,11 +147,12 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
 
             bindEvents: function () {
                 var self = this;
-                $(this.widget).on('click','.bb5-sortasgrid', function (e){
+
+                $(this.widget).on('click','.bb5-sortasgrid', function (e) {
                     self.contentDataView.setRenderMode('grid');
                 });
 
-                $(this.widget).on('click','.bb5-sortaslist', function (e){
+                $(this.widget).on('click','.bb5-sortaslist', function (e) {
                     self.contentDataView.setRenderMode('list');
                 });
 
@@ -133,18 +166,32 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
                    if (selectedNode.isACat) {
                     self.contentRestDataStore
                         .unApplyFilter('byClasscontent')
-                        .applyFilter('byCategory', selectedNode.name).execute();
+                        .applyFilter('byCategory', selectedNode.name);
                    }else{
                         self.contentRestDataStore
                         .unApplyFilter('byCategory')
-                        .applyFilter('byClasscontent', selectedNode.type).execute();
+                        .applyFilter('byClasscontent', selectedNode.type);
                    }
+                   /* always reset pagination when we change category*/
+                   self.contentRestDataStore.setStart(0).setLimit(self.pageRangeSelector.getValue()).execute();
                 });
 
                /* When range Changes */
                this.pageRangeSelector.on("pageRangeSelectorChange", function (val) {
-                  self.contentRestDataStore.setLimit(val).execute();
+                  self.contentRestDataStore.setLimit(val);
+                  self.contentPagination.setItemsOnPage(val);
                });
+
+               /* When page changes */
+               this.contentPagination.on("pageChange", function (page) {
+                   var limit = self.pageRangeSelector.getValue(),
+                   start = (page - 1) * limit;
+                  self.contentRestDataStore.setStart(start).execute();
+               });
+               /* When we must perform search */
+                this.searchEngine.on("doSeach", function (criteria) {
+                   return;
+                });
 
                /* when we have contents */
                self.contentRestDataStore.on("dataStateUpdate", $.proxy(this.updateCurrentNodeInfos, this));
@@ -152,15 +199,18 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
             },
 
             updateCurrentNodeInfos : function () {
-                var resultCpt = this.contentRestDataStore.count();
-                $(this.widget).find(".result-infos").html(this.categoryTreeView.getSelectedNode().name+' - '+resultCpt+' item(s)');
+                var resultTotal = this.contentRestDataStore.getTotal();
+                $(this.widget).find(".result-infos").html(this.categoryTreeView.getSelectedNode().name+' - '+resultTotal+' item(s)');
+                /* update pagination here */
+                this.contentPagination.setItems(resultTotal);
             },
 
+            /* configure */
             configure: function (config) {
                 this.reset();
             },
 
-            reset: function () {},
+            reset: function () { return; },
 
             initPopIn: function () {
                 PopInMng.init("#bb5-ui");
@@ -189,6 +239,7 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
         createContentSelector: function (config) {
             config = config || {};
             return new ContentSelectorWidget(config);
-        }
+        },
+        ContentSelectorWidget : ContentSelectorWidget
     }
 });

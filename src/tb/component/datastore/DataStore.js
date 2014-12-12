@@ -96,7 +96,6 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
             this.start = 0;
             this.limit = 25;
         },
-
         load: function () {},
 
         setData: function (data) {
@@ -180,11 +179,16 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
             restBaseUrl: '/rest/1'
         },
 
+        getTotal: function () {
+            return this.total;
+        },
+
         initialize: function (config) {
             config = jQuery.extend({}, this.defaultConfig, config);
             this.callSuper(config);
             this.notifyChange = true;
             this.initRestHandler();
+            this.total = 0;
             this.createGenericFilter();
             if (this.config.autoLoad) {
                 this.load();
@@ -205,7 +209,7 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
         /* build resquest here */
         processTasks: function () {
             var self = this,
-            resParams = {limit : 1, sorters : {} , start : this.start, criterias: {}},
+            resParams = {limit : this.limit, sorters : {} , start : this.start, criterias: {}},
             resultPromise = new $.Deferred();
             resParams['limit'] = this.limit;
             jQuery.each(this.tasksQueue, function(i, task) {
@@ -219,18 +223,31 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
                }
             });
 
-            CoreDriverHandler.read(this.config.resourceEndpoint, resParams.criterias, resParams.sorters, resParams.start, this.limit).done(function(data) {
+            CoreDriverHandler.read(this.config.resourceEndpoint, resParams.criterias, resParams.sorters, this.start, this.limit).done(function(data, response) {
+                self.total = response.getRangeTotal();
                 self.setData(data);
                 resultPromise.resolve(data);
             },resultPromise.reject);
-
             return resultPromise;
         },
 
         count: function () {
             return this.data.length;
-        }
+        },
 
+        remove: function (itemData) {
+            var self = this,
+            /* compute new start */
+            nextTotal = self.total - 1,
+            nbPage = Math.ceil(nextTotal/self.limit),
+            nextStart = ( nbPage >= this.start + 1 ) ?  this.start : this.start - 1;
+            nextStart = (nextStart < 0 ) ? nextStart : 0;
+            this.setStart(nextStart);
+            CoreDriverHandler["delete"](this.config.resourceEndpoint+'/'+itemData.contentType, { uid : itemData.contentUid }).done(function() {
+                self.trigger("dataDelete", itemData);
+                self.execute();
+            });
+        }
     });
 
     return {
