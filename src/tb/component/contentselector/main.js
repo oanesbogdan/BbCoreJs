@@ -3,14 +3,13 @@ require.config({
         'cs-templates': 'src/tb/component/contentselector/templates',
         'cs-view': 'src/tb/component/contentselector/views',
         'cs-control': 'src/tb/component/contentselector/control',
-        'jqLayout': 'lib/jquery.layout/jquery.layout-latest',
         'node.formater': 'src/tb/component/contentselector/helper/node.formater',
         'pagerangeselector.control': 'src/tb/component/contentselector/control/pageselector.control',
         'content.renderer': 'src/tb/component/contentselector/helper/content.renderer',
         'content.datastore': 'src/tb/component/contentselector/datastore/content.datastore'
     }
 });
-define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin/main', 'underscore', 'BackBone', 'component!rangeselector', 'component!dataview', 'component!mask', 'text!cs-templates/layout.tpl', 'content.renderer', 'cs-control/searchengine.control', 'jqLayout', "component!datastore", "component!treeview", "component!pagination", "node.formater", 'nunjucks', 'content.datastore'], function (require, jQuery, layout, PopInMng) {
+define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'component!popin', 'underscore', 'BackBone', 'component!rangeselector', 'component!dataview', 'component!mask', 'text!cs-templates/layout.tpl', 'content.renderer', 'cs-control/searchengine.control', 'jquery-layout', "component!datastore", "component!treeview", "component!pagination", "node.formater", 'nunjucks', 'content.datastore'], function (require, jQuery, layout, PopInMng) {
     'use strict';
     var formater = require('node.formater'),
         underscore = require('underscore'),

@@ -2,22 +2,26 @@ require.config({
     baseUrl: './',
     urlArgs: 'cb=' + Math.random(),
     paths: {
-        'jquery': 'lib/jquery/jquery',
-        'jqueryui': 'lib/jquery-ui/jquery-ui',
-        'jsclass' : 'node_modules/jsclass/min/core',
-        'underscore': 'lib/underscore/underscore',
-        'nunjucks': 'bower_components/nunjucks/browser/nunjucks',
         'tb.core': 'src/tb/main',
         'component': 'src/tb/component/component',
-        'handlebars': 'lib/handlebars/handlebars',
-        'BackBone': 'lib/backbone/backbone',
+
+        'jquery': 'bower_components/jquery/dist/jquery.min',
+        'jqueryui': 'bower_components/jquery-ui/jquery-ui.min',
+        'jsclass' : 'node_modules/jsclass/min/core',
+        'underscore': 'bower_components/underscore/underscore-min',
+        'nunjucks': 'bower_components/nunjucks/browser/nunjucks.min',
+        'BackBone': 'bower_components/backbone/backbone',
+        'text': 'bower_components/requirejs-text/text',
+        'moment': 'bower_components/moment/moment',
+        'URIjs': 'bower_components/uri.js/src',
+        'datetimepicker': 'bower_components/datetimepicker/jquery.datetimepicker',
+        'jquery-layout' : 'bower_components/jquery.layout/dist/jquery.layout-latest.min',
+        'lib.jqtree': 'bower_components/jqtree/tree.jquery',
+        'jssimplepagination': 'bower_components/jssimplepagination/jquery.simplePagination',
+
         'jasmine': 'node_modules/grunt-contrib-jasmine/vendor/jasmine-2.0.0/jasmine',
         'jasmine-html': 'node_modules/grunt-contrib-jasmine/vendor/jasmine-2.0.0/jasmine-html',
-        'datetimepicker': 'lib/datetimepicker/jquery.datetimepicker',
-        'spec': 'specs/',
-        'text': 'lib/requirejs-text/text',
-        'moment': 'lib/moment/moment',
-        'URIjs': 'lib/uri.js'
+        'spec': 'specs/'
     },
     shim: {
         underscore: {

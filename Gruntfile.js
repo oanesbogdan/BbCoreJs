@@ -37,39 +37,21 @@ module.exports = function (grunt) {
             core: 'toolbar.core',
             config: 'require.config'
         },
-        libs: {
-            backbone: 'backbone/backbone.js',
-            handlebars: 'handlebars/handlebars.js',
-            jquery: 'jquery/jquery.js',
-            jsclass: 'jsclass/class.js',
-            parallel: 'paralleljs/lib/*.js',
-            underscore: 'underscore/underscore.js'
-        },
-
-        /**
-         * application dependencies
-         */
-        bower: {
-            target: {
-                rjsConfig: 'app/config.js'
-            },
-            install: {}
-        },
-
-        requirejs: {
-            compile: {
-                options: {
-                    baseUrl: "./",
-                    mainConfigFile: "<%= dir.src %>/require.config.js",
-                    name: "<%= concat.core.dest %>",
-                    out: "<%= dir.build %>/<%= components.core %>.min.js"
-                }
-            }
-        },
 
         /**
          * application building
          */
+        less: {
+            css: {
+                cleancss: true,
+                files: {
+                    'html/css/bb-ui.css': 'less/bb5-ui.less',
+                    'html/css/bb-var.css': 'less/bb5-var.less',
+                    'html/css/bb-ui-login.css': 'less/bb5-ui-login.less'
+                }
+            }
+        },
+
         concat: {
             options: {
                 separator: '',
@@ -175,14 +157,8 @@ module.exports = function (grunt) {
                 }
             }
         },
-
-        csslint: {
-            strict: {
-                options: {
-                    'import': 2
-                },
-                src: ['src/css/*.css']
-            }
+        lesslint: {
+            src: ['less/*.less']
         },
 
         /**
@@ -226,21 +202,20 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.loadNpmTasks('grunt-bower-requirejs');
+    grunt.loadNpmTasks('grunt-contrib-less');
+
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-cssmin');
-    grunt.loadNpmTasks('grunt-contrib-csslint');
-    grunt.loadNpmTasks('grunt-bower-task');
+
+    grunt.loadNpmTasks('grunt-jslint');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-lesslint');
+
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-istanbul-coverage');
-    grunt.loadNpmTasks('grunt-contrib-requirejs');
-    grunt.loadNpmTasks('grunt-jslint');
+
     // grunt tasks
-    grunt.registerTask('default', ['bower', 'jshint', 'jslint', 'jasmine:test', 'concat', 'uglify']);
-    grunt.registerTask('test', ['bower', 'jshint', 'jslint', 'jasmine:coverage']);
-    grunt.registerTask('build', ['bower', 'concat', 'uglify']);
-    grunt.registerTask('jenkins', ['bower', 'jshint', 'jslint', 'jasmine:coverage', 'concat', 'uglify']);
+    grunt.registerTask('default', ['less:css', 'jshint', 'jslint', 'jasmine:coverage', 'concat', 'uglify']);
+    grunt.registerTask('test', ['less:css', 'jshint', 'jslint', 'jasmine:coverage']);
+    grunt.registerTask('build', ['less:css', 'concat', 'uglify']);
 };

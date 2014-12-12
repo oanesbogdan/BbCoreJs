@@ -21,21 +21,24 @@ require.config({
     catchError: true,
     urlArgs: 'cb=' + Math.random(),
     paths: {
-        'jquery': 'lib/jquery/jquery',
-        'jqueryui': 'lib/jquery-ui/jquery-ui',
-        'jsclass' : 'node_modules/jsclass/min/core',
-        'underscore': 'lib/underscore/underscore',
-        'handlebars': 'lib/handlebars/handlebars',
         'tb.core': 'src/tb/main',
         'component': 'src/tb/component/component',
-        'BackBone': 'lib/backbone/backbone',
-        'nunjucks': 'lib/nunjucks/nunjucks.min',
-        'moment': 'lib/moment/moment',
-        'text': 'lib/requirejs-text/text',
-        'bootstrapjs': 'lib/bootstrap/bootstrap',
-        'URIjs': 'lib/uri.js',
-        'datetimepicker': 'lib/datetimepicker/jquery.datetimepicker',
-        "jquery-layout" : 'lib/jquery.layout/jquery.layout-latest'
+
+        'jquery': 'bower_components/jquery/dist/jquery.min',
+        'jqueryui': 'bower_components/jquery-ui/jquery-ui.min',
+        'jsclass' : 'node_modules/jsclass/min/core',
+        'underscore': 'bower_components/underscore/underscore-min',
+        'nunjucks': 'bower_components/nunjucks/browser/nunjucks.min',
+        'BackBone': 'bower_components/backbone/backbone',
+        'text': 'bower_components/requirejs-text/text',
+        'moment': 'bower_components/moment/moment',
+        'URIjs': 'bower_components/uri.js/src',
+        'datetimepicker': 'bower_components/datetimepicker/jquery.datetimepicker',
+        'jquery-layout' : 'bower_components/jquery.layout/dist/jquery.layout-latest.min',
+        'jqLayout': 'bower_components/jquery.layout/dist/jquery.layout-latest.min',
+        'lib.jqtree': 'bower_components/jqtree/tree.jquery',
+        'jssimplepagination': 'bower_components/jssimplepagination/jquery.simplePagination',
+        'bootstrapjs': 'bower_components/bootstrap/dist/js/bootstrap.min'
     },
     'shim': {
         underscore: {
@@ -45,10 +48,10 @@ require.config({
             deps: ['underscore', 'jquery'],
             exports: 'Backbone'
         },
-        Bootstrap: {
+        bootstrapjs: {
             deps: ['jquery']
         },
-        "jquery-layout": {
+        'jquery-layout': {
             deps: ['jquery']
         }
 

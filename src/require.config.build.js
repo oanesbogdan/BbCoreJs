@@ -20,16 +20,37 @@ require.config({
     baseUrl: 'resources/',
     catchError: true,
     paths: {
-        'jquery': 'lib/jquery/jquery',
-        'jsclass' : 'lib/jsclass/class',
-        'underscore': 'lib/underscore/underscore',
-        'tb.core': 'build/main.min', // 'src/tb/main',
+        'tb.core': 'src/tb/main.build',
         'component': 'src/tb/component/component',
-        'BackBone': 'lib/backbone/backbone',
-        'moment': 'lib/moment/moment',
-        'URIjs': 'lib/uri.js'
+
+        'jquery': 'bower_components/jquery/dist/jquery.min',
+        'jqueryui': 'bower_components/jquery-ui/jquery-ui.min',
+        'jsclass' : 'node_modules/jsclass/min/core',
+        'underscore': 'bower_components/underscore/underscore-min',
+        'nunjucks': 'bower_components/nunjucks/browser/nunjucks.min',
+        'BackBone': 'bower_components/backbone/backbone',
+        'text': 'bower_components/requirejs-text/text',
+        'moment': 'bower_components/moment/moment',
+        'URIjs': 'bower_components/uri.js/src',
+        'datetimepicker': 'bower_components/datetimepicker/jquery.datetimepicker',
+        'jquery-layout' : 'bower_components/jquery.layout/dist/jquery.layout-latest.min',
+        'lib.jqtree': 'bower_components/jqtree/tree.jquery',
+        'bootstrapjs': 'bower_components/bootstrap/dist/js/bootstrap.min'
     },
     'shim': {
-        'BackBone': {}
+        underscore: {
+            exports: '_'
+        },
+        BackBone: {
+            deps: ['underscore', 'jquery'],
+            exports: 'Backbone'
+        },
+        bootstrapjs: {
+            deps: ['jquery']
+        },
+        'jquery-layout': {
+            deps: ['jquery']
+        }
+
     }
 });

@@ -1,9 +1,3 @@
-require.config({
-    paths: {
-        'jssimplepagination': 'lib/jssimplepagination/jquery.simplePagination'
-    }
-});
-
 define(['jquery', 'jssimplepagination'], function (jQuery) {
     'use strict';
     var $ = jQuery,
