@@ -111,7 +111,7 @@ define('tb.core.Exception', ['tb.core.Api', 'jsclass'], function () {
             var expected = new Exception(name, message, code);
             expected.pushError(expected, expected.api);
 
-            throw 'Error n°' + code + ' ' + name + ': ' + message;
+            throw 'Error n ' + code + ' ' + name + ': ' + message;
         };
 
     throwNewException.silent = function (name, code, message) {

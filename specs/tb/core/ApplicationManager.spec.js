@@ -82,7 +82,7 @@ define(['tb.core', 'component!logger'], function (Core, logger) {
             Core.ApplicationManager.reset();
         });
         var errorMessage = function (code, message) {
-                return 'Error n°' + code + ' ApplicationManagerException: ' + message;
+                return 'Error n ' + code + ' ApplicationManagerException: ' + message;
             };
 
         it("ApplicationManager.Init throws exception when wrong params are provided", function () {

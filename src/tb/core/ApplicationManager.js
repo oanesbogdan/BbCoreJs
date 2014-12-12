@@ -33,7 +33,7 @@
  *                          ---> Then the right method is invoked
  *                              --> The right template
  *
- *  Application can déclare many controller BackBone Controllers
+ *  Application can declare many controller BackBone Controllers
  *  Application Manager
  **/
 define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery', 'underscore', 'tb.core.Utils', 'tb.core.ApplicationContainer', 'tb.core.Api', 'tb.core.ControllerManager'], function (require) {

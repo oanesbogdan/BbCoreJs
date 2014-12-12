@@ -12,21 +12,21 @@ define(['tb.component/formbuilder/form/element/Element'], function (ElementConst
                 element = new ElementConstructor();
                 expect(false).toBe(true);
             } catch (e) {
-                expect(e).toEqual('Error n°500 BadTypeException: The key of element must be a string');
+                expect(e).toEqual('Error n 500 BadTypeException: The key of element must be a string');
             }
 
             try {
                 element = new ElementConstructor('foo');
                 expect(false).toBe(true);
             } catch (e) {
-                expect(e).toEqual('Error n°500 MissingConfigException: Config must be set');
+                expect(e).toEqual('Error n 500 MissingConfigException: Config must be set');
             }
 
             try {
                 element = new ElementConstructor('foo', {});
                 expect(false).toBe(true);
             } catch (e) {
-                expect(e).toEqual('Error n°500 BadTypeException: The formTag of element must be a string');
+                expect(e).toEqual('Error n 500 BadTypeException: The formTag of element must be a string');
             }
 
             expect(element).not.toBeDefined();
@@ -42,7 +42,7 @@ define(['tb.component/formbuilder/form/element/Element'], function (ElementConst
                 element = new ElementConstructor('foo', config, formTag);
                 expect(false).toBe(true);
             } catch (e) {
-                expect(e).toEqual('Error n°500 MissingPropertyException: Property "type" not found of element: foo');
+                expect(e).toEqual('Error n 500 MissingPropertyException: Property "type" not found of element: foo');
             }
 
             expect(element).not.toBeDefined();
