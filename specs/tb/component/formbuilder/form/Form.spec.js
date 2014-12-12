@@ -50,7 +50,7 @@ define(
                     form = new Form();
                     expect(true).toBe(false);
                 } catch (e) {
-                    expect(e).toEqual('Error n°500 MissingConfigException: Config must be set');
+                    expect(e).toEqual('Error n 500 MissingConfigException: Config must be set');
                 }
             });
 
@@ -59,7 +59,7 @@ define(
                     form = new Form({});
                     expect(true).toBe(false);
                 } catch (e) {
-                    expect(e).toEqual('Error n°500 MissingPropertyException: Property "template" not found in form');
+                    expect(e).toEqual('Error n 500 MissingPropertyException: Property "template" not found in form');
                 }
             });
 
@@ -68,7 +68,7 @@ define(
                     form = new Form({'template': 'my_template.twig'});
                     expect(true).toBe(false);
                 } catch (e) {
-                    expect(e).toEqual('Error n°500 MissingPropertyException: Property "view" not found in form');
+                    expect(e).toEqual('Error n 500 MissingPropertyException: Property "view" not found in form');
                 }
             });
 

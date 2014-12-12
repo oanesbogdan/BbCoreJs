@@ -26,7 +26,7 @@ define(['tb.component/formbuilder/main'], function (FormBuilder) {
                 FormBuilder.renderForm({});
                 expect(false).toBe(true);
             } catch (e) {
-                expect(e).toEqual('Error n°500 MissingPropertyException: Property "elements" not found');
+                expect(e).toEqual('Error n 500 MissingPropertyException: Property "elements" not found');
             }
 
             FormBuilder.renderForm(config);

@@ -54,14 +54,14 @@ define(['require', 'tb.core'], function () {
                 api.Scope.register({});
                 expect(false).toBe(true);
             } catch (e) {
-                expect(e).toBe('Error n°' + 12101 + ' ' + 'ScopeException' + ': ' + 'All scope have to be a string.');
+                expect(e).toBe('Error n ' + 12101 + ' ' + 'ScopeException' + ': ' + 'All scope have to be a string.');
             }
 
             try {
                 api.Scope.subscribe('slug', false, mock.slugCallbackClosing);
                 expect(false).toBe(true);
             } catch (e) {
-                expect(e).toBe('Error n°' + 12102 + ' ' + 'ScopeException' + ': ' + 'Scope subscribetion was incorrect.');
+                expect(e).toBe('Error n ' + 12102 + ' ' + 'ScopeException' + ': ' + 'Scope subscribetion was incorrect.');
             }
 
             spyOn(api.exception, 'silent');
