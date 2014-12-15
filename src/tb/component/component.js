@@ -27,7 +27,7 @@
     define(['tb.core.Api'], function (Core) {
         return {
             load: function (name, req, onload) {
-                req(['src/tb/component/' + name + '/main'], function (component) {
+                req(['tb.component/' + name + '/main'], function (component) {
                     if (Core.config('component:' + name) !== undefined && 'function' === typeof component.init) {
                         component.init(Core.config('component:' + name));
                     }
