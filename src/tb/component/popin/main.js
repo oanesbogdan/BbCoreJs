@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('tb.component/popin/main', ['tb.component/popin/PopIn', 'jquery', 'jqueryui', 'jsclass'], function (PopIn, jQuery) {
+define(['tb.component/popin/PopIn', 'jquery', 'jqueryui', 'jsclass'], function (PopIn, jQuery) {
     'use strict';
 
     /**
