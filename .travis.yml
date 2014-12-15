@@ -4,7 +4,7 @@ node_js:
 before_install:
     - npm cache clean
     - npm update npm -g
-    - npm install -g bower grunt-cli
+    - npm install -g bower grunt-cli codeclimate-test-reporter
 install:
     - npm install --save-dev
     - bower install
