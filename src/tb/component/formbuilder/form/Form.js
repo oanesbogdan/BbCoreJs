@@ -267,7 +267,7 @@ define('tb.component/formbuilder/form/Form', ['tb.core.Api', 'underscore', 'Back
                     elementTemplate = require('text!' + elementConfig.template);
                     elementView = require(elementConfig.view);
 
-                    Element = new ElementClass(key,  elementConfig, this.id, elementView, elementTemplate, this.getError(key));
+                    Element = new ElementClass(key, elementConfig, this.id, elementView, elementTemplate, this.getError(key));
                     group = Element.group;
 
                     if (data !== undefined) {
