@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define('tb.component/popin/PopIn', ['jquery', 'jsclass'], function (jQuery) {
+define(['jquery', 'jsclass'], function (jQuery) {
     'use strict';
 
     /**
