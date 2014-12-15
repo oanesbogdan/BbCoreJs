@@ -1,11 +1,11 @@
-define(["jquery", "tb.component/treeview/TreeView", "tb.component/popin/main"], function (jQuery, TreeViewMng, PopInMng) {
+define('tb.component/treeview/PopinTreeView', ['jquery', 'tb.component/treeview/TreeView', 'tb.component/popin/main'], function (jQuery, TreeViewMng, PopInMng) {
     'use strict';
-    var popInTemplate = jQuery("<div class='bb5-windowpane-tree'><div class='action-ctn'><input type='checkbox'/>Show folder</div><div class='bb5-treeview'>Loading...</div></div>").clone(),
+    var popInTemplate = jQuery('<div class="bb5-windowpane-tree"><div class="action-ctn"><input type="checkbox"/>Show folder</div><div class="bb5-treeview">Loading...</div></div>').clone(),
         PopInTreeview = new JS.Class({
             defaultConfig: {
                 height: 300,
                 width: 350,
-                title: "Page tree",
+                title: 'Page tree',
                 autoDisplay: false
             },
             initialize: function (options) {
@@ -15,9 +15,9 @@ define(["jquery", "tb.component/treeview/TreeView", "tb.component/popin/main"], 
                 this.checkParameters();
                 this.popIn = this.createPopIn();
                 this.popIn.setContent(popInTemplate);
-                this.popIn.addOption("create", jQuery.proxy(this.initOnCreate, this));
-                this.popIn.addOption("open", jQuery.proxy(this.initOnOpen, this));
-                if (this.options.hasOwnProperty("autoDisplay") && this.options.autoDisplay) {
+                this.popIn.addOption('create', jQuery.proxy(this.initOnCreate, this));
+                this.popIn.addOption('open', jQuery.proxy(this.initOnOpen, this));
+                if (this.options.hasOwnProperty('autoDisplay') && this.options.autoDisplay) {
                     this.display();
                 }
             },
@@ -28,19 +28,19 @@ define(["jquery", "tb.component/treeview/TreeView", "tb.component/popin/main"], 
                 return this.treeView;
             },
             checkParameters: function () {
-                this.options.open = (typeof this.options.open === "function") ? jQuery.proxy(this.options.open, this) : function () {
+                this.options.open = (typeof this.options.open === 'function') ? jQuery.proxy(this.options.open, this) : function () {
                     return;
                 };
-                this.options.create = (typeof this.options.create === "function") ? jQuery.proxy(this.options.create, this) : function () {
+                this.options.create = (typeof this.options.create === 'function') ? jQuery.proxy(this.options.create, this) : function () {
                     return;
                 };
-                if (!this.options.hasOwnProperty("data") || !Array.isArray(this.options.data)) {
+                if (!this.options.hasOwnProperty('data') || !Array.isArray(this.options.data)) {
                     this.options.data = [];
                 }
             },
             initOnCreate: function () {
                 var content = this.popIn.getContent(),
-                    container = jQuery(content).find(".bb5-treeview");
+                    container = jQuery(content).find('.bb5-treeview');
                 this.treeView.render(container);
                 this.options.create(); //won't be need
             },
@@ -52,7 +52,7 @@ define(["jquery", "tb.component/treeview/TreeView", "tb.component/popin/main"], 
                 this.isLoaded = true;
             },
             createPopIn: function () {
-                PopInMng.init("#bb5-ui");
+                PopInMng.init('#bb5-ui');
                 return PopInMng.createPopIn(this.options);
             },
             display: function () {
