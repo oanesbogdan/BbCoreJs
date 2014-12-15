@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core', 'jsclass'], function (Core) {
+define('tb.component/formbuilder/form/element/Element', ['tb.core', 'jsclass'], function (Core) {
     'use strict';
 
     /**
