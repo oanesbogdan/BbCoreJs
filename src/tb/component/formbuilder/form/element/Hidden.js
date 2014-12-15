@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('tb.component/formbuilder/form/element/Hidden', ['tb.component/formbuilder/form/element/Element', 'jsclass'], function (Element) {
+define(['tb.component/formbuilder/form/element/Element', 'jsclass'], function (Element) {
     'use strict';
 
     /**

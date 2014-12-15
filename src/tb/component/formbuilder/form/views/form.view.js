@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('tb.component/formbuilder/form/views/form.view', ['tb.core.Renderer', 'BackBone', 'jquery'], function (Renderer, Backbone, jQuery) {
+define(['tb.core.Renderer', 'BackBone', 'jquery'], function (Renderer, Backbone, jQuery) {
 
     'use strict';
 
