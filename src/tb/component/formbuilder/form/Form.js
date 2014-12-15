@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core.Api', 'underscore', 'BackBone', 'jsclass'], function (Core, us, Backbone) {
+define('tb.component/formbuilder/form/Form', ['tb.core.Api', 'underscore', 'BackBone', 'jsclass'], function (Core, us, Backbone) {
     'use strict';
 
     /**
@@ -267,7 +267,7 @@ define(['tb.core.Api', 'underscore', 'BackBone', 'jsclass'], function (Core, us,
                     elementTemplate = require('text!' + elementConfig.template);
                     elementView = require(elementConfig.view);
 
-                    Element = new ElementClass(key,  elementConfig, this.id, elementView, elementTemplate, this.getError(key));
+                    Element = new ElementClass(key, elementConfig, this.id, elementView, elementTemplate, this.getError(key));
                     group = Element.group;
 
                     if (data !== undefined) {

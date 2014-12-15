@@ -1,22 +1,11 @@
-require.config({
-    paths: {
-        "lib.jqtree": "lib/jqtree/tree.jquery"
-    },
-    shim: {
-        "lib.jqtree": {
-            deps: ['jquery'],
-            exports: 'jQuery.fn.chosen'
-        }
-    }
-});
-define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
-    "use strict";
+define('tb.component/treeview/TreeView', ['jquery', 'lib.jqtree', 'jsclass'], function (jQuery) {
+    'use strict';
     /**
      * TreeView's class
      */
     var TreeView = new JS.Class({
         defaultOptions: {
-            loadingMessage: "Loading...",
+            loadingMessage: 'Loading...',
             allowMultiRoots: false,
             beforeRender: function () {
                 return;
@@ -29,13 +18,13 @@ define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
             this.useWrapper = false;
             this.isloaded = false;
             var uid = Math.random().toString(36).substr(2, 9);
-            this.el = userOptions.el || jQuery("<div class='treeview-ctn' data-treeview-id='" + uid + "'/>");
+            this.el = userOptions.el || jQuery('<div class="treeview-ctn" data-treeview-id="' + uid + '" >');
             this.options = jQuery.extend({}, this.defaultOptions, userOptions.options);
-            if (typeof this.options.beforeRender === "function") {
+            if (typeof this.options.beforeRender === 'function') {
                 this.beforeRender = this.options.beforeRender;
             }
             if (jQuery(this.el).hasClass('treeview-ctn')) {
-                jQuery("body").append(this.el);
+                jQuery('body').append(this.el);
                 this.useWrapper = true;
             }
 
@@ -63,7 +52,7 @@ define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
          */
         on: function (eventName, callback, context) {
             context = context || this;
-            this.treeEl.bind("tree." + eventName, jQuery.proxy(callback, context));
+            this.treeEl.bind('tree.' + eventName, jQuery.proxy(callback, context));
         },
         /**
          * Generic proxy that allows us to invoke every methods on the tree widget
@@ -75,7 +64,7 @@ define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
                 methodName = args[0];
                 return this.treeEl.tree.apply(this.treeEl, arguments);
             } catch (e) {
-                throw "TreeViewException Error while invoking " + methodName + e;
+                throw 'TreeViewException Error while invoking ' + methodName + e;
             }
         },
         /**
@@ -86,9 +75,9 @@ define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
          */
         set: function (key, value, reload) {
             if (typeof key !== 'string' || !value) {
-                throw "TreeViewException [set] key must be a string";
+                throw 'TreeViewException [set] key must be a string';
             }
-            jQuery(this.treeEl).tree("setOption", key, value);
+            jQuery(this.treeEl).tree('setOption', key, value);
             if (reload) {
                 this.reload();
             }
@@ -100,7 +89,7 @@ define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
         setOptions: function (options, reload) {
             var key;
             if (!jQuery.isPlainObject(options)) {
-                throw "TreeViewException [setOptions] options should be an object";
+                throw 'TreeViewException [setOptions] options should be an object';
             }
             for (key in options) {
                 if (options.hasOwnProperty(key)) {
@@ -117,13 +106,13 @@ define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
          * @return {node}
          */
         getSelectedNode: function () {
-            return this.invoke("getSelectedNode");
+            return this.invoke('getSelectedNode');
         },
         /**
          * Get the root node
          */
         getRootNode: function () {
-            return this.invoke("getTree");
+            return this.invoke('getTree');
         },
         /**
          * Get a node by it's Id
@@ -132,9 +121,9 @@ define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
          */
         getNodeById: function (id) {
             if (!id) {
-                throw "TreeViewException [getNodeById] an id should be provided";
+                throw 'TreeViewException [getNodeById] an id should be provided';
             }
-            return this.invoke("getNodeById", id);
+            return this.invoke('getNodeById', id);
         },
         /**
          * Append a node to an other one
@@ -146,10 +135,10 @@ define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
             if (!this.hasRoot()) {
                 return this.setData([node]);
             }
-            if (parentNode && parentNode.hasOwnProperty("id")) {
-                return this.invoke("appendNode", node, parentNode);
+            if (parentNode && parentNode.hasOwnProperty('id')) {
+                return this.invoke('appendNode', node, parentNode);
             }
-            return this.invoke("appendNode", node);
+            return this.invoke('appendNode', node);
         },
         /**
          * Add node at a specific position
@@ -158,20 +147,20 @@ define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
          * @param {node} existingNode
          */
         addNode: function (node, position, existingNode) {
-            var availablePositions = ["after", "before", "append"];
+            var availablePositions = ['after', 'before', 'append'];
             if (availablePositions.indexOf(position) === -1) {
-                throw "TreeViewException [addNode] allowed positions are 'after' and 'before'";
+                throw 'TreeViewException [addNode] allowed positions are after and before';
             }
             if (!this.options.allowMultiRoots) {
-                if (this.isRoot(existingNode) && (position === "after" || position === "before")) {
-                    throw "TreeViewException [addNode] you can't add a node after or before the root node";
+                if (this.isRoot(existingNode) && (position === 'after' || position === 'before')) {
+                    throw 'TreeViewException [addNode] you can\'t add a node after or before the root node';
                 }
             }
-            if (position === "append") {
-                return this.invoke("appendNode", node, existingNode);
+            if (position === 'append') {
+                return this.invoke('appendNode', node, existingNode);
             }
             position = position.charAt(0).toUpperCase() + position.slice(1);
-            return this.invoke("addNode" + position, node, existingNode);
+            return this.invoke('addNode' + position, node, existingNode);
         },
         /**
          * Move a node to a target at specific position
@@ -180,7 +169,7 @@ define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
          * @param {String} position
          */
         moveNode: function (node, targetNode, position) {
-            return this.invoke("moveNode", node, targetNode, position);
+            return this.invoke('moveNode', node, targetNode, position);
         },
         /**
          * Add data to the tree at a specific point
@@ -189,9 +178,9 @@ define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
          */
         setData: function (data, parentNode) {
             if (!Array.isArray(data)) {
-                throw "TreeViewException [setData] data should be an Array";
+                throw 'TreeViewException [setData] data should be an Array';
             }
-            return this.invoke("loadData", data, parentNode);
+            return this.invoke('loadData', data, parentNode);
         },
         /**
          * Check if the provided node is the root node
@@ -201,7 +190,7 @@ define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
         isRoot: function (node) {
             var rootNode = this.getRootNode(),
                 firstChild = rootNode.children[0];
-            if (firstChild && firstChild.hasOwnProperty("id")) {
+            if (firstChild && firstChild.hasOwnProperty('id')) {
                 return firstChild.id === node.id;
             }
             return false;
@@ -213,7 +202,7 @@ define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
          * @param {function} callback
          */
         loadDataFromRest: function (url, parentNode, onLoaded) {
-            return this.invoke("loadDataFromUrl", url, parentNode, onLoaded);
+            return this.invoke('loadDataFromUrl', url, parentNode, onLoaded);
         },
         /**
          * Render the tree
@@ -227,13 +216,13 @@ define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
          * @param {Node} node
          **/
         removeNode: function (node) {
-            return this.invoke("removeNode", node);
+            return this.invoke('removeNode', node);
         },
         /**
          * Reload the tree
          **/
         reload: function () {
-            return this.invoke("reload");
+            return this.invoke('reload');
         }
     }),
         /**
@@ -243,7 +232,7 @@ define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
          * @return TreeView
          **/
         createTreeView = function (el, options) {
-            el = (typeof el === "string") ? el : null;
+            el = (typeof el === 'string') ? el : null;
             options = jQuery.isPlainObject(options) ? options : {};
             var config = {
                 el: el,

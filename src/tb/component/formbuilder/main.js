@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core.Api', 'jquery', 'tb.component/formbuilder/form/Form', 'tb.core.Utils', 'jsclass'], function (Core, jQuery, FormConstructor, Utils) {
+define('tb.component/formbuilder/main', ['tb.core.Api', 'jquery', 'tb.component/formbuilder/form/Form', 'tb.core.Utils', 'jsclass'], function (Core, jQuery, FormConstructor, Utils) {
     'use strict';
 
     /**
