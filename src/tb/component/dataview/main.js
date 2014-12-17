@@ -41,6 +41,7 @@ define(['require', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api', 'text!datavie
                 this.dataWrapper = $(this.widget).find('.data-wrapper').eq(0);
                 this.handleCustomItemEvents();
                 this.selectionInfos = [];
+                this.data = {};
                 this.bindEvents();
             },
 
@@ -211,7 +212,7 @@ define(['require', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api', 'text!datavie
             }
 
         });
-        
+
     return {
         createDataView: function (config) {
             return new BaseDataView(config);

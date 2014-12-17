@@ -11,7 +11,7 @@ require.config({
     }
 });
 
-define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin/main', 'component!dataview', 'component!mask', 'text!cs-templates/layout.test.tpl', 'content.renderer', 'cs-control/searchengine.control', 'cs-control/pageselector.control', 'jqLayout', "component!datastore", "component!treeview", "component!pagination", "node.formater", 'nunjucks', 'content.datastore'], function (require, jQuery, layout, PopInMng) {
+define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin/main', 'component!dataview', 'component!mask', 'text!cs-templates/layout.tpl', 'content.renderer', 'cs-control/searchengine.control', 'cs-control/pageselector.control', 'jqLayout', "component!datastore", "component!treeview", "component!pagination", "node.formater", 'nunjucks', 'content.datastore'], function (require, jQuery, layout, PopInMng) {
     var formater = require('node.formater'),
 
     ContentRenderer = require('content.renderer'),
@@ -40,7 +40,7 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
             this.state = {};
             this.mode = this.VIEW_MODE;
             this.handleComponentState();
-            this.widget = $(require('text!cs-templates/layout.test.tpl')).clone();
+            this.widget = $(require('text!cs-templates/layout.tpl')).clone();
             this.popIn = this.initPopIn();
             this.popIn.addOption("open", jQuery.proxy(this.onOpen, null, this));
             this.options = jQuery({}, this.defautConfig, userConfig);
@@ -65,7 +65,7 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
         initControls : function () {
             this.pageRangeSelector = require("cs-control/pageselector.control").createPageRangeSelector({
                 range : this.config.pageRange
-                });
+            });
             this.searchEngine = require("cs-control/searchengine.control").createSearchEngine(this.componentState.searchEngine);
         },
 
@@ -156,30 +156,26 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
             var self = this;
 
             /* show mask */
-            this.contentRestDataStore.on("processing", function () {
+            this.contentRestDataStore.on('processing', function () {
                 self.showMask();
             });
 
-            this.contentRestDataStore.on("doneProcessing", function () {
+            this.contentRestDataStore.on('doneProcessing', function () {
                 self.hideMask();
             });
 
-            $(this.widget).on('click', '.bb5-sortasgrid', function (e) {
-                $(this.widget).find('.pull-right .active').removeClass('active');
-                $(e.currentTarget).addClass('active');
-                self.contentDataView.setRenderMode('grid');
+            $(this.widget).on('click', '.viewmode-btn', function (e) {
+                var viewMode = $(e.currentTarget).data('viewmode');
+                self.setDataViewMode(viewMode);
             });
 
-            $(this.widget).on('click','.bb5-sortaslist', function (e) {
-                $(this.widget).find('.pull-right .active').removeClass('active');
-                $(e.currentTarget).addClass('active');
-                self.contentDataView.setRenderMode('list');
-            });
 
             /* When click on a node */
             this.categoryTreeView.on('click', function (e) {
                 var selectedNode = e.node;
-                if($(selectedNode.element).hasClass("jqtree-selected")) { return false; }
+                if($(selectedNode.element).hasClass("jqtree-selected")) {
+                    return false;
+                }
 
                 if(selectedNode.isRoot){
                     return;
@@ -234,18 +230,23 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
             this.contentPagination.setItems(resultTotal);
         },
 
+        setDataViewMode: function (mode) {
+            var availableMode = ['grid', 'list'];
+            $(this.widget).find('.viewmode-btn').removeClass("active");
+            $(this.widget).find(".bb5-sortas"+mode).addClass("active");
+            if (availableMode.indexOf(mode) !== -1) {
+                this.contentDataView.setRenderMode(mode);
+            }
+        },
+
         setContenttypes: function (contentypeArr) {
             var data = formater.format("contenttype", contentypeArr);
             this.categoryTreeView.setData(data);
         },
 
-        setMode: function () { },
-
-        reset: function () {
+        getSelectedContents: function () {
             return;
         },
-
-        getSelectedContent: function () {},
 
         initPopIn: function () {
             PopInMng.init("#bb5-ui");
