@@ -1,7 +1,7 @@
 define(
     [
         'tb.component/formbuilder/form/element/views/form.element.view.password',
-        'tb.component/formbuilder/form/element/Password',
+        'tb.component/formbuilder/form/ElementBuilder!Password',
         'text!tb.component/formbuilder/form/element/templates/password.twig'
     ],
     function (view, TextConstructor, template) {

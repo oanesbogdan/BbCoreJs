@@ -1,7 +1,7 @@
 define(
     [
         'tb.component/formbuilder/form/element/views/form.element.view.text',
-        'tb.component/formbuilder/form/element/Text',
+        'tb.component/formbuilder/form/ElementBuilder!Text',
         'text!tb.component/formbuilder/form/element/templates/text.twig'
     ],
     function (view, TextConstructor, template) {
