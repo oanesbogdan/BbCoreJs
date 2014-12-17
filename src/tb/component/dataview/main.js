@@ -47,7 +47,7 @@ define(['require', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api', 'text!datavie
 
             handleCustomItemEvents: function () {
                 var self = this;
-                if ($.isEmptyObject(this.config.customItemEvents)) return;
+                if ($.isEmptyObject(this.config.customItemEvents)) { return; }
                 $.each(this.config.customItemEvents, function (customEvent, data) {
                     if (!data.hasOwnProperty('evt') || data.hasOwnProperty('selector')) {
                         return true;
@@ -157,7 +157,7 @@ define(['require', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api', 'text!datavie
                 this.renderers[renderer.name + 'Renderer'] = renderer;
             },
 
-            genId: (function (prefix) {
+            genId: (function () {
                 var compteur = 0;
                 return function (prefix) {
                     prefix = (typeof prefix === 'string') ? prefix + '_' : '';
@@ -173,6 +173,7 @@ define(['require', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api', 'text!datavie
                     var itemRender = $(self.itemRenderer(self.currentRenderMode, item)); // when is a class it should provide a render
                     $(itemRender).data("view-item", self.genId("item"));
                     $(itemRender).data("item-data", item);
+                    $(itemRender).data("item-no", i);
                     $(itemRender).addClass(self.config.itemCls);
                     if (!itemRender || itemRender.length === 0) {
                         coreApi.exception('ApplicationManagerException', 50002, 'InvalidAppConfig [appPath] key is missing');
@@ -200,7 +201,8 @@ define(['require', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api', 'text!datavie
                 var selections = $(this.dataWrapper).find("." + this.config.itemSelectedCls),
                     result = [];
                 if (selections.length) {
-                    $.each(selections, function (i, item) {
+                    $.each(selections, function (i) {
+                        var item =  selections[i];
                         result.push($(item).data('itemData'));
                     });
                 }

@@ -195,7 +195,7 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
              * @returns {Promise}
              */
             "delete": function (uid) {
-                return CoreDriverHandler["delete"].(this.TYPE, {'id': uid}, {}, 0, null);
+                return CoreDriverHandler["delete"](this.TYPE, {'id': uid}, {}, 0, null);
             },
 
             /**

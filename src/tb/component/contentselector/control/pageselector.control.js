@@ -1,20 +1,18 @@
-define(['require', 'jsclass', 'jquery', 'underscore', 'BackBone'], function (require, jsclass, jQuery, underscore, BackBone) {
-
-
+define(['require', 'underscore', 'jquery', 'jsclass', 'BackBone'], function (underscore, jQuery) {
+    'use strict';
     var PageRangeSelector = new JS.Class({
-
-        defaultConfig : {
+        defaultConfig: {
             range: [1, 50],
-            cls : 'max-per-page-selector input-xs',
+            cls: 'max-per-page-selector input-xs',
             optionCls: 'page',
             css: {}
         },
 
         initialize: function (userConfig) {
-            userConfig = userConfig ||  {};
+            userConfig = userConfig || {};
             this.config = jQuery.extend({}, this.defaultConfig, userConfig);
-            jQuery.extend(this, {}, BackBone.Events);
-            this.widget = $("<select/>");
+            jQuery.extend(this, {}, Backbone.Events);
+            this.widget = jQuery("<select/>");
             this.widget.addClass(this.config.cls);
             this.updateUi();
             this.bindEvents();
@@ -22,28 +20,26 @@ define(['require', 'jsclass', 'jquery', 'underscore', 'BackBone'], function (req
 
         updateUi: function () {
             var self = this,
-            optionsFragment = document.createDocumentFragment(),
-            start = this.config.range[0] || 10,
-            stop = this.config.range[1] + 10 || 60,
-            step = (this.config.range[2])? this.config.range[2] : 10;
-            var options =  underscore.range(start, stop, step);
-            $.each(options, function(i, value) {
-                var option = $('<option/>')
-                .val(value)
-                .text(value)
-                .addClass(self.config.optionCls);
-                optionsFragment.appendChild($(option).get(0));
+                optionsFragment = document.createDocumentFragment(),
+                start = this.config.range[0] || 10,
+                stop = this.config.range[1] + 10 || 60,
+                step = this.config.range[2] || 10,
+                options = underscore.range(start, stop, step);
+            jQuery.each(options, function (i, value) {
+                var option = jQuery('<option/>').val(value).text(value).addClass(self.config.optionCls);
+                jQuery(option).data('no', i);
+                optionsFragment.appendChild(jQuery(option).get(0));
             });
-            this.widget.append($(optionsFragment));
+            this.widget.append(jQuery(optionsFragment));
         },
 
         select: function (val, silent) {
-            val = parseInt(val);
-            silent = (typeof silent==='boolean') ? silent : false;
+            val = parseInt(val, 10);
+            silent = (typeof silent === 'boolean') ? silent : false;
             this.widget.val(val);
             this.currentStep = val;
             if (!silent) {
-                this.handleChange.call(this, this, {});
+                this.handleChange(this);
             }
         },
 
@@ -51,7 +47,7 @@ define(['require', 'jsclass', 'jquery', 'underscore', 'BackBone'], function (req
             this.config.range = range;
         },
 
-        handleChange: function (selector, e) {
+        handleChange: function (selector) {
             selector.currentStep = this.val();
             selector.trigger('pageRangeSelectorChange', selector.currentStep);
         },
@@ -61,26 +57,23 @@ define(['require', 'jsclass', 'jquery', 'underscore', 'BackBone'], function (req
         },
 
         bindEvents: function () {
-           this.widget.on('change', $.proxy(this.handleChange, this.widget, this));
+            this.widget.on('change', jQuery.proxy(this.handleChange, this.widget, this));
         },
 
         render: function (container, positionMethod) {
-            positionMethod = (typeof positionMethod==="string") ? positionMethod : 'html';
+            positionMethod = (typeof positionMethod === "string") ? positionMethod : 'html';
             if (container && jQuery(container).length) {
                 jQuery(container)[positionMethod](this.widget);
-            }else{
+            } else {
                 return this.widget;
             }
         }
-});
-
-return {
-    createPageRangeSelector: function (config) {
-        config = config || {};
-        return new PageRangeSelector(config);
-    },
-    PageRangeSelector: PageRangeSelector
-};
-
-
+    });
+    return {
+        createPageRangeSelector: function (config) {
+            config = config || {};
+            return new PageRangeSelector(config);
+        },
+        PageRangeSelector: PageRangeSelector
+    };
 });

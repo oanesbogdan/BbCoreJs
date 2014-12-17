@@ -63,12 +63,15 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 this.config = $.extend(true, this.config, config);
                 this.onInit();
             },
+
             getMainRoute: function () {
                 return this.config.mainRoute;
             },
+
             exposeMenu: function () {
                 return;
             },
+
             dispatchToController: function (controller, action, params) {
                 var def = new $.Deferred();
                 ControllerManager.loadController(this.getName(), controller).done(function (controller) {
@@ -83,6 +86,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 });
                 return def.promise();
             },
+
             invokeControllerService: function (controller, service, params) {
                 var dfd = new $.Deferred(),
                     serviceName;
@@ -107,18 +111,23 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
             setControllerMng: function (controllerMng) {
                 return controllerMng;
             },
+
             onInit: function () {
                 console.log('application init is called');
             },
+
             onStart: function () {
                 this.trigger(this.getName() + ':onStart');
             },
+
             onStop: function () {
                 console.log("onStop");
             },
+
             onResume: function () {
                 console.log("onStop");
             },
+
             onError: function (e) {
                 console.log('error in[' + this.name + '] application', e);
             }
@@ -167,6 +176,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
             }
             AppDefContainer[appname] = ApplicationConstructor;
         },
+
         registerAppRoutes = function (routes) {
             var def = new $.Deferred();
             return bbUtils.requireWithPromise(routes).done(function () {
@@ -176,6 +186,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 def.reject(reason);
             });
         },
+
         launchApplication = function (appname, config) {
             var dfd = new $.Deferred(),
                 applicationInfos = AppContainer.getByAppInfosName(appname),
@@ -221,6 +232,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
             }
             return dfd.promise();
         },
+
         load = function (appname, config, launchApp) {
             var def = new $.Deferred(),
                 doLaunchApp = (typeof launchApp === "boolean") ? launchApp : true,
@@ -250,6 +262,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 Api.trigger('appIsReady', app); //use mediator
             });
         },
+
         reset = function () {
             //AppDefContainer = {};
             currentApplication = null;
@@ -257,11 +270,13 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
             Api.off();
             AppContainer.reset();
         },
+
         handleAppLoadingErrors = function (reason) {
             Api.trigger('appError', {
                 reason: reason
             });
         },
+
         init = function (configuration) {
             if (!configuration || !$.isPlainObject(configuration)) {
                 coreApi.exception("ApplicationManagerException", 50001, 'init expects a parameter one to be an object.');
@@ -298,6 +313,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
             });
             bbUtils.requireWithPromise(appPaths).then($.proxy(registerAppRoutes, null, routePaths)).done(appsAreLoaded).fail(handleAppLoadingErrors);
         },
+
         invoke = function (actionInfos, params) {
             params = params || {};
             if (!actionInfos || ('string' !== typeof actionInfos)) {
@@ -321,6 +337,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                 });
             });
         },
+
         getAppInstance = function (appName, config) {
             config = config || {};
             if (typeof appName !== "string") {
@@ -345,9 +362,15 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
             }
             return appInstance;
         },
+
         invokeService = function (servicePath) {
             var dfd = new $.Deferred(),
-                serviceInfos, appname, serviceName, params, appInstance, controllerName;
+                serviceInfos,
+                appname,
+                serviceName,
+                params,
+                appInstance,
+                controllerName;
             if (!servicePath || typeof servicePath !== "string") {
                 coreApi.exception("ApplicationManagerException", 50011, 'invokeService expects parameter one to be a string.');
             }
@@ -376,6 +399,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
             }
             return dfd.promise();
         };
+
     Api = {
         registerApplication: registerApplication,
         invoke: invoke,
