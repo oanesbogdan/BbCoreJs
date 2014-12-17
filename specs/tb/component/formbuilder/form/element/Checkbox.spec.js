@@ -1,7 +1,7 @@
 define(
     [
         'tb.component/formbuilder/form/element/views/form.element.view.checkbox',
-        'tb.component/formbuilder/form/element/Checkbox',
+        'tb.component/formbuilder/form/ElementBuilder!Checkbox',
         'text!tb.component/formbuilder/form/element/templates/checkbox.twig'
     ],
     function (view, TextConstructor, template) {

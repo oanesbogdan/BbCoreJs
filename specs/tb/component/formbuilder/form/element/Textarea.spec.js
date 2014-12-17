@@ -1,7 +1,7 @@
 define(
     [
         'tb.component/formbuilder/form/element/views/form.element.view.textarea',
-        'tb.component/formbuilder/form/element/Textarea',
+        'tb.component/formbuilder/form/ElementBuilder!Textarea',
         'text!tb.component/formbuilder/form/element/templates/textarea.twig'
     ],
     function (view, TextConstructor, template) {

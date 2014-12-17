@@ -1,7 +1,7 @@
 define(
     [
         'tb.component/formbuilder/form/element/views/form.element.view.radio',
-        'tb.component/formbuilder/form/element/Radio',
+        'tb.component/formbuilder/form/ElementBuilder!Radio',
         'text!tb.component/formbuilder/form/element/templates/radio.twig'
     ],
     function (view, TextConstructor, template) {

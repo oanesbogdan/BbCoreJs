@@ -1,7 +1,7 @@
 define(
     [
         'tb.component/formbuilder/form/element/views/form.element.view.select',
-        'tb.component/formbuilder/form/element/Select',
+        'tb.component/formbuilder/form/ElementBuilder!Select',
         'text!tb.component/formbuilder/form/element/templates/select.twig'
     ],
     function (view, TextConstructor, template) {
