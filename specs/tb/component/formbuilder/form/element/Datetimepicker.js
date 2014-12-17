@@ -13,7 +13,7 @@ define(
             var config = {
                     type: 'datetimepicker',
                     value: '1991-21-03',
-                    label: 'My datetimepicker',
+                    label: 'My datetimepicker'
                 },
                 formTag = 'hZ1e',
                 element = new Constructor('name', config, formTag, view, template);
