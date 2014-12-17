@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(function () {
+define('tb.component/formbuilder/form/element/Password', function () {
 
     'use strict';
 
