@@ -1,10 +1,8 @@
-
-	<div id="library-pane-wrapper" class="bb5-windowpane-wrapper windowpane-treeview">
+<div id="library-pane-wrapper" class="bb5-windowpane-wrapper windowpane-treeview">
     <div class="bb5-windowpane-tree ui-layout-pane ui-layout-west">
-
-			<div class="ui-layout-north">
-  <p><strong data-i18n="toolbar.selector.select_folder">Sélectionner une rubrique</strong></p>
-</div>
+        <div class="ui-layout-north">
+            <p><strong data-i18n="toolbar.selector.select_folder">Sélectionner une rubrique</strong></p>
+        </div>
 
 <div class="inner-center layout-overflow-scroll">
   <div class="bb5-windowpane-tree-inner">
@@ -23,6 +21,7 @@
 <div class="ui-layout-south">
 </div><!--/.ui-layout-south-->
     </div>
+
     <div class="bb5-windowpane-main ui-layout-pane ui-layout-center">
       <div class="ui-layout-north">
         <div class="bb5-form-wrapper">

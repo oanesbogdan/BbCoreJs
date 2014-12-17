@@ -1,6 +1,6 @@
     <div class="row search-engine">
       <div class="col-bb5-x">
-        <div class="row form-group"><span class="col-mdcol-sm-6"><label for="form10" class="sr-only">Title</label><input type="text" class="form-control input-xs content-title" placeholder="Titre" id="form10"></span></div>
+        <div class="row form-group"><span class="col-sm-6"><label for="form10" class="sr-only">Title</label><input type="text" class="form-control input-xs content-title" placeholder="Titre" id="form10"></span></div>
         <div class="row form-group">
           <div class="col-bb5-x">Published before : </div>
           <div class="col-bb5-22"><div class="input-group input-group-xs"><input type="text" class="form-control disabled input-xs before-date bb5-datepicker" placeholder="dd/mm/aaaa"><span class="input-group-btn"><button class="btn btn-default show-calendar" type="button"><i class="fa fa-calendar"></i></button></span></div></div>

@@ -96,17 +96,20 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
             this.start = 0;
             this.limit = 25;
         },
-        load: function () {},
+
+        load: function () { return; },
 
         setData: function (data) {
             this.data = this.processData(data);
             if (this.notifyChange) {
                 this.trigger("dataStateUpdate", this.data);
             }
+            this.trigger("doneProcessing");
         },
 
         execute: function (silent) {
             this.notifyChange = (typeof silent === "boolean") ? silent : true;
+            this.trigger("processing");
             return this.processTasks();
         }
     }),
@@ -149,6 +152,9 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
         },
 
         createGenericFilter: function (fieldName, operator, value) {
+            fieldName = fieldName,
+            operator = operator,
+            value = value;
             return;
         },
 
@@ -194,17 +200,15 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
                 this.load();
             }
         },
-        createGenericFilter : function() {
-           /* this.addFilter("criteria", function (fieldname, name, value) {
 
-            });*/
+        createGenericFilter : function () {
+            return;
         },
 
         initRestHandler: function () {
             CoreRestDriver.setBaseUrl(this.config.restBaseUrl);
             CoreDriverHandler.addDriver('rest', CoreRestDriver);
         },
-
 
         /* build resquest here */
         processTasks: function () {
@@ -219,7 +223,7 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
                    resParams = taskAction.apply({}, task.params);
                }catch (e) {
                    return true; //continue
-                  self.trigger("restDataStoreError", e);
+                  self.trigger('dataStoreError', e);
                }
             });
 
@@ -227,7 +231,12 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
                 self.total = response.getRangeTotal();
                 self.setData(data);
                 resultPromise.resolve(data);
-            },resultPromise.reject);
+            }).fail(function (response) {
+                self.trigger('doneProcessing');
+                self.trigger('dataStoreError', response);
+                resultPromise.reject(response);
+            });
+            
             return resultPromise;
         },
 
@@ -245,6 +254,7 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
             this.setStart(nextStart);
             CoreDriverHandler["delete"](this.config.resourceEndpoint+'/'+itemData.contentType, { uid : itemData.contentUid }).done(function() {
                 self.trigger("dataDelete", itemData);
+                self.triger("doneProcessing");
                 self.execute();
             });
         }

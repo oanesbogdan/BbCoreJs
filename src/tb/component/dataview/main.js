@@ -8,8 +8,8 @@ define(['require', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api', 'text!datavie
     var mainTpl = require('text!dataviewTemplate/layout.tpl'),
     $ = require('jquery'),
     coreApi = require('tb.core.Api'),
+
     /* handle multiple selection */
-    selectionHandler = function () {},
     BaseDataView = new JS.Class({
         LIST_MODE: 'list',
         GRID_MODE: 'grid',

@@ -3,8 +3,8 @@ Theme Name: BB5 UI
 Author: Lp digital / http://www.lp-digital.fr
 Version: 2.10 Dec2014
 */
-/**/
 #bb5-ui {
+  /**/
   /*! normalize.css v3.0.0 | MIT License | git.io/normalize */
 }
 #bb5-ui html {
@@ -691,71 +691,13 @@ a#bb5-ui .bg-danger:hover {
   margin-left: -8px;
   margin-right: -8px;
 }
-#bb5-ui .col-xs-1,
-.col-sm-1,
-.col-md-1,
-.col-lg-1,
-.col-xs-2,
-.col-sm-2,
-.col-md-2,
-.col-lg-2,
-.col-xs-3,
-.col-sm-3,
-.col-md-3,
-.col-lg-3,
-.col-xs-4,
-.col-sm-4,
-.col-md-4,
-.col-lg-4,
-.col-xs-5,
-.col-sm-5,
-.col-md-5,
-.col-lg-5,
-.col-xs-6,
-.col-sm-6,
-.col-md-6,
-.col-lg-6,
-.col-xs-7,
-.col-sm-7,
-.col-md-7,
-.col-lg-7,
-.col-xs-8,
-.col-sm-8,
-.col-md-8,
-.col-lg-8,
-.col-xs-9,
-.col-sm-9,
-.col-md-9,
-.col-lg-9,
-.col-xs-10,
-.col-sm-10,
-.col-md-10,
-.col-lg-10,
-.col-xs-11,
-.col-sm-11,
-.col-md-11,
-.col-lg-11,
-.col-xs-12,
-.col-sm-12,
-.col-md-12,
-.col-lg-12 {
+#bb5-ui .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
   position: relative;
   min-height: 1px;
   padding-left: 8px;
   padding-right: 8px;
 }
-#bb5-ui .col-xs-1,
-.col-xs-2,
-.col-xs-3,
-.col-xs-4,
-.col-xs-5,
-.col-xs-6,
-.col-xs-7,
-.col-xs-8,
-.col-xs-9,
-.col-xs-10,
-.col-xs-11,
-.col-xs-12 {
+#bb5-ui .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
   float: left;
 }
 #bb5-ui .col-xs-12 {
@@ -912,18 +854,7 @@ a#bb5-ui .bg-danger:hover {
   margin-left: 0%;
 }
 @media (min-width: 768px) {
-  #bb5-ui .col-sm-1,
-  .col-sm-2,
-  .col-sm-3,
-  .col-sm-4,
-  .col-sm-5,
-  .col-sm-6,
-  .col-sm-7,
-  .col-sm-8,
-  .col-sm-9,
-  .col-sm-10,
-  .col-sm-11,
-  .col-sm-12 {
+  #bb5-ui .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
     float: left;
   }
   #bb5-ui .col-sm-12 {
@@ -1081,18 +1012,7 @@ a#bb5-ui .bg-danger:hover {
   }
 }
 @media (min-width: 992px) {
-  #bb5-ui .col-md-1,
-  .col-md-2,
-  .col-md-3,
-  .col-md-4,
-  .col-md-5,
-  .col-md-6,
-  .col-md-7,
-  .col-md-8,
-  .col-md-9,
-  .col-md-10,
-  .col-md-11,
-  .col-md-12 {
+  #bb5-ui .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
     float: left;
   }
   #bb5-ui .col-md-12 {
@@ -1250,18 +1170,7 @@ a#bb5-ui .bg-danger:hover {
   }
 }
 @media (min-width: 1200px) {
-  #bb5-ui .col-lg-1,
-  .col-lg-2,
-  .col-lg-3,
-  .col-lg-4,
-  .col-lg-5,
-  .col-lg-6,
-  .col-lg-7,
-  .col-lg-8,
-  .col-lg-9,
-  .col-lg-10,
-  .col-lg-11,
-  .col-lg-12 {
+  #bb5-ui .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12 {
     float: left;
   }
   #bb5-ui .col-lg-12 {
@@ -1720,14 +1629,14 @@ a#bb5-ui .bg-danger:hover {
   border-radius: 4px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 #bb5-ui .form-control:focus {
   border-color: #66afe9;
   outline: 0;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
 }
 #bb5-ui .form-control:-moz-placeholder {
   color: #999999;
@@ -3079,7 +2988,7 @@ fieldset[disabled] #bb5-ui .btn-link:focus {
   text-decoration: none;
   background-color: transparent;
   background-image: none;
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   cursor: not-allowed;
 }
 #bb5-ui .open > .dropdown-menu {
@@ -4131,6 +4040,24 @@ select[multiple]#bb5-ui .input-group-sm > .input-group-btn > .btn {
 #bb5-ui .navbar-inverse .navbar-link:hover {
   color: #ffffff;
 }
+#bb5-ui .breadcrumb {
+  padding: 8px 15px;
+  margin-bottom: 15px;
+  list-style: none;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+#bb5-ui .breadcrumb > li {
+  display: inline-block;
+}
+#bb5-ui .breadcrumb > li + li:before {
+  content: "/\00a0";
+  padding: 0 5px;
+  color: #cccccc;
+}
+#bb5-ui .breadcrumb > .active {
+  color: #999999;
+}
 #bb5-ui .pagination {
   display: inline-block;
   padding-left: 0;
@@ -4367,6 +4294,155 @@ select[multiple]#bb5-ui .input-group-sm > .input-group-btn > .btn {
 }
 #bb5-ui .nav-pills > li > a > .badge {
   margin-left: 3px;
+}
+#bb5-ui .alert {
+  padding: 15px;
+  margin-bottom: 15px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+#bb5-ui .alert h4 {
+  margin-top: 0;
+  color: inherit;
+}
+#bb5-ui .alert .alert-link {
+  font-weight: bold;
+}
+#bb5-ui .alert > p,
+#bb5-ui .alert > ul {
+  margin-bottom: 0;
+}
+#bb5-ui .alert > p + p {
+  margin-top: 5px;
+}
+#bb5-ui .alert-dismissable {
+  padding-right: 35px;
+}
+#bb5-ui .alert-dismissable .close {
+  position: relative;
+  top: -2px;
+  right: -21px;
+  color: inherit;
+}
+#bb5-ui .alert-success {
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #3c763d;
+}
+#bb5-ui .alert-success hr {
+  border-top-color: #c9e2b3;
+}
+#bb5-ui .alert-success .alert-link {
+  color: #2b542c;
+}
+#bb5-ui .alert-info {
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  color: #31708f;
+}
+#bb5-ui .alert-info hr {
+  border-top-color: #a6e1ec;
+}
+#bb5-ui .alert-info .alert-link {
+  color: #245269;
+}
+#bb5-ui .alert-warning {
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+  color: #8a6d3b;
+}
+#bb5-ui .alert-warning hr {
+  border-top-color: #f7e1b5;
+}
+#bb5-ui .alert-warning .alert-link {
+  color: #66512c;
+}
+#bb5-ui .alert-danger {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+}
+#bb5-ui .alert-danger hr {
+  border-top-color: #e4b9c0;
+}
+#bb5-ui .alert-danger .alert-link {
+  color: #843534;
+}
+@-webkit-keyframes progress-bar-stripes {
+  from {
+    background-position: 40px 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+@keyframes progress-bar-stripes {
+  from {
+    background-position: 40px 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+#bb5-ui .progress {
+  overflow: hidden;
+  height: 15px;
+  margin-bottom: 15px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+#bb5-ui .progress-bar {
+  float: left;
+  width: 0%;
+  height: 100%;
+  font-size: 10px;
+  line-height: 15px;
+  color: #ffffff;
+  text-align: center;
+  background-color: #e34c26;
+  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  -webkit-transition: width 0.6s ease;
+  transition: width 0.6s ease;
+}
+#bb5-ui .progress-striped .progress-bar {
+  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-size: 40px 40px;
+}
+#bb5-ui .progress.active .progress-bar {
+  -webkit-animation: progress-bar-stripes 2s linear infinite;
+  animation: progress-bar-stripes 2s linear infinite;
+}
+#bb5-ui .progress-bar-success {
+  background-color: #99cc00;
+}
+.progress-striped #bb5-ui .progress-bar-success {
+  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+}
+#bb5-ui .progress-bar-info {
+  background-color: #5bc0de;
+}
+.progress-striped #bb5-ui .progress-bar-info {
+  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+}
+#bb5-ui .progress-bar-warning {
+  background-color: #f0ad4e;
+}
+.progress-striped #bb5-ui .progress-bar-warning {
+  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+}
+#bb5-ui .progress-bar-danger {
+  background-color: #d9534f;
+}
+.progress-striped #bb5-ui .progress-bar-danger {
+  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 #bb5-ui .close {
   float: right;
@@ -6229,8 +6305,13 @@ colpick Color Picker / colpick.com
   /**/
   /*BOX*/
   /*LIST STYLE PREVIEW*/
+  /*Context menu*/
   /*Tab dialog*/
+  /*Overlay*/
   /*Loader*/
+}
+#bb5-ui.bb5-hidden {
+  display: none;
 }
 #bb5-ui .bb5-dialog-container {
   width: 968px;
@@ -7448,6 +7529,7 @@ colpick Color Picker / colpick.com
 }
 #bb5-ui .pagination > li {
   display: inline-block;
+  margin: 0 2px;
 }
 #bb5-ui .pagination > li > a,
 #bb5-ui .pagination > li > span {
@@ -7508,7 +7590,7 @@ colpick Color Picker / colpick.com
 #bb5-ui .bb5-widget-toolbar.list-options .pagination {
   padding-right: 120px;
 }
-#bb5-ui .bb5-widget-toolbar.list-options .pull-right {
+#bb5-ui .bb5-widget-toolbar.list-options .pagination + .pull-right {
   float: none;
   position: absolute;
   top: 15px;
@@ -7891,6 +7973,9 @@ colpick Color Picker / colpick.com
   margin: 0;
   padding: 0;
 }
+#bb5-ui .bb5-context-menu .dropdown-menu {
+  display: block;
+}
 #bb5-ui .bb5-treeview ul {
   margin: 0;
   list-style: none;
@@ -8050,6 +8135,12 @@ colpick Color Picker / colpick.com
 }
 #bb5-ui .tabs-dialog .tab-content .tab-pane .bb5-windowpane-wrapper {
   margin-top: -1px;
+}
+#bb5-ui .bb5-overlay-parent {
+  position: relative;
+}
+#bb5-ui .bb5-overlay-parent .bb5-overlay-content {
+  position: absolute;
 }
 #bb5-ui .spinner {
   margin: 0 auto;
@@ -9453,4 +9544,49 @@ colpick Color Picker / colpick.com
 }
 #bb5-ui .fa-plus-square-o:before {
   content: "\f196";
+}
+.bb5-overlay,
+.bb5-overlay-parent .bb5-overlay-content,
+#bb5-ui .bb5-overlay-parent .bb5-overlay-content {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 490100;
+}
+.bb5-overlay-parent {
+  position: relative;
+}
+.bb5-overlay-parent .bb5-overlay-content,
+#bb5-ui .bb5-overlay-parent .bb5-overlay-content {
+  position: absolute;
+}
+/*In page*/
+.bb5-content {
+  position: relative;
+}
+.bb5-editmode-block .bb5-content {
+  padding: 1em 0;
+}
+.bb5-content .bb5-content-actions {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: tan;
+  outline: 1px solid lime;
+}
+.bb5-content .bb5-content-actions button {
+  width: 15px;
+  height: 15px;
+  margin: 0 4px;
+}
+.bb5-content-hover {
+  -webkit-box-shadow: 0px 0px 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 1px 3px rgba(0, 0, 0, 0.2);
+}
+.bb5-content-selected {
+  -webkit-box-shadow: 0px 0px 1px 3px rgba(227, 76, 38, 0.8);
+  box-shadow: 0px 0px 1px 3px rgba(227, 76, 38, 0.8);
 }

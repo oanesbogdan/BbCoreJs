@@ -6,7 +6,7 @@ require.config({
 define(['require', 'jquery', 'jssimplepagination'], function (require, jQuery) {
 
     var $ =  jQuery,
-    
+
     Pagination = new JS.Class({
 
         defaultConfig: {
@@ -137,8 +137,9 @@ define(['require', 'jquery', 'jssimplepagination'], function (require, jQuery) {
             this.checkState();
             return widget;
         },
-
+        /** when history changes change page too
         handleHistory : function () {},
+        */
 
         invoke: function (methodName) {
             var args = Array.prototype.slice.call(arguments, 0);

@@ -56,9 +56,11 @@ define(['require', 'jquery', 'jsclass', 'datetimepicker', 'text!cs-templates/sea
         handleSearch: function () {
             var criteria = {};
             criteria.title = $(this.config.titleFieldClass).eq(0).val();
-            criteria.pubBefore = $(this.config.beforeDateClass).eq(0).data('selectedTime');
-            criteria.pubAfter = $(this.config.afterDateClass).eq(0).data('selectedTime');
-            this.trigger("doSeach", criteria);
+            criteria.pubBefore = $(this.config.beforeDateClass).eq(0).data('selectedTime') || '';
+            criteria.pubAfter = $(this.config.afterDateClass).eq(0).data('selectedTime')|| '';
+            if (criteria.title.length || criteria.pubBefore.length || criteria.pubAfter.length) {
+                this.trigger("doSeach", criteria);
+            }
         }
     });
 

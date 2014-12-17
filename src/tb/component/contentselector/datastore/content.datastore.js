@@ -1,5 +1,6 @@
-define(['component!datastore'], function(DataStore) {
+define(['component!datastore', 'jsclass'], function(DataStore) {
 
+    /*extendRestDataStore here*/
     var restDataStore = new DataStore.RestDataStore({
         resourceEndpoint : 'classcontent'
     });
@@ -19,7 +20,7 @@ define(['component!datastore'], function(DataStore) {
         return restParams;
     });
 
-    restDataStore.addFilter("byBeforeDate", function (value, restParams){
+    restDataStore.addFilter("byPubBefore", function (value, restParams){
         restParams.criterias['beforeDate'] = value;
         return restParams;
     });

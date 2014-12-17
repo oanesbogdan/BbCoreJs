@@ -37,10 +37,6 @@ define(['require', 'jsclass', 'jquery', 'underscore', 'BackBone'], function (req
             this.widget.append($(optionsFragment));
         },
 
-        bindEvents: function () {
-
-        },
-
         select: function (val, silent) {
             val = parseInt(val);
             silent = (typeof silent==='boolean') ? silent : false;
@@ -82,7 +78,8 @@ return {
     createPageRangeSelector: function (config) {
         config = config || {};
         return new PageRangeSelector(config);
-    }
+    },
+    PageRangeSelector: PageRangeSelector
 };
 
 

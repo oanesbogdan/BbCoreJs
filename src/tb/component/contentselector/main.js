@@ -4,237 +4,274 @@ require.config({
         'cs-view': 'src/tb/component/contentselector/views',
         'cs-control': 'src/tb/component/contentselector/control',
         'jqLayout': 'lib/jquery.layout/jquery.layout-latest',
-        'category.formater': 'src/tb/component/contentselector/helper/category.formater',
+        'node.formater': 'src/tb/component/contentselector/helper/node.formater',
         'pagerangeselector.control': 'src/tb/component/contentselector/control/pageselector.control',
         'content.renderer': 'src/tb/component/contentselector/helper/content.renderer',
         'content.datastore':'src/tb/component/contentselector/datastore/content.datastore'
     }
 });
 
-define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin/main', 'component!dataview', 'text!cs-templates/layout.test.tpl', 'content.renderer', 'cs-control/searchengine.control', 'cs-control/pageselector.control', 'jqLayout', "component!datastore", "component!treeview", "component!pagination", "category.formater", 'nunjucks', 'content.datastore'], function (require, jQuery, layout, PopInMng) {
-    var formater = require('category.formater'),
-        ContentRenderer = require('content.renderer'),
-        Pagination = require('component!pagination'),
-        ContentSelectorWidget = new JS.Class({
-            defautConfig: {
-                autoDisplay: true,
-                dialogConfig: {
-                    title: "<i class='fa fa-inbox'></i> Selecteur de contenu",
-                    draggable: false,
-                    resizable: false,
-                    autoOpen: false,
-                    height: $(window).height() - (20 * 2),
-                    width: $(window).width() - (20 * 2)
+define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin/main', 'component!dataview', 'component!mask', 'text!cs-templates/layout.test.tpl', 'content.renderer', 'cs-control/searchengine.control', 'cs-control/pageselector.control', 'jqLayout', "component!datastore", "component!treeview", "component!pagination", "node.formater", 'nunjucks', 'content.datastore'], function (require, jQuery, layout, PopInMng) {
+    var formater = require('node.formater'),
+
+    ContentRenderer = require('content.renderer'),
+
+    ContentSelectorWidget = new JS.Class({
+        VIEW_MODE: "view",
+        EDIT_MODE: "edit",
+        defautConfig: {
+            autoDisplay: true,
+            dialogConfig: {
+                title: "<i class='fa fa-inbox'></i> Selecteur de contenu",
+                draggable: false,
+                resizable: false,
+                autoOpen: false,
+                height: $(window).height() - (20 * 2),
+                width: $(window).width() - (20 * 2)
+            },
+            pageRange: [1, 10 , 1],
+            itemsByPage: 2
+        },
+
+        initialize: function (userConfig) {
+            /* The purpose is to setup child components*/
+            this.config = jQuery.extend({}, this.defautConfig, userConfig);
+            this.isLoaded = false;
+            this.state = {};
+            this.mode = this.VIEW_MODE;
+            this.handleComponentState();
+            this.widget = $(require('text!cs-templates/layout.test.tpl')).clone();
+            this.popIn = this.initPopIn();
+            this.popIn.addOption("open", jQuery.proxy(this.onOpen, null, this));
+            this.options = jQuery({}, this.defautConfig, userConfig);
+            this.contentRenderer = new ContentRenderer();
+            this.initComponents();
+            this.initControls();
+            this.bindEvents();
+        },
+
+        handleComponentState: function () {
+            this.componentState = {
+                pagination: {},
+                pageSelector: {},
+                categoryTreeView: {
+
                 },
-                pageRange: [1, 10 , 1],
-                itemsByPage: 2
-            },
+                contentDataView: {},
+                searchEngine: {}
+            }
+        },
 
-            initialize: function (userConfig) {
-                /* The purpose is to setup child components*/
-                this.config = jQuery.extend({}, this.defautConfig, userConfig);
-                this.isLoaded = false;
-                this.state = {};
-                this.handleComponentState();
-                this.widget = $(require('text!cs-templates/layout.test.tpl')).clone();
-                this.popIn = this.initPopIn();
-                this.popIn.addOption("open", jQuery.proxy(this.onOpen, null, this)); //best of both world: this-->popin first arg --> selector
-                this.options = jQuery({}, this.defautConfig, userConfig);
-                this.contentRenderer = new ContentRenderer();
-                this.initComponents();
-                this.initControls();
-                this.bindEvents();
-                this.bbContentLayout = this.initLayout();
-            },
-
-            handleComponentState: function () {
-                this.componentState = {
-                    pagination: {},
-                    pageSelector: {},
-                    categoryTreeView: {},
-                    contentDataView: {},
-                    searchEngine: {}
-                }
-            },
-
-            initControls : function () {
-              this.pageRangeSelector = require("cs-control/pageselector.control").createPageRangeSelector({range : this.config.pageRange});
-              var self = this;
-
-              setTimeout(function(){
-                  self.pageRangeSelector.select(1,true);
-                  self.contentPagination.setItemsOnPage(1);
-              }, 1000);
-              this.searchEngine = require("cs-control/searchengine.control").createSearchEngine(this.componentState.searchEngine);
-            },
-
-            /* create components */
-            initComponents: function () {
-                this.contentRestDataStore = require('content.datastore');
-                this.categoryTreeView = this.createCategoryTreeView();
-                this.contentRestDataStore.on("dataStateUpdate", function(){});
-                this.contentDataView = this.createDataView();
-                this.contentPagination = this.createPagination();
-            },
-
-            createDataView: function () {
-                return require('component!dataview').createDataView({
-                    allowMultiSelection: true,
-                    dataStore: this.contentRestDataStore,
-                    selectedItemCls: "selected",
-                    css: {
-                        width: "auto",
-                        height: "auto"
-                    },
-                    /* if provided otherwise render automagicily template<-->item*/
-                    itemRenderer: jQuery.proxy(this.contentRenderer.render, this.contentRenderer)
+        initControls : function () {
+            this.pageRangeSelector = require("cs-control/pageselector.control").createPageRangeSelector({
+                range : this.config.pageRange
                 });
-            },
+            this.searchEngine = require("cs-control/searchengine.control").createSearchEngine(this.componentState.searchEngine);
+        },
 
-            createPagination: function () {
-                return require('component!pagination').createPagination({itemsOnPage : 5});
-            },
+        /* create components */
+        initComponents: function () {
+            this.contentRestDataStore = require('content.datastore');
+            this.categoryTreeView = this.createCategoryTreeView();
+            this.contentDataView = this.createDataView();
+            this.contentPagination = this.createPagination();
+            this.maskMng = require('component!mask').createMask({});
+            this.mainZone = $(this.widget).find('.bb5-windowpane-main').eq(0);
+        },
 
-            createCategoryTreeView: function () {
-                return require('component!treeview').createTreeView({});
-            },
+        createDataView: function () {
+            return require('component!dataview').createDataView({
+                allowMultiSelection: true,
+                dataStore: this.contentRestDataStore,
+                selectedItemCls: "selected",
+                css: {
+                    width: "auto",
+                    height: "auto"
+                },
+                itemRenderer: jQuery.proxy(this.contentRenderer.render, this.contentRenderer)
+            });
+        },
 
-            /* create */
-            createContentView: function () {},
-            /**
+        createPagination: function () {
+            return require('component!pagination').createPagination({
+                itemsOnPage : 5
+            });
+        },
+
+        createCategoryTreeView: function () {
+            return require('component!treeview').createTreeView(this.componentState.categoryTreeView);
+        },
+
+        /**
              * This fonction is called only once for each instance
              * the tree is loaded here the prevent useless rest call
              **/
 
-            onReady: function () {
-                var self = this;
-                var catTreeCtn = $(this.widget).find('.bb5-windowpane-tree .bb5-treeview').eq(0),
-                    contentViewCtn = $(this.widget).find('.data-list-ctn').eq(0),
-                    pageRangeCtn =  $(this.widget).find('.max-per-page-selector').eq(0),
-                    paginationCtn = $(this.widget).find('.content-selection-pagination').eq(0),
-                    searchEnginerCtn = $(this.widget).find(".bb5-form-wrapper").eq(0);
-                this.categoryTreeView.render(catTreeCtn);
-                this.contentDataView.render(contentViewCtn);
-                this.contentPagination.render(paginationCtn, 'replaceWith');
-                this.pageRangeSelector.render(pageRangeCtn, 'replaceWith');
-                this.searchEngine.render(searchEnginerCtn, 'html');
+        onReady: function () {
+            var self = this;
+            var catTreeCtn = $(this.widget).find('.bb5-windowpane-tree .bb5-treeview').eq(0),
+            contentViewCtn = $(this.widget).find('.data-list-ctn').eq(0),
+            pageRangeCtn =  $(this.widget).find('.max-per-page-selector').eq(0),
+            paginationCtn = $(this.widget).find('.content-selection-pagination').eq(0),
+            searchEnginerCtn = $(this.widget).find(".bb5-form-wrapper").eq(0);
+            this.categoryTreeView.render(catTreeCtn);
+            this.contentDataView.render(contentViewCtn);
+            this.contentPagination.render(paginationCtn, 'replaceWith');
+            this.pageRangeSelector.render(pageRangeCtn, 'replaceWith');
+            this.searchEngine.render(searchEnginerCtn, 'html');
+
+            $.ajax({
+                url: '/rest/1/classcontent/category'
+            }).done(function (data) {
+                var fomattedData = formater.format('category', data);
+                self.categoryTreeView.setData(fomattedData);
+            });
+        },
+
+        initLayout: function () {
+            return $(this.widget).layout({
+                applyDefaultStyles: true,
+                closable: false,
+                west__childOptions: {
+                    center__paneSelector: ".inner-center",
+                    north__paneSelector: ".ui-layout-north",
+                    south__paneSelector: ".ui-layout-south"
+                },
+                center__childOptions: {
+                    center__paneSelector: ".inner-center",
+                    inner__paneSelector: ".ui-layout-north"
+                }
+            });
+        },
+
+        showMask: function () {
+            this.maskMng.mask(this.mainZone);
+        },
+
+        hideMask: function() {
+            this.maskMng.unmask(this.mainZone);
+        },
+
+        bindEvents: function () {
+            var self = this;
+
+            /* show mask */
+            this.contentRestDataStore.on("processing", function () {
+                self.showMask();
+            });
+
+            this.contentRestDataStore.on("doneProcessing", function () {
+                self.hideMask();
+            });
+
+            $(this.widget).on('click', '.bb5-sortasgrid', function (e) {
+                $(this.widget).find('.pull-right .active').removeClass('active');
+                $(e.currentTarget).addClass('active');
+                self.contentDataView.setRenderMode('grid');
+            });
+
+            $(this.widget).on('click','.bb5-sortaslist', function (e) {
+                $(this.widget).find('.pull-right .active').removeClass('active');
+                $(e.currentTarget).addClass('active');
+                self.contentDataView.setRenderMode('list');
+            });
+
+            /* When click on a node */
+            this.categoryTreeView.on('click', function (e) {
+                var selectedNode = e.node;
+                if($(selectedNode.element).hasClass("jqtree-selected")) { return false; }
+
+                if(selectedNode.isRoot){
+                    return;
+                }
+                if (selectedNode.isACat) {
+                    self.contentRestDataStore
+                    .unApplyFilter('byClasscontent')
+                    .applyFilter('byCategory', selectedNode.name);
+                }else{
+                    self.contentRestDataStore
+                    .unApplyFilter('byCategory')
+                    .applyFilter('byClasscontent', selectedNode.type);
+                }
+                /* always reset pagination when we change category*/
+                self.contentRestDataStore.setStart(0).setLimit(self.pageRangeSelector.getValue()).execute();
+            });
 
 
-                $.ajax({
-                    url: 'http://bb.corejs.local/rest/1/classcontent/category'
-                }).done(function (data) {
-                    var fomattedData = formater(data);
-                    self.categoryTreeView.setData(fomattedData);
-                });
-            },
+            /* When range Changes */
+            this.pageRangeSelector.on("pageRangeSelectorChange", function (val) {
+                self.contentRestDataStore.setLimit(val);
+                self.contentPagination.setItemsOnPage(val);
+            });
 
-            /* The flow: click on tree --> contentIsLoaded --> CollectionView isUpdated */
-            initLayout: function () {
-                this.selectorLayout = $(this.widget).layout({
-                    applyDefaultStyles: true,
-                    closable: false,
-                    west__childOptions: {
-                        center__paneSelector: ".inner-center",
-                        north__paneSelector: ".ui-layout-north",
-                        south__paneSelector: ".ui-layout-south"
-                    },
-                    center__childOptions: {
-                        center__paneSelector: ".inner-center",
-                        inner__paneSelector: ".ui-layout-north"
+            /* When page changes */
+            this.contentPagination.on("pageChange", function (page) {
+                var limit = self.pageRangeSelector.getValue(),
+                start = (page - 1) * limit;
+                self.contentRestDataStore.setStart(start).execute();
+            });
+
+            /* When we must update the query task */
+            this.searchEngine.on("doSeach", function (criteria) {
+                $.each(criteria, function (key, val) {
+                    if (criteria[key] !== undefined) {
+                        var filterName = 'by'+key.charAt(0).toUpperCase() + key.slice(1);
+                        self.contentRestDataStore.applyFilter(filterName, val);
                     }
                 });
-            },
+                self.contentRestDataStore.execute();
+            });
 
-            bindEvents: function () {
-                var self = this;
+            /* when we have contents */
+            self.contentRestDataStore.on("dataStateUpdate", $.proxy(this.updateCurrentNodeInfos, this));
 
-                $(this.widget).on('click','.bb5-sortasgrid', function (e) {
-                    self.contentDataView.setRenderMode('grid');
-                });
+        },
 
-                $(this.widget).on('click','.bb5-sortaslist', function (e) {
-                    self.contentDataView.setRenderMode('list');
-                });
+        updateCurrentNodeInfos : function () {
+            var resultTotal = this.contentRestDataStore.getTotal();
+            $(this.widget).find(".result-infos").html(this.categoryTreeView.getSelectedNode().name+' - '+resultTotal+' item(s)');
+            /* update pagination here */
+            this.contentPagination.setItems(resultTotal);
+        },
 
-                /* When click on a node */
-                this.categoryTreeView.on('click', function (e) {
-                    var selectedNode = e.node;
+        setContenttypes: function (contentypeArr) {
+            var data = formater.format("contenttype", contentypeArr);
+            this.categoryTreeView.setData(data);
+        },
 
-                  if(selectedNode.isRoot){
-                      return;
-                  }
-                   if (selectedNode.isACat) {
-                    self.contentRestDataStore
-                        .unApplyFilter('byClasscontent')
-                        .applyFilter('byCategory', selectedNode.name);
-                   }else{
-                        self.contentRestDataStore
-                        .unApplyFilter('byCategory')
-                        .applyFilter('byClasscontent', selectedNode.type);
-                   }
-                   /* always reset pagination when we change category*/
-                   self.contentRestDataStore.setStart(0).setLimit(self.pageRangeSelector.getValue()).execute();
-                });
+        setMode: function () { },
 
-               /* When range Changes */
-               this.pageRangeSelector.on("pageRangeSelectorChange", function (val) {
-                  self.contentRestDataStore.setLimit(val);
-                  self.contentPagination.setItemsOnPage(val);
-               });
+        reset: function () {
+            return;
+        },
 
-               /* When page changes */
-               this.contentPagination.on("pageChange", function (page) {
-                   var limit = self.pageRangeSelector.getValue(),
-                   start = (page - 1) * limit;
-                  self.contentRestDataStore.setStart(start).execute();
-               });
-               /* When we must perform search */
-                this.searchEngine.on("doSeach", function (criteria) {
-                   return;
-                });
+        getSelectedContent: function () {},
 
-               /* when we have contents */
-               self.contentRestDataStore.on("dataStateUpdate", $.proxy(this.updateCurrentNodeInfos, this));
+        initPopIn: function () {
+            PopInMng.init("#bb5-ui");
+            return PopInMng.createPopIn(this.config.dialogConfig);
+        },
 
-            },
-
-            updateCurrentNodeInfos : function () {
-                var resultTotal = this.contentRestDataStore.getTotal();
-                $(this.widget).find(".result-infos").html(this.categoryTreeView.getSelectedNode().name+' - '+resultTotal+' item(s)');
-                /* update pagination here */
-                this.contentPagination.setItems(resultTotal);
-            },
-
-            /* configure */
-            configure: function (config) {
-                this.reset();
-            },
-
-            reset: function () { return; },
-
-            initPopIn: function () {
-                PopInMng.init("#bb5-ui");
-                return PopInMng.createPopIn(this.config.dialogConfig);
-            },
-
-            onOpen: function (selector) {
-                selector.onReady();
-                selector.onReady = jQuery.noop;
-                if (!selector.isLoaded) {
-                    $(this).html(selector.widget);
-                }
-                selector.selectorLayout.resizeAll();
-                selector.isLoaded = true;
-            },
-
-            render: function () {
-                return this.widget;
-            },
-
-            display: function () {
-                this.popIn.display();
+        onOpen: function (selector) {
+            selector.onReady();
+            selector.onReady = jQuery.noop;
+            if (!selector.isLoaded) {
+                $(this).html(selector.widget);
             }
-        });
+            var widgetLayout = selector.initLayout();
+            widgetLayout.resizeAll();
+            widgetLayout.sizePane("west", 201);//useful to fix layout size
+            selector.isLoaded = true;
+        },
+
+        render: function () {
+            return this.widget;
+        },
+
+        display: function () {
+            this.popIn.display();
+        }
+    });
     return {
         createContentSelector: function (config) {
             config = config || {};
