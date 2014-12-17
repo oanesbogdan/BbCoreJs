@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define(['require', 'tb.core', "component!treeview", 'jquery', 'component!dataview', 'component!datastore', 'component!contentselector'], function (require, bbCore, TreeViewMng, jQuery, ContentSelector) {
+define(['require', 'tb.core', "component!treeview", 'jquery', 'component!contentselector', 'component!dataview', 'component!datastore'], function (require, bbCore, TreeViewMng, jQuery, ContentSelector) {
     'use strict';
     bbCore.ControllerManager.registerController('MainController', {
         appName: 'layout',

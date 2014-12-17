@@ -56,6 +56,7 @@ define(['require', 'content.datastore', 'jquery', 'jsclass', 'nunjucks', 'text!c
                     self.popin.setContent(jQuery(response));
                     self.popin.display();
                 }).fail(function (response) {
+                    self.popin.unmask();
                     throw "ContentRendererException error while showing showContentPreview " + response;
                 });
             },
@@ -85,6 +86,7 @@ define(['require', 'content.datastore', 'jquery', 'jsclass', 'nunjucks', 'text!c
                     self.popin.setContent(jQuery(content));
                     self.popin.display();
                 }).fail(function (response) {
+                    self.popin.unmask();
                     throw "ContentRendererException error while deleting content " + response;
                 });
             },

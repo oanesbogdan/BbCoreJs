@@ -1,4 +1,4 @@
-define(['require', 'underscore', 'jquery', 'jsclass', 'BackBone'], function (underscore, jQuery) {
+define(['underscore', 'jquery', 'jsclass', 'BackBone'], function (underscore, jQuery) {
     'use strict';
     var PageRangeSelector = new JS.Class({
         defaultConfig: {
