@@ -1,4 +1,4 @@
-define(['tb.component/formbuilder/main'], function (FormBuilder) {
+define(['component!formbuilder'], function (FormBuilder) {
     'use strict';
 
 
@@ -20,16 +20,19 @@ define(['tb.component/formbuilder/main'], function (FormBuilder) {
                     }
                 };
 
-            expect(typeof FormBuilder.form).toBe('undefined');
-
             try {
                 FormBuilder.renderForm({});
                 expect(false).toBe(true);
             } catch (e) {
-                expect(e).toEqual('Error n°500 MissingPropertyException: Property "elements" not found');
+                expect(e).toEqual('Error n 500 MissingPropertyException: Property "elements" not found');
             }
 
-            FormBuilder.renderForm(config);
+            try {
+                FormBuilder.renderForm(config);
+                expect(true).toBe(true);
+            } catch (e) {
+                expect(true).toBe(false);
+            }
         });
     });
 });

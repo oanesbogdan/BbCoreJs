@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define(['jquery', 'tb.core.ViewManager', 'text!main/tpl/toolbar'], function (jQuery, ViewManager, template) {
+define(['jquery', 'tb.core.Renderer', 'text!main/tpl/toolbar'], function (jQuery, Renderer, template) {
 
     'use strict';
 
@@ -36,13 +36,13 @@ define(['jquery', 'tb.core.ViewManager', 'text!main/tpl/toolbar'], function (jQu
                 menus: [
                     {
                         label: 'parameter',
-                        text: 'Paramètres généraux',
+                        text: 'General settings',
                         url: '#',
                         active: true,
                         items: [
                             {
                                 label: 'site',
-                                text: 'Paramètres du site',
+                                text: 'Website parameters',
                                 url: '#site',
                                 active: true
                             },
@@ -54,7 +54,7 @@ define(['jquery', 'tb.core.ViewManager', 'text!main/tpl/toolbar'], function (jQu
                             },
                             {
                                 label: 'theme',
-                                text: 'Thème',
+                                text: 'Theme',
                                 url: '#theme',
                                 active: false
                             },
@@ -68,31 +68,31 @@ define(['jquery', 'tb.core.ViewManager', 'text!main/tpl/toolbar'], function (jQu
                     },
                     {
                         label: 'user',
-                        text: 'Gestion des droits et utilisateurs',
+                        text: 'Users and roles management',
                         url: '#',
                         active: false,
                         items: [
                             {
                                 label: 'user',
-                                text: 'Gestion des utilisateurs',
+                                text: 'Users management',
                                 url: '#user',
                                 active: false
                             },
                             {
                                 label: 'role',
-                                text: 'Gestion des rôles',
+                                text: 'Roles managements',
                                 url: '#role',
                                 active: false
                             },
                             {
                                 label: 'right',
-                                text: 'Gestion des droits',
+                                text: 'Rights managements',
                                 url: '#right',
                                 active: false
                             },
                             {
                                 label: 'workflow',
-                                text: 'Gestion du workflow',
+                                text: 'Workflow management',
                                 url: '#workflow',
                                 active: false
                             }
@@ -112,19 +112,19 @@ define(['jquery', 'tb.core.ViewManager', 'text!main/tpl/toolbar'], function (jQu
                             },
                             {
                                 label: 'page',
-                                text: 'Gestion des pages',
+                                text: 'Pages management',
                                 url: '#pages',
                                 active: false
                             },
                             {
                                 label: 'content',
-                                text: 'Gestion de contenu',
+                                text: 'Content management',
                                 url: '#content',
                                 active: false
                             },
                             {
                                 label: 'library',
-                                text: 'Médiathèque',
+                                text: 'Media',
                                 url: '#library',
                                 active: false
                             }
@@ -132,7 +132,7 @@ define(['jquery', 'tb.core.ViewManager', 'text!main/tpl/toolbar'], function (jQu
                     },
                     {
                         label: 'pages',
-                        text: 'Gestion des pages',
+                        text: 'Pages management',
                         url: '#/page/manage',
                         active: false,
                         items: [
@@ -146,13 +146,13 @@ define(['jquery', 'tb.core.ViewManager', 'text!main/tpl/toolbar'], function (jQu
                         items: [
                             {
                                 label: 'activate',
-                                text: 'Activer / désactiver',
+                                text: 'Activate / Deactivate',
                                 url: '#',
                                 active: false
                             },
                             {
                                 label: 'admin',
-                                text: 'Administrer',
+                                text: 'Manage',
                                 url: '#',
                                 active: false
                             }
@@ -182,11 +182,11 @@ define(['jquery', 'tb.core.ViewManager', 'text!main/tpl/toolbar'], function (jQu
         },
 
         /**
-         * Render the template into the DOM with the ViewManager
+         * Render the template into the DOM with the Renderer
          * @returns {Object} MainViewIndex
          */
         render: function () {
-            jQuery(this.el).html(ViewManager.render(template, this.toolbar));
+            jQuery(this.el).html(Renderer.render(template, this.toolbar));
 
             return this;
         }

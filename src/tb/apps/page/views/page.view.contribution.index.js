@@ -21,7 +21,7 @@ define(
     [
         'jquery',
         'tb.core.ApplicationManager',
-        'tb.core.ViewManager',
+        'tb.core.Renderer',
         'text!page/tpl/contribution/index',
         'text!page/tpl/contribution/scheduling_publication',
         'page.repository',
@@ -31,7 +31,7 @@ define(
     ],
     function (jQuery,
               ApplicationManager,
-              ViewManager,
+              Renderer,
               template,
               schedulingTemplate,
               PageRepository,
@@ -157,7 +157,7 @@ define(
                                 }
                             }
 
-                            if (!jQuery.isEmptyObject(data)) {
+                            if (!jQuery.isEmptyObject(data)) {
                                 self.setStateScheduling(data);
 
                                 data.uid = self.currentPage.uid;
@@ -170,9 +170,9 @@ define(
 
                 if (jQuery(this.schedulingTag).length === 0) {
 
-                    jQuery(this.dialogContainerTag).html(ViewManager.render(schedulingTemplate));
+                    jQuery(this.dialogContainerTag).html(Renderer.render(schedulingTemplate));
 
-                    FormBuilder.renderForm(config).done(function (html) {
+                    FormBuilder.renderForm(config).done(function (html) {
                         jQuery(self.schedulingTag).html(html);
 
                         jQuery(self.schedulingTag).dialog({
@@ -185,14 +185,14 @@ define(
                             dialogClass: "ui-dialog-no-title ui-dialog-pinned-to-banner"
                         });
 
-                        jQuery(self.schedulingTag).dialog("open");
+                        jQuery(self.schedulingTag).dialog('open');
                     });
 
                 } else {
                     if (jQuery(this.schedulingTag).dialog('isOpen')) {
-                        jQuery(this.schedulingTag).dialog("close");
+                        jQuery(this.schedulingTag).dialog('close');
                     } else {
-                        jQuery(this.schedulingTag).dialog("open");
+                        jQuery(this.schedulingTag).dialog('open');
                     }
                 }
             },
@@ -242,7 +242,7 @@ define(
                 var self = this,
                     popin = PopinManager.createPopIn();
 
-                popin.setTitle('SEO de la page');
+                popin.setTitle('Page SEO');
                 PageRepository.getMetadata(this.currentPage.uid).done(function (metadata) {
                     FormBuilder.renderForm(self.buildConfigSeoForm(metadata, popin)).done(function (html) {
                         popin.setContent(html);
@@ -298,7 +298,7 @@ define(
              * @param {Object} popin
              * @returns {Object}
              */
-            buildConfigSeoForm: function (metadata, popin) {
+            buildConfigSeoForm: function (metadata, popin) {
                 var self = this,
                     key,
                     value,
@@ -347,14 +347,14 @@ define(
             },
 
             /**
-             * Render the template into the DOM with the ViewManager
+             * Render the template into the DOM with the Renderer
              * @returns {Object} PageViewContributionIndex
              */
             render: function () {
                 var self = this;
 
-                PageRepository.getWorkflowState(this.currentPage.layout_uid).done(function (workflowStates) {
-                    jQuery(self.el).html(ViewManager.render(template, {'page': self.currentPage, 'states': workflowStates}));
+                PageRepository.getWorkflowState(this.currentPage.layout_uid).done(function (workflowStates) {
+                    jQuery(self.el).html(Renderer.render(template, {'page': self.currentPage, 'states': workflowStates}));
 
                     self.setStateScheduling(self.currentPage);
                 }).fail(function (e) {

@@ -210,7 +210,7 @@ define(
                                 type: 'text',
                                 label: 'Login'
                             },
-                            password:  {
+                            password: {
                                 type: 'password',
                                 label: 'Password'
                             }

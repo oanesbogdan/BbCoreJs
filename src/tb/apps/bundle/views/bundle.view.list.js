@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define(['jquery', 'tb.core.ViewManager', 'text!bundle/tpl/list', 'bundle.view.index', 'jqueryui'], function (jQuery, ViewManager, template, ListView) {
+define(['jquery', 'tb.core.Renderer', 'text!bundle/tpl/list', 'bundle.view.index', 'jqueryui'], function (jQuery, Renderer, template, ListView) {
     'use strict';
 
     /**
@@ -88,7 +88,7 @@ define(['jquery', 'tb.core.ViewManager', 'text!bundle/tpl/list', 'bundle.view.in
 
         /**
          * Sort the list of bundles with them categories.
-         * If an bundle don't have category, an category 'Défaut' is created
+         * If an bundle don't have category, an default category is created
          * @param {Object} data
          * @returns {Object}
          */
@@ -114,10 +114,10 @@ define(['jquery', 'tb.core.ViewManager', 'text!bundle/tpl/list', 'bundle.view.in
                             }
                         }
                     } else {
-                        if (!categoriesArray.hasOwnProperty('Défaut')) {
-                            categoriesArray['Défaut'] = [];
+                        if (!categoriesArray.hasOwnProperty('default')) {
+                            categoriesArray.default = [];
                         }
-                        categoriesArray['Défaut'].push(bundle);
+                        categoriesArray.default.push(bundle);
                     }
                 }
             }
@@ -140,11 +140,11 @@ define(['jquery', 'tb.core.ViewManager', 'text!bundle/tpl/list', 'bundle.view.in
         },
 
         /**
-         * Render the template into the DOM with the ViewManager
+         * Render the template into the DOM with the Renderer
          * @returns {Object} BundleViewList
          */
         render: function () {
-            jQuery(this.el).html(ViewManager.render(template, {categories: this.categories}));
+            jQuery(this.el).html(Renderer.render(template, {categories: this.categories}));
 
             this.computeDialog();
 

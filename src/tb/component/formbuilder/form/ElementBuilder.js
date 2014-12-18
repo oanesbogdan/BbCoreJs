@@ -16,36 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define('tb.core.ViewManager', ['nunjucks', 'jsclass'], function (Nunjucks) {
+
+(function () {
     'use strict';
 
-    /**
-     * ViewManager object
-     */
-    var ViewManager = new JS.Class({
+    define(['tb.component/formbuilder/form/element/Element', 'jsclass'], function (Element) {
+        return {
 
-        /**
-         * Return the rendering engine (Nunjucks today)
-         * @returns {Object} Nunjucks
-         */
-        getRenderer: function () {
-            if (!this.renderer) {
-                this.renderer = Nunjucks;
+            load: function (name, req, onload) {
+                req(['tb.component/formbuilder/form/element/' + name], function (elementObject) {
+                    onload(new JS.Class(Element, elementObject));
+                });
             }
-
-            return this.renderer;
-        },
-
-        /**
-         * Render a template
-         * @param {String} html
-         * @param {Object} data
-         * @returns {String}
-         */
-        render: function (html, data) {
-            return this.getRenderer().renderString(html, data);
-        }
+        };
     });
-
-    return new JS.Singleton(ViewManager);
-});
+}());

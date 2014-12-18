@@ -4,7 +4,7 @@ define(
         'text!tb.component/formbuilder/form/templates/form.twig',
         'tb.component/formbuilder/form/views/form.view',
         'tb.component/formbuilder/form/element/views/form.element.view.text',
-        'tb.component/formbuilder/form/element/Text',
+        'tb.component/formbuilder/form/ElementBuilder!Text',
         'text!tb.component/formbuilder/form/element/templates/text.twig'
     ],
     function (Form) {
@@ -50,7 +50,7 @@ define(
                     form = new Form();
                     expect(true).toBe(false);
                 } catch (e) {
-                    expect(e).toEqual('Error n°500 MissingConfigException: Config must be set');
+                    expect(e).toEqual('Error n 500 MissingConfigException: Config must be set');
                 }
             });
 
@@ -59,7 +59,7 @@ define(
                     form = new Form({});
                     expect(true).toBe(false);
                 } catch (e) {
-                    expect(e).toEqual('Error n°500 MissingPropertyException: Property "template" not found in form');
+                    expect(e).toEqual('Error n 500 MissingPropertyException: Property "template" not found in form');
                 }
             });
 
@@ -68,7 +68,7 @@ define(
                     form = new Form({'template': 'my_template.twig'});
                     expect(true).toBe(false);
                 } catch (e) {
-                    expect(e).toEqual('Error n°500 MissingPropertyException: Property "view" not found in form');
+                    expect(e).toEqual('Error n 500 MissingPropertyException: Property "view" not found in form');
                 }
             });
 
@@ -86,7 +86,7 @@ define(
                 var element = {
                     view: 'tb.component/formbuilder/form/element/views/form.element.view.text',
                     template: 'tb.component/formbuilder/form/element/templates/text.twig',
-                    class: 'tb.component/formbuilder/form/element/Text',
+                    class: 'tb.component/formbuilder/form/ElementBuilder!Text',
                     type: 'text',
                     label: 'My name',
                     value: ''
@@ -102,21 +102,6 @@ define(
                 form.remove('name');
                 expect(form.get('name')).toBe(null);
 
-            });
-
-            it('Testing render', function () {
-                var text = {
-                    view: 'tb.component/formbuilder/form/element/views/form.element.view.text',
-                    template: 'tb.component/formbuilder/form/element/templates/text.twig',
-                    class: 'tb.component/formbuilder/form/element/Text',
-                    type: 'text',
-                    label: 'My name',
-                    value: ''
-                };
-
-                form.add('name', text);
-
-                expect(form.render().length).toBeGreaterThan(0);
             });
         });
     }

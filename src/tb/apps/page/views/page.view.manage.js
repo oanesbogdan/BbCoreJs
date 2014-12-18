@@ -1,10 +1,10 @@
 define([
     'jquery',
     'page.repository',
-    'tb.core.ViewManager',
+    'tb.core.Renderer',
     'text!page/tpl/manage_list'
 
-], function (jQuery, PageRepository, ViewManager, template) {
+], function (jQuery, PageRepository, Renderer, template) {
 
     'use strict';
 
@@ -51,13 +51,13 @@ define([
         },
 
         onValidate: function (form, data) {
-            if (!data.hasOwnProperty('layout_uid') || data.layout_uid.trim().length === 0) {
+            if (!data.hasOwnProperty('layout_uid') || data.layout_uid.trim().length === 0) {
                 form.addError('layout_uid', 'Template is required.');
             }
         },
 
         /**
-         * Render the template into the DOM with the ViewManager
+         * Render the template into the DOM with the Renderer
          * @returns {Object} PageViewReview
          */
         render: function () {
@@ -74,7 +74,7 @@ define([
 
 
             PageRepository.search({state: 1}, 0, 50).done(function (pages) {
-                var content = ViewManager.render(template, {"pages": pages});
+                var content = Renderer.render(template, {"pages": pages});
                 self.popin.setContent(content);
 
                 jQuery('#content-library-pane-wrapper').layout({

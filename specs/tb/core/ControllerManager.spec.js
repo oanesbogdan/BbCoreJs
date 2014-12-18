@@ -28,7 +28,7 @@ define(['require', 'tb.core', 'tb.core.ApplicationContainer'], function () {
         },
 
         errorMessage = function (code, message) {
-            return 'Error n°' + code + ' ControllerManagerException: ' + message;
+            return 'Error n ' + code + ' ControllerManagerException: ' + message;
         };
 
     describe('Controller manager spec', function () {
