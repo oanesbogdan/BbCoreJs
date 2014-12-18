@@ -26,6 +26,7 @@ define(
         'page.view.edit',
         'page.view.clone',
         'page.view.manage',
+        'page.view.tree',
         'page.view.tree.contribution'
     ],
     function (Core,
@@ -35,6 +36,7 @@ define(
               EditView,
               CloneView,
               ManageView,
+              PageTreeView,
               PageTreeViewContribution
             ) {
 
@@ -90,6 +92,10 @@ define(
                     var view = new PageTreeViewContribution(config);
                     view.render();
                 });
+            },
+
+            getPageTreeViewInstanceService: function () {
+                return PageTreeView;
             },
 
             /**
