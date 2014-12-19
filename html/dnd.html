@@ -34,7 +34,7 @@
             <div id="boxA" dropzone="true" class="droptrue">
                 <div id="drag" class="content droptrue" draggable="true">drag me</div>
                 <div id="drag2" class="droptrue" draggable="true">drag me</div>
-                <div id="drag3" draggable="true">drag me</div>
+                <div id="drag3" draggable="true"  class="droptrue">drag me</div>
             </div>
             <div id="boxB" dropzone="true" class="droptrue"></div>
             <div id="boxC" dropzone="true" class="droptrue"></div>
@@ -76,10 +76,11 @@
                 var btn = jquery('#btn');
 
                 btn.click(function () {
-                    jquery('<div id="drag4" draggable="true">drag me</div>').appendTo('#boxA')
+                    jquery('<div id="drag4" draggable="true" class="droptrue">drag me</div>').appendTo('#boxA')
                 });
 
                 core.Mediator.subscribe('on:content:dragstart', function (event) {
+                    console.log('dragstart', event.target.getAttribute('id'));
                     event.dataTransfer.effectAllowed = 'move';
                     event.dataTransfer.setData('text', event.target.getAttribute('id'));
                     event.dataTransfer.setDragImage(event.target,0,0);
@@ -102,7 +103,7 @@
                     event.dataTransfer.clearData('text');
                 });
 
-                dnd('#container').addListeners('', 'content');
+                dnd('#container').addListeners('content', '.droptrue');
             }, _errorHandler);
         </script>
     </body>

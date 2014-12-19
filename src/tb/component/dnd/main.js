@@ -45,6 +45,9 @@ define(['tb.core', 'jquery'], function (Core, jQuery) {
 
         defineAs = function (keyword, el, context) {
             var i;
+            if (el.dataset && el.dataset.dndAttached === 'true') {
+                return;
+            }
             if (keyword === 'drag') {
                 for (i = 0; i < 3; i = i + 1) {
                     if (i === 2) {
@@ -57,6 +60,7 @@ define(['tb.core', 'jquery'], function (Core, jQuery) {
                     bindEl(el, context, dnd_process[i + 2]);
                 }
             }
+            el.dataset.dndAttached = true;
         },
 
         attachListeners = function (parent, selector, context) {
