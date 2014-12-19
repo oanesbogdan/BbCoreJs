@@ -38,6 +38,10 @@ define([], function () {
                     contribution: {
                         label: 'Contribution',
                         config: {mainRoute: 'contribution/index'}
+                    },
+                    user: {
+                        label: 'User',
+                        config: {mainRoute: 'user/index'}
                     }
                 }
             }
@@ -45,7 +49,8 @@ define([], function () {
 
         component: {
             logger: {
-
+                level: 8,
+                mode: 'devel'
             }
         },
 

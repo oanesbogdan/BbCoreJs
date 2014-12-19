@@ -68,8 +68,8 @@ define(['jquery', 'tb.core.Renderer', 'text!main/tpl/toolbar'], function (jQuery
                     },
                     {
                         label: 'user',
-                        text: 'Users and roles management',
-                        url: '#',
+                        text: 'Users management',
+                        url: '#/user/index',
                         active: false,
                         items: [
                             {

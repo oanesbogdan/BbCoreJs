@@ -1,0 +1,44 @@
+<li class="bb5-list-data-item bb5-list-users-item">
+    <div class="bb5-data-toggle bb5-manage-user">
+        <div class="bb5-data-toggle-header">
+            <div class="bb5-data-picture">
+                <figure><img src="{{ user.picture() }}" alt="{{ user.lastname() }} {{ user.firstname() }}"></figure>
+            </div>
+            <p class="col-bb5-28 user-firstname">{{ user.lastname() }}</p>
+            <p class="col-bb5-25 user-name">{{ user.firstname() }}</p>
+            <a class="bb5-data-toggle-trigger" href="#"><i class="fa fa-angle-down"></i></a>
+        </div>
+        <div class="bb5-data-drpdown">
+            <div class="bb5-data-drpdown-body">
+                <p class="user-mail">
+                    <strong>E-mail :</strong> {{ user.email() }}
+                </p>
+                <p class="col-bb5-22 user-group">
+                    <strong>Group :</strong> {{ user.groups() }}
+                </p>
+                <p class="col-bb5-20 user-status">
+                    <strong>Status :</strong>
+                        <span class="bb5-button-selector">
+                            <a href="#" class="btn btn-default btn-sm fa fa-angle-left">
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <span class="bb5-button-selector-status">{{ user.activated() }}</span>
+                            <a href="#" class="btn btn-default btn-sm fa fa-angle-right">
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </span>
+                    </p>
+            </div>
+            <div class="col-bb5-5 bb5-data-drpdown-footer">
+                <p data-user="{{ user.id() }}">
+                    <button type="button" class="btn btn-default btn-sm btn-edit">
+                        <i class="fa fa-pencil"></i> Edit
+                    </button>
+                    <button type="button" class="btn btn-delete btn-default btn-sm">
+                        <i class="fa fa-trash-o"></i> Delete
+                    </button>
+                </p>
+            </div>
+        </div>
+    </div>
+</li>
