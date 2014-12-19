@@ -88,7 +88,7 @@ define(['require', 'content.datastore', 'jquery', 'jsclass', 'nunjucks', 'text!c
                     self.popin.display();
                 }).fail(function (response) {
                     self.popin.unmask();
-                    Api.exception('ContentRendererException', 57567, '[deleteContent] ContentRendererException error while deleting content '+ response);
+                    Api.exception('ContentRendererException', 57567, '[deleteContent] ContentRendererException error while deleting content ' + response);
                 });
             },
 

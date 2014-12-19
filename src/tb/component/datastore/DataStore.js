@@ -171,7 +171,7 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
                         task.params.push(dataState);
                         dataState = taskAction.apply({}, task.params, i);
                     } catch (e) {
-                        Api.exception.silent('DataStoreException', 74001, '[processTasks] '+e);
+                        Api.exception.silent('DataStoreException', 74001, '[processTasks] ' + e);
                     }
                 });
                 /* notify the new state */
