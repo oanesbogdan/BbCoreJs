@@ -48,7 +48,7 @@ define(['require', 'content.datastore', 'jquery', 'jsclass', 'nunjucks', 'text!c
                 self.popin.setContent(jQuery("<p></p>"));
                 self.popin.display();
                 self.popin.mask();
-                self.addButtons(itemData);
+                self.addButtons();
                 jQuery.ajax({
                     url: "/rest/1/classcontent/" + itemData.type + '/' + itemData.uid,
                     dataType: 'html'
@@ -88,7 +88,7 @@ define(['require', 'content.datastore', 'jquery', 'jsclass', 'nunjucks', 'text!c
                     self.popin.display();
                 }).fail(function (response) {
                     self.popin.unmask();
-                    throw "ContentRendererException error while deleting content " + response;
+                    Api.exception('ContentRendererException', 57567, '[deleteContent] ContentRendererException error while deleting content '+ response);
                 });
             },
 

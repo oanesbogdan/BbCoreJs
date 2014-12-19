@@ -124,9 +124,7 @@ define(['jquery', 'jssimplepagination'], function (jQuery) {
                 this.checkState();
                 return widget;
             },
-            /** when history changes change page too
-        handleHistory : function () {},
-        */
+
             invoke: function (methodName) {
                 var args = Array.prototype.slice.call(arguments, 0);
                 args.shift();

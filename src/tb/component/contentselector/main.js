@@ -111,8 +111,8 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
                 jQuery.ajax({
                     url: '/rest/1/classcontent/category'
                 }).done(function (data) {
-                    var fomattedData = formater.format('category', data);
-                    self.categoryTreeView.setData(fomattedData);
+                    var formattedData = formater.format('category', data);
+                    self.categoryTreeView.setData(formattedData);
                 });
             },
 

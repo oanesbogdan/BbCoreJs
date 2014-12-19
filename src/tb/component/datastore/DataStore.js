@@ -54,7 +54,7 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
             },
 
             processTasks: function () {
-                return;
+                Api.exception.silent('DataStoreException', 74005, 'You must implement processTasks');
             },
 
             applyFilter: function (name) {
@@ -133,7 +133,6 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
                     data: data
                 });
                 this.createGenericSorter();
-                /* state before  filtrer*/
                 this.previousDataState = {};
             },
             createGenericSorter: function () {
@@ -172,7 +171,7 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
                         task.params.push(dataState);
                         dataState = taskAction.apply({}, task.params, i);
                     } catch (e) {
-                        return true;
+                        Api.exception.silent('DataStoreException', 74001, '[processTasks] '+e);
                     }
                 });
                 /* notify the new state */
