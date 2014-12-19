@@ -1,12 +1,13 @@
-/*require.config({
+require.config({
     paths: {
-        'cs-templates': 'src/tb/component/contentselector/templates'
+        'content.datastore': 'src/tb/component/contentselector/datastore/content.datastore'
     }
-});*/
-define(['require', 'content.datastore', 'jquery', 'jsclass', 'nunjucks', 'text!cs-templates/content.delete.tpl', 'text!cs-templates/content.grid.view.tpl', 'text!cs-templates/content.list.view.tpl'], function (require) {
+});
+define(['require', 'content.datastore', 'jquery', 'jsclass', 'nunjucks', 'text!cs-templates/content.delete.tpl', 'text!cs-templates/content.grid.view.tpl', 'tb.core.Api', 'text!cs-templates/content.list.view.tpl'], function (require) {
     'use strict';
     var nunjucks = require('nunjucks'),
         jQuery = require('jquery'),
+        Api = require('tb.core.Api'),
 
         ContentRenderer = new JS.Class({
             // defaultConfig : {},
@@ -57,7 +58,7 @@ define(['require', 'content.datastore', 'jquery', 'jsclass', 'nunjucks', 'text!c
                     self.popin.display();
                 }).fail(function (response) {
                     self.popin.unmask();
-                    throw "ContentRendererException error while showing showContentPreview " + response;
+                    Api.exception('ContentRendererException', 57567, 'error while showing showContentPreview ' + response);
                 });
             },
 

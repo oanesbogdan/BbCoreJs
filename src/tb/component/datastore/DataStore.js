@@ -1,8 +1,8 @@
-define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass', 'tb.core.DriverHandler', 'tb.core.RestDriver'], function (require, jQuery, BackBone, coreApi, underscore) {
+define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass', 'tb.core.DriverHandler', 'tb.core.RestDriver'], function (require, jQuery, BackBone, Api, underscore) {
     'use strict';
     var CoreDriverHandler = require('tb.core.DriverHandler'),
         CoreRestDriver = require('tb.core.RestDriver'),
-        AbstactDataStore = new JS.Class({
+        AbstractDataStore = new JS.Class({
             defaultConfig: {
                 idKey: 'uid'
             },
@@ -20,20 +20,20 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
 
             addFilter: function (name, def) {
                 if (!name || typeof name !== "string") {
-                    throw "Exception:addFilter filter name should be a string";
+                    Api.exception('DataStoreException', 74000, '[addFilter] filter name should be a string');
                 }
                 if (!def || typeof def !== 'function') {
-                    throw "Exception:addFilter def should be a function";
+                    Api.exception('DataStoreException', 74001, '[addFilter] def should be a function');
                 }
                 this.filters[name] = def;
             },
 
             addSorter: function (name, def) {
                 if (!name || typeof name !== "string") {
-                    throw "Exception:addSorter filter name should be a string";
+                    Api.exception('DataStoreException', 74000, '[addSorter] sorter name should be a string');
                 }
                 if (!def || typeof def !== 'function') {
-                    throw "Exception:addSorter def should be a function";
+                    Api.exception('DataStoreException', 74001, '[addSorter] def should be a function');
                 }
                 this.sorters[name] = def;
             },
@@ -124,11 +124,11 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
             }
         }),
         /* JSON Adapter */
-        JsonDataStore = new JS.Class(AbstactDataStore, {
+        JsonDataStore = new JS.Class(AbstractDataStore, {
             initialize: function (config) {
                 this.callSuper(config);
                 var data = (this.config.hasOwnProperty('data')) ? this.config.data : [];
-                this.dataList = new coreApi.SmartList({
+                this.dataList = new Api.SmartList({
                     idKey: this.config.idKey,
                     data: data
                 });
@@ -180,7 +180,7 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
             }
         }),
         /* RestDataAdapter */
-        RestDataStore = new JS.Class(AbstactDataStore, {
+        RestDataStore = new JS.Class(AbstractDataStore, {
             defaultConfig: {
                 autoLoad: false,
                 restBaseUrl: '/rest/1'

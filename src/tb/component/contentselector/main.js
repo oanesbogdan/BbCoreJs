@@ -10,7 +10,7 @@ require.config({
         'content.datastore': 'src/tb/component/contentselector/datastore/content.datastore'
     }
 });
-define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin/main', 'component!dataview', 'component!mask', 'text!cs-templates/layout.tpl', 'content.renderer', 'cs-control/searchengine.control', 'cs-control/pageselector.control', 'jqLayout', "component!datastore", "component!treeview", "component!pagination", "node.formater", 'nunjucks', 'content.datastore'], function (require, jQuery, layout, PopInMng) {
+define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin/main', 'component!rangeselector', 'component!dataview', 'component!mask', 'text!cs-templates/layout.tpl', 'content.renderer', 'cs-control/searchengine.control', 'jqLayout', "component!datastore", "component!treeview", "component!pagination", "node.formater", 'nunjucks', 'content.datastore'], function (require, jQuery, layout, PopInMng) {
     'use strict';
     var formater = require('node.formater'),
         ContentRenderer = require('content.renderer'),
@@ -27,8 +27,15 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
                     height: jQuery(window).height() - (20 * 2),
                     width: jQuery(window).width() - (20 * 2)
                 },
-                pageRange: [1, 10, 1],
-                itemsByPage: 2
+                pagination: {
+                    itemsOnPage: 5
+                },
+                pageSelector: {
+                    range: [1, 10, 1]
+                },
+                categoryTreeView: {},
+                contentDataView: {},
+                searchEngine: {}
             },
 
             initialize: function (userConfig) {
@@ -37,7 +44,6 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
                 this.isLoaded = false;
                 this.state = {};
                 this.mode = this.VIEW_MODE;
-                this.handleComponentState();
                 this.widget = jQuery(layout).clone();
                 this.popIn = this.initPopIn();
                 this.popIn.addOption("open", jQuery.proxy(this.onOpen, null, this));
@@ -48,21 +54,10 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
                 this.bindEvents();
             },
 
-            handleComponentState: function () {
-                this.componentState = {
-                    pagination: {},
-                    pageSelector: {},
-                    categoryTreeView: {},
-                    contentDataView: {},
-                    searchEngine: {}
-                };
-            },
-
             initControls: function () {
-                this.pageRangeSelector = require("cs-control/pageselector.control").createPageRangeSelector({
-                    range: this.config.pageRange
-                });
-                this.searchEngine = require("cs-control/searchengine.control").createSearchEngine(this.componentState.searchEngine);
+                this.pageRangeSelector = require("component!rangeselector").createPageRangeSelector(this.config.pageSelector);
+                this.searchEngine = require("cs-control/searchengine.control").createSearchEngine(this.config.searchEngine);
+                this.contentPagination.setItemsOnPage(this.pageRangeSelector.getValue(), true);
             },
 
             /* create components */
@@ -76,28 +71,27 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
             },
 
             createDataView: function () {
-                return require('component!dataview').createDataView({
+                var defaultConfig = {
                     allowMultiSelection: true,
-                    dataStore: this.contentRestDataStore,
                     selectedItemCls: "selected",
                     css: {
                         width: "auto",
                         height: "auto"
-                    },
-                    itemRenderer: jQuery.proxy(this.contentRenderer.render, this.contentRenderer)
-                });
+                    }
+                },
+                    dataViewConfig = jQuery.extend({}, defaultConfig, this.contentDataView);
+                dataViewConfig.itemRenderer = jQuery.proxy(this.contentRenderer.render, this.contentRenderer);
+                dataViewConfig.dataStore = this.contentRestDataStore;
+                return require('component!dataview').createDataView(dataViewConfig);
             },
 
             createPagination: function () {
-                return require('component!pagination').createPagination({
-                    itemsOnPage: 5
-                });
+                return require('component!pagination').createPagination(this.config.pagination);
             },
 
             createCategoryTreeView: function () {
-                return require('component!treeview').createTreeView(this.componentState.categoryTreeView);
+                return require('component!treeview').createTreeView(this.config.categoryTreeView);
             },
-
             /**
              * This fonction is called only once for each instance
              * the tree is loaded here the prevent useless rest call
@@ -168,7 +162,7 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
                     if (selectedNode.isRoot) {
                         return;
                     }
-                    if (selectedNode.isACat) {
+                    if (selectedNode.isACategory) {
                         self.contentRestDataStore.unApplyFilter('byClasscontent').applyFilter('byCategory', selectedNode.name);
                     } else {
                         self.contentRestDataStore.unApplyFilter('byCategory').applyFilter('byClasscontent', selectedNode.type);
@@ -179,16 +173,21 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
                 /* When range Changes */
                 this.pageRangeSelector.on("pageRangeSelectorChange", function (val) {
                     self.contentRestDataStore.setLimit(val);
-                    self.contentPagination.setItemsOnPage(val);
+                    self.contentPagination.setItemsOnPage(val); // -->will trigger pageChange
                 });
                 /* When page changes */
                 this.contentPagination.on("pageChange", function (page) {
                     var limit = self.pageRangeSelector.getValue(),
-                        start = (page - 1) * limit;
-                    self.contentRestDataStore.setStart(start).execute();
+                        start = (page - 1) * limit,
+                        seletectedNode = self.categoryTreeView.getSelectedNode();
+                    self.contentRestDataStore.setStart(start);
+                    if (!seletectedNode || (seletectedNode && seletectedNode.isRoot)) {
+                        return;
+                    }
+                    self.contentRestDataStore.execute();
                 });
                 /* When we must update the query task */
-                this.searchEngine.on("doSeach", function (criteria) {
+                this.searchEngine.on("doSearch", function (criteria) {
                     jQuery.each(criteria, function (key, val) {
                         if (criteria[key] !== undefined) {
                             var filterName = 'by' + key.charAt(0).toUpperCase() + key.slice(1);
@@ -200,14 +199,12 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
                 /* when we have contents */
                 self.contentRestDataStore.on("dataStateUpdate", jQuery.proxy(this.updateCurrentNodeInfos, this));
             },
-
             updateCurrentNodeInfos: function () {
                 var resultTotal = this.contentRestDataStore.getTotal();
                 jQuery(this.widget).find(".result-infos").html(this.categoryTreeView.getSelectedNode().name + ' - ' + resultTotal + ' item(s)');
                 /* update pagination here */
                 this.contentPagination.setItems(resultTotal);
             },
-
             setDataViewMode: function (mode) {
                 var availableMode = ['grid', 'list'];
                 jQuery(this.widget).find('.viewmode-btn').removeClass("active");
@@ -216,21 +213,14 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
                     this.contentDataView.setRenderMode(mode);
                 }
             },
-
             setContenttypes: function (contentypeArr) {
                 var data = formater.format("contenttype", contentypeArr);
                 this.categoryTreeView.setData(data);
             },
-
-            getSelectedContents: function () {
-                return;
-            },
-
             initPopIn: function () {
                 PopInMng.init("#bb5-ui");
                 return PopInMng.createPopIn(this.config.dialogConfig);
             },
-
             onOpen: function (selector) {
                 selector.onReady();
                 selector.onReady = jQuery.noop;
@@ -242,11 +232,9 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'tb.component/popin
                 widgetLayout.sizePane("west", 201); //useful to fix layout size
                 selector.isLoaded = true;
             },
-
             render: function () {
                 return this.widget;
             },
-
             display: function () {
                 this.popIn.display();
             }

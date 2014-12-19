@@ -16,8 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define(['require', 'tb.core', "component!treeview", 'jquery', 'component!contentselector', 'component!dataview', 'component!datastore'], function (require, bbCore, TreeViewMng, jQuery, ContentSelector) {
+define(['require', 'tb.core', 'tb.core.Renderer', "component!treeview", 'jquery', 'component!contentselector', 'component!dataview', 'component!datastore'], function (require, bbCore, Renderer, TreeViewMng, jQuery, ContentSelector) {
     'use strict';
+
     bbCore.ControllerManager.registerController('MainController', {
         appName: 'layout',
         config: {
@@ -25,7 +26,7 @@ define(['require', 'tb.core', "component!treeview", 'jquery', 'component!content
         },
         onInit: function () {
             //this.rootView = jQuery(".jumbotron");
-            this.tplRenderer = bbCore.TemplateRenderer.getInstance({});
+            this.tplRenderer = Renderer;
             //this.initRestDriver();
             //this.createTreeView();
             //this.createPopInTreeView();
@@ -220,6 +221,7 @@ define(['require', 'tb.core', "component!treeview", 'jquery', 'component!content
         layoutListAction: function () {
             console.log(arguments);
         },
+
         homeAction: function () {
             try {
                 var self = this,
@@ -228,7 +230,7 @@ define(['require', 'tb.core', "component!treeview", 'jquery', 'component!content
                         templateName: 'homeTemplate',
                         radical: 'staying'
                     },
-                    responseHtml = this.tplRenderer.render('src/tb/apps/layout/templates/home.tpl', {
+                    responseHtml = this.tplRenderer.asyncRender('src/tb/apps/layout/templates/home.tpl', {
                         data: data
                     }); //action append, replace
                 jQuery(this.rootView).html(responseHtml);
@@ -238,6 +240,7 @@ define(['require', 'tb.core', "component!treeview", 'jquery', 'component!content
             } catch (e) {
                 console.log(e);
             }
+
         },
         listAction: function (page, section) {
             console.log(page, section);

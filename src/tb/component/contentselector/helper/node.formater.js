@@ -1,4 +1,4 @@
-define(['jquery'], function (jquery) {
+define(['tb.core.Api', 'jquery'], function (Api, jquery) {
     'use strict';
     var formaterMap = {
         category: 'formatCategory',
@@ -11,7 +11,7 @@ define(['jquery'], function (jquery) {
                 /*jslint unparam: true*/
                 jquery.each(data, function (i, content) {
                     if (content.hasOwnProperty("label") && typeof content.label === "string") {
-                        content.isACat = false;
+                        content.isACategory = false;
                         content.no = i + 1;
                         result.push(content);
                     }
@@ -23,7 +23,7 @@ define(['jquery'], function (jquery) {
                 var formater = formaterMap[type],
                     contents = data || {};
                 if (typeof this[formater] !== "function") {
-                    throw "NodeFormaterException formater " + formater + " doesn't exists!";
+                    Api.exception('NodeFormaterException', 12201, 'format: formater ' + formater + 'doesn\'t exist');
                 }
                 return this[formater](contents);
             },
@@ -39,7 +39,7 @@ define(['jquery'], function (jquery) {
                     result = [];
                 jquery.each(contents, function (i, category) {
                     category.label = category.name;
-                    category.isACat = true;
+                    category.isACategory = true;
                     category.no = i + 1;
                     category.children = self.formatSubcontents(category.contents);
                     root.children.push(category);
@@ -60,7 +60,7 @@ define(['jquery'], function (jquery) {
                         label: content,
                         type: content,
                         no: i + 1,
-                        isACat: false
+                        isACategory: false
                     });
                 });
                 result.push(root);

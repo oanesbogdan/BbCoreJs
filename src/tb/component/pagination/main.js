@@ -24,7 +24,6 @@ define(['jquery', 'jssimplepagination'], function (jQuery) {
                 this.silenceNextEvent = false;
                 $.extend(this, {}, Backbone.Events);
                 this.widget = $("<div/>").clone();
-                this.widget.css('border', '1px solid bleue');
                 this.bindEvents();
                 this.build();
             },
@@ -35,7 +34,6 @@ define(['jquery', 'jssimplepagination'], function (jQuery) {
             },
 
             setItemsOnPage: function (nb, silent) {
-
                 silent = (typeof silent === 'boolean') ? silent : false;
                 this.silenceNextEvent = silent;
                 this.invoke('updateItemsOnPage', nb);
@@ -107,10 +105,10 @@ define(['jquery', 'jssimplepagination'], function (jQuery) {
                 $(mainContainer).addClass(this.defaultConfig.cls);
                 /* append first && last if needed */
                 if (!firstBtn.length) {
-                    $(mainContainer).prepend($(' <li><a class="bb5-pagination-btn first-btn" href="#"><i class="fa fa-angle-double-left"></i></a></li>'));
+                    $(mainContainer).prepend($('<li><a class="bb5-pagination-btn first-btn" href="#"><i class="fa fa-angle-double-left"></i></a></li>'));
                 }
                 if (!lastBtn.length) {
-                    $(mainContainer).append($(' <li><a class="bb5-pagination-btn last-btn" href="#"><i class="fa fa-angle-double-right"></i></a></li>'));
+                    $(mainContainer).append($('<li><a class="bb5-pagination-btn last-btn" href="#"><i class="fa fa-angle-double-right"></i></a></li>'));
                 }
                 /*handle current prev*/
                 if (!prevCurrent.length) {

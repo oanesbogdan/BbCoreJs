@@ -19,7 +19,7 @@ define(['component!datastore', 'jsclass'], function (DataStore) {
         return restParams;
     });
 
-    restDataStore.addFilter("byPubBefore", function (value, restParams) {
+    restDataStore.addFilter("byBeforeDate", function (value, restParams) {
         restParams.criterias.beforeDate = value;
         return restParams;
     });

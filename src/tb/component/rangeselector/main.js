@@ -1,10 +1,11 @@
 define(['underscore', 'jquery', 'jsclass', 'BackBone'], function (underscore, jQuery) {
     'use strict';
-    var PageRangeSelector = new JS.Class({
+    var RangeSelector = new JS.Class({
         defaultConfig: {
             range: [1, 50],
             cls: 'max-per-page-selector input-xs',
             optionCls: 'page',
+            selected: 1,
             css: {}
         },
 
@@ -15,6 +16,7 @@ define(['underscore', 'jquery', 'jsclass', 'BackBone'], function (underscore, jQ
             this.widget = jQuery("<select/>");
             this.widget.addClass(this.config.cls);
             this.updateUi();
+            this.select(this.config.selected, true);
             this.bindEvents();
         },
 
@@ -45,6 +47,8 @@ define(['underscore', 'jquery', 'jsclass', 'BackBone'], function (underscore, jQ
 
         setRange: function (range) {
             this.config.range = range;
+            this.updateUi();
+            this.select(this.config.selected, true);
         },
 
         handleChange: function (selector) {
@@ -72,8 +76,8 @@ define(['underscore', 'jquery', 'jsclass', 'BackBone'], function (underscore, jQ
     return {
         createPageRangeSelector: function (config) {
             config = config || {};
-            return new PageRangeSelector(config);
+            return new RangeSelector(config);
         },
-        PageRangeSelector: PageRangeSelector
+        RangeSelector: RangeSelector
     };
 });
