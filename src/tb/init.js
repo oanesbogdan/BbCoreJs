@@ -40,7 +40,7 @@ define(['jquery'], function (jQuery) {
 
         load: function (already_connected) {
             var self = this;
-                
+
             require(['tb.core', 'src/tb/config'], function (Core, config) {
                 Core.set('is_connected', false);
 
