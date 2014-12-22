@@ -34,14 +34,14 @@ define(['jquery'], function (jQuery) {
                 if (!event.altKey || !event.ctrlKey || 66 !== event.keyCode) {
                     return;
                 }
-                this.load();
+                this.load(false);
             }
         },
 
-        load: function () {
+        load: function (already_connected) {
             var self = this;
+                
             require(['tb.core', 'src/tb/config'], function (Core, config) {
-
                 Core.set('is_connected', false);
 
                 var router = null;
@@ -55,15 +55,19 @@ define(['jquery'], function (jQuery) {
                     router.navigate(app.getMainRoute());
                 });
 
-                Core.Mediator.subscribe('onSuccessLogin', function () {
-                    self.toolBarDisplayed = true;
-                    /*
-                     * @TODO: Load config by a rest when user connected
-                     */
+                if (true === already_connected) {
                     Core.initConfig(config);
-                });
+                } else {
+                    Core.Mediator.subscribe('onSuccessLogin', function () {
+                        self.toolBarDisplayed = true;
+                        /*
+                         * @TODO: Load config by a rest when user connected
+                         */
+                        Core.initConfig(config);
+                    });
 
-                Core.authentication.showForm();
+                    Core.authentication.showForm();
+                }
 
             }, this.onError);
         },
