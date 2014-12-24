@@ -149,7 +149,6 @@ define(
              * @param {Object} response
              */
             onRequestFail: function (response) {
-
                 if (response.getStatus() === 403) {
                     this.popin.setTitle('Connexion');
                     this.popin.setContent('Permission denied');
@@ -159,6 +158,7 @@ define(
 
                     Api.set('is_connected', false);
 
+                    this.popin.unmask();
                     this.showForm('Bad credentials');
                 }
 
