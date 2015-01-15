@@ -51,6 +51,12 @@ define(
             dialogContainerClass: '.bb5-dialog-container',
             paletteBlocksDalogId: '#palette-blocks',
             togglePaletteClasses: '.bb5-data-toggle .bb5-data-toggle-header',
+            paletteDialogConfig: {
+                width: 323,
+                height: 400 > jQuery(window).height() - 40 ? jQuery(window).height() - 40 : 400,
+                autoOpen: false,
+                appendTo: '#bb5-ui .bb5-dialog-container'
+            },
 
             /**
              * Initialize of ContentViewContributionIndex
@@ -79,12 +85,7 @@ define(
                 if (!this.paletteLoaded) {
                     jQuery(this.dialogContainerClass).html(Renderer.render(paletteBlocksTpl, {categories: this.categories}));
 
-                    paletteBlock.dialog({
-                        width: 323,
-                        height: 400 > jQuery(window).height() - 40 ? jQuery(window).height() - 40 : 400,
-                        autoOpen: false,
-                        appendTo: '#bb5-ui .bb5-dialog-container'
-                    });
+                    paletteBlock.dialog(this.paletteDialogConfig);
 
                     paletteBlock.dialog('open');
 
