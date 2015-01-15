@@ -39,7 +39,6 @@ define(
              * @param {Object} config
              */
             initialize: function (config) {
-                this.config = config;
 
                 this.updated = false;
 
@@ -94,28 +93,69 @@ define(
              * @param {Object} config
              */
             computeMandatoryConfig: function (config) {
+                var key;
+
                 if (typeof config.jQueryObject !== 'object') {
                     Core.exception('BadTypeException', 500, 'The jQueryObject must be set');
                 }
-                this.jQueryObject = config.jQueryObject;
 
                 if (typeof config.uid !== 'string') {
                     Core.exception('BadTypeException', 500, 'The uid must be set');
                 }
-                this.uid = config.uid;
 
                 if (typeof config.type !== 'string') {
                     Core.exception('BadTypeException', 500, 'The type must be set');
                 }
-                this.type = config.type;
 
-                if (typeof config.definition === 'object') {
-                    this.definition = config.definition;
-                } else {
-                    this.definition = null;
+                for (key in config) {
+                    if (config.hasOwnProperty(key)) {
+                        this[key] = config[key];
+                    }
                 }
 
                 this.id = Math.random().toString(36).substr(2);
+            },
+
+            /**
+             * Return a property of object if exist
+             * @param {String} key
+             * @returns {Mixed}
+             */
+            get: function (key) {
+                var result = null;
+
+                if (this.hasOwnProperty(key)) {
+                    result = this[key];
+                }
+
+                return result;
+            },
+
+            /**
+             * Return the property of definition or all definition if key is not informed
+             * @param {String} key
+             * @returns {Mixed}
+             */
+            getDefinition: function (key) {
+                var result = null;
+
+                if (key) {
+                    if (this.definition.hasOwnProperty(key)) {
+                        result = this.definition[key];
+                    }
+                } else {
+                    result = this.definition;
+                }
+
+                return result;
+            },
+
+            /**
+             * Return if content is a ContentSet
+             * @returns {Boolean}
+             */
+            isAContentSet: function () {
+                return this.definition.properties.is_container;
             },
 
             /**

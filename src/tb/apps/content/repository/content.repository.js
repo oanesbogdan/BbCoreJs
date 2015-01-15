@@ -48,7 +48,7 @@ define(
                  * @returns {Promise}
                  */
                 findDefinitions: function () {
-                    return CoreDriverHandler.read(this.TYPE + '/definition');
+                    return CoreDriverHandler.read(this.TYPE, {'definition': ''});
                 },
 
                 /**

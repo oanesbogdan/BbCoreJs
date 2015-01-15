@@ -231,7 +231,6 @@ define(
                     if (target.data(this.identifierDataAttribute)) {
 
                         dataTransfer.onDrop = this.doDropContent;
-
                         content = ContentManager.buildElement(target);
                         ContentContainer.addContent(content);
 
@@ -249,6 +248,7 @@ define(
                             type = target.data(this.typeDataAttribute);
                         }
                     }
+
 
                     dataTransfer.type = type;
 
