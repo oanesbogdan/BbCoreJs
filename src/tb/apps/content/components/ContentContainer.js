@@ -56,7 +56,7 @@ define(['jsclass'], function () {
             for (key in this.contents) {
                 if (this.contents.hasOwnProperty(key)) {
                     content = this.contents[key];
-                    if (content.isContentSet) {
+                    if (content.isAContentSet()) {
                         if (content.accept(accept)) {
                             result.push(content);
                         }
