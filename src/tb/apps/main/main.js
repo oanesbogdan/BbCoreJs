@@ -29,7 +29,7 @@ require.config({
     }
 });
 
-define('app.main', ['tb.core', 'main.view.index', 'jquery', 'component!popin', 'datetimepicker'], function (Core, MainViewIndex, jQuery, Popin) {
+define('app.main', ['tb.core', 'tb.core.ApplicationManager', 'main.view.index', 'jquery', 'component!popin', 'bootstrapjs'], function (Core, ApplicationManager, MainViewIndex, jQuery, Popin) {
     'use strict';
 
     /**
@@ -45,38 +45,40 @@ define('app.main', ['tb.core', 'main.view.index', 'jquery', 'component!popin', '
                 tbSelector: '#bb5-ui'
             };
 
-            if (!jQuery(this.config.tbSelector).length) {
-                throw 'Selector "' + this.config.tbSelector + '" does not exists, MainApplication cannot be initialized.';
+            var toolbar = jQuery(this.config.tbSelector),
+                pageUid = toolbar.attr('data-page-uid'),
+                siteUid = toolbar.attr('data-site-uid'),
+                layoutUid = toolbar.attr('data-layout-uid');
+
+            if (!toolbar.length) {
+                Core.exception('MissingSelectorException', 500, 'Selector "' + this.config.tbSelector + '" does not exists, MainApplication cannot be initialized.');
             }
+
+            if (null === pageUid || null === siteUid || null === layoutUid) {
+                Core.exception('MissingDataException', 500, 'Page uid, Site uid and Layout uid must be set in toolbar');
+            }
+
+            Core.set('page.uid', pageUid);
+            Core.set('site.uid', siteUid);
+            Core.set('layout.uid', layoutUid);
 
             Core.set('application.main', this);
 
             Popin.init(this.config.tbSelector);
-
-            console.log(' MainApplication is initialized ');
         },
 
         /**
          * occurs on start of main application
          */
         onStart: function () {
+            ApplicationManager.invokeService('content.main.findDefinitions', Core.get('page.uid')).done(function (promise) {
+                promise.done(promise).done(function (definitions) {
+                    ApplicationManager.invokeService('content.main.listenDOM', definitions);
+                });
+            });
+
             var view = new MainViewIndex(this.config);
             view.render();
-            console.log(' MainApplication onStart...');
-        },
-
-        /**
-         * occurs on stop of main application
-         */
-        onStop: function () {
-            console.log(' MainApplication onStop...');
-        },
-
-        /**
-         * occurs on error of main application
-         */
-        onError: function () {
-            console.log(' MainApplication onError...');
         }
     });
 });

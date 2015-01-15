@@ -16,16 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define([], function () {
+
+define(['content.models.AbstractContent', 'jsclass'], function (AbstractContent) {
+
     'use strict';
-    return {
-        getName: function () {
-            return "testManager";
-        },
-        sayHello: function () {
-            return "hello";
+
+    var Content = new JS.Class(AbstractContent, {
+
+        /**
+         * Initialize Content
+         *
+         * @param {Object} config
+         */
+        initialize: function (config) {
+            config.optionsConfig = this.defaultOptionsConfig;
+
+            this.callSuper(config);
         }
-    };
+    });
 
+    return Content;
 });
-
