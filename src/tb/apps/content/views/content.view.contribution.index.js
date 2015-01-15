@@ -65,31 +65,35 @@ define(
              * Events of view
              */
             bindUiEvents: function () {
-                jQuery(this.el).on('change', this.selectCategoriesId, jQuery.proxy(this.onSelectCategory, this));
-                jQuery(this.el).on('click', this.paletteBlocksId, jQuery.proxy(this.onPaletteBlocksClick, this));
+                var element = jQuery(this.el);
+                
+                element.on('change', this.selectCategoriesId, jQuery.proxy(this.onSelectCategory, this));
+                element.on('click', this.paletteBlocksId, jQuery.proxy(this.onPaletteBlocksClick, this));
                 jQuery(this.dialogContainerClass).on('click', this.togglePaletteClasses, jQuery.proxy(this.doToggleHeaderEvent, this));
             },
 
             /* PALETTE MANAGE */
             onPaletteBlocksClick: function () {
+                var paletteBlock = jQuery(this.paletteBlocksDalogId);
+                
                 if (!this.paletteLoaded) {
                     jQuery(this.dialogContainerClass).html(Renderer.render(paletteBlocksTpl, {categories: this.categories}));
 
-                    jQuery(this.paletteBlocksDalogId).dialog({
+                    paletteBlock.dialog({
                         width: 323,
                         height: 400 > jQuery(window).height() - 40 ? jQuery(window).height() - 40 : 400,
                         autoOpen: false,
                         appendTo: '#bb5-ui .bb5-dialog-container'
                     });
 
-                    jQuery(this.paletteBlocksDalogId).dialog('open');
+                    paletteBlock.dialog('open');
 
                     this.paletteLoaded = true;
                 } else {
-                    if (jQuery(this.paletteBlocksDalogId).dialog('isOpen')) {
-                        jQuery(this.paletteBlocksDalogId).dialog('close');
+                    if (paletteBlock.dialog('isOpen')) {
+                        paletteBlock.dialog('close');
                     } else {
-                        jQuery(this.paletteBlocksDalogId).dialog('open');
+                        paletteBlock.dialog('open');
                     }
                 }
             },
