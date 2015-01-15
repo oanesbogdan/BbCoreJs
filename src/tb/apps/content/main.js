@@ -31,6 +31,8 @@ require.config({
 
         //Components
         'content.manager': 'src/tb/apps/content/components/ContentManager',
+        'content.dnd.manager': 'src/tb/apps/content/components/DndManager',
+        'content.mouseevent.manager': 'src/tb/apps/content/components/MouseEventManager',
         'definition.manager': 'src/tb/apps/content/components/DefinitionManager',
         'content.container': 'src/tb/apps/content/components/ContentContainer',
         'content.breadcrumb': 'src/tb/apps/content/components/Breadcrumb',

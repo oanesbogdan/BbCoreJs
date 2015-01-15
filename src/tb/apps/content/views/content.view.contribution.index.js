@@ -72,7 +72,7 @@ define(
              */
             bindUiEvents: function () {
                 var element = jQuery(this.el);
-                
+
                 element.on('change', this.selectCategoriesId, jQuery.proxy(this.onSelectCategory, this));
                 element.on('click', this.paletteBlocksId, jQuery.proxy(this.onPaletteBlocksClick, this));
                 jQuery(this.dialogContainerClass).on('click', this.togglePaletteClasses, jQuery.proxy(this.doToggleHeaderEvent, this));
@@ -81,7 +81,7 @@ define(
             /* PALETTE MANAGE */
             onPaletteBlocksClick: function () {
                 var paletteBlock = jQuery(this.paletteBlocksDalogId);
-                
+
                 if (!this.paletteLoaded) {
                     jQuery(this.dialogContainerClass).html(Renderer.render(paletteBlocksTpl, {categories: this.categories}));
 

@@ -1,12 +1,13 @@
 define(
     [
         'tb.core',
-        'content.manager',
+        'content.dnd.manager',
+        'content.mouseevent.manager',
         'content.view.contribution.index',
         'definition.manager',
         'content.repository'
     ],
-    function (Core, ContentManager, ContributionIndexView, DefinitionManager, ContentRepository) {
+    function (Core, DndManager, MouseEventManager, ContributionIndexView, DefinitionManager, ContentRepository) {
 
         'use strict';
 
@@ -52,7 +53,9 @@ define(
 
             listenDOMService: function (definitions) {
                 DefinitionManager.setDefinitions(definitions);
-                ContentManager.listen();
+
+                DndManager.listen();
+                MouseEventManager.listen();
             }
         });
     }
