@@ -29,6 +29,8 @@ define(
         'tb.core.Request',
         'tb.core.RequestHandler',
         'component!dnd',
+        'text!content/tpl/dropzone',
+        'tb.core.Renderer',
         'jsclass'
     ],
     function (Core,
@@ -40,7 +42,9 @@ define(
               ContentRepository,
               Request,
               RequestHandler,
-              dnd
+              dnd,
+              dropZoneTemplate,
+              Renderer
             ) {
 
         'use strict';
@@ -195,8 +199,8 @@ define(
                         contentSet,
                         childrens,
                         firstChild,
-                        div = '<div dropzone="true" class="' + this.dropZoneClass + '">DROPZONE</div>';
-
+                        div = Renderer.render(dropZoneTemplate, {'class': this.dropZoneClass});
+                    
                     for (key in contentSets) {
                         if (contentSets.hasOwnProperty(key)) {
                             contentSet = contentSets[key];
@@ -339,7 +343,7 @@ define(
                  */
                 onDragStart: function (event) {
                     event.stopPropagation();
-
+                    
                     var target = jQuery(event.target),
                         content,
                         id,
@@ -347,7 +351,7 @@ define(
                         type;
 
                     event.dataTransfer.effectAllowed = 'move';
-
+                    
                     if (target.data(this.identifierDataAttribute)) {
 
                         dataTransfer.onDrop = this.doDropContent;
@@ -375,7 +379,7 @@ define(
                     this.buildContentSet();
 
                     dataTransfer.contentSetDroppable = ContentContainer.findContentSetByAccept(type);
-
+                    
                     this.showHTMLZoneForContentSet(dataTransfer.contentSetDroppable, id);
                 },
 

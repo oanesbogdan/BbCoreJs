@@ -46,6 +46,7 @@ require.config({
         'content/tpl/contribution/index': 'src/tb/apps/content/templates/contribution.index.twig',
         'content/tpl/carousel_blocks': 'src/tb/apps/content/templates/carousel-blocks.twig',
         'content/tpl/palette_blocks': 'src/tb/apps/content/templates/palette-blocks.twig',
+        'content/tpl/dropzone': 'src/tb/apps/content/templates/dropzone.twig',
 
         //Views
         'content.view.contribution.index': 'src/tb/apps/content/views/content.view.contribution.index'
