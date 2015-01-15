@@ -31,19 +31,24 @@ define(['content.models.AbstractContent', 'jquery', 'jsclass'], function (Abstra
          * @param {Object} config
          */
         initialize: function (config) {
-            config.optionsConfig = this.defaultOptionsConfig;
-
-            this.isContentSet = true;
-
             this.callSuper(config);
         },
 
+        /**
+         * Return childrens of contentSet
+         * @returns {Object}
+         */
         getNodeChildrens: function () {
             return this.jQueryObject.children('.' + this.contentClass);
         },
 
+        /**
+         * Verify if contentSet accept this element name
+         * @param {String} accept
+         * @returns {Boolean}
+         */
         accept: function (accept) {
-            var accepts = this.config.definition.accept,
+            var accepts = this.getDefinition('accept'),
                 key,
                 result = false;
 
@@ -63,6 +68,11 @@ define(['content.models.AbstractContent', 'jquery', 'jsclass'], function (Abstra
             return result;
         },
 
+        /**
+         * Verify if contentSet is children of an other contentSet
+         * @param {String} contentSetId
+         * @returns {Boolean}
+         */
         isChildrenOf: function (contentSetId) {
             var parents = this.jQueryObject.parents('[data-bb-id]'),
                 result = false;

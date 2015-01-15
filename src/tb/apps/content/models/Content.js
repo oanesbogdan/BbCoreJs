@@ -29,8 +29,6 @@ define(['content.models.AbstractContent', 'jsclass'], function (AbstractContent)
          * @param {Object} config
          */
         initialize: function (config) {
-            config.optionsConfig = this.defaultOptionsConfig;
-
             this.callSuper(config);
         }
     });
