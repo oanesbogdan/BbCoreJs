@@ -76,9 +76,11 @@ define(
                  * Bind events for content
                  */
                 bindEvents: function () {
-                    jQuery('body').on('click', '.' + this.contentClass, jQuery.proxy(this.onClick, this));
-                    jQuery('body').on('mouseenter', '.' + this.contentClass, jQuery.proxy(this.onMouseEnter, this));
-                    jQuery('body').on('mouseleave', '.' + this.contentClass, jQuery.proxy(this.onMouseLeave, this));
+                    var body = jQuery('body');
+                    
+                    body.on('click', '.' + this.contentClass, jQuery.proxy(this.onClick, this));
+                    body.on('mouseenter', '.' + this.contentClass, jQuery.proxy(this.onMouseEnter, this));
+                    body.on('mouseleave', '.' + this.contentClass, jQuery.proxy(this.onMouseLeave, this));
 
                     dnd('body').addListeners('classcontent', '.' + this.dndClass);
 
