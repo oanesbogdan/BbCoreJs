@@ -39,7 +39,7 @@ define(['jquery', 'text!content/tpl/content-action', 'jsclass'], function (jQuer
         show: function () {
             jQuery(this.content).append(this.widget);
         },
-        
+
         hide: function () {
             this.widget.empty();
         }
