@@ -47,6 +47,24 @@ define([], function () {
             logger: {
 
             }
+        },
+
+        plugins: {
+            namespace: {
+                core: 'src/tb/apps/content/plugins/',
+                demo: ''
+            },
+            "core": {
+                edit: {
+                    accept: ['block_demo', 'Bloc/contentset_bfm'],
+                    config: {}
+                },
+                contenttype: {
+                    accept: ['home/home_container', 'block_demo'],
+                    config: {}
+                }
+            },
+            "demo": { }
         }
     };
 });
