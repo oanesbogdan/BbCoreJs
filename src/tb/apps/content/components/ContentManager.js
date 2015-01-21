@@ -25,7 +25,6 @@ define(
         'definition.manager',
         'content.container',
         'content.repository',
-        'tb.core.Request',
         'jsclass'
     ],
     function (jQuery,
@@ -33,8 +32,7 @@ define(
               ContentSet,
               DefinitionManager,
               ContentContainer,
-              ContentRepository,
-              Request
+              ContentRepository
             ) {
 
         'use strict';
@@ -55,10 +53,11 @@ define(
                     dropzone = jQuery(this.dropZoneAttribute).not('[data-' + this.idDataAttribute + ']');
 
                 dropzone.each(function () {
-                    var currentTarget = jQuery(this);
+                    var currentTarget = jQuery(this),
+                        objectIdentifier = currentTarget.data(self.identifierDataAttribute);
 
-                    if (currentTarget.hasClass(self.contentClass) && currentTarget.data(self.identifierDataAttribute)) {
-                        ContentContainer.addContent(self.buildElement(currentTarget));
+                    if (currentTarget.hasClass(self.contentClass) && typeof objectIdentifier === 'string') {
+                        ContentContainer.addContent(self.buildElement(self.retrievalObjectIdentifier(objectIdentifier)));
                     }
                 });
             },
@@ -66,9 +65,19 @@ define(
             /**
              * Create new element from the API
              * @param {String} type
+             * @returns {Promise}
              */
             createElement: function (type) {
-                return ContentRepository.save({'type': type});
+                var self = this,
+                    dfd = jQuery.Deferred();
+
+                ContentRepository.save({'type': type}).done(function (data, response) {
+                    dfd.resolve(self.buildElement({'type': type, 'uid': response.getHeader('BB-RESOURCE-UID')}));
+
+                    return data;
+                });
+
+                return dfd.promise();
             },
 
             /**
@@ -76,21 +85,15 @@ define(
              * @param {Object} event
              * @returns {Object}
              */
-            buildElement: function (element) {
-                var config = {},
-                    identifier,
-                    content,
-                    id = element.data(this.idDataAttribute),
-                    objectIdentifier = element.data(this.identifierDataAttribute);
+            buildElement: function (config) {
+                var content,
+                    objectIdentifier = this.buildObjectIdentifier(config.type, config.uid),
+                    element = jQuery('[data-' + this.identifierDataAttribute + '="' + objectIdentifier + '"]'),
+                    id = element.data(this.idDataAttribute);
 
                 if (id === undefined && objectIdentifier !== undefined) {
 
-                    identifier = this.retrievalObjectIdentifier(objectIdentifier);
-                    config.uid = identifier.uid;
-
-                    config.type = identifier.type;
                     config.definition = DefinitionManager.find(config.type);
-
                     config.jQueryObject = element;
 
                     if (config.definition !== null) {
@@ -112,7 +115,8 @@ define(
              */
             retrievalObjectIdentifier: function (objectIdentifier) {
                 var regex,
-                    res = {};
+                    object = {},
+                    res;
 
                 if (objectIdentifier) {
                     /*jslint regexp: true */
@@ -122,30 +126,28 @@ define(
                     res = regex.exec(objectIdentifier);
 
                     if (null !== res) {
-                        res.type = res[1];
-                        res.uid = res[2];
+                        object.type = res[1];
+                        object.uid = res[2];
                     }
                 }
 
-                return res;
+                return object;
             },
 
             /**
-             * Build Request Object
-             * @param {String} url
-             * @param {String} accept
-             * @returns {Object}
+             * Build an object identifier
+             * @param {String} type
+             * @param {String} uid
+             * @returns {null|String}
              */
-            buildRequest: function (url, accept) {
-                var request = new Request();
+            buildObjectIdentifier: function (type, uid) {
+                var objectIdentifier = null;
 
-                if (accept) {
-                    request.addHeader('Accept', accept);
+                if (typeof type === 'string' && typeof uid === 'string') {
+                    objectIdentifier = type + '(' + uid + ')';
                 }
 
-                request.setUrl(url);
-
-                return request;
+                return objectIdentifier;
             }
         });
 
