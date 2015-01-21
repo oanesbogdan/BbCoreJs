@@ -20,10 +20,11 @@
 define(
     [
         'tb.core',
+        'content.repository',
         'jquery',
         'jsclass'
     ],
-    function (Core, jQuery) {
+    function (Core, ContentRepository, jQuery) {
 
         'use strict';
 
@@ -148,6 +149,15 @@ define(
                 }
 
                 return result;
+            },
+
+            /**
+             * Return the html of content
+             * @param {String} renderMode
+             * @returns {Promise}
+             */
+            getHtml: function (renderMode) {
+                return ContentRepository.getHtml(this.type, this.uid, renderMode);
             },
 
             /**

@@ -38,6 +38,7 @@ define(
             contentClass: 'bb-content',
             contentHoverClass: 'bb-content-hover',
             contentSelectedClass: 'bb-content-selected',
+            identifierDataAttribute: 'bb-identifier',
             idDataAttribute: 'bb-id',
 
             /**
@@ -67,10 +68,9 @@ define(
             onClick: function (event) {
                 event.stopPropagation();
 
-
-
                 var currentSelected = jQuery('.' + this.contentSelectedClass),
-                    content = ContentManager.buildElement(jQuery(event.currentTarget)),
+                    identifier = jQuery(event.currentTarget).data(this.identifierDataAttribute),
+                    content = ContentManager.buildElement(ContentManager.retrievalObjectIdentifier(identifier)),
                     currentContent;
 
                 if (currentSelected.length > 0) {
@@ -109,7 +109,7 @@ define(
                 Core.Mediator.publish('on:classcontent:mouseleave', event);
 
                 var currentTarget = jQuery(event.currentTarget),
-                    parentToSelect = currentTarget.parent('.' + this.contentClass);
+                    parentToSelect = currentTarget.parents('.' + this.contentClass + ':first');
 
                 currentTarget.removeClass(this.contentHoverClass);
 

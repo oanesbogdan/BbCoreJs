@@ -35,10 +35,50 @@ define(['content.models.AbstractContent', 'jquery', 'jsclass'], function (Abstra
         },
 
         /**
-         * Return childrens of contentSet
+         * Add content html from parent with and position
+         * If position is not provided, html will be at the first
+         * @param {String} html
+         * @param {Number} position
+         * @returns {Promise}
+         */
+        append: function (content, position) {
+            var self = this,
+                done = false,
+                dfd = jQuery.Deferred(),
+                children = this.getNodeChildren();
+
+            content.getHtml().done(function (html) {
+                if (position === 'last') {
+                    self.jQueryObject.append(html);
+                    done = true;
+                } else {
+                    children.each(function (key) {
+                        if (key === position) {
+                            jQuery(this).before(html);
+                            done = true;
+
+                            return false;
+                        }
+                    });
+                }
+
+                if (done === false) {
+                    self.jQueryObject.prepend(html);
+                }
+
+                self.setUpdated(true);
+
+                dfd.resolve();
+            });
+
+            return dfd.promise();
+        },
+
+        /**
+         * Return children of contentSet
          * @returns {Object}
          */
-        getNodeChildrens: function () {
+        getNodeChildren: function () {
             return this.jQueryObject.children('.' + this.contentClass);
         },
 

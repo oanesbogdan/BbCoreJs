@@ -21,7 +21,6 @@ define(
     [
         'tb.core',
         'tb.core.Renderer',
-        'tb.core.RequestHandler',
         'jquery',
         'text!content/tpl/dropzone',
         'component!dnd',
@@ -31,7 +30,6 @@ define(
     ],
     function (Core,
               Renderer,
-              RequestHandler,
               jQuery,
               dropZoneTemplate,
               dnd,
@@ -73,7 +71,7 @@ define(
                 showHTMLZoneForContentSet: function (contentSets, currentContentId) {
                     var key,
                         contentSet,
-                        childrens,
+                        children,
                         firstChild,
                         div = Renderer.render(dropZoneTemplate, {'class': this.dropZoneClass});
 
@@ -84,8 +82,8 @@ define(
                             contentSet.isChildrenOf(currentContentId);
                             if (contentSet.id !== currentContentId && !contentSet.isChildrenOf(currentContentId)) {
 
-                                childrens = contentSet.getNodeChildrens();
-                                firstChild = childrens.first();
+                                children = contentSet.getNodeChildren();
+                                firstChild = children.first();
 
                                 if (firstChild.length > 0) {
                                     if (undefined !== currentContentId) {
@@ -99,7 +97,7 @@ define(
                                     contentSet.jQueryObject.prepend(div);
                                 }
 
-                                this.putDropZoneAroundContentSetChildrens(childrens, div, currentContentId);
+                                this.putDropZoneAroundContentSetChildren(children, div, currentContentId);
                             }
                         }
                     }
@@ -107,14 +105,14 @@ define(
 
                 /**
                  * Put HTML dropzone around the contentset's children
-                 * @param {Object} childrens
+                 * @param {Object} children
                  * @param {String} template
                  * @param {String} currentContentId
                  */
-                putDropZoneAroundContentSetChildrens: function (childrens, template, currentContentId) {
+                putDropZoneAroundContentSetChildren: function (children, template, currentContentId) {
                     var self = this;
 
-                    childrens.each(function () {
+                    children.each(function () {
                         var currentTarget = jQuery(this),
                             next = currentTarget.next('.' + self.contentClass);
 
@@ -144,70 +142,63 @@ define(
                  * @param {Object} config
                  */
                 doDropNewContent: function (config) {
-                    var self = this;
-
-                    if (null !== config.content) {
-                        if (ContentContainer.isInArray(dataTransfer.contentSetDroppable, 'type', config.content.type)) {
-                            ContentManager.createElement(dataTransfer.type).done(function (data, response) {
-                                var htmlRequest = ContentManager.buildRequest(response.getHeader('Location'), 'text/html');
-
-                                RequestHandler.send(htmlRequest).done(function (html) {
-                                    self.dropAsHtml(config, html);
-                                    config.content.setUpdated(true);
-                                });
-
-                                return data;
+                    if (config.type) {
+                        if (ContentContainer.isInArray(dataTransfer.contentSetDroppable, 'type', config.parent.type)) {
+                            ContentManager.createElement(dataTransfer.type).done(function (content) {
+                                config.parent.append(content, config.position);
                             });
                         }
                     }
                 },
 
                 /**
+                 * Return position of element will be dropped
+                 * @param {Object} zone
+                 * @returns {Number}
+                 */
+                getPosition: function (zone) {
+                    var prev = zone.prev('.' + this.contentClass),
+                        parent = zone.parents(this.dropZoneAttribute + ':first'),
+                        identifier = parent.data(this.identifierDataAttribute),
+                        contentSet = ContentManager.buildElement(ContentManager.retrievalObjectIdentifier(identifier)),
+                        pos = 0;
+
+                    if (prev.length > 0) {
+                        contentSet.getNodeChildren().each(function (key) {
+                            if (this === prev.get(0)) {
+                                pos = key + 1;
+                                return false;
+                            }
+                        });
+                    }
+
+                    return pos;
+                },
+
+                /**
                  * Used into a drop event.
-                 * Move the content and update state of parent(s)
+                 * Move the content to a new contentset 
+                 * and set updated old contentset
                  * @param {Object} config
                  */
                 doDropContent: function (config) {
                     var content,
-                        parentAsContent,
-                        parent,
-                        newParentAsContent;
+                        oldParent,
+                        oldParentAsContent;
 
                     if (dataTransfer.id) {
-
                         content = ContentContainer.find(dataTransfer.id);
-                        parent = content.jQueryObject.parent('.' + this.contentClass);
-                        this.dropAsHtml(config, content.jQueryObject);
 
-                        if (parent.data(this.idDataAttribute)) {
-                            parentAsContent = ContentContainer.find(parent.data(this.idDataAttribute));
+                        oldParent = content.jQueryObject.parents('.' + this.contentClass + ':first');
+
+                        if (oldParent.data(this.idDataAttribute)) {
+                            oldParentAsContent = ContentContainer.find(parent.data(this.idDataAttribute));
                         } else {
-                            parentAsContent = ContentManager.buildElement(parent);
+                            oldParentAsContent = ContentManager.buildElement(parent);
                         }
-                        parentAsContent.setUpdated(true);
+                        oldParentAsContent.setUpdated(true);
 
-                        if (config.parent) {
-                            if (config.parent.data(this.idDataAttribute)) {
-                                newParentAsContent = ContentContainer.find(config.parent.data(this.idDataAttribute));
-                            } else {
-                                newParentAsContent = ContentManager.buildElement(config.parent);
-                            }
-                            newParentAsContent.setUpdated(true);
-                        }
-                    }
-                },
-
-                /**
-                 * Put the content html on the good place
-                 *
-                 * @param {Object} config
-                 * @param {String} html
-                 */
-                dropAsHtml: function (config, html) {
-                    if (config.parent) {
-                        config.parent.prepend(html);
-                    } else if (config.prevSibling) {
-                        config.prevSibling.after(html);
+                        config.parent.append(content, config.position);
                     }
                 },
 
@@ -221,6 +212,7 @@ define(
                     event.stopPropagation();
 
                     var target = jQuery(event.target),
+                        identifier = target.data(this.identifierDataAttribute),
                         content,
                         id,
                         img,
@@ -228,10 +220,11 @@ define(
 
                     event.dataTransfer.effectAllowed = 'move';
 
-                    if (target.data(this.identifierDataAttribute)) {
+                    if (identifier) {
 
                         dataTransfer.onDrop = this.doDropContent;
-                        content = ContentManager.buildElement(target);
+
+                        content = ContentManager.buildElement(ContentManager.retrievalObjectIdentifier(identifier));
                         ContentContainer.addContent(content);
 
                         type = content.type;
@@ -248,7 +241,6 @@ define(
                             type = target.data(this.typeDataAttribute);
                         }
                     }
-
 
                     dataTransfer.type = type;
 
@@ -279,17 +271,14 @@ define(
 
                     var target = jQuery(event.target),
                         config = {},
-                        prev = target.prev('.' + this.contentClass),
-                        parent = target.parent();
+                        parent = target.parents(this.dropZoneAttribute + ':first'),
+                        parentObjectIdentifier = ContentManager.retrievalObjectIdentifier(parent.data(this.identifierDataAttribute));
 
-                    config.content = ContentContainer.find(parent.data(this.idDataAttribute));
                     config.event = event;
 
-                    if (prev.length === 0) {
-                        config.parent = target.parent();
-                    } else {
-                        config.prevSibling = prev;
-                    }
+                    config.position = this.getPosition(target);
+                    config.parent = ContentManager.buildElement(parentObjectIdentifier);
+                    config.type = dataTransfer.type;
 
                     dataTransfer.onDrop.call(this, config);
 

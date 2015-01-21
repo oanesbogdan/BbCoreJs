@@ -20,13 +20,18 @@
 define(
     [
         'tb.core.DriverHandler',
-        'tb.core.RestDriver'
+        'tb.core.RestDriver',
+        'tb.core.RequestHandler',
+        'tb.core.Request'
     ],
-    function (CoreDriverHandler, CoreRestDriver) {
+    function (CoreDriverHandler, CoreRestDriver, RequestHandler, Request) {
 
         'use strict';
 
         var putMandatoriesAttribute = ['type'],
+
+            resourceName = 'classcontent',
+
             /**
              * Contnet repository class
              * @type {Object} JS.Class
@@ -56,8 +61,30 @@ define(
                  * @returns {Promise}
                  */
                 findCategories: function () {
-                    return CoreDriverHandler.read(this.TYPE + '/category');
+                    return CoreDriverHandler.read(this.TYPE + '-category');
 
+                },
+
+                /**
+                 * Get the html of content
+                 * @param {String} type
+                 * @param {String} uid
+                 * @param {String} renderMode
+                 * @returns {Promise}
+                 */
+                getHtml: function (type, uid, renderMode) {
+                    var request = new Request(),
+                        url = '/rest/1/' + resourceName + '/' + type + '/' + uid;
+
+                    request.addHeader('Accept', 'text/html');
+
+                    if (renderMode !== undefined) {
+                        url = url + '?mode=' + renderMode;
+                    }
+
+                    request.setUrl(url);
+
+                    return RequestHandler.send(request);
                 },
 
                 /**
