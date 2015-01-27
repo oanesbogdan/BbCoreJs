@@ -14,12 +14,40 @@ define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 
                 this.context = {};
                 this.enabled = false;
                 this.state = {};
+                this.config = {};
+                this.accept = {};
             },
             onInit: function () {
                 Api.exception('PluginException', 75001, 'onInit must be overrided');
             },
-            onEnable: function () {
-                this.isEnabled = true;
+            setAccept: function () {
+                return null;
+            },
+            /* allowed params as redical:blaze:strange */
+            getConfig: function (key) {
+                var keyInfos = key.split(':'),
+                    length = keyInfos.length,
+                    cpt = 0,
+                    tmpResult,
+                    paramName,
+                    result = null;
+                if (!length) {
+                    return result;
+                }
+                if (length === 1) {
+                    result = this.config[key];
+                    return result;
+                }
+                while (cpt <= length) {
+                    paramName = keyInfos[cpt];
+                    tmpResult = (!tmpResult) ? this.config[paramName] : tmpResult[paramName];
+                    result = tmpResult;
+                    cpt = cpt + 1;
+                }
+                return result;
+            },
+            setConfig: function (config) {
+                this.config = config;
             },
             onDisable: function () {
                 this.enabled = false;
@@ -111,9 +139,9 @@ define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 
                 this.pluginsInfos = pluginsInfos;
                 this.enabled = false;
                 this.pluginsInstance = {};
-                this.pluginNamespace = {}; //where to look for a plugin. This will allows us to load plugins provided by users
                 this.contentActionWidget = new ContentActionWidget();
                 this.contentPlugins = {};
+                this.pluginInfos = {}; //plugin : config --> plugin is unique
                 this.bindEvents();
             },
             bindEvents: function () {
@@ -168,6 +196,7 @@ define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 
             },
             enablePlugins: function () {
                 var self = this,
+                    plugins,
                     context = {};
                 mediator.subscribe("on:classcontent:click", function (content) {
                     try {
@@ -176,9 +205,9 @@ define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 
                         context.scope = 'content-click';
                         context.events = ['on:classcontent:click'];
                         self.context = context;
-                        var plugins = ["edit", "contenttype"];
                         plugins = self.getContentPlugins(content.type);
                         if (!plugins.length) {
+                            self.contentActionWidget.hide();
                             return true;
                         }
                         self.initPlugins(plugins);
@@ -188,11 +217,13 @@ define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 
                 });
                 this.enable();
             },
+
             handleLoading: function (pluginInfos) {
                 /* at this stage we know that the plugin is ready */
                 try {
                     var pluginName = pluginInfos.name,
                         pluginInstance = new this.pluginsInfos[pluginName]();
+                    pluginInstance.setConfig(pluginInfos.config);
                     pluginInstance.setContext(this.context);
                     pluginInstance.onInit();
                     this.pluginsInstance[pluginName] = pluginInstance;
@@ -200,9 +231,11 @@ define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 
                     Api.exception('PluginException', 75006, e);
                 }
             },
+
             handleLoadingErrors: function (pluginInfos) {
                 Api.exception('PluginException', 75007, "Error while loading plugin [" + pluginInfos.name + "]");
             },
+
             disablePlugins: function () {
                 var pluginInstance, self = this;
                 jQuery.each(this.pluginsInstance, function (i) {
@@ -248,9 +281,11 @@ define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 
                     jQuery.each(pluginInfos, function (i) {
                         pluginConf = pluginInfos[i];
                         pluginInstance = self.getPluginInstance(pluginConf.name);
-                        pluginInstance.setContext(self.context);
-                        if (pluginInstance && pluginInstance.canApplyOnContext()) {
-                            jQuery.merge(actionsList, pluginInstance.getActions());
+                        if (pluginInstance) {
+                            pluginInstance.setContext(self.context);
+                            if (pluginInstance && pluginInstance.canApplyOnContext()) {
+                                jQuery.merge(actionsList, pluginInstance.getActions());
+                            }
                         }
                     });
                     self.handlePluginActions(actionsList);

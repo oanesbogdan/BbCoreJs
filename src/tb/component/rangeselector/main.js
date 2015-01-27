@@ -14,6 +14,7 @@ define(['underscore', 'jquery', 'jsclass', 'BackBone'], function (underscore, jQ
             this.config = jQuery.extend({}, this.defaultConfig, userConfig);
             jQuery.extend(this, {}, Backbone.Events);
             this.widget = jQuery("<select/>");
+            this.minValue = 1;
             this.widget.addClass(this.config.cls);
             this.updateUi();
             this.select(this.config.selected, true);
@@ -28,6 +29,9 @@ define(['underscore', 'jquery', 'jsclass', 'BackBone'], function (underscore, jQ
                 step = this.config.range[2] || 10,
                 options = underscore.range(start, stop, step);
             jQuery.each(options, function (i, value) {
+                if (i === 0) {
+                    this.minValue = value;
+                }
                 var option = jQuery('<option/>').val(value).text(value).addClass(self.config.optionCls);
                 jQuery(option).data('no', i);
                 optionsFragment.appendChild(jQuery(option).get(0));
@@ -49,6 +53,10 @@ define(['underscore', 'jquery', 'jsclass', 'BackBone'], function (underscore, jQ
             this.config.range = range;
             this.updateUi();
             this.select(this.config.selected, true);
+        },
+
+        reset: function () {
+            this.select(this.minValue, true);
         },
 
         handleChange: function (selector) {

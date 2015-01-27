@@ -3,19 +3,18 @@ require.config({
         'content.datastore': 'src/tb/component/contentselector/datastore/content.datastore'
     }
 });
-define(['require', 'content.datastore', 'jquery', 'jsclass', 'nunjucks', 'text!cs-templates/content.delete.tpl', 'text!cs-templates/content.grid.view.tpl', 'tb.core.Api', 'text!cs-templates/content.list.view.tpl'], function (require) {
+define(['require', 'content.datastore', 'jquery', 'jsclass', 'nunjucks', 'text!cs-templates/content.list.edit.view.tpl', 'text!cs-templates/content.delete.tpl', 'text!cs-templates/content.grid.view.tpl', 'tb.core.Api', 'text!cs-templates/content.list.view.tpl'], function (require) {
     'use strict';
     var nunjucks = require('nunjucks'),
         jQuery = require('jquery'),
         Api = require('tb.core.Api'),
-
         ContentRenderer = new JS.Class({
-            // defaultConfig : {},
             initialize: function () {
                 this.templates = {
-                    list: require('text!cs-templates/content.list.view.tpl'),
-                    grid: require('text!cs-templates/content.list.view.tpl'),
-                    //no difference
+                    viewmodelist: require('text!cs-templates/content.list.view.tpl'),
+                    viewmodegrid: require('text!cs-templates/content.list.view.tpl'),
+                    editmodelist: require('text!cs-templates/content.list.edit.view.tpl'),
+                    editmodegrid: require('text!cs-templates/content.list.edit.view.tpl'),
                     deleteContent: require('text!cs-templates/content.delete.tpl')
                 };
                 this.itemData = null;
@@ -27,20 +26,46 @@ define(['require', 'content.datastore', 'jquery', 'jsclass', 'nunjucks', 'text!c
                     minWidth: 450,
                     title: "Content preview"
                 });
+                this.mode = "viewmode";
+            },
+
+            setEditMode: function () {
+                this.mode = "editmode";
+            },
+
+            setViewMode: function () {
+                this.mode = "viewmode";
+            },
+
+            setSelector: function (selector) {
+                this.selector = selector;
+            },
+
+            getSelector: function () {
+                return this.selector;
             },
 
             bindContentEvents: function (item, itemData) {
                 item = jQuery(item);
                 item.on('click', ".show-content-btn", jQuery.proxy(this.showContentPreview, this, itemData));
                 item.on('click', ".del-content-btn", jQuery.proxy(this.deleteContent, this, itemData));
+                item.on('click', ".addandclose-btn", jQuery.proxy(this.addAndCloseContent, this, itemData));
                 return item;
             },
 
             /* use cache, load item template according to render mode*/
             render: function (renderMode, item) {
                 var itemData = item;
+                renderMode = this.mode + renderMode;
                 item = nunjucks.renderString(this.templates[renderMode], item);
                 return this.bindContentEvents(item, itemData);
+            },
+
+            addAndCloseContent: function (itemData, e) {
+                e.preventDefault();
+                this.getSelector().selectItems(itemData);
+                this.getSelector().close();
+                return false;
             },
 
             showContentPreview: function (itemData) {

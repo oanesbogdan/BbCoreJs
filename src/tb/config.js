@@ -59,6 +59,19 @@ define([], function () {
                     accept: ['block_demo', 'Bloc/contentset_bfm'],
                     config: {}
                 },
+
+                contentselector: {
+                    accept: ['home/home_container', 'Bloc/contentset_bfm'], //handle wildcard
+                    config: {
+                        appendPosition: "bottom", /* default */
+                        'home/home_container': {
+                            accept: ['article', 'paragraph']
+                        },
+                        'Bloc/contentset_bfm': {
+                            accept: ['article']
+                        }
+                    }
+                },
                 contenttype: {
                     accept: ['home/home_container', 'block_demo'],
                     config: {}
@@ -66,5 +79,7 @@ define([], function () {
             },
             "demo": { }
         }
+
+
     };
 });

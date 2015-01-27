@@ -13,6 +13,7 @@ require.config({
         'BackBone': 'lib/backbone/backbone',
         'jasmine': 'node_modules/grunt-contrib-jasmine/vendor/jasmine-2.0.0/jasmine',
         'jasmine-html': 'node_modules/grunt-contrib-jasmine/vendor/jasmine-2.0.0/jasmine-html',
+        'datetimepicker': 'lib/datetimepicker/jquery.datetimepicker',
         'spec': 'specs/',
         'text': 'lib/requirejs-text/text',
         'moment': 'lib/moment/moment',

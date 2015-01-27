@@ -8,6 +8,7 @@ define(['jquery', 'jssimplepagination'], function (jQuery) {
     'use strict';
     var $ = jQuery,
         Pagination = new JS.Class({
+            IS_VISIBLE : false,
             defaultConfig: {
                 css: {},
                 cls: 'pagination clearfix',
@@ -67,9 +68,13 @@ define(['jquery', 'jssimplepagination'], function (jQuery) {
                 }
                 if (hideWidget) {
                     $(this.widget).hide();
+                    this.IS_VISIBLE = false;
+
                 } else {
                     $(this.widget).show();
+                    this.IS_VISIBLE = true;
                 }
+                this.trigger('afterRender', this.IS_VISIBLE);
             },
 
             getPaginationConf: function () {
@@ -78,6 +83,7 @@ define(['jquery', 'jssimplepagination'], function (jQuery) {
 
             reset: function () {
                 this.invoke('redraw');
+                this.beforeRender(this.widget);
             },
 
             build: function () {
