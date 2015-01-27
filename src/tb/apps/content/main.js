@@ -33,8 +33,9 @@ require.config({
         'content.manager': 'src/tb/apps/content/components/ContentManager',
         'content.dnd.manager': 'src/tb/apps/content/components/DndManager',
         'content.mouseevent.manager': 'src/tb/apps/content/components/MouseEventManager',
+        'content.save.manager': 'src/tb/apps/content/components/SaveManager',
+        'content.container.manager': 'src/tb/apps/content/components/ContentContainer',
         'definition.manager': 'src/tb/apps/content/components/DefinitionManager',
-        'content.container': 'src/tb/apps/content/components/ContentContainer',
         'content.breadcrumb': 'src/tb/apps/content/components/Breadcrumb',
         'content.pluginmanager': 'src/tb/apps/content/components/PluginManager',
 
@@ -42,6 +43,7 @@ require.config({
         'content.models.AbstractContent': 'src/tb/apps/content/models/AbstractContent',
         'content.models.Content': 'src/tb/apps/content/models/Content',
         'content.models.ContentSet': 'src/tb/apps/content/models/ContentSet',
+        'content.models.ContentRevision': 'src/tb/apps/content/models/ContentRevision',
 
         //Templates
         'content/tpl/button': 'src/tb/apps/content/templates/button.twig',

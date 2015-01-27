@@ -86,6 +86,27 @@ define(['jsclass'], function () {
         },
 
         /**
+         * List contents which be updated
+         * @returns {Array}
+         */
+        getContentsUpdated: function () {
+            var key,
+                content,
+                contentsUpdated = [];
+
+            for (key in this.contents) {
+                if (this.contents.hasOwnProperty(key)) {
+                    content = this.contents[key];
+                    if (content.updated === true) {
+                        contentsUpdated.push(content);
+                    }
+                }
+            }
+
+            return contentsUpdated;
+        },
+
+        /**
          * Add content to the container
          * @param {Object} content
          */

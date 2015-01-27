@@ -23,7 +23,7 @@ define(
         'content.models.Content',
         'content.models.ContentSet',
         'definition.manager',
-        'content.container',
+        'content.container.manager',
         'content.repository',
         'jsclass'
     ],

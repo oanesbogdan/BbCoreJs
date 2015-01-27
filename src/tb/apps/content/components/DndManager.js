@@ -24,7 +24,7 @@ define(
         'jquery',
         'text!content/tpl/dropzone',
         'component!dnd',
-        'content.container',
+        'content.container.manager',
         'content.manager',
         'jsclass'
     ],

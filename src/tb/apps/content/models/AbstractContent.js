@@ -21,10 +21,11 @@ define(
     [
         'tb.core',
         'content.repository',
+        'content.models.ContentRevision',
         'jquery',
         'jsclass'
     ],
-    function (Core, ContentRepository, jQuery) {
+    function (Core, ContentRepository, ContentRevision, jQuery) {
 
         'use strict';
 
@@ -48,12 +49,143 @@ define(
                 this.populate();
 
                 this.bindEvents();
+
+                this.revision = new ContentRevision(config);
             },
 
+            /**
+             * Set the state of content
+             * @param {Boolean} isUpdate
+             */
             setUpdated: function (isUpdate) {
                 if (typeof isUpdate === 'boolean') {
                     this.updated = isUpdate;
+
+                    this.retrieveData();
                 }
+            },
+
+            set: function (key, value) {
+                if (key === 'value') {
+                    this.revision.addElement(key, value);
+                } else {
+                    this[key] = value;
+                }
+
+                this.setUpdated(true);
+            },
+
+            /**
+             * Return a property of object if exist
+             * @param {String} key
+             * @returns {Mixed}
+             */
+            get: function (key) {
+                var result;
+
+                if (key === 'value') {
+                    result = this.revision.getElement(key);
+                    if (result === undefined) {
+                        result = this[key];
+                    }
+                } else {
+                    result = this[key];
+                }
+
+                return result;
+            },
+
+            findParameters: function () {
+                var result;
+
+                if (this.revision.parameters !== undefined) {
+                    result = this.revision.parameters;
+                } else {
+                    result = this.data.parameters;
+                }
+
+                return result;
+            },
+
+            getParameters: function (key) {
+                var keys,
+                    i,
+                    result,
+                    parameters = this.findParameters();
+
+                if (key === undefined) {
+                    result = parameters;
+                } else {
+                    if (key.indexOf(':') !== -1) {
+                        keys = key.split(':');
+
+                        for (i in keys) {
+                            if (keys.hasOwnProperty(i)) {
+                                if (parameters.hasOwnProperty(keys[i])) {
+                                    parameters = parameters[keys[i]];
+                                } else {
+                                    result = parameters;
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        result = parameters[key];
+                    }
+                }
+
+                return result;
+            },
+
+            /**
+             * Retrieve the data and set the data
+             */
+            retrieveData: function () {
+                var self = this;
+
+                this.getData().done(function (data) {
+                    self.data = data;
+                });
+            },
+
+            /**
+             * If data not exist a request has been send for recieve data
+             * @returns {Promise}
+             */
+            getData: function (key, async) {
+                var dfd = jQuery.Deferred(),
+                    func = function (data, key) {
+                        var result = null;
+
+                        if (key !== undefined) {
+                            result = data[key];
+                        } else {
+                            result = data;
+                        }
+
+                        return result;
+                    };
+
+                if (this.data === undefined) {
+                    ContentRepository.findData(this.type, this.uid).done(function (data) {
+                        dfd.resolve(func(data, key));
+                    });
+                } else {
+                    if (!async) {
+                        return func(this.data, key);
+                    }
+                    dfd.promise(func(this.data, key));
+                }
+
+                return dfd.promise();
+            },
+
+            updateRevision: function () {
+                return this.revision;
+            },
+
+            isSavable: function () {
+                return !this.revision.isEmpty();
             },
 
             /**
@@ -115,21 +247,6 @@ define(
                 }
 
                 this.id = Math.random().toString(36).substr(2);
-            },
-
-            /**
-             * Return a property of object if exist
-             * @param {String} key
-             * @returns {Mixed}
-             */
-            get: function (key) {
-                var result = null;
-
-                if (this.hasOwnProperty(key)) {
-                    result = this[key];
-                }
-
-                return result;
             },
 
             /**
