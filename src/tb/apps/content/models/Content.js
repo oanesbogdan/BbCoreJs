@@ -30,6 +30,10 @@ define(['content.models.AbstractContent', 'jsclass'], function (AbstractContent)
          */
         initialize: function (config) {
             this.callSuper(config);
+        },
+
+        getElements: function () {
+            return;
         }
     });
 

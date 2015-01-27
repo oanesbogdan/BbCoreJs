@@ -3,11 +3,18 @@ define(
         'tb.core',
         'content.dnd.manager',
         'content.mouseevent.manager',
+        'content.save.manager',
         'content.view.contribution.index',
         'definition.manager',
         'content.repository'
     ],
-    function (Core, DndManager, MouseEventManager, ContributionIndexView, DefinitionManager, ContentRepository) {
+    function (Core,
+              DndManager,
+              MouseEventManager,
+              SaveManager,
+              ContributionIndexView,
+              DefinitionManager,
+              ContentRepository) {
 
         'use strict';
 
@@ -24,6 +31,13 @@ define(
              */
             onInit: function () {
                 this.repository = require('content.repository');
+            },
+
+            /**
+             * Call method save into SaveManager
+             */
+            saveService: function () {
+                SaveManager.save();
             },
 
             contributionIndexAction: function () {

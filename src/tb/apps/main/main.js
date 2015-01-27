@@ -77,6 +77,11 @@ define('app.main', ['tb.core', 'tb.core.ApplicationManager', 'main.view.index', 
                 });
             });
 
+            // Listen event save
+            Core.Mediator.subscribe('on:save:click', function () {
+                ApplicationManager.invokeService('content.main.save');
+            });
+
             var view = new MainViewIndex(this.config);
             view.render();
         }
