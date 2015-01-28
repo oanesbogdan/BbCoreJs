@@ -20,12 +20,14 @@
 (function () {
     'use strict';
 
-    define(['tb.component/formbuilder/form/element/Element', 'jsclass'], function (Element) {
+    define(['tb.component/formbuilder/form/element/Element', 'component!logger', 'jsclass'], function (Element, Logger) {
         return {
 
             load: function (name, req, onload) {
                 req(['tb.component/formbuilder/form/element/' + name], function (elementObject) {
                     onload(new JS.Class(Element, elementObject));
+                }, function () {
+                    Logger.alert("[Formbuilder] Element type not found: " + name);
                 });
             }
         };
