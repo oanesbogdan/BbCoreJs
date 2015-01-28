@@ -126,6 +126,7 @@ define(['require', 'tb.core.Api', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api'
                 var items = (this.renderAsCollection) ? this.data : this.renderItems(),
                     renderer = this.getModeRenderer(this.currentRenderMode).render(items);
                 jQuery(this.dataWrapper).html(renderer);
+                this.trigger('afterRender');
             },
 
             getModeRenderer: function (mode) {
@@ -209,6 +210,11 @@ define(['require', 'tb.core.Api', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api'
 
             cleanSelection: function () {
                 this.dataWrapper.find("." + this.config.itemCls).removeClass(this.config.itemSelectedCls);
+            },
+
+            reset: function () {
+                this.cleanSelection();
+                this.setData({});
             },
 
             selectItems: function (items) {

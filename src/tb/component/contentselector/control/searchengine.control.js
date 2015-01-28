@@ -1,4 +1,4 @@
-define(['require', 'jquery', 'jsclass', 'text!cs-templates/searchengine.tpl'], function (require, jQuery) {
+define(['require', 'jquery', 'jsclass', 'datetimepicker', 'text!cs-templates/searchengine.tpl'], function (require, jQuery) {
     'use strict';
     var ContentSearchEngine = new JS.Class({
         defaultConfig: {

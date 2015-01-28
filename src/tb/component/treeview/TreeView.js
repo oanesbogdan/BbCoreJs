@@ -87,7 +87,7 @@ define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
                 throw "TreeViewException [set] key must be a string";
             }
             jQuery(this.treeEl).tree("setOption", key, value);
-            if (reload) {
+            if (reload === true) {
                 this.reload();
             }
         },
@@ -149,6 +149,11 @@ define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
             }
             return this.invoke("appendNode", node);
         },
+
+        unselectNode: function () {
+            return this.invoke("selectNode", null);
+        },
+
         /**
          * Add node at a specific position
          * @param {node} node

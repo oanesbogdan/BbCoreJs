@@ -212,7 +212,9 @@ define('tb.component/popin/main', ['tb.component/popin/PopIn', 'jquery', 'jquery
                     jQuery('#' + manager.containerId).append('<div id="' + popIn.getId() + '"></div>');
                 }
 
-                jQuery('#' + popIn.getId()).html(popIn.getContent());
+                if (popIn.getContent().length || popIn.getContent() !== '') {
+                    jQuery('#' + popIn.getId()).html(popIn.getContent());
+                }
                 jQuery('#' + popIn.getId()).dialog(popIn.getOptions());
                 jQuery('#' + popIn.getId()).dialog('open');
             }
