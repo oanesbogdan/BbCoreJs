@@ -39,6 +39,13 @@ define(['tb.core'], function (Core) {
          */
         saveService: function () {
             Core.Mediator.publish('on:save:click');
+        },
+
+        /**
+         * Dispatch event `on:cancel:click``for all interested
+         */
+        cancelService: function () {
+            Core.Mediator.publish('on:cancel:click');
         }
     });
 });
