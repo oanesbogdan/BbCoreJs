@@ -19,7 +19,7 @@
 
 define(
     [
-        'content.container.manager',
+        'content.container',
         'content.repository',
         'jsclass'
     ],
@@ -54,6 +54,21 @@ define(
              */
             commit: function (content) {
                 content.updateRevision();
+                this.updateRevisionParameters(content);
+            },
+
+            /**
+             * Merge revision into content
+             * @param {Object} content
+             */
+            merge: function (content) {
+                var revision = content.revision;
+
+                if (false === revision.isEmpty()) {
+                    this.mergeParameters(content);
+                }
+
+                content.setUpdated(false);
             },
 
             /**
@@ -61,12 +76,59 @@ define(
              * @param {Object} content
              */
             push: function (content) {
+                var self = this;
+
                 if (content.isSavable()) {
                     ContentRepository.save(content.revision).done(function () {
-                        //merge revision to content (wait parameters)
-                        return;
+                        self.merge(content);
                     });
                 }
+            },
+
+            /**
+             * Merge parameters to content and delete in revision
+             * @param {Content} content
+             */
+            mergeParameters: function (content) {
+                var revision = content.revision,
+                    parameters = revision.parameters,
+                    key;
+
+                if (undefined !== parameters) {
+                    for (key in parameters) {
+                        if (parameters.hasOwnProperty(key)) {
+                            if (content.data.parameters.hasOwnProperty(key)) {
+                                content.data.parameters[key].value = parameters[key];
+                            }
+                        }
+                    }
+                    delete revision.parameters;
+                }
+            },
+
+            /**
+             * Compare current parameters with modified parameters
+             * @param {type} data
+             * @returns {unresolved}
+             */
+            updateRevisionParameters: function (content) {
+                var data = content.getParameters(),
+                    parameters = content.data.parameters,
+                    key;
+
+                for (key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        if (parameters.hasOwnProperty(key)) {
+                            if (parameters[key].hasOwnProperty('value')) {
+                                if (data[key] === parameters[key].value) {
+                                    delete data[key];
+                                }
+                            }
+                        }
+                    }
+                }
+
+                content.setParameters(data);
             }
         });
 
