@@ -75,6 +75,10 @@ define([], function () {
                 contenttype: {
                     accept: ['home/home_container', 'block_demo'],
                     config: {}
+                },
+                parameters: {
+                    accept: ['home/home_container', 'block_demo'],
+                    config: {}
                 }
             },
             "demo": { }

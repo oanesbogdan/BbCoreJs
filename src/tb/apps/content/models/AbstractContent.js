@@ -60,14 +60,14 @@ define(
             setUpdated: function (isUpdate) {
                 if (typeof isUpdate === 'boolean') {
                     this.updated = isUpdate;
-
-                    this.retrieveData();
                 }
             },
 
             set: function (key, value) {
                 if (key === 'value') {
                     this.revision.addElement(key, value);
+
+                    this.setUpdated(true);
                 } else {
                     this[key] = value;
                 }
@@ -137,6 +137,12 @@ define(
                 return result;
             },
 
+            setParameters: function (parameters) {
+                this.revision.setParameters(parameters);
+
+                this.setUpdated(true);
+            },
+
             /**
              * Retrieve the data and set the data
              */
@@ -153,7 +159,8 @@ define(
              * @returns {Promise}
              */
             getData: function (key, async) {
-                var dfd = jQuery.Deferred(),
+                var self = this,
+                    dfd = jQuery.Deferred(),
                     func = function (data, key) {
                         var result = null;
 
@@ -168,13 +175,14 @@ define(
 
                 if (this.data === undefined) {
                     ContentRepository.findData(this.type, this.uid).done(function (data) {
+                        self.data = data;
                         dfd.resolve(func(data, key));
                     });
                 } else {
-                    if (!async) {
+                    if (async === false) {
                         return func(this.data, key);
                     }
-                    dfd.promise(func(this.data, key));
+                    dfd.resolve(func(this.data, key));
                 }
 
                 return dfd.promise();

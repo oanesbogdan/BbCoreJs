@@ -56,7 +56,13 @@ define(['jsclass'], function () {
         },
 
         setParameters: function (parameters) {
-            this.parameters = parameters;
+            if (parameters !== undefined && Object.keys(parameters).length > 0) {
+                this.parameters = parameters;
+            } else {
+                if (this.hasOwnProperty('parameters')) {
+                    delete this.parameters;
+                }
+            }
         },
 
         addParam: function (key, param) {

@@ -21,7 +21,7 @@ define(
     [
         'tb.core',
         'jquery',
-        'content.container.manager',
+        'content.container',
         'content.manager',
         'jsclass'
     ],
