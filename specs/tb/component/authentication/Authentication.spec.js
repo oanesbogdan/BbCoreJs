@@ -1,4 +1,4 @@
-define(['tb.core.Api', 'tb.core.AuthenticationHandler', 'tb.core.Request', 'tb.core.Response', 'jquery'], function (Api, AuthenticationHandler, Request, Response, jQuery) {
+define(['tb.core.Api', 'component!authentication', 'tb.core.Request', 'tb.core.Response', 'jquery'], function (Api, Authentication, Request, Response, jQuery) {
     'use strict';
 
     var request = new Request(),
@@ -14,16 +14,16 @@ define(['tb.core.Api', 'tb.core.AuthenticationHandler', 'tb.core.Request', 'tb.c
 
     sessionStorage.clear();
 
-    describe('Authentication handler test', function () {
+    describe('Authentication test', function () {
 
         it('Testing onBeforeSend event', function () {
-            AuthenticationHandler.onBeforeSend(request);
+            Authentication.onBeforeSend(request);
             expect(request.getHeader('X-API-KEY')).toBe(null);
             expect(request.getHeader('X-API-SIGNATURE')).toBe(null);
 
             sessionStorage.setItem('bb5-session-auth', apiKey + ';' + apiSignature);
 
-            AuthenticationHandler.onBeforeSend(request);
+            Authentication.onBeforeSend(request);
             expect(request.getHeader('X-API-KEY')).toEqual(apiKey);
             expect(request.getHeader('X-API-SIGNATURE')).toEqual(apiSignature);
         });
@@ -48,7 +48,7 @@ define(['tb.core.Api', 'tb.core.AuthenticationHandler', 'tb.core.Request', 'tb.c
                 return d.promise();
             });
 
-            AuthenticationHandler.authenticate(username, password);
+            Authentication.authenticate(username, password);
             expect(callback).toHaveBeenCalled();
         });
 
@@ -60,7 +60,7 @@ define(['tb.core.Api', 'tb.core.AuthenticationHandler', 'tb.core.Request', 'tb.c
 
             sessionStorage.clear();
 
-            AuthenticationHandler.onRequestDone(response);
+            Authentication.onRequestDone(response);
             expect(sessionStorage.getItem('bb5-session-auth')).toEqual(apiKey + ';' + apiSignature);
         });
 
@@ -68,11 +68,11 @@ define(['tb.core.Api', 'tb.core.AuthenticationHandler', 'tb.core.Request', 'tb.c
             var response = new Response();
 
             response.setStatus(401);
-            AuthenticationHandler.onRequestFail(response);
+            Authentication.onRequestFail(response);
             expect(Api.get('is_connected')).toEqual(false);
 
             response.setStatus(403);
-            AuthenticationHandler.onRequestFail(response);
+            Authentication.onRequestFail(response);
         });
 
         it('Testing logOut function', function () {
@@ -82,7 +82,7 @@ define(['tb.core.Api', 'tb.core.AuthenticationHandler', 'tb.core.Request', 'tb.c
                 return false;
             };
 
-            AuthenticationHandler.logOut();
+            Authentication.logOut();
             expect(sessionStorage.getItem('bb5-session-auth')).toEqual(null);
         });
 
@@ -93,7 +93,7 @@ define(['tb.core.Api', 'tb.core.AuthenticationHandler', 'tb.core.Request', 'tb.c
                 return false;
             };
 
-            AuthenticationHandler.onLogOut();
+            Authentication.onLogOut();
             expect(sessionStorage.getItem('bb5-session-auth')).toEqual(null);
         });
     });

@@ -41,7 +41,7 @@ define(['jquery'], function (jQuery) {
         load: function (already_connected) {
             var self = this;
 
-            require(['tb.core', 'src/tb/config'], function (Core, config) {
+            require(['tb.core', 'src/tb/config', 'component!authentication'], function (Core, config, AuthenticationHandler) {
                 Core.set('is_connected', false);
 
                 var router = null;
@@ -65,8 +65,7 @@ define(['jquery'], function (jQuery) {
                          */
                         Core.initConfig(config);
                     });
-
-                    Core.authentication.showForm();
+                    AuthenticationHandler.showForm();
                 }
 
             }, this.onError);
