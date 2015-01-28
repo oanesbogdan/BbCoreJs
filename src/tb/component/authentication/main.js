@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
+
 define(
-    'tb.core.AuthenticationHandler',
+    'tb.component/authentication/main',
     [
-        'require',
         'tb.core.Api',
         'tb.core.DriverHandler',
         'tb.core.RestDriver',
@@ -28,7 +28,7 @@ define(
         'component!popin',
         'component!formbuilder'
     ],
-    function (require, Api, DriverHandler, RestDriver, jQuery) {
+    function (Api, DriverHandler, RestDriver, jQuery) {
 
         'use strict';
 
@@ -231,11 +231,8 @@ define(
                     console.log(e);
                 });
             }
-        }),
-            returnClass = new JS.Singleton(AuthenticationHandler);
+        });
 
-        Api.register('authentication', returnClass);
-
-        return returnClass;
+        return new JS.Singleton(AuthenticationHandler);
     }
 );

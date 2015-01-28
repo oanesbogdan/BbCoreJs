@@ -132,10 +132,7 @@ define('tb.core.RequestHandler', ['tb.core.Api', 'jquery', 'underscore', 'BackBo
                 }
             }
         }
-    }),
-        returnClass = new JS.Singleton(RequestHandler);
+    });
 
-    Api.register('requesthandler', returnClass);
-
-    return returnClass;
+    return new JS.Singleton(RequestHandler);
 });
