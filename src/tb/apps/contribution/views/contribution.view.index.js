@@ -36,6 +36,7 @@ define(
                 element.on('click', 'ul#edit-tab li', this.manageMenu);
                 element.on('click', '#new-page', this.showNewPage);
                 element.on('click', '#global-save', this.manageSave);
+                element.on('click', '#bundle-toolbar-global-cancel', this.manageCancel);
             },
 
             showNewPage: function () {
@@ -61,6 +62,13 @@ define(
              */
             manageSave: function () {
                 ApplicationManager.invokeService('main.main.save');
+            },
+
+            /**
+             * Call service `cancel` into main application
+             */
+            manageCancel: function () {
+                ApplicationManager.invokeService('main.main.cancel');
             },
 
             /**
