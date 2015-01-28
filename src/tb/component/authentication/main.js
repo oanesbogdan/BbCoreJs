@@ -42,7 +42,6 @@ define(
              */
             initialize: function () {
                 Api.Mediator.subscribe('request:send:before', jQuery.proxy(this.onBeforeSend, this));
-                Api.Mediator.subscribe('request:send:done', jQuery.proxy(this.onRequestDone, this));
                 Api.Mediator.subscribe('request:send:fail', jQuery.proxy(this.onRequestFail, this));
 
                 this.popinManager = require('component!popin');
@@ -69,16 +68,21 @@ define(
              * @param {String} password
              */
             authenticate: function (username, password) {
-                var self = this;
+                var self = this,
+                    onDone = function (data, response) {
+                        self.popin.unmask();
+                        self.popin.hide();
+                        self.onRequestDone(response);
+
+                        return data;
+                    };
 
                 this.removeToken();
 
                 RestDriver.setBaseUrl('/rest/1/');
                 DriverHandler.addDriver('rest', RestDriver);
-                DriverHandler.create('security/authentication', {"username": username, "password": password}).done(function () {
-                    self.popin.unmask();
-                    self.popin.hide();
-                });
+                DriverHandler.create('security/authentication', {"username": username, "password": password})
+                             .done(onDone);
             },
 
             /**
@@ -127,7 +131,6 @@ define(
              * @param {Object} response
              */
             onRequestDone: function (response) {
-
                 var apiKey = response.getHeader(this.HEADER_API_KEY),
                     apiSignature = response.getHeader(this.HEADER_API_SIGNATURE);
 
@@ -136,7 +139,10 @@ define(
                     sessionStorage.setItem('bb5-session-auth', apiKey + ';' + apiSignature);
 
                     Api.Mediator.publish('onSuccessLogin');
+
                 }
+
+                document.location.reload();
             },
 
             /**
