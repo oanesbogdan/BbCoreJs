@@ -1,14 +1,3 @@
-require.config({
-    paths: {
-        "lib.jqtree": "lib/jqtree/tree.jquery"
-    },
-    shim: {
-        "lib.jqtree": {
-            deps: ['jquery'],
-            exports: 'jQuery.fn.chosen'
-        }
-    }
-});
 define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
     "use strict";
     /**

@@ -4,6 +4,7 @@ node_*
 lib
 build
 html/resources
+html/css
 old/
 template/
 nbproject/
