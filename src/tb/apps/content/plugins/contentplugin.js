@@ -24,6 +24,7 @@
                 /* plugin is registered here */
                 pluginInfos = {
                     name: pname,
+                    completeName: pluginName,
                     namespace: namespace,
                     path: pluginFullPath,
                     config: pluginConf.config || {}
@@ -32,9 +33,10 @@
                 req([pluginFullPath], function () {
                     Core.Mediator.publish('on:pluginManager:loading', pluginInfos);
                     onload(pluginInfos);
-                }, function () {
-                    Core.Mediator.publish('on:pluginManager:loadingErrors', pluginInfos);
-                    onload.error(pluginInfos);
+                }, function (reason) {
+                    pluginInfos.error = true;
+                    Core.Mediator.publish('on:pluginManager:loadingErrors', { pluginName: pname, reason: reason });
+                    onload(pluginInfos); //Handle error nicely
                 });
             }
         };

@@ -28,6 +28,10 @@ define(["tb.core"], function (bbCore) {
             'contribution.index': {
                 url: '/contribution/index',
                 action: 'MainController:contributionIndex'
+            },
+            'contribution.edit': {
+                url: '/contribution/edit',
+                action: 'MainController:contributionEdit'
             }
         }
     });

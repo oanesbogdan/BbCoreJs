@@ -3,25 +3,26 @@
  */
 define([], function () {
     'use strict';
-
     return {
         core: {
             ApplicationManager: {
                 appPath: 'resources/toolbar/src/tb/apps',
-
                 /*ne charge que les onglets qui se trouvent dans 'applications'*/
                 active: 'main',
-
-                route: '', // to change: App should know
-
+                route: '',
+                // to change: App should know
                 applications: {
                     main: {
                         label: 'Main',
-                        config: {mainRoute: 'appMain/index'}
+                        config: {
+                            mainRoute: 'appMain/index'
+                        }
                     },
                     layout: {
                         label: 'Layout',
-                        config: {mainRoute: 'appLayout/home'}
+                        config: {
+                            mainRoute: 'appLayout/home'
+                        }
                     },
                     content: {
                         label: 'Content edition',
@@ -29,31 +30,38 @@ define([], function () {
                     },
                     bundle: {
                         label: 'Bundle',
-                        config: {mainRoute: 'bundle/index'}
+                        config: {
+                            mainRoute: 'bundle/index'
+                        }
                     },
                     page: {
                         label: 'Page',
-                        config: {mainRoute: 'page/index'}
+                        config: {
+                            mainRoute: 'page/index'
+                        }
                     },
                     contribution: {
                         label: 'Contribution',
-                        config: {mainRoute: 'contribution/index'}
+                        config: {
+                            mainRoute: 'contribution/index'
+                        }
                     },
                     user: {
                         label: 'User',
-                        config: {mainRoute: 'user/index'}
+                        config: {
+                            mainRoute: 'user/index'
+                        }
                     }
                 }
             }
         },
-
         component: {
             logger: {
                 level: 8,
                 mode: 'devel'
             }
-        },
 
+        },
         plugins: {
             namespace: {
                 core: 'src/tb/apps/content/plugins/',
@@ -64,18 +72,20 @@ define([], function () {
                     accept: ['BlockDemo'],
                     config: {}
                 },
-
                 contentselector: {
-                    accept: ['Home/HomeContainer'], //handle wildcard
+                    accept: ['Container/OneColumn'],
+
+                    //handle wildcard
                     config: {
-                        appendPosition: "bottom", /* default */
+                        appendPosition: "bottom",
+                        /* default */
                         'Home/HomeContainer': {
+
                             accept: ['article', 'paragraph']
                         }
                     }
                 },
                 contenttype: {
-
                     accept: ['Home/HomeContainer', 'BlockDemo'],
                     config: {}
                 },
@@ -90,9 +100,47 @@ define([], function () {
                 remove: {
                     accept: ['BlockDemo'],
                     config: {}
+                },
+                rte: {
+                    accept: ['*'],
+                    config: {
+                        adapter: "cke",
+                        aloha: {
+                            libPath: ''
+                        },
+                        cke: {
+                            libName: 'ckeeditor',
+                            //require name
+
+
+                            skin: "backbee,/resources/toolbar/src/tb/component/cke/skins/backbee/",
+                            editableConfig: {
+                                "basic": {
+                                    title: '',
+                                    toolbarGroups: [{
+                                        name: 'editing',
+                                        groups: ['basicstyles', 'links']
+                                    }, {
+                                        name: 'undo'
+                                    }, {
+                                        name: 'clipboard',
+                                        groups: ['selection', 'clipboard']
+                                    }, {
+                                        name: 'about'
+                                    }],
+                                    removePlugins: 'colorbutton,find,flash,font,forms,iframe,newpage,removeformat,smiley,specialchar,stylescombo,templates'
+                                },
+                                lite: {
+                                    title: "lite editor",
+                                    toolbarGroups: [],
+                                    removePlugins: 'colorbutton,specialchar'
+                                }
+                            }
+                        }
+                    }
                 }
             },
-            "demo": { }
+            "demo": {}
         }
     };
 });

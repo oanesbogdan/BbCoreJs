@@ -8,6 +8,7 @@ define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 
     'use strict';
     var mediator = Core.Mediator,
         pluginsInfos = {},
+        scopeInfos = {},
         instance = null,
         AbstractPlugin = new JS.Class({
             initialize: function () {
@@ -25,6 +26,9 @@ define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 
             },
             /* allowed params as redical:blaze:strange */
             getConfig: function (key) {
+                if (!key) {
+                    return this.config;
+                }
                 var keyInfos = key.split(':'),
                     length = keyInfos.length,
                     cpt = 0,
@@ -52,15 +56,18 @@ define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 
             onDisable: function () {
                 this.enabled = false;
             },
+            onEnable: function () {
+                this.enabled = true;
+            },
             setContentState: function (key, value) {
                 if (!key && typeof key !== 'string') {
-                    Api.exception('PluginException', 75001, 'setContentState key');
+                    Api.exception('PluginException', 75002, 'setContentState key');
                 }
                 if (value === 'undefined') {
-                    Api.exception('PluginException', 75002, 'setContentState value can\'t be undefined');
+                    Api.exception('PluginException', 75003, 'setContentState value can\'t be undefined');
                 }
                 if (!this.context.hasOwnProperty('content')) {
-                    Api.exception('PluginException', 75003, 'setContentState a content must be provided');
+                    Api.exception('PluginException', 75004, 'setContentState a content must be provided');
                 }
                 var contentState = this.state[this.getCurrentContent()];
                 if (!contentState) {
@@ -73,7 +80,7 @@ define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 
                 var result = null,
                     stateConfig;
                 if (!this.context.hasOwnProperty('content')) {
-                    Api.exception('PluginException', 75004, 'getContentState a content must be provided');
+                    Api.exception('PluginException', 75005, 'getContentState a content must be provided');
                 }
                 stateConfig = this.state[this.getCurrentContent()];
                 if (stateConfig && stateConfig.hasOwnProperty(key)) {
@@ -107,7 +114,7 @@ define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 
             },
             createCommand: function (func, context) {
                 if (typeof func !== 'function') {
-                    Api.exception('PluginException', 75005, 'createCommand func must be a function.');
+                    Api.exception('PluginException', 75006, 'createCommand func must be a function.');
                 }
                 var Command, funcContext = context || this;
                 Command = (function (f, c) {
@@ -121,7 +128,7 @@ define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 
             },
             setContext: function (context) {
                 if (!context) {
-                    Api.exception('PluginException', 75005, 'setContext func must be a function.');
+                    Api.exception('PluginException', 75007, 'setContext func must be a function.');
                 }
                 var previousContext = this.context;
                 this.context = context;
@@ -141,20 +148,20 @@ define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 
                 this.pluginsInstance = {};
                 this.contentActionWidget = new ContentActionWidget();
                 this.contentPlugins = {};
+                this.pluginActions = [];
+                this.currentScope = null; // block //
                 this.pluginInfos = {}; //plugin : config --> plugin is unique
                 this.bindEvents();
             },
             bindEvents: function () {
-                mediator.subscribe('on:pluginManager:loadingErrors', jQuery.proxy(this.handleLoadingError, this), this);
+                mediator.subscribe('on:pluginManager:loadingErrors', jQuery.proxy(this.handleLoadingErrors, this), this);
                 mediator.subscribe('on:pluginManager:loading', jQuery.proxy(this.handleLoading, this), this);
             },
-            /**
-             * Namespaces allow us to
-             * default namespace is tbplugin
-             * plugin!next/redonclick
-             **/
             registerNameSpace: function () {
                 Api.exception('PluginException', 75008, "Not implemented yet");
+            },
+            registerScope: function (scope) {
+                this.currentScope = scope;
             },
             getContentPlugins: function (contentType) {
                 var plugins = this.contentPlugins[contentType] || [],
@@ -170,14 +177,15 @@ define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 
                         if (jQuery.inArray(contentType, pluginConf.accept) !== -1) {
                             plugins.push(namespace + ':' + pluginName);
                         }
+                        /* apply for all */
+                        if (jQuery.inArray('*', pluginConf.accept) !== -1) {
+                            plugins.push(namespace + ':' + pluginName);
+                        }
                     });
                 });
                 this.contentPlugins[contentType] = plugins;
                 /*handle conf too*/
                 return plugins;
-            },
-            enable: function () {
-                this.enabled = true;
             },
             disable: function () {
                 this.enabled = false;
@@ -194,56 +202,77 @@ define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 
             getPluginInstance: function (pluginName) {
                 return this.pluginsInstance[pluginName];
             },
-            enablePlugins: function () {
-                var self = this,
-                    plugins,
-                    context = {};
-                mediator.subscribe("on:classcontent:click", function (content) {
-                    try {
-                        context.content = content;
-                        jQuery(context.content.jQueryObject).css('position', 'relative');
-                        context.scope = 'content-click';
-                        context.events = ['on:classcontent:click'];
-                        self.context = context;
-                        plugins = self.getContentPlugins(content.type);
-                        if (!plugins.length) {
-                            self.contentActionWidget.hide();
-                            return true;
-                        }
-                        self.initPlugins(plugins);
-                    } catch (e) {
-                        Api.exception('PluginException', 75006, e);
-                    }
-                });
-                this.enable();
+            init: function () {
+                mediator.subscribe("on:classcontent:click", jQuery.proxy(this.clickHandler, this));
+                this.init = jQuery.noop;
             },
-
             handleLoading: function (pluginInfos) {
-                /* at this stage we know that the plugin is ready */
                 try {
                     var pluginName = pluginInfos.name,
                         pluginInstance = new this.pluginsInfos[pluginName]();
+                    this.pluginsInstance[pluginInfos.completeName] = pluginInstance;
                     pluginInstance.setConfig(pluginInfos.config);
                     pluginInstance.setContext(this.context);
-                    pluginInstance.onInit();
-                    this.pluginsInstance[pluginName] = pluginInstance;
+                    if (this.isScopeValid(pluginInstance) && pluginInstance.canApplyOnContext()) {
+                        pluginInstance.onInit();
+                        pluginInstance.onEnable();
+                        this.handlePluginActions(pluginInstance.getActions());
+                    }
                 } catch (e) {
-                    Api.exception('PluginException', 75006, e);
+                    Api.exception('PluginException', 75010, "[handleLoading] " + e);
                 }
             },
 
-            handleLoadingErrors: function (pluginInfos) {
-                Api.exception('PluginException', 75007, "Error while loading plugin [" + pluginInfos.name + "]");
+            isScopeValid: function (pluginInstance) {
+                var plugins = scopeInfos[this.currentScope],
+                    result = true;
+                if (jQuery.inArray(pluginInstance.getName(), plugins) === -1) {
+                    result = false;
+                }
+                return result;
             },
-
-            disablePlugins: function () {
-                var pluginInstance, self = this;
-                jQuery.each(this.pluginsInstance, function (i) {
-                    pluginInstance = self.pluginsInstance[i];
-                    if (pluginInstance) {
-                        pluginInstance.onDisable();
+            handleLoadingErrors: function (error) {
+                Api.exception('PluginException', 75011, "Error while loading plugin [" + error.name + "]");
+            },
+            clickHandler: function (content, e) {
+                e.preventDefault();
+                //e.stopPropagation();
+                var plugins, context = {};
+                try {
+                    if (!this.isEnabled()) {
+                        return;
                     }
-                });
+                    context.content = content;
+                    jQuery(context.content.jQueryObject).css('position', 'relative');
+                    context.scope = this.currentScope;
+                    context.events = ['on:classcontent:click'];
+                    this.context = context;
+                    plugins = this.getContentPlugins(content.type);
+                    this.contentActionWidget.hide();
+                    if (!plugins.length) {
+                        this.contentActionWidget.hide();
+                        return true;
+                    }
+                    this.initPlugins(plugins);
+                } catch (expect) {
+                    Api.exception('PluginException', 75009, expect);
+                }
+            },
+            enablePlugins: function () {
+                this.enabled = true;
+            },
+            disablePlugins: function () {
+                try {
+                    var pluginInstance, self = this;
+                    jQuery.each(this.pluginsInstance, function (i) {
+                        pluginInstance = self.pluginsInstance[i];
+                        if (pluginInstance) {
+                            pluginInstance.onDisable();
+                        }
+                    });
+                } catch (e) {
+                    Api.exception('PluginException', 75014, "[handleLoading] " + e);
+                }
                 /* hide content action */
                 this.contentActionWidget.hide();
                 this.disable();
@@ -252,7 +281,6 @@ define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 
                 var self = this,
                     pluginName,
                     pluginInstance,
-                    pluginActions = [],
                     pluginsToLoad = [];
                 /* if the plugin is already loaded */
                 jQuery.each(pluginsName, function (i) {
@@ -260,37 +288,20 @@ define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 
                     if (self.isPluginLoaded(pluginName)) {
                         pluginInstance = self.getPluginInstance(pluginName);
                         pluginInstance.setContext(self.context);
-                        if (pluginInstance.canApplyOnContext()) {
-                            jQuery.merge(pluginActions, pluginInstance.getActions());
+                        if (self.isScopeValid(pluginInstance) && pluginInstance.canApplyOnContext()) {
+                            pluginInstance.onEnable();
+                            self.handlePluginActions(pluginInstance.getActions());
                         }
                     } else {
                         pluginsToLoad[i] = 'contentplugin!' + pluginName;
                     }
                 });
-                if (pluginActions.length) {
-                    this.handlePluginActions(pluginActions);
-                }
                 if (!pluginsToLoad.length) {
                     return;
                 }
                 /* All plugins are loaded at this stage */
-                Utils.requireWithPromise(pluginsToLoad).done(function () {
-                    var pluginInfos = Array.prototype.slice.call(arguments),
-                        actionsList = [],
-                        pluginConf;
-                    jQuery.each(pluginInfos, function (i) {
-                        pluginConf = pluginInfos[i];
-                        pluginInstance = self.getPluginInstance(pluginConf.name);
-                        if (pluginInstance) {
-                            pluginInstance.setContext(self.context);
-                            if (pluginInstance && pluginInstance.canApplyOnContext()) {
-                                jQuery.merge(actionsList, pluginInstance.getActions());
-                            }
-                        }
-                    });
-                    self.handlePluginActions(actionsList);
-                }).fail(function (response) {
-                    Api.exception('PluginException', 75006, " initPlugins " + response);
+                Utils.requireWithPromise(pluginsToLoad).fail(function (response) {
+                    Api.exception('PluginException', '75012', " initPlugins " + response);
                 });
             },
             handlePluginActions: function (pluginActions) {
@@ -313,6 +324,11 @@ define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 
             }
         });
     return {
+        scope: {
+            CONTENT: "contribution.content",
+            BLOCK: "contribution.block",
+            PAGE: "contribution.page"
+        },
         getInstance: function () {
             if (!instance) {
                 instance = new PluginManager();
@@ -321,14 +337,31 @@ define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 
         },
         registerPlugin: function (pluginName, def) {
             if (pluginsInfos.hasOwnProperty(pluginName)) {
-                Api.exception('PluginManagerException', 75006, " A plugin named " + pluginName + " already exists.");
+                Api.exception('PluginManagerException', 75013, " A plugin named " + pluginName + " already exists.");
             }
             def.getName = (function (name) {
                 return function () {
                     return name;
                 };
             }(pluginName));
+            if (!def.hasOwnProperty("scope")) {
+                def.scope = [this.scope.BLOCK];
+            }
+            var pluginScope = (jQuery.isArray(def.scope)) ? def.scope : [def.scope];
+            def.getScope = (function (scope) {
+                return function () {
+                    return scope;
+                };
+            }(pluginScope));
             pluginsInfos[pluginName] = this.getInstance().createPluginClass(def);
+            /* register scope here */
+            jQuery.each(pluginScope, function (i) {
+                var scope = pluginScope[i];
+                if (!scopeInfos.hasOwnProperty(scope)) {
+                    scopeInfos[scope] = [];
+                }
+                scopeInfos[scope].push(pluginName);
+            });
         },
         AbstractPlugin: AbstractPlugin
     };

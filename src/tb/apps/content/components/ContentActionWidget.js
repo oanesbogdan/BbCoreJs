@@ -12,23 +12,12 @@ define(['jquery', 'text!content/tpl/content-action', 'jsclass'], function (jQuer
         },
 
         /*  listen to context */
-        appendActions: function (actions) {
-            this.cleanActions();
-            var btnCtn = document.createDocumentFragment(),
-                actionInfos;
-            jQuery.each(actions, function (i) {
-                actionInfos = actions[i];
-                var button = jQuery("<button></button>").clone();
-                button.attr("title", actionInfos.label);
-                button.addClass(actionInfos.ico);
-                jQuery(button).on("click", (function (actionInfos) {
-                    return function () {
-                        actionInfos.cmd.execute();
-                    };
-                }(actionInfos)));
-                btnCtn.appendChild(jQuery(button).get(0));
-            });
-            this.widget.append(btnCtn);
+        appendActions: function (actionArr, clean) {
+            if (clean) {
+                this.cleanActions();
+            }
+            var buttonNode = this.buildAction(actionArr);
+            this.widget.append(buttonNode);
         },
 
         cleanActions: function () {
@@ -41,6 +30,21 @@ define(['jquery', 'text!content/tpl/content-action', 'jsclass'], function (jQuer
 
         hide: function () {
             this.widget.empty();
+        },
+
+        buildAction: function (actions) {
+            actions = (jQuery.isArray(actions)) ? actions : [actions];
+            var actionInfos,
+                btnCtn = document.createDocumentFragment();
+            jQuery.each(actions, function (i) {
+                actionInfos = actions[i];
+                var button = jQuery("<button></button>").clone();
+                button.attr("title", actionInfos.label);
+                button.addClass(actionInfos.ico);
+                jQuery(button).on("click", actionInfos.cmd.execute);
+                btnCtn.appendChild(jQuery(button).get(0));
+            });
+            return btnCtn;
         }
     });
     return ContentActionWidget;

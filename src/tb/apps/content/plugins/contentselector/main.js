@@ -39,6 +39,7 @@ define(['content.pluginmanager', 'tb.core.Api', 'component!contentselector', 'jq
         },
 
         canApplyOnContext: function () {
+            console.log(this.getCurrentContent().isContentSet());
             return this.getCurrentContent().isAContentSet();
         },
 

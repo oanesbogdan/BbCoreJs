@@ -3,6 +3,9 @@ require.config({
         'contribution.routes': 'src/tb/apps/contribution/routes',
         'contribution.main.controller': 'src/tb/apps/contribution/controllers/main.controller',
 
+        /*managers*/
+        'content.pluginmanager': 'src/tb/apps/content/components/PluginManager',
+
         //Views
         'contribution.view.index': 'src/tb/apps/contribution/views/contribution.view.index',
 
@@ -11,7 +14,7 @@ require.config({
     }
 });
 
-define('app.contribution', ['tb.core'], function (BbCore) {
+define('app.contribution', ['tb.core', 'content.pluginmanager', 'jquery'], function (BbCore, PluginManager, jQuery) {
     'use strict';
 
     /**
@@ -22,21 +25,32 @@ define('app.contribution', ['tb.core'], function (BbCore) {
          * occurs on initialization of contribution application
          */
         onInit: function () {
-            console.log('init contribution application');
+            PluginManager.getInstance().init();
+            BbCore.Scope.subscribe('block', jQuery.proxy(this.enablePluginManager, this, "contribution.block"), jQuery.proxy(this.disablePluginManager, this));
+            BbCore.Scope.subscribe('content', jQuery.proxy(this.enablePluginManager, this, "contribution.content"), jQuery.proxy(this.disablePluginManager, this));
+            BbCore.Scope.subscribe('page', jQuery.proxy(this.enablePluginManager, this, "contribution.page"), jQuery.proxy(this.disablePluginManager, this));
         },
 
         /**
          * occurs on start of contribution application
          */
         onStart: function () {
-            console.log('start contribution application');
+            return false;
         },
 
+        enablePluginManager: function (scope) {
+            PluginManager.getInstance().registerScope(scope);
+            PluginManager.getInstance().enablePlugins();
+        },
+
+        disablePluginManager: function () {
+            PluginManager.getInstance().disablePlugins();
+        },
         /**
          * occurs on stop of contribution application
          */
         onStop: function () {
-            console.log('stop contribution application');
+            PluginManager.getInstance().disablePlugins();
         },
 
         /**

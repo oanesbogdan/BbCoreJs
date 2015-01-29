@@ -66,8 +66,8 @@ define('tb.core.Scope', ['tb.core.Api', 'underscore'], function (Api, Under) {
 
         checkScope(arguments);
 
-        toggle(openingScopes, true);
         toggle(closingScopes, false);
+        toggle(openingScopes, true);
 
         this.scopes = Under.difference(this.scopes, closingScopes);
         this.scopes = Under.union(this.scopes, openingScopes);

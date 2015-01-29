@@ -4,27 +4,32 @@ define(
         'content.dnd.manager',
         'content.mouseevent.manager',
         'content.save.manager',
+        'content.manager',
         'content.view.contribution.index',
         'definition.manager',
         'content.repository',
         'revision.repository',
-        'component!revisionselector'
+        'component!revisionselector',
+        'jquery'
     ],
     function (Core,
               DndManager,
               MouseEventManager,
               SaveManager,
+              ContentManager,
               ContributionIndexView,
               DefinitionManager,
               ContentRepository,
               RevisionRepository,
-              RevisionSelector) {
+              RevisionSelector,
+              jQuery) {
 
         'use strict';
 
         Core.ControllerManager.registerController('MainController', {
 
             appName: 'content',
+            EDITABLE_ELEMENTS: ['Element/Text'],
 
             config: {
                 imports: ['content.repository']
@@ -42,6 +47,13 @@ define(
              */
             getRepositoryService: function () {
                 return this.repository;
+            },
+
+            /**
+             * Return the content manager
+             */
+            getContentManagerService: function () {
+                return ContentManager;
             },
 
             /**
@@ -96,16 +108,50 @@ define(
                 new RevisionSelector(config).show();
             },
 
+            getEditableContentService: function (content) {
+                var dfd = new jQuery.Deferred(),
+                    element,
+                    result = [];
+                if (jQuery.inArray(content.type, this.EDITABLE_ELEMENTS) !== -1) {
+                    result.push(content);
+                    dfd.resolve(result);
+                } else {
+                    content.getData('elements').done(function (elements) {
+                        jQuery.each(elements, function (subContentName) {
+                            element =  elements[subContentName];
+                            if (jQuery.inArray(content.type, this.EDITABLE_ELEMENTS) === -1) {
+                                return true;
+                            }
+                            result.push(ContentManager.buildElement(element));
+                        });
+                        dfd.resolve(result);
+                    });
+                }
+                return dfd.promise();
+            },
+
             contributionIndexAction: function () {
-
                 var self = this;
-
+                Core.Scope.register('contribution', 'block');
                 if (this.contribution_loaded !== true) {
                     ContentRepository.findCategories().done(function (categories) {
                         var view = new ContributionIndexView({'categories': categories});
                         view.render();
                         self.contribution_loaded = true;
                     });
+                }
+            },
+
+            contributionEditAction : function () {
+                Core.Scope.register('contribution', 'content');
+            },
+
+
+            createView: function (Constructor, config, render) {
+                var view = new Constructor(config);
+
+                if (render) {
+                    view.render();
                 }
             },
 
