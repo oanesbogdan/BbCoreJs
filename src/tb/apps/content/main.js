@@ -39,6 +39,9 @@ require.config({
         'content.breadcrumb': 'src/tb/apps/content/components/Breadcrumb',
         'content.pluginmanager': 'src/tb/apps/content/components/PluginManager',
 
+        //Widgets
+        'content.widget.DialogContentsList': 'src/tb/apps/content/widgets/DialogContentsList',
+
         //Models
         'content.models.AbstractContent': 'src/tb/apps/content/models/AbstractContent',
         'content.models.Content': 'src/tb/apps/content/models/Content',

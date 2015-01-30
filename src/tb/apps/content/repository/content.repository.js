@@ -22,9 +22,10 @@ define(
         'tb.core.DriverHandler',
         'tb.core.RestDriver',
         'tb.core.RequestHandler',
-        'tb.core.Request'
+        'tb.core.Request',
+        'jquery'
     ],
-    function (CoreDriverHandler, CoreRestDriver, RequestHandler, Request) {
+    function (CoreDriverHandler, CoreRestDriver, RequestHandler, Request, jQuery) {
 
         'use strict';
 
@@ -59,8 +60,19 @@ define(
                  * @returns {Promise}
                  */
                 findCategories: function () {
-                    return CoreDriverHandler.read(this.TYPE + '-category');
+                    var self = this,
+                        dfd = jQuery.Deferred();
 
+                    if (this.categories === undefined) {
+                        CoreDriverHandler.read(this.TYPE + '-category').done(function (categories) {
+                            self.categories = categories;
+                            dfd.resolve(categories);
+                        });
+                    } else {
+                        dfd.resolve(this.categories);
+                    }
+
+                    return dfd.promise();
                 },
 
                 /**
