@@ -45,9 +45,8 @@ module.exports = function (grunt) {
             css: {
                 cleancss: true,
                 files: {
-                    'html/css/bb-ui.css': 'less/bb5-ui.less',
-                    'html/css/bb-var.css': 'less/bb5-var.less',
-                    'html/css/bb-ui-login.css': 'less/bb5-ui-login.less'
+                    'html/css/bb-ui.css': 'less/bb-ui.less',
+                    'html/css/bb-ui-login.css': 'less/bb-ui-login.less'
                 }
             }
         },
