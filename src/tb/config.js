@@ -79,6 +79,10 @@ define([], function () {
                 parameters: {
                     accept: ['home/home_container', 'block_demo'],
                     config: {}
+                },
+                contentsetplus: {
+                    accept: ['container/one_column'],
+                    config: {}
                 }
             },
             "demo": { }
