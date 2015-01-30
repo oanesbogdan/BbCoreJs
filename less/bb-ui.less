@@ -6,9 +6,10 @@ Version: 2.10 Dec2014
 @bower-path: "../bower_components/";
 @bootstrap-path: "@{bower-path}bootstrap/less/";
 @font-awesome-path: "@{bower-path}components-font-awesome/";
+@fa-font-path: "/resources/toolbar/bower_components/components-font-awesome/fonts";
 
 @import "@{font-awesome-path}less/variables.less";
-@import "bb5-var.less";
+@import "bb-var.less";
 
 #bb5-ui {
 
@@ -45,8 +46,7 @@ Version: 2.10 Dec2014
 
     // Utility classes
     @import "@{bootstrap-path}utilities.less";
-
-    @fa-font-path: "@{font-awesome-path}fonts";
+   
     @import "@{font-awesome-path}less/mixins.less";
     @import "@{font-awesome-path}less/path.less";
     @import "@{font-awesome-path}less/core.less";
