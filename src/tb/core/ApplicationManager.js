@@ -90,10 +90,21 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
             invokeControllerService: function (controller, service, params) {
                 var dfd = new $.Deferred(),
                     serviceName;
+
                 ControllerManager.loadControllerByShortName(this.getName(), controller).done(function (controller) {
                     try {
                         serviceName = service + "Service";
-                        dfd.resolve(controller[serviceName].apply(controller, params));
+                        controller.beforeCall(serviceName).then(
+                            function (req) {
+                                if (req) {
+                                    params.unshift(req);
+                                }
+                                dfd.resolve(controller[serviceName].apply(controller, params));
+                            },
+                            function () {
+                                dfd.resolve(controller[serviceName].apply(controller, params));
+                            }
+                        );
                     } catch (reason) {
                         dfd.reject(reason);
                     }
