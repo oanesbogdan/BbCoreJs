@@ -63,6 +63,27 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
                 }
                 return def.promise();
             },
+
+            beforeCall: function (callName) {
+                var dfd = new jQuery.Deferred(),
+                    self = this;
+
+                if (this.config.define !== undefined &&  this.config.define[callName] !== undefined) {
+                    utils.requireWithPromise(this.config.define[callName]).then(
+                        function () {
+                            dfd.resolve.call(self, require);
+                        },
+                        function () {
+                            dfd.reject.call(self);
+                        }
+                    );
+                } else {
+                    dfd.resolve.call(self, false);
+                }
+
+                return dfd.promise();
+            },
+
             /**
              * Action automaticly call when the Controller is Enabled
              * @return {false}
@@ -235,21 +256,27 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
                 completeControllerName,
                 controllerInfos,
                 ctlFileName = appName + '.' + shortControllerName + '.controller';
+
             if (!appName || typeof appName !== 'string') {
                 exception(15005, 'appName have to be defined as String');
             }
+
             if (!appName || typeof appName !== 'string') {
                 exception(15006, 'shortControllerName have to be defined as String');
             }
+
             controllerInfos = shortNameMap[appName + ':' + shortControllerName];
+
             if (controllerInfos) {
                 return loadController(appName, controllerInfos.originalName);
             }
+
             /*first, because of the use shortName, we need load the controller*/
             utils.requireWithPromise([ctlFileName]).done(function () {
                 completeControllerName = shortNameMap[appName + ':' + shortControllerName].originalName;
                 return loadController(appName, completeControllerName).done(dfd.resolve).fail(dfd.reject);
             }).fail(dfd.reject);
+
             return dfd.promise();
         },
         /**
