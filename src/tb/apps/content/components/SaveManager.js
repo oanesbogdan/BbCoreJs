@@ -113,22 +113,26 @@ define(
              */
             updateRevisionParameters: function (content) {
                 var data = content.getParameters(),
-                    parameters = content.data.parameters,
+                    parameters,
                     key;
 
-                for (key in data) {
-                    if (data.hasOwnProperty(key)) {
-                        if (parameters.hasOwnProperty(key)) {
-                            if (parameters[key].hasOwnProperty('value')) {
-                                if (data[key] === parameters[key].value) {
-                                    delete data[key];
+                if (data !== undefined) {
+                    parameters = content.data.parameters;
+
+                    for (key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            if (parameters.hasOwnProperty(key)) {
+                                if (parameters[key].hasOwnProperty('value')) {
+                                    if (data[key] === parameters[key].value) {
+                                        delete data[key];
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
-                content.setParameters(data);
+                    content.setParameters(data);
+                }
             }
         });
 

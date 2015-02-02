@@ -23,6 +23,7 @@ define(
         'content.repository',
         'content.models.ContentRevision',
         'jquery',
+        'content.manager',
         'jsclass'
     ],
     function (Core, ContentRepository, ContentRevision, jQuery) {
@@ -111,26 +112,30 @@ define(
                 var keys,
                     i,
                     result,
+                    parameters;
+
+                if (this.data !== undefined) {
                     parameters = this.findParameters();
 
-                if (key === undefined) {
-                    result = parameters;
-                } else {
-                    if (key.indexOf(':') !== -1) {
-                        keys = key.split(':');
+                    if (key === undefined) {
+                        result = parameters;
+                    } else {
+                        if (key.indexOf(':') !== -1) {
+                            keys = key.split(':');
 
-                        for (i in keys) {
-                            if (keys.hasOwnProperty(i)) {
-                                if (parameters.hasOwnProperty(keys[i])) {
-                                    parameters = parameters[keys[i]];
-                                } else {
-                                    result = parameters;
-                                    break;
+                            for (i in keys) {
+                                if (keys.hasOwnProperty(i)) {
+                                    if (parameters.hasOwnProperty(keys[i])) {
+                                        parameters = parameters[keys[i]];
+                                    } else {
+                                        result = parameters;
+                                        break;
+                                    }
                                 }
                             }
+                        } else {
+                            result = parameters[key];
                         }
-                    } else {
-                        result = parameters[key];
                     }
                 }
 
@@ -274,6 +279,16 @@ define(
                 }
 
                 return result;
+            },
+
+            /**
+             * Get Parent as content
+             * @returns {Array}
+             */
+            getParent: function () {
+                var parentNode = this.jQueryObject.parents(this.contentClass + ':first');
+
+                return require('content.manager').getContentByNode(parentNode);
             },
 
             /**

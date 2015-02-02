@@ -103,11 +103,48 @@ define(
                             content = new Content(config);
                         }
                     }
+
+                    ContentContainer.addContent(content);
                 } else {
                     content = ContentContainer.find(element.data(this.idDataAttribute));
                 }
 
                 return content;
+            },
+
+            /**
+             * Remove the content from dom and Content container
+             * and change state of parent to updated
+             * @param {Object} content
+             * @returns {undefined}
+             */
+            remove: function (content) {
+                if (typeof content === 'object') {
+                    var parent = content.getParent();
+
+                    if (typeof parent === 'object') {
+                        parent.setUpdated(true);
+                    }
+
+                    content.jQueryObject.remove();
+                    ContentContainer.remove(content);
+                }
+            },
+
+            /**
+             * Retrieve a content by a node (jQuery)
+             * @param {Object} node
+             * @returns {Mixed}
+             */
+            getContentByNode: function (node) {
+                var identifier = node.data(this.identifierDataAttribute),
+                    result;
+
+                if (null !== identifier) {
+                    result = this.buildElement(this.retrievalObjectIdentifier(identifier), true);
+                }
+
+                return result;
             },
 
             /**
