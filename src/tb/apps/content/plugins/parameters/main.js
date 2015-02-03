@@ -22,9 +22,10 @@ define(
         'content.pluginmanager',
         'component!popin',
         'component!formbuilder',
+        'definition.manager',
         'jsclass'
     ],
-    function (PluginManager, Popin, FormBuilder) {
+    function (PluginManager, Popin, FormBuilder, DefinitionManager) {
 
         'use strict';
 
@@ -35,7 +36,6 @@ define(
              */
             onInit: function () {
                 this.createPopin();
-                this.content = this.getCurrentContent();
             },
 
             /**
@@ -50,15 +50,16 @@ define(
              * Build form from parameters and show popin
              */
             showParameters: function () {
-                var self = this;
+                var self = this,
+                    content = this.getCurrentContent();
 
-                this.content.getData().done(function () {
-                    var parameters = self.content.getParameters(),
+                content.getData().done(function () {
+                    var parameters = content.getParameters(),
                         config = {
                             elements: parameters,
                             onSubmit: function (data) {
                                 if (Object.keys(data).length > 0) {
-                                    self.content.setParameters(data);
+                                    content.setParameters(data);
                                 }
                                 self.popin.hide();
                             }
@@ -73,10 +74,19 @@ define(
 
             /**
              * Verify if the plugin can be apply on the context
+             * If content don't have parameters, the button is hidden
              * @returns {Boolean}
              */
             canApplyOnContext: function () {
-                return true;
+                var content = this.getCurrentContent(),
+                    definition = DefinitionManager.find(content.type),
+                    result = false;
+
+                if (Object.keys(definition.parameters).length > 0) {
+                    result = true;
+                }
+
+                return result;
             },
 
             /**

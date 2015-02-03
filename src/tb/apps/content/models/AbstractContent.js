@@ -96,13 +96,32 @@ define(
                 return result;
             },
 
+            /**
+             * Find parameters
+             * If the revision have parameters, the parameters of
+             * revision will be returned else the parameters of data.
+             * Its possible that data don't have parameters, in this case
+             * undefined will be returned
+             * @returns {Mixed]
+             */
             findParameters: function () {
-                var result;
+                var result,
+                    dataParameters = this.data.parameters,
+                    revisionParameters = this.revision.parameters,
+                    key;
 
-                if (this.revision.parameters !== undefined) {
-                    result = this.revision.parameters;
+                if (revisionParameters !== undefined) {
+
+                    for (key in dataParameters) {
+                        if (dataParameters.hasOwnProperty(key)) {
+                            if (revisionParameters.hasOwnProperty(key)) {
+                                dataParameters[key].value = revisionParameters[key];
+                            }
+                        }
+                    }
+                    result = dataParameters;
                 } else {
-                    result = this.data.parameters;
+                    result = dataParameters;
                 }
 
                 return result;
@@ -142,10 +161,40 @@ define(
                 return result;
             },
 
+            /**
+             * Set parameters to revision if a difference exist between new 
+             * and old parameters
+             * @param {Object} parameters
+             */
             setParameters: function (parameters) {
-                this.revision.setParameters(parameters);
+                var dataParameters,
+                    data,
+                    key;
 
-                this.setUpdated(true);
+                if (this.hasOwnProperty('data')) {
+
+                    data = this.data;
+                    dataParameters = data.parameters;
+
+                    if (typeof parameters === 'object' && Object.keys(parameters).length > 0) {
+
+                        for (key in parameters) {
+                            if (parameters.hasOwnProperty(key)) {
+                                if (dataParameters.hasOwnProperty(key)) {
+                                    if (dataParameters[key].value === parameters[key]) {
+                                        delete parameters[key];
+                                    }
+                                }
+                            }
+                        }
+
+                        if (Object.keys(parameters).length > 0) {
+                            this.revision.setParameters(parameters);
+                            this.setUpdated(true);
+                        }
+                    }
+                }
+
             },
 
             /**
