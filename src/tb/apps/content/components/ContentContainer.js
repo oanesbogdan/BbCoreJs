@@ -48,6 +48,38 @@ define(['jsclass'], function () {
             return result;
         },
 
+        /**
+         * Return the key of contents array
+         * @param {Object} id
+         * @returns {Mixed}
+         */
+        getKey: function (content) {
+            var key,
+                currentContent,
+                result = null;
+
+            for (key in this.contents) {
+                if (this.contents.hasOwnProperty(key)) {
+                    currentContent = this.contents[key];
+                    if (currentContent.id === content.id) {
+                        result = key;
+                        break;
+                    }
+                }
+            }
+
+            return result;
+        },
+
+        /**
+         * Remove content from list
+         * @param {Object} content
+         * @returns {undefined}
+         */
+        remove: function (content) {
+            delete this.contents[this.getKey(content)];
+        },
+
         findContentSetByAccept: function (accept) {
             var key,
                 content,

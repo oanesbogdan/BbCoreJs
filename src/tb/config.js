@@ -83,11 +83,13 @@ define([], function () {
                 contentsetplus: {
                     accept: ['container/one_column'],
                     config: {}
+                },
+                remove: {
+                    accept: ['block_demo'],
+                    config: {}
                 }
             },
             "demo": { }
         }
-
-
     };
 });
