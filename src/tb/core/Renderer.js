@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define('tb.core.Renderer', ['require', 'nunjucks', 'jquery', 'tb.core.Utils', 'jsclass'], function (require, nunjucks) {
+define('tb.core.Renderer', ['require', 'nunjucks', 'tb.core', 'jquery', 'tb.core.Utils', 'jsclass'], function (require, nunjucks, Core) {
     'use strict';
 
     var jQuery = require('jquery'),
@@ -59,7 +59,11 @@ define('tb.core.Renderer', ['require', 'nunjucks', 'jquery', 'tb.core.Utils', 'j
             render: function (template, params) {
                 params = params || {};
 
-                return this.engine.renderString(template, params);
+                try {
+                    return this.engine.renderString(template, params);
+                } catch (e) {
+                    Core.exception('RenderException', 500, e.message, {engineException: e, template: template, params: params});
+                }
             },
 
             errorRenderer: function (config) {
