@@ -54,7 +54,6 @@ define(
              */
             commit: function (content) {
                 content.updateRevision();
-                this.updateRevisionParameters(content);
             },
 
             /**
@@ -103,35 +102,6 @@ define(
                         }
                     }
                     delete revision.parameters;
-                }
-            },
-
-            /**
-             * Compare current parameters with modified parameters
-             * @param {type} data
-             * @returns {unresolved}
-             */
-            updateRevisionParameters: function (content) {
-                var data = content.getParameters(),
-                    parameters,
-                    key;
-
-                if (data !== undefined) {
-                    parameters = content.data.parameters;
-
-                    for (key in data) {
-                        if (data.hasOwnProperty(key)) {
-                            if (parameters.hasOwnProperty(key)) {
-                                if (parameters[key].hasOwnProperty('value')) {
-                                    if (data[key] === parameters[key].value) {
-                                        delete data[key];
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    content.setParameters(data);
                 }
             }
         });
