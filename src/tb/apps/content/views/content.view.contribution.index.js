@@ -23,13 +23,13 @@ define(
         'text!content/tpl/contribution/index',
         'text!content/tpl/carousel_blocks',
         'tb.core.Renderer',
-        'text!content/tpl/palette_blocks'
+        'content.widget.DialogContentsList'
     ],
     function (jQuery,
               template,
               carouselBlocksTpl,
               Renderer,
-              paletteBlocksTpl
+              DialogContentsList
             ) {
 
         'use strict';
@@ -48,15 +48,6 @@ define(
             carouselId: '#carousel-blocks',
             selectCategoriesId: '#select-categories-blocks-contrib',
             paletteBlocksId: '#palette-contrib-blocks',
-            dialogContainerClass: '.bb5-dialog-container',
-            paletteBlocksDalogId: '#palette-blocks',
-            togglePaletteClasses: '.bb5-data-toggle .bb5-data-toggle-header',
-            paletteDialogConfig: {
-                width: 323,
-                height: 400 > jQuery(window).height() - 40 ? jQuery(window).height() - 40 : 400,
-                autoOpen: false,
-                appendTo: '#bb5-ui .bb5-dialog-container'
-            },
 
             /**
              * Initialize of ContentViewContributionIndex
@@ -75,38 +66,14 @@ define(
 
                 element.on('change', this.selectCategoriesId, jQuery.proxy(this.onSelectCategory, this));
                 element.on('click', this.paletteBlocksId, jQuery.proxy(this.onPaletteBlocksClick, this));
-                jQuery(this.dialogContainerClass).on('click', this.togglePaletteClasses, jQuery.proxy(this.doToggleHeaderEvent, this));
             },
 
-            /* PALETTE MANAGE */
             onPaletteBlocksClick: function () {
-                var paletteBlock = jQuery(this.paletteBlocksDalogId);
-
-                if (!this.paletteLoaded) {
-                    jQuery(this.dialogContainerClass).html(Renderer.render(paletteBlocksTpl, {categories: this.categories}));
-
-                    paletteBlock.dialog(this.paletteDialogConfig);
-
-                    paletteBlock.dialog('open');
-
-                    this.paletteLoaded = true;
-                } else {
-                    if (paletteBlock.dialog('isOpen')) {
-                        paletteBlock.dialog('close');
-                    } else {
-                        paletteBlock.dialog('open');
-                    }
+                if (this.widget === undefined) {
+                    this.widget = new DialogContentsList({'draggable': true});
                 }
+                this.widget.show();
             },
-
-            doToggleHeaderEvent: function (event) {
-                var currentTarget = jQuery(event.currentTarget);
-
-                jQuery(this.paletteBlocksDalogId).find('.bb5-data-toggle.open').not(currentTarget.parent()).removeClass('open');
-
-                currentTarget.parent().toggleClass('open');
-            },
-            /* END PALETTE MANAGE */
 
             onSelectCategory: function (event) {
                 var currentTarget = jQuery(event.currentTarget),
