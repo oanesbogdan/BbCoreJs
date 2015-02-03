@@ -29,6 +29,9 @@ require.config({
         'page.abstract.form': 'src/tb/apps/page/forms/AbstractPage.form',
         'page.form': 'src/tb/apps/page/forms/Page.form',
 
+        //Widgets
+        'page.widget.InformationPage': 'src/tb/apps/page/widgets/InformationPage',
+
         //Views
         'page.view.contribution.index': 'src/tb/apps/page/views/page.view.contribution.index',
         'page.view.delete': 'src/tb/apps/page/views/page.view.delete',
@@ -43,17 +46,32 @@ require.config({
         //Templates
         'page/tpl/contribution/index': 'src/tb/apps/page/templates/contribution.index.twig',
         'page/tpl/contribution/scheduling_publication': 'src/tb/apps/page/templates/contribution-scheduling.dialog.twig',
-        'page/tpl/manage_list': 'src/tb/apps/page/templates/manage.list.twig'
+        'page/tpl/manage_list': 'src/tb/apps/page/templates/manage.list.twig',
+        'page/widgets/tpl/information_page': 'src/tb/apps/page/widgets/templates/information-page.twig'
 
     }
 });
 
-define('app.page', ['tb.core'], function (BbCore) {
+define('app.page', ['tb.core.Api', 'page.widget.InformationPage'], function (Core, InformationPage) {
+
     'use strict';
 
     /**
      * page application declaration
      */
-    BbCore.ApplicationManager.registerApplication('page', {});
+    Core.ApplicationManager.registerApplication('page', {
+
+        onStart: function () {
+            InformationPage.show();
+        },
+
+        onResume: function () {
+            InformationPage.show();
+        },
+
+        onStop: function () {
+            InformationPage.hide();
+        }
+    });
 
 });
