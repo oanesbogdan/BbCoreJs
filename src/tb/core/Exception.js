@@ -29,11 +29,11 @@ define('tb.core.Exception', ['tb.core.Api', 'jsclass'], function () {
             /**
              * Construct the exception
              */
-            initialize: function (name, message, code) {
+            initialize: function (name, message, code, params) {
                 this.name = name;
                 this.message = message;
                 this.code = code;
-                this.params = {};
+                this.params = params;
                 this.stack = this.getStack();
             },
 
@@ -103,20 +103,21 @@ define('tb.core.Exception', ['tb.core.Api', 'jsclass'], function () {
             }
         }),
 
-        throwNewException = function (name, code, message) {
+        throwNewException = function (name, code, message, params) {
             name = name || 'UnknowException';
             code = code || 500;
             message = message || 'No description found for this exception.';
+            params = params || {};
 
-            var expected = new Exception(name, message, code);
+            var expected = new Exception(name, message, code, params);
             expected.pushError(expected, expected.api);
 
             throw 'Error n ' + code + ' ' + name + ': ' + message;
         };
 
-    throwNewException.silent = function (name, code, message) {
+    throwNewException.silent = function (name, code, message, params) {
         try {
-            throwNewException(name, code, message);
+            throwNewException(name, code, message, params);
         } catch (e) {
             return e;
         }
