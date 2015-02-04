@@ -17,85 +17,99 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['require', 'tb.core.Api', 'jquery', 'page.repository', 'page.form', 'component!popin', 'component!formbuilder'], function (require, Api, jQuery, PageRepository, PageForm) {
+define(
+    [
+        'require',
+        'tb.core.Api',
+        'jquery',
+        'page.repository',
+        'page.form',
+        'component!popin',
+        'component!formbuilder'
+    ],
+    function (require, Api, jQuery, PageRepository, PageForm) {
 
-    'use strict';
-
-    /**
-     * View of new page
-     * @type {Object} Backbone.View
-     */
-    var PageViewEdit = Backbone.View.extend({
+        'use strict';
 
         /**
-         * Initialize of PageViewEdit
+         * View of new page
+         * @type {Object} Backbone.View
          */
-        initialize: function (config) {
-            if (typeof config.page_uid !== 'string') {
-                Api.exception('MissingPropertyException', 500, 'Property "page_uid" must be set to constructor');
-            }
+        var PageViewEdit = Backbone.View.extend({
 
-            this.config = config;
-
-            this.page_uid = this.config.page_uid;
-            this.callbackAfterSubmit = this.config.callbackAfterSubmit;
-
-            this.popin = require('component!popin').createPopIn();
-            this.formBuilder = require('component!formbuilder');
-        },
-
-        onSubmit: function (data) {
-            var self = this;
-
-            if (typeof this.page_uid === 'string') {
-                data.uid = this.page_uid;
-            }
-
-            this.popin.mask();
-            PageRepository.save(data).done(function (result, response) {
-                if (typeof self.callbackAfterSubmit === 'function') {
-                    self.callbackAfterSubmit(data, response, result);
+            /**
+             * Initialize of PageViewEdit
+             */
+            initialize: function (config) {
+                if (typeof config.page_uid !== 'string') {
+                    Api.exception('MissingPropertyException', 500, 'Property "page_uid" must be set to constructor');
                 }
 
-                self.popin.unmask();
-                self.popin.hide();
-            });
-        },
+                this.config = config;
 
-        onValidate: function (form, data) {
-            if (!data.hasOwnProperty('title') || data.title.trim().length === 0) {
-                form.addError('title', 'Title is required');
-            }
+                this.page_uid = this.config.page_uid;
+                this.callbackAfterSubmit = this.config.callbackAfterSubmit;
 
-            if (!data.hasOwnProperty('layout_uid') || data.layout_uid.trim().length === 0) {
-                form.addError('layout_uid', 'Template is required.');
-            }
-        },
+                this.popin = require('component!popin').createPopIn();
+                this.formBuilder = require('component!formbuilder');
+            },
 
-        /**
-         * Render the template into the DOM with the ViewManager
-         * @returns {Object} PageViewEdit
-         */
-        render: function () {
+            onSubmit: function (data) {
+                var self = this;
 
-            var self = this;
+                if (typeof this.page_uid === 'string') {
+                    data.uid = this.page_uid;
+                }
 
-            this.popin.setTitle('Edit page');
+                this.popin.mask();
+                PageRepository.save(data).done(function (result, response) {
 
-            PageForm.edit(this.page_uid).done(function (configForm) {
-                configForm.onSubmit = jQuery.proxy(self.onSubmit, self);
-                configForm.onValidate = self.onValidate;
-                self.formBuilder.renderForm(configForm).done(function (html) {
-                    self.popin.setContent(html);
-                    self.popin.display();
-                }).fail(function (e) {
-                    console.log(e);
+                    if (typeof self.callbackAfterSubmit === 'function') {
+                        self.callbackAfterSubmit(data, response, result);
+                    }
+
+                    self.popin.unmask();
+                    self.popin.hide();
                 });
-            });
+            },
 
-            return this;
-        }
-    });
+            onValidate: function (form, data) {
+                if (!data.hasOwnProperty('title') || data.title.trim().length === 0) {
+                    form.addError('title', 'Title is required');
+                }
 
-    return PageViewEdit;
-});
+                if (!data.hasOwnProperty('layout_uid') || data.layout_uid.trim().length === 0) {
+                    form.addError('layout_uid', 'Template is required.');
+                }
+            },
+
+            /**
+             * Render the template into the DOM with the ViewManager
+             * @returns {Object} PageViewEdit
+             */
+            render: function () {
+
+                var self = this;
+
+                this.popin.setTitle('Edit page');
+                this.popin.display();
+                this.popin.mask();
+
+                PageForm.edit(this.page_uid).done(function (configForm) {
+
+                    configForm.onSubmit = jQuery.proxy(self.onSubmit, self);
+                    configForm.onValidate = self.onValidate;
+
+                    self.formBuilder.renderForm(configForm).done(function (html) {
+                        self.popin.setContent(html);
+                        self.popin.unmask();
+                    });
+                });
+
+                return this;
+            }
+        });
+
+        return PageViewEdit;
+    }
+);

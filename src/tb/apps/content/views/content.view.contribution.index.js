@@ -43,7 +43,7 @@ define(
             /**
              * Point of Toolbar in DOM
              */
-            el: '#contrib-tab-apps',
+            el: '#block-contrib-tab',
             carouselBlocksId: '#carousel-contrib-blocks',
             carouselId: '#carousel-blocks',
             selectCategoriesId: '#select-categories-blocks-contrib',
@@ -197,6 +197,7 @@ define(
              * @returns {Object} PageViewContributionIndex
              */
             render: function () {
+
                 jQuery(this.el).html(Renderer.render(template, {'categories': this.categories}));
 
                 this.showBlocksByCategory('_all');

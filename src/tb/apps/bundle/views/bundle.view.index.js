@@ -16,88 +16,111 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define(['jquery', 'tb.core.Renderer', 'text!bundle/tpl/index', 'bundle.repository'], function (jQuery, Renderer, template, BundleRepository) {
+define(
+    [
+        'tb.core.ApplicationManager',
+        'jquery',
+        'tb.core.Renderer',
+        'text!bundle/tpl/index',
+        'bundle.repository'
+    ],
+    function (ApplicationManager, jQuery, Renderer, template, BundleRepository) {
 
-    'use strict';
-
-    /**
-     * View of bundle's index
-     * @type {Object} Backbone.View
-     */
-    var BundleViewIndex = Backbone.View.extend({
-
-        /**
-         * Point of Toolbar in DOM
-         */
-        el: '#bb5-maintabsContent',
+        'use strict';
 
         /**
-         * Point of bundle's application in DOM
+         * View of bundle's index
+         * @type {Object} Backbone.View
          */
-        listEl: '#extensions',
+        var BundleViewIndex = Backbone.View.extend({
 
-        /**
-         * Initialize of BundleViewIndex
-         * The default key is used for show the first bundle in index
-         * @param {Object} config
-         * @param {String} defaultKey
-         */
-        initialize: function (config, defaultKey) {
-            var currentBundle = config.datas.bundles[0];
-            if (defaultKey !== undefined) {
-                currentBundle = config.datas.bundles[defaultKey];
+            /**
+             * Point of bundle's application in DOM
+             */
+            listEl: '#extensions',
+
+            id: 'bundle-tab',
+
+            /**
+             * Initialize of BundleViewIndex
+             * The default key is used for show the first bundle in index
+             * @param {Object} config
+             * @param {String} defaultKey
+             */
+            initialize: function (config, defaultKey) {
+
+                if (config.bundles !== undefined) {
+                    var currentBundle = config.bundles[0];
+
+                    if (defaultKey !== undefined) {
+                        currentBundle = config.bundles[defaultKey];
+                    }
+
+                    this.bundle = currentBundle;
+                }
+
+                this.force = (config.force === true);
+                this.doBinding = (config.doBinding === true);
+            },
+
+            /**
+             * Events of the view
+             */
+            bindEvents: function () {
+                var element = jQuery('#' + this.id);
+
+                element.off('click').on('click', '.btn-dialog-extension', this.doListDialog);
+                element.off('click').on('click', 'div.activation-btn-group a', this.doExtensionActivation);
+            },
+
+            /**
+             * Show or Hide a dialog with bundle list
+             */
+            doListDialog: function () {
+                if (jQuery(this.listEl).dialog('isOpen')) {
+                    jQuery(this.listEl).dialog('close');
+                } else {
+                    jQuery(this.listEl).dialog('open');
+                }
+            },
+
+            /**
+             * Enable or disable the current bundle
+             * @param {Object} event
+             */
+            doExtensionActivation: function (event) {
+                var self = jQuery(event.currentTarget),
+                    bundleId = self.parent().attr('data-bundle-id');
+
+                self.siblings('a').removeClass('active');
+                self.addClass('active');
+
+                if (self.hasClass('enable')) {
+                    BundleRepository.active(true, bundleId);
+                } else if (self.hasClass('disable')) {
+                    BundleRepository.active(false, bundleId);
+                }
+            },
+
+            /**
+             * Render the template into the DOM with the Renderer
+             * @returns {Object} BundleViewIndex
+             */
+            render: function () {
+                var self = this;
+
+                ApplicationManager.invokeService('main.main.toolbarManager').done(function (Service) {
+                    Service.append(self.id, Renderer.render(template, {'bundle': self.bundle}), self.force);
+
+                    if (self.doBinding === true) {
+                        self.bindEvents();
+                    }
+                });
+
+                return this;
             }
+        });
 
-            this.bundle = {bundle: currentBundle};
-        },
-
-        /**
-         * Events of the view
-         */
-        events: {
-            'click .btn-dialog-extension': 'doListDialog',
-            'click div.activation-btn-group a': 'doExtensionActivation'
-        },
-
-        /**
-         * Show or Hide a dialog with bundle list
-         */
-        doListDialog: function () {
-            if (jQuery(this.listEl).dialog('isOpen')) {
-                jQuery(this.listEl).dialog('close');
-            } else {
-                jQuery(this.listEl).dialog('open');
-            }
-        },
-
-        /**
-         * Enable or disable the current bundle
-         * @param {Object} event
-         */
-        doExtensionActivation: function (event) {
-            var self = jQuery(event.currentTarget),
-                bundleId = self.parent().attr('data-bundle-id');
-
-            self.siblings('a').removeClass('active');
-            self.addClass('active');
-
-            if (self.hasClass('enable')) {
-                BundleRepository.active(true, bundleId);
-            } else if (self.hasClass('disable')) {
-                BundleRepository.active(false, bundleId);
-            }
-        },
-
-        /**
-         * Render the template into the DOM with the Renderer
-         * @returns {Object} BundleViewIndex
-         */
-        render: function () {
-            jQuery(this.el).html(Renderer.render(template, this.bundle));
-
-            return this;
-        }
-    });
-
-    return BundleViewIndex;
-});
+        return BundleViewIndex;
+    }
+);

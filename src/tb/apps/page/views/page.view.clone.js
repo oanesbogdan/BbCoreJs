@@ -17,84 +17,97 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['require', 'tb.core.Api', 'jquery', 'page.repository', 'page.form', 'component!popin', 'component!formbuilder'], function (require, Api, jQuery, PageRepository, PageForm) {
+define(
+    [
+        'require',
+        'tb.core.Api',
+        'jquery',
+        'page.repository',
+        'page.form',
+        'component!popin',
+        'component!formbuilder'
+    ],
+    function (require, Api, jQuery, PageRepository, PageForm) {
 
-    'use strict';
-
-    /**
-     * View of new page
-     * @type {Object} Backbone.View
-     */
-    var PageViewClone = Backbone.View.extend({
+        'use strict';
 
         /**
-         * Initialize of PageViewClone
+         * View of new page
+         * @type {Object} Backbone.View
          */
-        initialize: function (config) {
-            if (typeof config.page_uid !== 'string') {
-                Api.exception('MissingPropertyException', 500, 'Property "page_uid" must be set to constructor');
-            }
+        var PageViewClone = Backbone.View.extend({
 
-            this.config = config;
-            this.page_uid = this.config.page_uid;
-            this.callbackAfterSubmit = config.callbackAfterSubmit;
-
-            this.popin = require('component!popin').createPopIn();
-            this.formBuilder = require('component!formbuilder');
-        },
-
-        onSubmit: function (data) {
-            var self = this;
-
-            if (this.config.hasOwnProperty('parent_uid')) {
-                data.parent_uid = this.config.parent_uid;
-            }
-
-            if (this.config.hasOwnProperty('sibling_uid')) {
-                data.sibling_uid = this.config.sibling_uid;
-            }
-
-            this.popin.mask();
-            PageRepository.clone(this.page_uid, data).done(function (res, response) {
-                if (typeof self.callbackAfterSubmit === 'function') {
-                    self.callbackAfterSubmit(data, response, res);
+            /**
+             * Initialize of PageViewClone
+             */
+            initialize: function (config) {
+                if (typeof config.page_uid !== 'string') {
+                    Api.exception('MissingPropertyException', 500, 'Property "page_uid" must be set to constructor');
                 }
 
-                self.popin.unmask();
-                self.popin.hide();
-            });
-        },
+                this.config = config;
+                this.page_uid = this.config.page_uid;
+                this.callbackAfterSubmit = config.callbackAfterSubmit;
 
-        onValidate: function (form, data) {
-            if (!data.hasOwnProperty('title') || data.title.trim().length === 0) {
-                form.addError('title', 'Title is required');
-            }
-        },
+                this.popin = require('component!popin').createPopIn();
+                this.formBuilder = require('component!formbuilder');
+            },
 
-        /**
-         * Render the template into the DOM with the ViewManager
-         * @returns {Object} PageViewClone
-         */
-        render: function () {
+            onSubmit: function (data) {
+                var self = this;
 
-            var self = this;
+                if (this.config.hasOwnProperty('parent_uid')) {
+                    data.parent_uid = this.config.parent_uid;
+                }
 
-            this.popin.setTitle('Clone page');
+                if (this.config.hasOwnProperty('sibling_uid')) {
+                    data.sibling_uid = this.config.sibling_uid;
+                }
 
-            PageForm.clone(this.page_uid).done(function (configForm) {
-                configForm.onSubmit = jQuery.proxy(self.onSubmit, self);
-                configForm.onValidate = self.onValidate;
-                self.formBuilder.renderForm(configForm).done(function (html) {
-                    self.popin.setContent(html);
-                    self.popin.display();
-                }).fail(function (e) {
-                    console.log(e);
+                this.popin.mask();
+                PageRepository.clone(this.page_uid, data).done(function (res, response) {
+                    if (typeof self.callbackAfterSubmit === 'function') {
+                        self.callbackAfterSubmit(data, response, res);
+                    }
+
+                    self.popin.unmask();
+                    self.popin.hide();
                 });
-            });
+            },
 
-            return this;
-        }
-    });
+            onValidate: function (form, data) {
+                if (!data.hasOwnProperty('title') || data.title.trim().length === 0) {
+                    form.addError('title', 'Title is required');
+                }
+            },
 
-    return PageViewClone;
-});
+            /**
+             * Render the template into the DOM with the ViewManager
+             * @returns {Object} PageViewClone
+             */
+            render: function () {
+
+                var self = this;
+
+                this.popin.setTitle('Clone page');
+                this.popin.display();
+                this.popin.mask();
+
+                PageForm.clone(this.page_uid).done(function (configForm) {
+
+                    configForm.onSubmit = jQuery.proxy(self.onSubmit, self);
+                    configForm.onValidate = self.onValidate;
+
+                    self.formBuilder.renderForm(configForm).done(function (html) {
+                        self.popin.setContent(html);
+                        self.popin.unmask();
+                    });
+                });
+
+                return this;
+            }
+        });
+
+        return PageViewClone;
+    }
+);

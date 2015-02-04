@@ -17,35 +17,51 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core'], function (Core) {
-    'use strict';
+define(
+    [
+        'tb.core',
+        'main.toolbar.manager'
+    ],
+    function (Core, ToolbarManager) {
 
-    Core.ControllerManager.registerController('MainController', {
-        appName: 'main',
-        config: {
-            imports: []
-        },
+        'use strict';
 
-        onInit: function () {
-            return;
-        },
+        Core.ControllerManager.registerController('MainController', {
 
-        indexAction: function () {
-            return;
-        },
+            appName: 'main',
 
-        /**
-         * Dispatch event `on:save:click``for all interested
-         */
-        saveService: function () {
-            Core.Mediator.publish('on:save:click');
-        },
+            config: {
+                imports: []
+            },
 
-        /**
-         * Dispatch event `on:cancel:click``for all interested
-         */
-        cancelService: function () {
-            Core.Mediator.publish('on:cancel:click');
-        }
-    });
-});
+            onInit: function () {
+                return;
+            },
+
+            indexAction: function () {
+                return;
+            },
+
+            /**
+             * Service for retrieve Toolbar manager
+             */
+            toolbarManagerService: function () {
+                return ToolbarManager;
+            },
+
+            /**
+             * Dispatch event `on:save:click``for all interested
+             */
+            saveService: function () {
+                Core.Mediator.publish('on:save:click');
+            },
+
+            /**
+             * Dispatch event `on:cancel:click``for all interested
+             */
+            cancelService: function () {
+                Core.Mediator.publish('on:cancel:click');
+            }
+        });
+    }
+);

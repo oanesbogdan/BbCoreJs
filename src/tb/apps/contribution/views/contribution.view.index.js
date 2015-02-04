@@ -1,11 +1,12 @@
 define(
     [
+        'tb.core.Api',
         'jquery',
         'tb.core.ApplicationManager',
         'tb.core.Renderer',
         'text!contribution/tpl/index'
     ],
-    function (jQuery, ApplicationManager, Renderer, template) {
+    function (Core, jQuery, ApplicationManager, Renderer, template) {
 
         'use strict';
 
@@ -15,23 +16,21 @@ define(
          */
         var BundleViewIndex = Backbone.View.extend({
 
-            /**
-             * Point of Toolbar in DOM
-             */
-            el: '#bb5-maintabsContent',
+            id: 'contribution-tab',
 
-            /**
-             * Initialize of ContributionViewIndex
-             */
-            initialize: function () {
-                this.bindUiEvents();
+            initialize: function (config) {
+
+                this.alreadyLoaded = false;
+                if (config !== undefined) {
+                    this.alreadyLoaded = (config.alreadyLoaded === true);
+                }
             },
 
             /**
              * Events of view
              */
-            bindUiEvents: function () {
-                var element = jQuery(this.el);
+            bindEvents: function () {
+                var element = jQuery('#' + this.id);
 
                 element.on('click', 'ul#edit-tab li', this.manageMenu);
                 element.on('click', '#new-page', this.showNewPage);
@@ -40,21 +39,17 @@ define(
             },
 
             showNewPage: function () {
-                ApplicationManager.invokeService('page.main.findCurrentPage').done(function (promise) {
-                    promise.done(function (data) {
-                        if (data.hasOwnProperty(0)) {
-                            data = data[0];
-                        }
-
-                        return ApplicationManager.invokeService('page.main.newPage', {'parent_uid': data.uid});
-                    });
-                });
+                return ApplicationManager.invokeService('page.main.newPage', {'parent_uid': Core.get('page.uid')});
             },
 
             manageMenu: function (event) {
                 var self = jQuery(event.currentTarget);
+
                 jQuery('ul#edit-tab li.active').removeClass('active');
                 self.addClass('active');
+
+                jQuery('div#contrib-tab-apps div.tab-pane.active').removeClass('active');
+                jQuery('div#' + self.children('a').data('type') + '-contrib-tab').addClass('active');
             },
 
             /**
@@ -76,7 +71,15 @@ define(
              * @returns {Object} BundleViewIndex
              */
             render: function () {
-                jQuery(this.el).html(Renderer.render(template, this.contribution));
+                var self = this;
+
+                ApplicationManager.invokeService('main.main.toolbarManager').done(function (Service) {
+                    Service.append('contribution-tab', Renderer.render(template, this.contribution));
+
+                    if (self.alreadyLoaded !== true) {
+                        self.bindEvents();
+                    }
+                });
 
                 return this;
             }

@@ -1,57 +1,59 @@
-<div class="tab-pane active" id="dropdown30">
-    <div class="row">
-        <div class="col-bb5-15">
-            <p>
-                <a href="#page/tree" class="btn btn-simple btn-xs">
-                    <i class="fa fa-sitemap"></i> Arborescence
-                </a>
-            </p>
-            <p>
-                <button type="button" class="btn btn-simple btn-xs">
-                    <i class="fa fa-search"></i> Tous les contenus
-                </button>
-            </p>
-            <p>
-                <button type="button" class="btn btn-simple btn-xs">
-                    <i class="fa fa-inbox"></i> Mediathèque
-                </button>
-            </p>
-            <p>
-                <button id="new-page" type="button" class="btn btn-simple btn-xs">
-                    <i class="fa fa-file-o"></i> Nouvelle page
-                </button>
-            </p>
-        </div><!--/ End col-->
+<div class="row">
+    <div class="col-bb5-15">
+        <p>
+            <a href="#page/tree" class="btn btn-simple btn-xs">
+                <i class="fa fa-sitemap"></i> Arborescence
+            </a>
+        </p>
+        <p>
+            <button type="button" class="btn btn-simple btn-xs">
+                <i class="fa fa-search"></i> Tous les contenus
+            </button>
+        </p>
+        <p>
+            <button type="button" class="btn btn-simple btn-xs">
+                <i class="fa fa-inbox"></i> Mediathèque
+            </button>
+        </p>
+        <p>
+            <button id="new-page" type="button" class="btn btn-simple btn-xs">
+                <i class="fa fa-file-o"></i> Nouvelle page
+            </button>
+        </p>
+    </div><!--/ End col-->
 
-        <div class="col-bb5-73 bb5-border-right">
-            <div class="tabs-vertical row">
-                <ul class="nav nav-tabs col-bb5-17" id="edit-tab">
-                    <li>
-                        <a href="#home">Contenu</a>
-                    </li>
-                    <li>
-                        <a href="#content/contribution/index">Blocs</a>
-                    </li>
-                    <li>
-                        <a href="#page/contribution/index">Page</a>
-                    </li>
-                </ul>
-                <div class="tab-content col-bb5-83" id="contrib-tab-apps"></div>
+    <div class="col-bb5-73 bb5-border-right">
+        <div class="tabs-vertical row">
+            <ul class="nav nav-tabs col-bb5-17" id="edit-tab">
+                <li>
+                    <a href="#home" data-type="content">Contenu</a>
+                </li>
+                <li>
+                    <a href="#content/contribution/index" data-type="block">Blocs</a>
+                </li>
+                <li>
+                    <a href="#page/contribution/index" data-type="page">Page</a>
+                </li>
+            </ul>
+            <div class="tab-content col-bb5-83" id="contrib-tab-apps">
+                <div class="tab-pane" id="content-contrib-tab"></div>
+                <div class="tab-pane" id="block-contrib-tab"></div>
+                <div class="tab-pane" id="page-contrib-tab"></div>
             </div>
-        </div><!--/ End col-->
+        </div>
+    </div><!--/ End col-->
 
-        <div class="col-bb5-12">
-            <p>
-                <button id="global-save" type="button" class="btn btn-default-grey btn-sm btn-block">
-                    <i class="fa fa-floppy-o"></i> Enregistrer
-                </button>
-            </p>
-            <p>
-                <button id="bundle-toolbar-global-cancel" type="button" class="btn btn-default-grey btn-sm btn-block">
-                    <i class="fa fa-share"></i> Annuler
-                </button>
-            </p>
-        </div><!--/ End col-->
+    <div class="col-bb5-12">
+        <p>
+            <button id="global-save" type="button" class="btn btn-default-grey btn-sm btn-block">
+                <i class="fa fa-floppy-o"></i> Enregistrer
+            </button>
+        </p>
+        <p>
+            <button id="bundle-toolbar-global-cancel" type="button" class="btn btn-default-grey btn-sm btn-block">
+                <i class="fa fa-share"></i> Annuler
+            </button>
+        </p>
+    </div><!--/ End col-->
 
-    </div>
-</div><!--/.tab-pane #dropdown30-->
+</div>

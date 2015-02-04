@@ -16,20 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'jsclass'], function (CoreDriverHandler, CoreRestDriver) {
-    'use strict';
+define(
+    [
+        'tb.core.DriverHandler',
+        'tb.core.RestDriver',
+        'jquery',
+        'jsclass'
+    ],
+    function (CoreDriverHandler, CoreRestDriver, jQuery) {
 
-    //Build the default parameters
-    var criterias = {},
-        orderBy = {},
-        start = 0,
-        limit = null,
+        'use strict';
 
         /**
          * Bundle repository class
          * @type {Object} JS.Class
          */
-        BundleRepository = new JS.Class({
+        var BundleRepository = new JS.Class({
 
             TYPE: 'bundle',
 
@@ -48,7 +50,20 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'jsclass'], function (Cor
              * @param {Function} callback
              */
             list: function () {
-                return CoreDriverHandler.read(this.TYPE, criterias, orderBy, start, limit);
+                var self = this,
+                    dfd = jQuery.Deferred();
+
+                if (this.bundleList === undefined) {
+
+                    CoreDriverHandler.read(this.TYPE).done(function (data) {
+                        self.bundleList = data;
+                        dfd.resolve(self.bundleList);
+                    });
+                } else {
+                    dfd.resolve(this.bundleList);
+                }
+
+                return dfd.promise();
             },
 
             /**
@@ -61,5 +76,6 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'jsclass'], function (Cor
             }
         });
 
-    return new JS.Singleton(BundleRepository);
-});
+        return new JS.Singleton(BundleRepository);
+    }
+);

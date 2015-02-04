@@ -41,23 +41,15 @@ define(
             },
 
             contributionIndexAction: function () {
+
                 var self = this;
 
-                if (this.categories !== undefined) {
-                    self.createView(ContributionIndexView, {'categories': this.categories}, true);
-                } else {
+                if (this.contribution_loaded !== true) {
                     ContentRepository.findCategories().done(function (categories) {
-                        self.categories = categories;
-                        self.createView(ContributionIndexView, {'categories': categories}, true);
+                        var view = new ContributionIndexView({'categories': categories});
+                        view.render();
+                        self.contribution_loaded = true;
                     });
-                }
-            },
-
-            createView: function (Constructor, config, render) {
-                var view = new Constructor(config);
-
-                if (render) {
-                    view.render();
                 }
             },
 
