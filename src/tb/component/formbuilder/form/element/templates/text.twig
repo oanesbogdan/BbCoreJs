@@ -3,6 +3,7 @@
        name="{{ element.getKey() }}"
        {% if element.isDisabled() %}disabled{% endif %}
        value="{{ element.getValue() }}"
+       placeholder="{{ element.getPlaceholder() }}"
        class="form-control"
        >
 {% if element.getError() != null %}
