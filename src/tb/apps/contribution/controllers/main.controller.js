@@ -21,7 +21,16 @@ define(['tb.core', 'contribution.view.index'], function (Core, IndexView) {
          * Show the edition toolbar
          */
         indexAction: function () {
-            var view = new IndexView();
+            var config = {},
+                view;
+
+            if (this.viewIsLoaded !== true) {
+                this.viewIsLoaded = true;
+            } else {
+                config.alreadyLoaded = true;
+            }
+
+            view = new IndexView(config);
             view.render();
         }
     });

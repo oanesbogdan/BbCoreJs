@@ -17,74 +17,84 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['require', 'jquery', 'page.repository', 'component!popin'], function (require, jQuery, PageRepository) {
+define(
+    [
+        'require',
+        'jquery',
+        'page.repository',
+        'component!popin'
+    ],
+    function (require, jQuery, PageRepository) {
 
-    'use strict';
-
-    /**
-     * View of delete page
-     * @type {Object} Backbone.View
-     */
-    var PageViewDelete = Backbone.View.extend({
-
-        /**
-         * Initialize of PageViewDelete
-         */
-        initialize: function (config) {
-            this.config = config;
-
-            this.popin = require('component!popin').createPopIn();
-
-            this.uid = config.uid;
-            console.log(this.uid);
-            this.callbackAfterSubmit = config.callbackAfterSubmit;
-        },
+        'use strict';
 
         /**
-         * Occurs when user confirm deletion
-         * Delete page and redirect to home
+         * View of delete page
+         * @type {Object} Backbone.View
          */
-        onDelete: function () {
-            var self = this;
+        var PageViewDelete = Backbone.View.extend({
 
-            this.popin.mask();
-            PageRepository.delete(this.uid).done(function (data, response) {
-                if (typeof self.callbackAfterSubmit === 'function') {
-                    self.callbackAfterSubmit(data, response);
-                }
+            /**
+             * Initialize of PageViewDelete
+             */
+            initialize: function (config) {
+                this.config = config;
 
-                self.popin.unmask();
-                self.popin.hide();
+                this.popin = require('component!popin').createPopIn();
 
-                if (self.config.doRedirect === true) {
-                    jQuery(location).attr('href', '/');
-                }
-            });
-        },
+                this.uid = config.uid;
 
-        /**
-         * Occurs when user cancel deletion
-         * Close the popin
-         */
-        onCancel: function () {
-            this.popin.hide();
-        },
+                this.callbackAfterSubmit = config.callbackAfterSubmit;
+            },
 
-        /**
-         * Render the template into the DOM with the ViewManager
-         * @returns {Object} PageViewDelete
-         */
-        render: function () {
-            this.popin.setTitle('Suppression de page');
-            this.popin.setContent('Supprimer la page ?');
-            this.popin.addButton('Supprimer', jQuery.proxy(this.onDelete, this));
-            this.popin.addButton('Annuler', jQuery.proxy(this.onCancel, this));
+            /**
+             * Occurs when user confirm deletion
+             * Delete page and redirect to home
+             */
+            onDelete: function () {
+                var self = this;
 
-            this.popin.display(this.popin);
+                this.popin.mask();
 
-            return this;
-        }
-    });
+                PageRepository.delete(this.uid).done(function (data, response) {
 
-    return PageViewDelete;
-});
+                    if (typeof self.callbackAfterSubmit === 'function') {
+                        self.callbackAfterSubmit(data, response);
+                    }
+
+                    self.popin.unmask();
+                    self.popin.hide();
+
+                    if (self.config.doRedirect === true) {
+                        jQuery(location).attr('href', '/');
+                    }
+                });
+            },
+
+            /**
+             * Occurs when user cancel deletion
+             * Close the popin
+             */
+            onCancel: function () {
+                this.popin.hide();
+            },
+
+            /**
+             * Render the template into the DOM with the ViewManager
+             * @returns {Object} PageViewDelete
+             */
+            render: function () {
+                this.popin.setTitle('Suppression de page');
+                this.popin.setContent('Supprimer la page ?');
+                this.popin.addButton('Supprimer', jQuery.proxy(this.onDelete, this));
+                this.popin.addButton('Annuler', jQuery.proxy(this.onCancel, this));
+
+                this.popin.display(this.popin);
+
+                return this;
+            }
+        });
+
+        return PageViewDelete;
+    }
+);

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define(['jquery', 'tb.core.Renderer', 'text!bundle/tpl/list', 'bundle.view.index', 'jqueryui'], function (jQuery, Renderer, template, ListView) {
+define(['jquery', 'tb.core.Renderer', 'text!bundle/tpl/list', 'bundle.view.index', 'jqueryui'], function (jQuery, Renderer, template, IndexView) {
     'use strict';
 
     /**
@@ -35,8 +35,10 @@ define(['jquery', 'tb.core.Renderer', 'text!bundle/tpl/list', 'bundle.view.index
          * @param {Object} config
          */
         initialize: function (config) {
-            this.bundles = config.datas;
-            this.categories = this.sortBundles(config.datas);
+            if (config.hasOwnProperty('bundles')) {
+                this.bundles = config.bundles;
+                this.categories = this.sortBundles(config.bundles);
+            }
         },
 
         /**
@@ -63,8 +65,9 @@ define(['jquery', 'tb.core.Renderer', 'text!bundle/tpl/list', 'bundle.view.index
          */
         doToggleDataItemEvent: function (event) {
             var self = jQuery(event.currentTarget),
-                bundles = this.bundles.bundles,
+                bundles = this.bundles,
                 bundleId = self.attr('id'),
+                config = {},
                 key,
                 bundle,
                 currentKey = null,
@@ -81,7 +84,11 @@ define(['jquery', 'tb.core.Renderer', 'text!bundle/tpl/list', 'bundle.view.index
             }
 
             if (currentKey !== null) {
-                view = new ListView({datas: this.bundles}, currentKey);
+                config.bundles = this.bundles;
+                config.force = true;
+                config.bindEvents = true;
+
+                view = new IndexView(config, currentKey);
                 view.render();
             }
         },
@@ -92,9 +99,8 @@ define(['jquery', 'tb.core.Renderer', 'text!bundle/tpl/list', 'bundle.view.index
          * @param {Object} data
          * @returns {Object}
          */
-        sortBundles: function (data) {
-            var bundles = data.bundles,
-                key,
+        sortBundles: function (bundles) {
+            var key,
                 bundle,
                 category,
                 categoryKey,

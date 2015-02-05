@@ -23,9 +23,13 @@ require.config({
 
         //Templates
         'main/tpl/toolbar': 'src/tb/apps/main/templates/toolbar.twig',
+        'main/tpl/tab-wrapper': 'src/tb/apps/main/components/templates/tab-wrapper.twig',
 
         //Views
-        'main.view.index': 'src/tb/apps/main/views/main.view.index'
+        'main.view.index': 'src/tb/apps/main/views/main.view.index',
+
+        //Components
+        'main.toolbar.manager': 'src/tb/apps/main/components/ToolbarManager'
     }
 });
 

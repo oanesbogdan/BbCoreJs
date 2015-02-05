@@ -17,224 +17,234 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'URIjs/URI', 'jsclass'], function (CoreDriverHandler, CoreRestDriver, Core, URI) {
-    'use strict';
+define(
+    [
+        'tb.core.DriverHandler',
+        'tb.core.RestDriver',
+        'tb.core',
+        'URIjs/URI',
+        'jsclass'
+    ],
+    function (CoreDriverHandler, CoreRestDriver, Core, URI) {
 
-    var putMandatoriesAttribute = ['title', 'alttitle', 'url', 'target', 'state', 'redirect', 'layout_uid'],
+        'use strict';
 
-        /**
-         * Page repository class
-         * @type {Object} JS.Class
-         */
-        PageRepository = new JS.Class({
-
-            TYPE: 'page',
-
-            /**
-             * Initialize of Page repository
-             */
-            initialize: function () {
-                CoreRestDriver.setBaseUrl('/rest/1/');
-                CoreDriverHandler.addDriver('rest', CoreRestDriver);
-            },
+        var putMandatoriesAttribute = ['title', 'alttitle', 'url', 'target', 'state', 'redirect', 'layout_uid'],
 
             /**
-             * Verify if the method is put method with a mandatories attributes array
-             * @param {Object} data
-             * @returns {Boolean}
+             * Page repository class
+             * @type {Object} JS.Class
              */
-            isPutMethod: function (data) {
-                var key,
-                    mandatory,
-                    isValid = true;
+            PageRepository = new JS.Class({
 
-                for (key in putMandatoriesAttribute) {
-                    if (putMandatoriesAttribute.hasOwnProperty(key)) {
-                        mandatory = putMandatoriesAttribute[key];
-                        if (!data.hasOwnProperty(mandatory)) {
-                            isValid = false;
-                            break;
+                TYPE: 'page',
+
+                /**
+                 * Initialize of Page repository
+                 */
+                initialize: function () {
+                    CoreRestDriver.setBaseUrl('/rest/1/');
+                    CoreDriverHandler.addDriver('rest', CoreRestDriver);
+                },
+
+                /**
+                 * Verify if the method is put method with a mandatories attributes array
+                 * @param {Object} data
+                 * @returns {Boolean}
+                 */
+                isPutMethod: function (data) {
+                    var key,
+                        mandatory,
+                        isValid = true;
+
+                    for (key in putMandatoriesAttribute) {
+                        if (putMandatoriesAttribute.hasOwnProperty(key)) {
+                            mandatory = putMandatoriesAttribute[key];
+                            if (!data.hasOwnProperty(mandatory)) {
+                                isValid = false;
+                                break;
+                            }
                         }
                     }
-                }
 
-                return isValid;
-            },
+                    return isValid;
+                },
 
-            /**
-             * Find the current page
-             * @returns {Promise}
-             */
-            findCurrentPage: function () {
-                return CoreDriverHandler.read(this.TYPE, {'uid': Core.get('page.uid')});
-            },
+                /**
+                 * Find the current page
+                 * @returns {Promise}
+                 */
+                findCurrentPage: function () {
+                    return CoreDriverHandler.read(this.TYPE, {'uid': Core.get('page.uid')});
+                },
 
-            setMetadata: function (page_uid, data) {
-                Core.Mediator.subscribeOnce('rest:send:before', function (request) {
-                    var url = new URI(request.url);
+                setMetadata: function (page_uid, data) {
+                    Core.Mediator.subscribeOnce('rest:send:before', function (request) {
+                        var url = new URI(request.url);
 
-                    url.segment('metadata');
+                        url.segment('metadata');
 
-                    request.url = url.normalize().toString();
-                });
+                        request.url = url.normalize().toString();
+                    });
 
-                return CoreDriverHandler.update(this.TYPE, data, {'id': page_uid});
-            },
+                    return CoreDriverHandler.update(this.TYPE, data, {'id': page_uid});
+                },
 
-            /**
-             * Return the metadata of page
-             * @param {String} page_uid
-             * @returns {Promise}
-             */
-            getMetadata: function (page_uid) {
-                Core.Mediator.subscribeOnce('rest:send:before', function (request) {
-                    var url = new URI(request.url);
+                /**
+                 * Return the metadata of page
+                 * @param {String} page_uid
+                 * @returns {Promise}
+                 */
+                getMetadata: function (page_uid) {
+                    Core.Mediator.subscribeOnce('rest:send:before', function (request) {
+                        var url = new URI(request.url);
 
-                    url.segment('metadata');
+                        url.segment('metadata');
 
-                    request.url = url.normalize().toString();
-                });
+                        request.url = url.normalize().toString();
+                    });
 
-                return CoreDriverHandler.read(this.TYPE, {'id': page_uid}, {}, 0, null);
-            },
+                    return CoreDriverHandler.read(this.TYPE, {'id': page_uid}, {}, 0, null);
+                },
 
-            /**
-             * Get the page by uid
-             * @param {String} uid
-             */
-            find: function (uid) {
-                return CoreDriverHandler.read(this.TYPE, {'id': uid});
-            },
+                /**
+                 * Get the page by uid
+                 * @param {String} uid
+                 */
+                find: function (uid) {
+                    return CoreDriverHandler.read(this.TYPE, {'id': uid});
+                },
 
-            /**
-             * Find pages with children
-             * @param {String} uid
-             */
-            findChildren: function (parent_uid, start, limit) {
-                var criterias = {'state': [0, 1, 2, 3], 'parent_uid': parent_uid};
+                /**
+                 * Find pages with children
+                 * @param {String} uid
+                 */
+                findChildren: function (parent_uid, start, limit) {
+                    var criterias = {'state': [0, 1, 2, 3], 'parent_uid': parent_uid};
 
-                if (start === undefined) {
-                    start = 0;
-                }
-
-                if (limit === undefined) {
-                    limit = 25;
-                }
-
-                return CoreDriverHandler.read(this.TYPE, criterias, {'leftnode': 'asc'}, start, limit);
-            },
-
-            findRoot: function () {
-                return CoreDriverHandler.read(this.TYPE);
-            },
-
-            /**
-             * Search pages
-             *
-             * @param array filters
-             * @param int start
-             * @param int count
-             * @param {Function} callback
-             */
-            search: function (filters, start, count, callback) {
-                var qs = filters;
-
-                if (start !== undefined && start !== null) {
-                    qs.start = start;
-                }
-
-                if (count !== undefined && count !== null) {
-                    qs.count = count;
-                }
-
-                return CoreDriverHandler.read(this.TYPE, qs, {}, 0, null, callback);
-            },
-
-            /**
-             * Save the page with a correctly method
-             * @param {Object} data
-             * @returns {Promise}
-             */
-            save: function (data) {
-                var result,
-                    uid;
-
-                if (data.hasOwnProperty('uid')) {
-                    uid = data.uid;
-
-                    delete data.uid;
-
-                    if (this.isPutMethod(data)) {
-                        result = CoreDriverHandler.update(this.TYPE, data, {'id': uid}, {}, 0, null);
-                    } else {
-                        result = CoreDriverHandler.patch(this.TYPE, data, {'id': uid});
+                    if (start === undefined) {
+                        start = 0;
                     }
-                } else {
-                    result = CoreDriverHandler.create(this.TYPE, data);
+
+                    if (limit === undefined) {
+                        limit = 25;
+                    }
+
+                    return CoreDriverHandler.read(this.TYPE, criterias, {'leftnode': 'asc'}, start, limit);
+                },
+
+                findRoot: function () {
+                    return CoreDriverHandler.read(this.TYPE);
+                },
+
+                /**
+                 * Search pages
+                 *
+                 * @param array filters
+                 * @param int start
+                 * @param int count
+                 * @param {Function} callback
+                 */
+                search: function (filters, start, count, callback) {
+                    var qs = filters;
+
+                    if (start !== undefined && start !== null) {
+                        qs.start = start;
+                    }
+
+                    if (count !== undefined && count !== null) {
+                        qs.count = count;
+                    }
+
+                    return CoreDriverHandler.read(this.TYPE, qs, {}, 0, null, callback);
+                },
+
+                /**
+                 * Save the page with a correctly method
+                 * @param {Object} data
+                 * @returns {Promise}
+                 */
+                save: function (data) {
+                    var result,
+                        uid;
+
+                    if (data.hasOwnProperty('uid')) {
+                        uid = data.uid;
+
+                        delete data.uid;
+
+                        if (this.isPutMethod(data)) {
+                            result = CoreDriverHandler.update(this.TYPE, data, {'id': uid}, {}, 0, null);
+                        } else {
+                            result = CoreDriverHandler.patch(this.TYPE, data, {'id': uid});
+                        }
+                    } else {
+                        result = CoreDriverHandler.create(this.TYPE, data);
+                    }
+
+                    return result;
+                },
+
+                /**
+                 * Delete the page
+                 * @param {String} uid
+                 * @returns {Promise}
+                 */
+                "delete": function (uid) {
+                    return CoreDriverHandler["delete"](this.TYPE, {'id': uid}, {}, 0, null);
+                },
+
+                /**
+                 * Clone the page
+                 * @param {String} uid
+                 * @param {Object} data
+                 * @returns {Promise}
+                 */
+                clone: function (uid, data) {
+                    Core.Mediator.subscribeOnce('rest:send:before', function (request) {
+                        var url = new URI(request.url);
+
+                        url.segment(uid);
+                        url.segment('clone');
+
+                        request.url = url.normalize().toString();
+                    });
+
+                    return CoreDriverHandler.create(this.TYPE, data);
+                },
+
+                /**
+                 * Move node
+                 * @param {String} page_uid
+                 * @param {String} parent_uid
+                 * @param {String} next_uid
+                 */
+                moveNode: function (page_uid, data) {
+                    return CoreDriverHandler.patch(this.TYPE, data, {'id': page_uid});
+                },
+
+                /**
+                 * Get workflow of page
+                 * @param {String} uid
+                 * @todo move to layout application
+                 * @returns {Promise}
+                 */
+                getWorkflowState: function (layout_uid) {
+                    Core.Mediator.subscribeOnce('rest:send:before', function (request) {
+                        var url = new URI(request.url);
+
+                        url.segment('workflow_state');
+
+                        request.url = url.normalize().toString();
+                    });
+                    return CoreDriverHandler.read('layout', {'id': layout_uid});
+                },
+
+                findLayouts: function (site_uid) {
+                    return CoreDriverHandler.read('layout', {'site_uid': site_uid}, {}, 0, null);
                 }
+            });
 
-                return result;
-            },
-
-            /**
-             * Delete the page
-             * @param {String} uid
-             * @returns {Promise}
-             */
-            "delete": function (uid) {
-                return CoreDriverHandler["delete"](this.TYPE, {'id': uid}, {}, 0, null);
-            },
-
-            /**
-             * Clone the page
-             * @param {String} uid
-             * @param {Object} data
-             * @returns {Promise}
-             */
-            clone: function (uid, data) {
-                Core.Mediator.subscribeOnce('rest:send:before', function (request) {
-                    var url = new URI(request.url);
-
-                    url.segment(uid);
-                    url.segment('clone');
-
-                    request.url = url.normalize().toString();
-                });
-
-                return CoreDriverHandler.create(this.TYPE, data);
-            },
-
-            /**
-             * Move node
-             * @param {String} page_uid
-             * @param {String} parent_uid
-             * @param {String} next_uid
-             */
-            moveNode: function (page_uid, data) {
-                return CoreDriverHandler.patch(this.TYPE, data, {'id': page_uid});
-            },
-
-            /**
-             * Get workflow of page
-             * @param {String} uid
-             * @todo move to layout application
-             * @returns {Promise}
-             */
-            getWorkflowState: function (layout_uid) {
-                Core.Mediator.subscribeOnce('rest:send:before', function (request) {
-                    var url = new URI(request.url);
-
-                    url.segment('workflow_state');
-
-                    request.url = url.normalize().toString();
-                });
-                return CoreDriverHandler.read('layout', {'id': layout_uid});
-            },
-
-            findLayouts: function (site_uid) {
-                return CoreDriverHandler.read('layout', {'site_uid': site_uid}, {}, 0, null);
-            }
-        });
-
-    return new JS.Singleton(PageRepository);
-});
+        return new JS.Singleton(PageRepository);
+    }
+);

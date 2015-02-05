@@ -63,14 +63,20 @@ define(
              * Show the index in the edit contribution toolbar
              */
             contributionIndexAction: function () {
-                this.repository.findCurrentPage().done(function (data) {
-                    if (data.hasOwnProperty(0)) {
-                        data = data[0];
-                    }
+                var self = this;
 
-                    var view = new ContributionIndexView({'data': data});
-                    view.render();
-                });
+                if (this.contribution_loaded !== true) {
+                    this.repository.findCurrentPage().done(function (data) {
+                        if (data.hasOwnProperty(0)) {
+                            data = data[0];
+                        }
+
+                        var view = new ContributionIndexView({'data': data});
+                        view.render();
+
+                        self.contribution_loaded = true;
+                    });
+                }
             },
 
             /**
@@ -78,20 +84,13 @@ define(
              */
             treeAction: function () {
                 var config = {
-                    do_loading: true,
-                    do_pagination: true
-                };
+                        do_loading: true,
+                        do_pagination: true,
+                        site_uid: Core.get('site.uid')
+                    },
+                    view = new PageTreeViewContribution(config);
 
-                this.repository.findCurrentPage().done(function (data) {
-                    if (data.hasOwnProperty(0)) {
-                        data = data[0];
-                    }
-
-                    config.site_uid = data.site_uid;
-
-                    var view = new PageTreeViewContribution(config);
-                    view.render();
-                });
+                view.render();
             },
 
             getPageTreeViewInstanceService: function () {

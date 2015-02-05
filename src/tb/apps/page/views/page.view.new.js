@@ -73,14 +73,17 @@ define(['require', 'jquery', 'page.repository', 'page.form', 'component!popin', 
             var self = this;
 
             this.popin.setTitle('Create page');
+            this.popin.display();
+            this.popin.mask();
+
             PageForm.new().done(function (configForm) {
+
                 configForm.onSubmit = jQuery.proxy(self.onSubmit, self);
                 configForm.onValidate = self.onValidate;
+
                 self.formBuilder.renderForm(configForm).done(function (html) {
                     self.popin.setContent(html);
-                    self.popin.display();
-                }).fail(function (e) {
-                    console.log(e);
+                    self.popin.unmask();
                 });
             });
 

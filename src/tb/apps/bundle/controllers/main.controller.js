@@ -41,7 +41,16 @@ define(['tb.core', 'bundle.view.list', 'bundle.view.index'], function (Core, Lis
          * Show the first bundle in toolbar
          */
         indexAction: function () {
-            this.listAndRender(IndexView);
+            var config = {};
+
+            if (this.indexShown !== true) {
+                config.force = true;
+                config.bindEvents = true;
+
+                this.renderView(IndexView, {});
+            }
+
+            this.listAndRender(IndexView, config);
         },
 
         /**
@@ -50,10 +59,10 @@ define(['tb.core', 'bundle.view.list', 'bundle.view.index'], function (Core, Lis
          */
         listAction: function () {
 
-            if (null === this.bundles) {
+            if (undefined === this.bundles) {
                 this.listAndRender(ListView);
             } else {
-                this.renderView(ListView, this.bundles);
+                this.renderView(ListView, {'bundles': this.bundles});
             }
         },
 
@@ -64,12 +73,20 @@ define(['tb.core', 'bundle.view.list', 'bundle.view.index'], function (Core, Lis
          * @param {Object} ConstructorView
          * @returns {bundle.controller_L1.bundle.controllerAnonym$1}
          */
-        listAndRender: function (ConstructorView) {
+        listAndRender: function (ConstructorView, config) {
             var self = this;
 
-            this.repository.list().done(function (datas) {
-                self.bundles = {bundles: datas};
-                self.renderView(ConstructorView, self.bundles);
+            if (config === undefined) {
+                config = {};
+            }
+
+            this.repository.list().done(function (data) {
+                config.bundles = data;
+
+                self.bundles = config.bundles;
+
+                self.renderView(ConstructorView, config);
+                self.indexShown = true;
             });
         },
 
@@ -78,8 +95,8 @@ define(['tb.core', 'bundle.view.list', 'bundle.view.index'], function (Core, Lis
          * @param {Object} ConstructorView
          * @param {Object} datas
          */
-        renderView: function (ConstructorView, datas) {
-            var view = new ConstructorView({datas: datas});
+        renderView: function (ConstructorView, config) {
+            var view = new ConstructorView(config);
             view.render();
         }
     });

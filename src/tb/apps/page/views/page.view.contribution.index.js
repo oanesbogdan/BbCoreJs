@@ -19,6 +19,7 @@
 
 define(
     [
+        'tb.core',
         'jquery',
         'tb.core.ApplicationManager',
         'tb.core.Renderer',
@@ -29,7 +30,8 @@ define(
         'component!popin',
         'moment'
     ],
-    function (jQuery,
+    function (Core,
+              jQuery,
               ApplicationManager,
               Renderer,
               template,
@@ -51,7 +53,7 @@ define(
             /**
              * Point of Toolbar in DOM
              */
-            el: '#contrib-tab-apps',
+            el: '#page-contrib-tab',
 
             schedulingFormTag: '#contribution-scheduling-form',
             schedulingBtnTag: '#contribution-scheduling-btn',
@@ -66,16 +68,16 @@ define(
              */
             initialize: function (config) {
                 this.currentPage = config.data;
-                this.bindUiEvents();
             },
 
             /**
              * Events of view
              */
-            bindUiEvents: function () {
+            bindEvents: function () {
                 jQuery(this.el).on('change', '#page-state-select', jQuery.proxy(this.manageState, this));
                 jQuery(this.el).on('click', '#page-visibility-input', jQuery.proxy(this.manageVisibilityPage, this));
                 jQuery(this.el).on('click', '#contribution-clone-page', jQuery.proxy(this.manageClone, this));
+                jQuery(this.el).on('click', '#contribution-edit-page', jQuery.proxy(this.manageEdit, this));
                 jQuery(this.el).on('click', '#contribution-delete-page', jQuery.proxy(this.manageDelete, this));
                 jQuery(this.el).on('click', this.schedulingBtnTag, jQuery.proxy(this.manageSchedulingPublication, this));
                 jQuery(this.el).on('click', '#contribution-seo-page', jQuery.proxy(this.manageSeo, this));
@@ -94,6 +96,13 @@ define(
                     optionSelected = self.children('option:selected');
 
                 PageRepository.save({uid: this.currentPage.uid, state: optionSelected.val()});
+            },
+
+            /**
+             * Edit the page
+             */
+            manageEdit: function () {
+                ApplicationManager.invokeService('page.main.editPage', {'page_uid': Core.get('page.uid')});
             },
 
             /**
@@ -243,10 +252,13 @@ define(
                     popin = PopinManager.createPopIn();
 
                 popin.setTitle('Page SEO');
+                popin.display();
+                popin.mask();
+
                 PageRepository.getMetadata(this.currentPage.uid).done(function (metadata) {
                     FormBuilder.renderForm(self.buildConfigSeoForm(metadata, popin)).done(function (html) {
                         popin.setContent(html);
-                        popin.display();
+                        popin.unmask();
                     });
                 });
 
@@ -355,7 +367,7 @@ define(
 
                 PageRepository.getWorkflowState(this.currentPage.layout_uid).done(function (workflowStates) {
                     jQuery(self.el).html(Renderer.render(template, {'page': self.currentPage, 'states': workflowStates}));
-
+                    self.bindEvents();
                     self.setStateScheduling(self.currentPage);
                 }).fail(function (e) {
                     console.log(e);
