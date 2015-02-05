@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URIjs/URI', 'jsclass'], function (CoreDriverHandler, CoreRestDriver, Core, jQuery, URI) {
+define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'URIjs/URI', 'jsclass'], function (CoreDriverHandler, CoreRestDriver, Core, URI) {
     'use strict';
 
     var putMandatoriesAttribute = ['title', 'alttitle', 'url', 'target', 'state', 'redirect', 'layout_uid'],
@@ -63,23 +63,10 @@ define(['tb.core.DriverHandler', 'tb.core.RestDriver', 'tb.core', 'jquery', 'URI
 
             /**
              * Find the current page
-             * @todo change this method for get the current page with a rest service
              * @returns {Promise}
              */
             findCurrentPage: function () {
-                var dfd =  jQuery.Deferred();
-
-                CoreDriverHandler.read(this.TYPE, {}, {}, 0, 1).done(function (data) {
-                    if (data.hasOwnProperty(0)) {
-                        data = data[0];
-                    }
-
-                    dfd.resolve(data);
-                }).fail(function (e) {
-                    dfd.reject(e);
-                });
-
-                return dfd.promise();
+                return CoreDriverHandler.read(this.TYPE, {'uid': Core.get('page.uid')});
             },
 
             setMetadata: function (page_uid, data) {
