@@ -6,7 +6,9 @@ define(
         'content.save.manager',
         'content.view.contribution.index',
         'definition.manager',
-        'content.repository'
+        'content.repository',
+        'revision.repository',
+        'component!revisionselector'
     ],
     function (Core,
               DndManager,
@@ -14,7 +16,9 @@ define(
               SaveManager,
               ContributionIndexView,
               DefinitionManager,
-              ContentRepository) {
+              ContentRepository,
+              RevisionRepository,
+              RevisionSelector) {
 
         'use strict';
 
@@ -34,10 +38,41 @@ define(
             },
 
             /**
+             * Return the content repository
+             */
+            getRepositoryService: function () {
+                return this.repository;
+            },
+
+            /**
+             * Return the definition manager
+             */
+            getDefinitionManagerService: function () {
+                return DefinitionManager;
+            },
+
+            /**
              * Call method save into SaveManager
              */
             saveService: function () {
                 SaveManager.save();
+            },
+
+            /**
+             * Show the revision selector
+             * @returns {undefined}
+             */
+            validateService: function () {
+                var config = {
+                        onSave: function (data, popin) {
+                            popin.mask();
+                            RevisionRepository.save(data, 'commit').done(function () {
+                                popin.hide();
+                            });
+                        }
+                    };
+
+                new RevisionSelector(config).show();
             },
 
             contributionIndexAction: function () {

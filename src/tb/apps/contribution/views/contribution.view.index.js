@@ -35,6 +35,7 @@ define(
                 element.on('click', 'ul#edit-tab li', this.manageMenu);
                 element.on('click', '#new-page', this.showNewPage);
                 element.on('click', '#global-save', this.manageSave);
+                element.on('click', '#bundle-toolbar-global-validate', this.manageValidate);
                 element.on('click', '#bundle-toolbar-global-cancel', this.manageCancel);
             },
 
@@ -57,6 +58,13 @@ define(
              */
             manageSave: function () {
                 ApplicationManager.invokeService('main.main.save');
+            },
+
+            /**
+             * Call service `validate` into main application
+             */
+            manageValidate: function () {
+                ApplicationManager.invokeService('main.main.validate');
             },
 
             /**

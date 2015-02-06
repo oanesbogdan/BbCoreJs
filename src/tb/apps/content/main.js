@@ -28,6 +28,7 @@ require.config({
 
         //Repositories
         'content.repository': 'src/tb/apps/content/repository/content.repository',
+        'revision.repository': 'src/tb/apps/content/repository/revision.repository',
 
         //Components
         'content.manager': 'src/tb/apps/content/components/ContentManager',

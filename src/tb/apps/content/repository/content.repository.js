@@ -76,6 +76,14 @@ define(
                 },
 
                 /**
+                 * Get all drafts
+                 * @returns {Promise}
+                 */
+                getDrafts: function () {
+                    return CoreDriverHandler.read(this.TYPE + '-draft');
+                },
+
+                /**
                  * find data of content
                  * @param {String} type
                  * @param {String} uid
