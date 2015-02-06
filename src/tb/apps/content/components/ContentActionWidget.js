@@ -32,7 +32,6 @@ define(['jquery', 'text!content/tpl/content-action', 'jsclass'], function (jQuer
         },
 
         cleanActions: function () {
-            //jQuery(this.content).find(this.widget).remove();
             this.widget.empty();
         },
 

@@ -84,10 +84,10 @@ define(
              * @returns {Object} PageViewDelete
              */
             render: function () {
-                this.popin.setTitle('Suppression de page');
-                this.popin.setContent('Supprimer la page ?');
-                this.popin.addButton('Supprimer', jQuery.proxy(this.onDelete, this));
-                this.popin.addButton('Annuler', jQuery.proxy(this.onCancel, this));
+                this.popin.setTitle('page deletion');
+                this.popin.setContent('Delete page ?');
+                this.popin.addButton('Delete', jQuery.proxy(this.onDelete, this));
+                this.popin.addButton('Cancel', jQuery.proxy(this.onCancel, this));
 
                 this.popin.display(this.popin);
 

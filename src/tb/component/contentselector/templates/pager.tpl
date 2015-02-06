@@ -1,5 +1,5 @@
 <div class="col-bb5-100">
-<p class="bb5-widget-toolbar">Articles - 184 média(s)</p>
+<p class="bb5-widget-toolbar">Articles - 184 media</p>
 <div class="bb5-widget-toolbar list-options clearfix">
     <ul class="pagination clearfix">
         <li><a href="#" class="bb5-pagination-btn"><i class="fa fa-angle-double-left"></i></a></li>

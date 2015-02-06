@@ -1,6 +1,6 @@
 <div>
     {% if isOrphaned %}
-        <p><strong>Ophaned Content.</strong></p>
+        <p><strong>Orphaned Content.</strong></p>
     {% else %}
         <p><strong class='bb5-alert'>Warning,</strong></p>
         <p class='bb5-alert'>are you sure you want to delete this item?</p>

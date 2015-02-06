@@ -1,12 +1,12 @@
 <div class="row">
     <div class="col-bb5-56 bb5-border-right">
-        <p>Statut de la page : 
+        <p>Page status :
             <select id="page-state-select" class="form-inline input-xs" name="state">
                 {% for state in states %}
                     <option {% if page.state_code == state.code %}selected{% endif %} value="{{ state.code }}">{{ state.label }}</option>
                 {% endfor %}
             </select>
-            <button id="contribution-seo-page" type="button" class="btn btn-default-grey btn-xs">SEO de la page</button>
+            <button id="contribution-seo-page" type="button" class="btn btn-default-grey btn-xs">Page SEO</button>
         </p>
         <p>
             <label>
@@ -15,48 +15,48 @@
         </p>
         <p class="position-bottom">
             Scheduling :
-            <span id="contribution-scheduling-state">Aucune</span>
+            <span id="contribution-scheduling-state">No one</span>
             <button id="contribution-scheduling-btn" type="button" class="btn btn-transparent btn-xs btn-toggle btn-show">
-                <i class="fa fa-angle-down"></i> Programmer la publication / l'archivage
+                <i class="fa fa-angle-down"></i> Publishing / archiving
             </button>
         </p>
     </div>
     <div class="col-bb5-24 bb5-border-right">
         <p>
             <button type="button" class="btn btn-simple btn-xs btn-block">
-                <i class="fa fa-pencil-square-o"></i> Créer un brouillon
+                <i class="fa fa-pencil-square-o"></i> Create a draft
             </button>
         </p>
         <p>
             <button id="contribution-clone-page" type="button" class="btn btn-simple btn-xs btn-block">
-                <i class="fa fa-file-o"></i> Dupliquer
+                <i class="fa fa-file-o"></i> Duplicate
             </button>
         </p>
         <p>
             <button id="contribution-delete-page" type="button" class="btn btn-simple btn-xs btn-block">
-                <i class="fa fa-trash-o"></i> Supprimer
+                <i class="fa fa-trash-o"></i> Delete
             </button>
         </p>
         <p>
             <button id="contribution-edit-page" type="button" class="btn btn-simple btn-xs btn-block">
-                <i class="fa fa-pencil-square-o"></i> Editer
+                <i class="fa fa-pencil-square-o"></i> Edit
             </button>
         </p>
     </div>
     <div class="col-bb5-20">
         <p>
             <label>
-                <input type="checkbox" name="grid"> Afficher
+                <input type="checkbox" name="grid"> Display
             </label>
         </p>
         <p>
             <label>
-                <input type="checkbox" name="grid"> Afficher contenu externe
+                <input type="checkbox" name="grid"> Display external content
             </label>
         </p>
         <p>
             <label>
-                <input type="checkbox" name="grid"> Afficher les liens
+                <input type="checkbox" name="grid"> Display links
             </label>
         </p>
     </div>
