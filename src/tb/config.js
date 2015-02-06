@@ -24,7 +24,7 @@ define([], function () {
                         config: {mainRoute: 'appLayout/home'}
                     },
                     content: {
-                        label: 'Edition du contenu',
+                        label: 'Content edition',
                         config: {}
                     },
                     bundle: {
@@ -56,7 +56,7 @@ define([], function () {
             },
             "core": {
                 edit: {
-                    accept: ['block_demo', 'Bloc/contentset_bfm'],
+                    accept: ['BlockDemo', 'Bloc/contentset_bfm'],
                     config: {}
                 },
 
@@ -73,11 +73,11 @@ define([], function () {
                     }
                 },
                 contenttype: {
-                    accept: ['home/home_container', 'block_demo'],
+                    accept: ['home/home_container', 'BlockDemo'],
                     config: {}
                 },
                 parameters: {
-                    accept: ['home/home_container', 'block_demo'],
+                    accept: ['home/home_container', 'BlockDemo'],
                     config: {}
                 },
                 contentsetplus: {
@@ -85,7 +85,7 @@ define([], function () {
                     config: {}
                 },
                 remove: {
-                    accept: ['block_demo'],
+                    accept: ['BlockDemo'],
                     config: {}
                 }
             },

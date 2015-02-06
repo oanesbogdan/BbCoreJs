@@ -152,7 +152,7 @@ define('tb.component/popin/main', ['tb.component/popin/PopIn', 'jquery', 'jquery
                 var popInId = '#' + popIn.getId(),
                     element = jQuery('<div/>', {
                         class: 'loader'
-                    }).html('<i class="fa fa-spin fa-spinner"></i>' + (message || 'Chargement en cours'));
+                    }).html('<i class="fa fa-spin fa-spinner"></i>' + (message || 'Loading...'));
 
                 element.css('background-color', 'rgba(0, 0, 0, .7)');
                 element.css('color', 'white');

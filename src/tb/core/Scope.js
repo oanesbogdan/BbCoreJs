@@ -116,7 +116,7 @@ define('tb.core.Scope', ['tb.core.Api', 'underscore'], function (Api, Under) {
         var index = Under.indexOf(this.scopes, scope.toLowerCase());
 
         if ('string' !== typeof scope || 'function' !== typeof openingCallback || 'function' !== typeof closingCallback) {
-            Api.exception('ScopeException', 12102, 'Scope subscribetion was incorrect.');
+            Api.exception('ScopeException', 12102, 'Scope subscription was incorrect.');
         }
 
         if (-1 !== index) {

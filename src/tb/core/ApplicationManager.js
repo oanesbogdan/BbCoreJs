@@ -352,7 +352,7 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
         getAppInstance = function (appName, config) {
             config = config || {};
             if (typeof appName !== "string") {
-                coreApi.exception("ApplicationManagerException", 50009, "appName should be a strign and config should be an object");
+                coreApi.exception("ApplicationManagerException", 50009, "appName should be a string and config should be an object");
             }
             var AppDef, appInstance = null,
                 applicationInfos;

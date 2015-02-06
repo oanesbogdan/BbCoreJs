@@ -1,7 +1,7 @@
 define(['content.pluginmanager', 'jquery', 'jsclass'], function (PluginManager, jQuery) {
     'use strict';
     PluginManager.registerPlugin('edit', {
-        ACCEPT_CONTENT_TYPE: "block_demo",
+        ACCEPT_CONTENT_TYPE: "BlockDemo",
         onInit: function () {
             return;
         },
