@@ -123,7 +123,7 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
                 for (criteria in criterias) {
                     if (criterias.hasOwnProperty(criteria)) {
                         if ('uid' === criteria || 'id' === criteria) {
-                            url.segment(criterias[criteria]);
+                            url.segment(criterias[criteria].toString());
                         } else {
                             url.addSearch(criteria + (typeof criterias[criteria] === 'object' ? '[]' : ''), criterias[criteria]);
                         }
