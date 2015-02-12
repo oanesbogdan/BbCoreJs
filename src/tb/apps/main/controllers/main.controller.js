@@ -57,6 +57,13 @@ define(
             },
 
             /**
+             * Dispatch event `on:validate:click``for all interested
+             */
+            validateService: function () {
+                Core.Mediator.publish('on:validate:click');
+            },
+
+            /**
              * Dispatch event `on:cancel:click``for all interested
              */
             cancelService: function () {

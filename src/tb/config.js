@@ -56,32 +56,30 @@ define([], function () {
             },
             "core": {
                 edit: {
-                    accept: ['BlockDemo', 'Bloc/contentset_bfm'],
+                    accept: ['BlockDemo'],
                     config: {}
                 },
 
                 contentselector: {
-                    accept: ['home/home_container', 'Bloc/contentset_bfm'], //handle wildcard
+                    accept: ['Home/HomeContainer'], //handle wildcard
                     config: {
                         appendPosition: "bottom", /* default */
-                        'home/home_container': {
+                        'Home/HomeContainer': {
                             accept: ['article', 'paragraph']
-                        },
-                        'Bloc/contentset_bfm': {
-                            accept: ['article']
                         }
                     }
                 },
                 contenttype: {
-                    accept: ['home/home_container', 'BlockDemo'],
+
+                    accept: ['Home/HomeContainer', 'BlockDemo'],
                     config: {}
                 },
                 parameters: {
-                    accept: ['home/home_container', 'BlockDemo'],
+                    accept: ['BlockDemo'],
                     config: {}
                 },
                 contentsetplus: {
-                    accept: ['container/one_column'],
+                    accept: ['Container/OneColumn'],
                     config: {}
                 },
                 remove: {

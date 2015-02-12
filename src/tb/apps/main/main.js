@@ -86,6 +86,11 @@ define('app.main', ['tb.core', 'tb.core.ApplicationManager', 'main.view.index', 
                 ApplicationManager.invokeService('content.main.save');
             });
 
+            // Listen event validate
+            Core.Mediator.subscribe('on:validate:click', function () {
+                ApplicationManager.invokeService('content.main.validate');
+            });
+
             var view = new MainViewIndex(this.config);
             view.render();
         }
