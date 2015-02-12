@@ -62,8 +62,29 @@ define(
              * Show the revision selector
              * @returns {undefined}
              */
+            cancelService: function () {
+                var config = {
+                        popinTitle: 'Cancel Confirmation',
+                        title: 'Cancel changes content below :',
+                        onSave: function (data, popin) {
+                            popin.mask();
+                            RevisionRepository.save(data, 'revert').done(function () {
+                                popin.hide();
+                            });
+                        }
+                    };
+
+                new RevisionSelector(config).show();
+            },
+
+            /**
+             * Show the revision selector
+             * @returns {undefined}
+             */
             validateService: function () {
                 var config = {
+                        popinTitle: 'Saving Confirmation',
+                        title: 'Confirm saving changes content below :',
                         onSave: function (data, popin) {
                             popin.mask();
                             RevisionRepository.save(data, 'commit').done(function () {
