@@ -41,33 +41,34 @@ define(['jquery'], function (jQuery) {
         load: function (already_connected) {
             var self = this;
 
-            require(['tb.core', 'src/tb/config', 'component!authentication'], function (Core, config, AuthenticationHandler) {
-                Core.set('is_connected', false);
+            require(['tb.core', 'src/tb/config'], function (Core, config) {
+                require(['component!authentication'], function (AuthenticationHandler) {
+                    Core.set('is_connected', false);
 
-                var router = null;
+                    var router = null;
 
-                Core.ApplicationManager.on('routesLoaded', function () {
-                    /*cf http://backbonejs.org/#Router for available options */
-                    router = Core.RouteManager.initRouter({silent: true});
-                });
-
-                Core.ApplicationManager.on('appIsReady', function (app) {
-                    router.navigate(app.getMainRoute());
-                });
-
-                if (true === already_connected) {
-                    Core.initConfig(config);
-                } else {
-                    Core.Mediator.subscribe('onSuccessLogin', function () {
-                        self.toolBarDisplayed = true;
-                        /*
-                         * @TODO: Load config by a rest when user connected
-                         */
-                        Core.initConfig(config);
+                    Core.ApplicationManager.on('routesLoaded', function () {
+                        /*cf http://backbonejs.org/#Router for available options */
+                        router = Core.RouteManager.initRouter({silent: true});
                     });
-                    AuthenticationHandler.showForm();
-                }
 
+                    Core.ApplicationManager.on('appIsReady', function (app) {
+                        router.navigate(app.getMainRoute());
+                    });
+
+                    if (true === already_connected) {
+                        Core.initConfig(config);
+                    } else {
+                        Core.Mediator.subscribe('onSuccessLogin', function () {
+                            self.toolBarDisplayed = true;
+                            /*
+                             * @TODO: Load config by a rest when user connected
+                             */
+                            Core.initConfig(config);
+                        });
+                        AuthenticationHandler.showForm();
+                    }
+                }, self.onError);
             }, this.onError);
         },
 
