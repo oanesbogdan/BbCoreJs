@@ -84,8 +84,10 @@ define(
                  * Build the popin
                  */
                 buildPopin: function () {
+                    var title = (this.config.popinTitle !== undefined) ? this.config.popinTitle : '';
+
                     this.popin = PopinManager.createPopIn();
-                    this.popin.setTitle('Saving confirmation');
+                    this.popin.setTitle(title);
                     this.popin.addOptions(popinConfig);
                     this.popin.addButton('Save', jQuery.proxy(this.save, this));
                 },
@@ -108,7 +110,7 @@ define(
                     this.popin.display();
 
                     this.repository.getDrafts().done(function (drafts) {
-                        self.popin.setContent(Renderer.render(treeTemplate, {items: DraftManager.computeDraft(drafts)}));
+                        self.popin.setContent(Renderer.render(treeTemplate, {items: DraftManager.computeDraft(drafts), title: self.config.title}));
                         EventManager.init(self.selector);
                     });
                 }
