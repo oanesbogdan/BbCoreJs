@@ -41,7 +41,6 @@ define(
              * Initialize of Bundle repository
              */
             initialize: function () {
-                CoreRestDriver.setBaseUrl('/rest/1/');
                 CoreDriverHandler.addDriver(this.DEFAULT_DRIVER_KEY, CoreRestDriver);
             },
 

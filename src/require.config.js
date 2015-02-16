@@ -54,6 +54,10 @@ require.config({
         'jquery-layout': {
             deps: ['jquery']
         }
-
+    },
+    deps: ['src/tb/init'],
+    callback: function (init) {
+        'use strict';
+        init.listen();
     }
 });

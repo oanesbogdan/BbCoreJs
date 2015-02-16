@@ -79,7 +79,6 @@ define(
 
                 this.removeToken();
 
-                RestDriver.setBaseUrl('/rest/1/');
                 DriverHandler.addDriver('rest', RestDriver);
                 DriverHandler.create('security/authentication', {"username": username, "password": password})
                              .done(onDone);
