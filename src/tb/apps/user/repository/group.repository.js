@@ -35,6 +35,7 @@ define(
             initialize: function () {
                 this.class_name = 'group';
                 this.mandatories_attribute = ['name'];
+                this.identifier = 'id';
 
                 this.initializeRestDriver();
             }

@@ -27,7 +27,7 @@ require.config({
     }
 });
 
-define('app.user', ['tb.core', 'user/views/toolbar.view'], function (Core, TbView) {
+define('app.user', ['tb.core', 'user/views/toolbar.view'], function (Core, View) {
     'use strict';
 
     /**
@@ -39,7 +39,7 @@ define('app.user', ['tb.core', 'user/views/toolbar.view'], function (Core, TbVie
         toolbar: {},
 
         initToolbar: function () {
-            this.toolbar = new TbView({app: this});
+            this.toolbar = new View({app: this});
         },
 
         onInit: function () {

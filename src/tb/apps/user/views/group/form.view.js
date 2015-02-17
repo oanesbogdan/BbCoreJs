@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 define(
-    ['require', 'jquery'],
+    ['require', 'jquery', 'user/form/group.form'],
     function (require, jQuery) {
         'use strict';
 
@@ -27,27 +27,31 @@ define(
          */
         return Backbone.View.extend({
 
-            popin_config: {
-                id: 'new-user-subpopin',
-                width: 250,
-                top: 180
-            },
-
             /**
              * Initialize of PageViewEdit
              */
-            initialize: function (data, action) {
+            initialize: function (data) {
                 var self = this;
-                this.mainPopin = data.popin;
-                this.user = data.user;
-                this.popin = this.mainPopin.popinManager.createSubPopIn(this.mainPopin.popin, this.popin_config);
 
-                require('user/form/' + action + '.user.form').construct(self);
+                this.selector = '#toolbar-new-group';
+                if (data.group.id !== undefined) {
+                    this.selector = '#toolbar-group-' + data.group.id;
+                }
+                this.group = data.group;
+
+                require('user/form/group.form').construct(this).then(
+                    function (tpl) {
+                        self.print(tpl);
+                    }
+                );
+            },
+
+            print: function (tpl) {
+                jQuery(this.selector).html(tpl);
             },
 
             display: function () {
                 this.dfd = jQuery.Deferred();
-                this.popin.display();
                 return this.dfd.promise();
             },
 
