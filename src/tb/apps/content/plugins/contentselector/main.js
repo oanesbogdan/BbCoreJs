@@ -34,6 +34,7 @@ define(['content.pluginmanager', 'tb.core.Api', 'component!contentselector', 'jq
             /* set Accept and other things */
             var currentContent = this.getCurrentContent(),
                 accept = currentContent.definition.accept;
+
             this.contentSelector.setContenttypes(accept);
             this.contentSelector.display();
         },
@@ -46,7 +47,7 @@ define(['content.pluginmanager', 'tb.core.Api', 'component!contentselector', 'jq
             var self = this;
             return [{
                 ico: 'fa fa-th-large',
-                cmd: this.createCommand(this.showContentSelector, self),
+                cmd: self.createCommand(self.showContentSelector, self),
                 label: 'Contents selector',
                 checkContext: function () {
                     return self.canApplyOnContext();
