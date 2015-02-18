@@ -141,7 +141,7 @@ define(
              * @returns {Boolean}
              */
             canApplyOnContext: function () {
-                return true;
+                return this.getCurrentContent().isAContentSet();
             },
 
             /**
@@ -155,7 +155,7 @@ define(
                 return [
                     {
                         name: 'Plus',
-                        ico: 'fa fa-circle-o',
+                        ico: 'fa fa fa-plus',
                         label: 'Add a new item to this container',
                         cmd: self.createCommand(self.add, self),
                         checkContext: function () {
