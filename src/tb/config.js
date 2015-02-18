@@ -59,6 +59,9 @@ define([], function () {
             logger: {
                 level: 8,
                 mode: 'devel'
+            },
+            'exceptions-viewer': {
+                show: true
             }
 
         },

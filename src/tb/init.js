@@ -67,6 +67,7 @@ define(['jquery'], function (jQuery) {
 
                     if (true === already_connected) {
                         Core.initConfig(config);
+                        require(['component!exceptions-viewer'], {});
                     } else {
                         Core.Mediator.subscribe('onSuccessLogin', function () {
                             self.toolBarDisplayed = true;

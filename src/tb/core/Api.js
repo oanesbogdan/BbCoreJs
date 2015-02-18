@@ -33,6 +33,7 @@ define('tb.core.Api', [], function () {
             },
 
             set: function (ctn, object) {
+                this.Mediator.publish('api:set:' + ctn, object);
                 container[ctn] = object;
             },
 
