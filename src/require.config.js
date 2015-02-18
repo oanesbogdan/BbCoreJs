@@ -23,7 +23,6 @@ require.config({
     paths: {
         'tb.core': 'src/tb/main',
         'component': 'src/tb/component/component',
-
         'jquery': 'bower_components/jquery/dist/jquery.min',
         'jqueryui': 'bower_components/jquery-ui/jquery-ui.min',
         'jsclass' : 'node_modules/jsclass/min/core',
@@ -38,7 +37,8 @@ require.config({
         'jqLayout': 'bower_components/jquery.layout/dist/jquery.layout-latest.min',
         'lib.jqtree': 'bower_components/jqtree/tree.jquery',
         'jssimplepagination': 'bower_components/jssimplepagination/jquery.simplePagination',
-        'bootstrapjs': 'bower_components/bootstrap/dist/js/bootstrap.min'
+        'bootstrapjs': 'bower_components/bootstrap/dist/js/bootstrap.min',
+        'ckeeditor' : 'bower_components/ckeeditor/ckeditor'
     },
     'shim': {
         underscore: {

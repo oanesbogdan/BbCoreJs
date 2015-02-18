@@ -38,7 +38,6 @@ require.config({
         'content.container': 'src/tb/apps/content/components/ContentContainer',
         'definition.manager': 'src/tb/apps/content/components/DefinitionManager',
         'content.breadcrumb': 'src/tb/apps/content/components/Breadcrumb',
-        'content.pluginmanager': 'src/tb/apps/content/components/PluginManager',
 
         //Widgets
         'content.widget.DialogContentsList': 'src/tb/apps/content/widgets/DialogContentsList',
@@ -63,27 +62,11 @@ require.config({
     }
 });
 
-define("app.content", ["tb.core", 'content.pluginmanager'], function (Core, PluginManager) {
+define("app.content", ["tb.core", 'content.pluginmanager'], function (Core) {
 
     'use strict';
 
-    Core.ApplicationManager.registerApplication('content', {
+    Core.ApplicationManager.registerApplication('content', {});
 
-        onStart: function () {
-            this.enablePlugins();
-        },
-
-        onResume: function () {
-            this.enablePlugins();
-        },
-
-        onStop: function () {
-            PluginManager.getInstance().disablePlugins();
-        },
-
-        enablePlugins: function () {
-            PluginManager.getInstance().enablePlugins();
-        }
-    });
 });
 
