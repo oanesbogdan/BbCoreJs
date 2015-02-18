@@ -38,7 +38,7 @@ define(
              * Initialization of plugin
              */
             onInit: function () {
-                this.content = this.getCurrentContent();
+                return;
             },
 
             /**
@@ -50,7 +50,7 @@ define(
              */
             add: function () {
                 var self = this,
-                    accepts = this.content.getDefinition('accept');
+                    accepts = this.getCurrentContent().getDefinition('accept');
 
                 if (accepts.length === 1) {
                     ContentManager.createElement(accepts[0]).done(function (content) {
