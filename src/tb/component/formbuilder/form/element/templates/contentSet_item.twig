@@ -1,0 +1,16 @@
+<li class="bb5-content-item" data-uid="{{ item.uid }}" data-type="{{ item.type }}">
+    <p>
+        <a href="javascript:;" title="Christian">
+            <img src="{{ item.definition.image }}" alt="{{ item.type }}">
+        </a>
+    </p>
+    <p>
+        <a href="javascript:;" title="Christian">{{ item.type }} {{ item.uid|truncate(5) }}</a>
+    </p>
+    <p>Date de création: <strong>01/10/2013</strong></p>
+    <p>
+        <button class="bb5-button move-up {% if loop.first %}hidden{% endif %} {{ element.getKey() }}_move"><i class="fa fa-arrow-up"></i></button>
+        <button class="bb5-button move-down {% if loop.last %}hidden{% endif %} {{ element.getKey() }}_move"><i class="fa fa-arrow-down"></i></button>
+        <button id="{{ element.getKey() }}_trash" class="bb5-button"><i class="fa fa-trash"></i></button>
+    </p>
+</li>
