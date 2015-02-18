@@ -78,7 +78,7 @@ define(['tb.core.Renderer', 'BackBone', 'jquery'], function (Renderer, Backbone,
                 data = this.computeData(jqueryForm);
 
             if (this.form.isValid()) {
-                this.form.onSubmit(data);
+                this.form.onSubmit(data, this.form);
             } else {
                 this.replaceForm(data);
             }
