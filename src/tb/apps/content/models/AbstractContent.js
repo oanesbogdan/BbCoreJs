@@ -87,7 +87,9 @@ define(
                 if (key === 'value') {
                     result = this.revision.getElement(key);
                     if (result === undefined) {
-                        result = this[key];
+                        if (this.data !== undefined) {
+                            result = this.data.elements[key];
+                        }
                     }
                 } else {
                     result = this[key];
@@ -242,6 +244,11 @@ define(
                 return dfd.promise();
             },
 
+            setElements: function (elements) {
+                this.revision.elements = elements;
+                this.setUpdated(true);
+            },
+
             updateRevision: function () {
                 return this.revision;
             },
@@ -265,6 +272,19 @@ define(
                 this.jQueryObject.on('click', jQuery.proxy(this.onClick, this));
                 this.jQueryObject.on('mouseenter', jQuery.proxy(this.onMouseEnter, this));
                 this.jQueryObject.on('mouseleave', jQuery.proxy(this.onMouseLeave, this));
+            },
+
+            refresh: function () {
+                var self = this,
+                    dfd = jQuery.Deferred();
+
+                ContentRepository.getHtml(this.type, this.uid).done(function (html) {
+                    self.jQueryObject.replaceWith(html);
+
+                    dfd.resolve();
+                });
+
+                return dfd.promise();
             },
 
             /**

@@ -47,6 +47,15 @@ define(
                 },
 
                 /**
+                 * Find a content
+                 * @param {String} type
+                 * @param {String} uid
+                 */
+                find: function (type, uid) {
+                    return CoreDriverHandler.read(this.TYPE + '/' + type, {'uid': uid});
+                },
+
+                /**
                  * Find all definitions
                  * @returns {Promise}
                  */

@@ -88,19 +88,21 @@ define(
             },
 
             updateRevisionElements: function () {
-                var children = this.getChildren(),
-                    child,
-                    key,
-                    elements = [];
+                if (this.revision.elements === undefined) {
+                    var children = this.getChildren(),
+                        child,
+                        key,
+                        elements = [];
 
-                for (key in children) {
-                    if (children.hasOwnProperty(key)) {
-                        child = children[key];
-                        elements.push({'type': child.type, 'uid': child.uid});
+                    for (key in children) {
+                        if (children.hasOwnProperty(key)) {
+                            child = children[key];
+                            elements.push({'type': child.type, 'uid': child.uid});
+                        }
                     }
-                }
 
-                this.revision.setElements(elements);
+                    this.revision.setElements(elements);
+                }
             },
 
             /**
