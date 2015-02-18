@@ -49,7 +49,7 @@ define('tb.core.Exception', ['tb.core.Api', 'jsclass'], function () {
 
                 if (err.stack) {
                     stack = err.stack.split("\n");
-                    cleanStack = stack.slice(4);
+                    cleanStack = stack.slice(5);
 
                     for (key in cleanStack) {
                         if (cleanStack.hasOwnProperty(key)) {
@@ -80,23 +80,18 @@ define('tb.core.Exception', ['tb.core.Api', 'jsclass'], function () {
              * @param {string} line  Should be something like <call>@<file>:<lineNumber>
              * @returns {object}
              */
-            parseStackLine: function (line) {
-                var splitedLine = line.split('@'),
-                    call = line,
-                    file = 'undefined',
-                    lineNumber = 'undefined';
-
-                if (2 === splitedLine.length) {
-                    call = splitedLine[0];
-                    splitedLine = splitedLine[1].split(':');
-                    if (3 ===  splitedLine.length) {
-                        file = splitedLine[0] + ':' + splitedLine[1];
-                        lineNumber = splitedLine[2];
-                    }
-                }
+            parseStackLine: function (stackline) {
+                var regex = /^\s+at\s([a-z\.\s]+)\(([a-z\:\.\/]+)[a-z\=\.0-9\?]*:(\d+):(\d+)\)/i,
+                    values = regex.exec(stackline),
+                    ud = 'undefined',
+                    call = ((values && values[1]) ? values[1] : ud),
+                    file = ((values && values[2]) ? values[2] : ud),
+                    line = ((values && values[3]) ? values[3] : ud),
+                    column = ((values && values[4]) ? values[4] : ud);
 
                 return {
-                    line: lineNumber,
+                    column: column,
+                    line: line,
                     file: file,
                     call: call
                 };
