@@ -21,10 +21,12 @@ define(
     [
         'content.container',
         'content.repository',
+        'jquery',
         'jsclass'
     ],
     function (ContentContainer,
-              ContentRepository
+              ContentRepository,
+              jQuery
             ) {
 
         'use strict';
@@ -36,6 +38,7 @@ define(
              */
             save: function () {
                 var contents = ContentContainer.getContentsUpdated(),
+                    promises = [],
                     content,
                     key;
 
@@ -43,9 +46,11 @@ define(
                     if (contents.hasOwnProperty(key)) {
                         content = contents[key];
                         this.commit(content);
-                        this.push(content);
+                        promises.push(this.push(content));
                     }
                 }
+
+                return jQuery.when.apply(undefined, promises).promise();
             },
 
             /**
@@ -75,13 +80,17 @@ define(
              * @param {Object} content
              */
             push: function (content) {
-                var self = this;
+                var self = this,
+                    dfd = jQuery.Deferred();
 
                 if (content.isSavable()) {
                     ContentRepository.save(content.revision).done(function () {
                         self.merge(content);
+                        dfd.resolve();
                     });
                 }
+
+                return dfd.promise();
             },
 
             /**

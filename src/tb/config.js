@@ -141,6 +141,10 @@ define([], function () {
                             }
                         }
                     }
+                },
+                edition: {
+                    accept: ['BlockDemo'],
+                    config: {}
                 }
             },
             "demo": {}

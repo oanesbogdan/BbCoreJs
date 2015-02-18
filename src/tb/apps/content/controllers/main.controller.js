@@ -10,7 +10,8 @@ define(
         'content.repository',
         'revision.repository',
         'component!revisionselector',
-        'jquery'
+        'jquery',
+        'content.widget.DialogContentsList'
     ],
     function (Core,
               DndManager,
@@ -22,7 +23,8 @@ define(
               ContentRepository,
               RevisionRepository,
               RevisionSelector,
-              jQuery) {
+              jQuery,
+              DialogContentsList) {
 
         'use strict';
 
@@ -50,10 +52,10 @@ define(
             },
 
             /**
-             * Return the content manager
+             * Return the dialog content list widget
              */
-            getContentManagerService: function () {
-                return ContentManager;
+            getDialogContentsListWidgetService: function () {
+                return DialogContentsList;
             },
 
             /**
@@ -64,10 +66,17 @@ define(
             },
 
             /**
+             * Return the definition manager
+             */
+            getContentManagerService: function () {
+                return ContentManager;
+            },
+
+            /**
              * Call method save into SaveManager
              */
             saveService: function () {
-                SaveManager.save();
+                return SaveManager.save();
             },
 
             /**

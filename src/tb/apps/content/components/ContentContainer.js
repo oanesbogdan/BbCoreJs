@@ -25,6 +25,10 @@ define(['jsclass'], function () {
 
         contents: [],
 
+        clear: function () {
+            this.contents = [];
+        },
+
         /**
          * Find element in elements with id
          * @param {String} id
@@ -39,6 +43,24 @@ define(['jsclass'], function () {
                 if (this.contents.hasOwnProperty(key)) {
                     content = this.contents[key];
                     if (content.id === id) {
+                        result = content;
+                        break;
+                    }
+                }
+            }
+
+            return result;
+        },
+
+        findByUid: function (uid) {
+            var key,
+                content,
+                result = null;
+
+            for (key in this.contents) {
+                if (this.contents.hasOwnProperty(key)) {
+                    content = this.contents[key];
+                    if (content.uid === uid) {
                         result = content;
                         break;
                     }

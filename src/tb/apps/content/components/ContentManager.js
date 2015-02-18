@@ -88,25 +88,29 @@ define(
             buildElement: function (config) {
                 var content,
                     objectIdentifier = this.buildObjectIdentifier(config.type, config.uid),
-                    element = jQuery('[data-' + this.identifierDataAttribute + '="' + objectIdentifier + '"]'),
-                    id = element.data(this.idDataAttribute);
+                    element = jQuery('[data-' + this.identifierDataAttribute + '="' + objectIdentifier + '"]');
 
-                if (id === undefined && objectIdentifier !== undefined) {
+                if (objectIdentifier !== undefined) {
 
-                    config.definition = DefinitionManager.find(config.type);
-                    config.jQueryObject = element;
+                    content = ContentContainer.findByUid(config.uid);
 
-                    if (config.definition !== null) {
-                        if (config.definition.properties.is_container) {
-                            content = new ContentSet(config);
-                        } else {
-                            content = new Content(config);
+                    if (null === content) {
+
+                        config.definition = DefinitionManager.find(config.type);
+                        config.jQueryObject = element;
+
+                        if (config.definition !== null) {
+                            if (config.definition.properties.is_container) {
+                                content = new ContentSet(config);
+                            } else {
+                                content = new Content(config);
+                            }
                         }
-                    }
 
-                    ContentContainer.addContent(content);
-                } else {
-                    content = ContentContainer.find(element.data(this.idDataAttribute));
+                        ContentContainer.addContent(content);
+                    } else {
+                        content.populate();
+                    }
                 }
 
                 return content;

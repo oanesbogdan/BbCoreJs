@@ -30,7 +30,7 @@ define(['underscore', 'jquery', 'jsclass', 'BackBone'], function (underscore, jQ
                 options = underscore.range(start, stop, step);
             jQuery.each(options, function (i, value) {
                 if (i === 0) {
-                    this.minValue = value;
+                    self.minValue = value;
                 }
                 var option = jQuery('<option/>').val(value).text(value).addClass(self.config.optionCls);
                 jQuery(option).data('no', i);
