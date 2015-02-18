@@ -92,7 +92,6 @@ define(
              * Initialize of Page repository
              */
             initializeRestDriver: function () {
-                CoreRestDriver.setBaseUrl('/rest/' + this.rest_version + '/');
                 CoreDriverHandler.addDriver('rest', CoreRestDriver);
             },
 

@@ -181,8 +181,7 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
         /* RestDataAdapter */
         RestDataStore = new JS.Class(AbstractDataStore, {
             defaultConfig: {
-                autoLoad: false,
-                restBaseUrl: '/rest/1'
+                autoLoad: false
             },
 
             getTotal: function () {
@@ -206,7 +205,6 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
             },
 
             initRestHandler: function () {
-                CoreRestDriver.setBaseUrl(this.config.restBaseUrl);
                 CoreDriverHandler.addDriver('rest', CoreRestDriver);
             },
 

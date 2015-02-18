@@ -23,10 +23,18 @@ define(['jquery'], function (jQuery) {
 
     var init = {
 
+        tbSelector: '#bb5-ui',
+
         toolBarDisplayed: false,
 
         listen: function () {
-            jQuery(document).bind('keyup', jQuery.proxy(this.manageAccess, this));
+            var autoStart = jQuery(this.tbSelector).attr('data-autostart');
+
+            if (autoStart === undefined || autoStart === false) {
+                jQuery(document).bind('keyup', jQuery.proxy(this.manageAccess, this));
+            } else {
+                this.load(true);
+            }
         },
 
         manageAccess: function (event) {
@@ -42,7 +50,8 @@ define(['jquery'], function (jQuery) {
             var self = this;
 
             require(['tb.core', 'src/tb/config'], function (Core, config) {
-                require(['component!authentication'], function (AuthenticationHandler) {
+                require(['tb.core.RestDriver', 'component!authentication'], function (RestDriver, AuthenticationHandler) {
+                    RestDriver.setBaseUrl(jQuery(self.tbSelector).attr('data-api'));
                     Core.set('is_connected', false);
 
                     var router = null;
