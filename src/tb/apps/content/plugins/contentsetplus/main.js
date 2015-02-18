@@ -49,12 +49,12 @@ define(
              * accepts: > 0 => show all blocks needed
              */
             add: function () {
-                var self = this,
-                    accepts = this.getCurrentContent().getDefinition('accept');
+                var content = this.getCurrentContent(),
+                    accepts = content.getDefinition('accept');
 
                 if (accepts.length === 1) {
                     ContentManager.createElement(accepts[0]).done(function (content) {
-                        self.content.append(content);
+                        content.append(content);
                     });
                 } else if (accepts.length === 0) {
                     this.showPopin();
@@ -115,6 +115,7 @@ define(
                 this.widget.hide();
 
                 var self = this,
+                    currentContent = this.getCurrentContent(),
                     currentTarget = jQuery(event.currentTarget),
                     img = currentTarget.find('img'),
                     type = img.data('bb-type');
@@ -122,14 +123,14 @@ define(
                 ContentManager.createElement(type).done(function (content) {
                     var config = self.config,
                         position = 0,
-                        currentType = self.content.type;
+                        currentType = currentContent.type;
 
                     if (config.hasOwnProperty(currentType)) {
                         if (config[currentType].hasOwnProperty('appendPosition') && config[currentType].appendPosition === 'bottom') {
                             position = 'last';
                         }
                     }
-                    self.content.append(content, position);
+                    currentContent.append(content, position);
                 });
 
                 return false;
