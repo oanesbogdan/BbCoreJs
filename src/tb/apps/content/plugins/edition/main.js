@@ -272,7 +272,7 @@ define(
                 return [
                     {
                         name: 'Edit',
-                        ico: 'fa fa-circle-o',
+                        ico: 'fa fa-pencil',
                         label: 'Edit the content',
                         cmd: self.createCommand(self.edit, self),
                         checkContext: function () {

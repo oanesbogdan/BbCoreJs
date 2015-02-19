@@ -71,37 +71,22 @@ define([], function () {
                 demo: ''
             },
             "core": {
-                edit: {
-                    accept: ['BlockDemo'],
-                    config: {}
-                },
                 contentselector: {
-                    accept: ['Container/OneColumn'],
-
-                    //handle wildcard
+                    accept: ['*'],
                     config: {
-                        appendPosition: "bottom",
-                        /* default */
-                        'Home/HomeContainer': {
-
-                            accept: ['article', 'paragraph']
-                        }
+                        appendPosition: "bottom"
                     }
                 },
-                contenttype: {
-                    accept: ['Home/HomeContainer', 'BlockDemo'],
-                    config: {}
-                },
                 parameters: {
-                    accept: ['BlockDemo'],
+                    accept: ['*'],
                     config: {}
                 },
                 contentsetplus: {
-                    accept: ['Container/OneColumn'],
+                    accept: ['*'],
                     config: {}
                 },
                 remove: {
-                    accept: ['BlockDemo'],
+                    accept: ['*'],
                     config: {}
                 },
                 rte: {
@@ -143,7 +128,7 @@ define([], function () {
                     }
                 },
                 edition: {
-                    accept: ['BlockDemo'],
+                    accept: ['*'],
                     config: {}
                 }
             },

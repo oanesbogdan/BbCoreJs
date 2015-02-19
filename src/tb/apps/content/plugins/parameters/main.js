@@ -99,7 +99,7 @@ define(
                 return [
                     {
                         name: 'parameters',
-                        ico: 'fa fa-circle-o',
+                        ico: 'fa fa-cog',
                         label: 'Parameters',
                         cmd: self.createCommand(self.showParameters, self),
                         checkContext: function () {
