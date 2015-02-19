@@ -259,7 +259,7 @@ define(
              * @returns {Boolean}
              */
             canApplyOnContext: function () {
-                return true;
+                return !this.getCurrentContent().isAContentSet();
             },
 
             /**
