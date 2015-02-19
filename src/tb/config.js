@@ -55,6 +55,19 @@ define([], function () {
                 }
             }
         },
+        unclickable_contents: {
+            contents: [
+                'Element/Text',
+                'Element/Attachment',
+                'Element/Date',
+                'Element/File',
+                'Element/Image',
+                'Element/Keyword',
+                'Element/Link',
+                'Element/Select',
+                'ContentSet'
+            ]
+        },
         component: {
             logger: {
                 level: 8,
