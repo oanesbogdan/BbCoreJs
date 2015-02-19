@@ -46,6 +46,9 @@ define('tb.core.Renderer', ['require', 'nunjucks', 'tb.core', 'jquery', 'tb.core
                 this.env.addFilter(name, func, async);
             },
 
+            /**
+             * @todo: this seems to no work.
+             */
             asyncRender: function (path, params, config) {
                 params = params || {};
                 config = config || {};
