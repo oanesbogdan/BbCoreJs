@@ -19,6 +19,7 @@
 
 define(
     [
+        'tb.core',
         'jquery',
         'content.models.Content',
         'content.models.ContentSet',
@@ -27,7 +28,8 @@ define(
         'content.repository',
         'jsclass'
     ],
-    function (jQuery,
+    function (Core,
+              jQuery,
               Content,
               ContentSet,
               DefinitionManager,
@@ -60,6 +62,19 @@ define(
                         ContentContainer.addContent(self.buildElement(self.retrievalObjectIdentifier(objectIdentifier)));
                     }
                 });
+            },
+
+            isUsable: function (type) {
+                var contents = Core.config('unclickable_contents:contents'),
+                    result = true;
+
+                if (contents !== undefined) {
+                    if (contents.indexOf(type) !== -1) {
+                        result = false;
+                    }
+                }
+
+                return result;
             },
 
             /**
