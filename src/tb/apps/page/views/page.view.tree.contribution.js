@@ -104,7 +104,7 @@ define(
                     return;
                 }
 
-                jQuery(location).attr('href', event.node.url);
+                jQuery(location).attr('href', event.node.uri);
             },
 
             /**
@@ -237,7 +237,7 @@ define(
                                 btnCls: "bb5-context-menu-flyto",
                                 btnLabel: "Browse to",
                                 btnCallback: function () {
-                                    jQuery(location).attr('href', self.currentEvent.node.url);
+                                    jQuery(location).attr('href', self.currentEvent.node.uri);
                                 }
                             }
                         ]
