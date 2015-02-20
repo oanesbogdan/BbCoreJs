@@ -18,8 +18,8 @@
  */
 
 define(
-    ['tb.core', 'tb.core.Renderer'],
-    function (Core, renderer) {
+    ['tb.core', 'tb.core.Renderer', 'component!notify'],
+    function (Core, renderer, Notify) {
         'use strict';
 
         Core.ControllerManager.registerController('GroupController', {
@@ -29,7 +29,11 @@ define(
             config: {
                 imports: ['user/repository/group.repository'],
                 define: {
-                    indexService: ['user/views/group.view.list', 'text!user/templates/groups.list.twig']
+                    indexService: ['user/views/group/view.list', 'text!user/templates/group/list.twig'],
+                    newService: ['user/views/group/form.view'],
+                    editService: ['user/views/group/form.view'],
+                    duplicateService: ['user/views/group/duplicate.view'],
+                    deleteService: ['user/views/group/delete.view']
                 }
             },
 
@@ -45,24 +49,77 @@ define(
              * Show the index in the edit contribution toolbar
              */
             indexService: function (req, popin) {
-                var View = req('user/views/group.view.list'),
-                    template = req('text!user/templates/groups.list.twig');
+                var View = req('user/views/group/view.list'),
+                    template = req('text!user/templates/group/list.twig');
 
 
                 this.repository.paginate().then(
                     function (groups) {
                         var i;
-                        for (i = groups.length - 1; i >= 0; i = i - 1) {
+                        for (i = 0; i < groups.length; i = i + 1) {
                             groups[i] = new View({group: groups[i]});
                         }
 
-                        popin.addGroups(renderer.render(template, groups));
+                        popin.addGroups(renderer.render(template, {groups: groups}));
                     },
                     function () {
                         popin.addGroups('');
                         Core.exception.silent('GroupControllerEception', 500, 'Group REST paginate call fail');
                     }
                 );
+            },
+
+            initFormView: function (group, popin, View) {
+                var self = this,
+                    view = new View({group: group});
+
+                view.display().then(function (group) {
+                    self.repository.save(group).then(
+                        function () {
+                            self.indexService(require, popin);
+                            Notify.success('Group save success.');
+                        },
+                        function () {
+                            Notify.error('Group save fail.');
+                        }
+                    );
+                });
+            },
+
+            newService: function (req, popin) {
+                this.initFormView({}, popin, req('user/views/group/form.view'));
+            },
+
+            editService: function (req, popin, group_id) {
+                var self = this;
+
+                this.repository.find(group_id).done(function (group) {
+                    self.initFormView(group, popin, req('user/views/group/form.view'));
+                });
+            },
+
+
+            deleteService: function (req, popin, group_id) {
+                var self = this,
+                    View = req('user/views/group/delete.view'),
+                    view;
+
+                this.repository.find(group_id).done(function (group) {
+
+                    view = new View({popin: popin, group: group});
+                    view.display().then(
+                        function () {
+                            self.repository.delete(group_id).done(function () {
+                                self.indexService(require, popin);
+                                Notify.success('group ' + group.login() + ' has been deleted.');
+                            });
+                            view.destruct();
+                        },
+                        function () {
+                            view.destruct();
+                        }
+                    );
+                });
             }
         });
     }

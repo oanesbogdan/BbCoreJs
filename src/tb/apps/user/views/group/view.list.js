@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 define(
-    ['require', 'tb.core.Renderer', 'text!user/templates/group.list.item.twig'],
+    ['require', 'tb.core.Renderer', 'text!user/templates/group/list.item.twig'],
     function (require, renderer) {
         'use strict';
 
@@ -39,7 +39,7 @@ define(
              * @returns {Object} PageViewEdit
              */
             render: function () {
-                return renderer.render(require('text!user/templates/group.list.item.twig'), {group: this.group});
+                return renderer.render(require('text!user/templates/group/list.item.twig'), {group: this.group});
             }
         });
     }

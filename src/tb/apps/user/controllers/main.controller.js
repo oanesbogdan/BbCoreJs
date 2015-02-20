@@ -26,9 +26,7 @@ define(
 
             appName: 'user',
 
-            config: {
-                imports: ['user/repository/user.repository']
-            },
+            config: {},
 
             /**
              * Initialize of Page Controller

@@ -61,6 +61,19 @@ define(
                 });
             },
 
+            bindGroups: function () {
+                var self = this;
+                jQuery('#toolbar-new-group-action').click(function () {
+                    Core.ApplicationManager.invokeService('user.group.new', self);
+                });
+                jQuery('#group-list .btn-action').click(function () {
+                    var clicked = jQuery(this),
+                        action = clicked.attr('data-action'),
+                        id = clicked.parent().attr('data-group');
+                    Core.ApplicationManager.invokeService('user.group.' + action, self, id);
+                });
+            },
+
             /**
              * Render the template into the DOM with the ViewManager
              * @returns {Object} PageViewEdit
@@ -72,6 +85,7 @@ define(
 
             addGroups: function (group_list) {
                 jQuery('#group-list').html(group_list);
+                this.bindGroups();
             }
         });
     }

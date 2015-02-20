@@ -17,8 +17,8 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 define(
-    ['require', 'jquery'],
-    function (require, jQuery) {
+    ['require', 'tb.core.Renderer', 'jquery', 'text!user/templates/group/delete.twig'],
+    function (require, Renderer, jQuery) {
         'use strict';
 
         /**
@@ -28,31 +28,43 @@ define(
         return Backbone.View.extend({
 
             popin_config: {
-                id: 'new-user-subpopin',
+                id: 'new-group-subpopin',
                 width: 250,
                 top: 180
+            },
+
+            bindAction: function () {
+                var self = this;
+                jQuery('#bb-group-validate').click(function () {
+                    self.dfd.resolve();
+                });
+                jQuery('#bb-group-cancel').click(function () {
+                    self.dfd.reject();
+                });
+
             },
 
             /**
              * Initialize of PageViewEdit
              */
-            initialize: function (data, action) {
-                var self = this;
+            initialize: function (data) {
                 this.mainPopin = data.popin;
-                this.user = data.user;
+                this.group = data.group;
                 this.popin = this.mainPopin.popinManager.createSubPopIn(this.mainPopin.popin, this.popin_config);
-
-                require('user/form/' + action + '.user.form').construct(self);
+                this.tpl = Renderer.render(require('text!user/templates/group/delete.twig'), {group: this.group});
+                this.popin.setContent(this.tpl);
             },
+
 
             display: function () {
                 this.dfd = jQuery.Deferred();
                 this.popin.display();
+                this.bindAction();
                 return this.dfd.promise();
             },
 
             destruct: function () {
-                this.zone.html('');
+                this.mainPopin.popinManager.destroy(this.popin);
             }
         });
     }
