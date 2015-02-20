@@ -118,9 +118,11 @@ define(
             },
 
             getEditableContentService: function (content) {
-                var dfd = new jQuery.Deferred(),
+                var self = this,
+                    dfd = new jQuery.Deferred(),
                     element,
                     result = [];
+
                 if (jQuery.inArray(content.type, this.EDITABLE_ELEMENTS) !== -1) {
                     result.push(content);
                     dfd.resolve(result);
@@ -128,9 +130,11 @@ define(
                     content.getData('elements').done(function (elements) {
                         jQuery.each(elements, function (subContentName) {
                             element =  elements[subContentName];
-                            if (jQuery.inArray(content.type, this.EDITABLE_ELEMENTS) === -1) {
+
+                            if (jQuery.inArray(element.type, self.EDITABLE_ELEMENTS) === -1) {
                                 return true;
                             }
+
                             result.push(ContentManager.buildElement(element));
                         });
                         dfd.resolve(result);
