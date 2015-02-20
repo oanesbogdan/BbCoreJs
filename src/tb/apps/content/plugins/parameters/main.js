@@ -56,7 +56,7 @@ define(
                 content.getData().done(function () {
                     var parameters = content.getParameters(),
                         config = {
-                            elements: parameters,
+                            elements: self.computeParameters(parameters),
                             onSubmit: function (data) {
                                 if (Object.keys(data).length > 0) {
                                     content.setParameters(data);
@@ -82,11 +82,31 @@ define(
                     definition = DefinitionManager.find(content.type),
                     result = false;
 
-                if (Object.keys(definition.parameters).length > 0) {
+                if (Object.keys(this.computeParameters(definition.parameters)).length > 0) {
                     result = true;
                 }
 
                 return result;
+            },
+
+            /**
+             * Verify if parameters have the mandatories attributes
+             * @param {Object} parameters
+             */
+            computeParameters: function (parameters) {
+                var key,
+                    param;
+
+                for (key in parameters) {
+                    if (parameters.hasOwnProperty(key)) {
+                        param = parameters[key];
+                        if (!param.hasOwnProperty('type')) {
+                            delete parameters[key];
+                        }
+                    }
+                }
+
+                return parameters;
             },
 
             /**
