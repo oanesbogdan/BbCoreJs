@@ -71,9 +71,6 @@ define(
                     content = ContentManager.buildElement(ContentManager.retrievalObjectIdentifier(identifier)),
                     currentContent;
 
-                ContentContainer.addContent(content);
-
-                Core.Mediator.publish('on:classcontent:click', content, event);
 
                 if (ContentManager.isUsable(content.type)) {
 
@@ -81,6 +78,10 @@ define(
                         currentContent = ContentContainer.find(currentSelected.data(this.idDataAttribute));
                         currentContent.unSelect();
                     }
+
+                    Core.Mediator.publish('on:classcontent:click', content, event);
+
+                    ContentContainer.addContent(content);
 
                     content.select();
 
@@ -99,9 +100,9 @@ define(
                 var identifier = jQuery(event.currentTarget).data(this.identifierDataAttribute),
                     data = ContentManager.retrievalObjectIdentifier(identifier);
 
-                Core.Mediator.publish('on:classcontent:mouseenter', event);
-
                 if (ContentManager.isUsable(data.type)) {
+
+                    Core.Mediator.publish('on:classcontent:mouseenter', event);
 
                     jQuery('.' + this.contentHoverClass).removeClass(this.contentHoverClass);
 
@@ -121,9 +122,9 @@ define(
                     currentTarget,
                     parentToSelect;
 
-                Core.Mediator.publish('on:classcontent:mouseleave', event);
-
                 if (ContentManager.isUsable(data.type)) {
+
+                    Core.Mediator.publish('on:classcontent:mouseleave', event);
 
                     currentTarget = jQuery(event.currentTarget);
                     parentToSelect = currentTarget.parents('.' + this.contentClass + ':first');
