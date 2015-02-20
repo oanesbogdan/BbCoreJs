@@ -29,15 +29,21 @@ define('tb.core.Renderer', ['require', 'nunjucks', 'tb.core', 'jquery', 'tb.core
             initialize: function () {
                 var error_tpl = config.error_tpl || '<p>Error while loading template</p>',
                     placeholder = config.placeholder || '<p>Loading...</p>';
-
+                this.env = nunjucks.configure({ watch: false });
                 this.engine = nunjucks;
                 this.render_action = 'html';
                 this.error_msg = jQuery(error_tpl).clone();
                 this.placeholder = jQuery(placeholder);
+
+                Core.Mediator.persistentPublish('on:renderer:init', this);
             },
 
             getEngine: function () {
                 return this.engine;
+            },
+
+            addFilter: function (name, func, async) {
+                this.env.addFilter(name, func, async);
             },
 
             asyncRender: function (path, params, config) {
@@ -58,7 +64,6 @@ define('tb.core.Renderer', ['require', 'nunjucks', 'tb.core', 'jquery', 'tb.core
 
             render: function (template, params) {
                 params = params || {};
-
                 try {
                     return this.engine.renderString(template, params);
                 } catch (e) {
@@ -86,7 +91,7 @@ define('tb.core.Renderer', ['require', 'nunjucks', 'tb.core', 'jquery', 'tb.core
             config = conf;
         },
 
-        invocMethod = function (method_name) {
+        invokeMethod = function (method_name) {
             return (function (instance) {
                 return function () {
                     var args = Array.prototype.slice.call(arguments);
@@ -97,9 +102,9 @@ define('tb.core.Renderer', ['require', 'nunjucks', 'tb.core', 'jquery', 'tb.core
 
         ApiRender = {
             init: initRenderer,
-            getEngine: invocMethod('getEngine'),
-            render: invocMethod('render'),
-            asyncRender: invocMethod('asyncRender')
+            getEngine: invokeMethod('getEngine'),
+            render: invokeMethod('render'),
+            asyncRender: invokeMethod('asyncRender')
         };
 
     return ApiRender;

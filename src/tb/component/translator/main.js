@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
-define('tb.component/translator/main', ['component!logger', 'jquery'], function (Logger, jQuery) {
+define('tb.component/translator/main', ['component!logger', 'jquery', 'tb.core'], function (Logger, jQuery, Core) {
     'use strict';
 
         /*
@@ -30,14 +30,20 @@ define('tb.component/translator/main', ['component!logger', 'jquery'], function 
          * {
          *      'hello_world' : 'Hello world'
          * }
+         *
+         * @author Mickaël Andrieu <mickael.andrieu@lp-digital.fr>
          */
     var Translator = {
             init: function (config) {
                 this.base = config.base;
-                this.catalog = {};
-                this.config = config;
-                this.locale = config.locale;
+                this.catalogs = {};
+                this.default_locale =  config.locale || 'en_US';
+                this.locale = this.default_locale;
                 this.loadCatalog();
+
+                Core.Mediator.subscribe('on:renderer:init', function (Renderer) {
+                    Renderer.addFilter('trans', jQuery.proxy(this.translate, this));
+                }, this);
             },
 
             getLocale:  function () {
@@ -45,21 +51,21 @@ define('tb.component/translator/main', ['component!logger', 'jquery'], function 
             },
 
             setLocale: function (locale) {
-                this.loadCatalog();
+                this.loadCatalog(locale);
                 this.locale = locale;
             },
 
             getDefaultLocale: function () {
-                return this.config.locale;
+                return this.defaut_locale;
             },
 
             translate: function (key) {
                 var translation = key;
-                if (this.catalog[key] !== undefined) {
-                    translation = this.catalog[key];
-                } else if (this.getDefaultCatalog()[key] !== undefined) {
+                if (this.getCatalog(this.locale)[key] !== undefined) {
+                    translation = this.getCatalog(this.locale)[key];
+                } else if (this.locale !== this.default_locale && this.getCatalog(this.default_locale)[key] !== undefined) {
                     Logger.notice('The key "' + key + '" has not translation in the selected catalog.');
-                    translation = this.getDefaultCatalog()[key];
+                    translation = this.getCatalog(this.default_locale)[key];
                 } else {
                     Logger.warning('The key "' + key + '" is malformed.');
                 }
@@ -67,26 +73,23 @@ define('tb.component/translator/main', ['component!logger', 'jquery'], function 
                 return translation;
             },
 
-            getCatalog: function () {
-                return this.catalog;
-            },
+            getCatalog: function (locale) {
+                if (this.catalogs[locale] === undefined) {
+                    this.loadCatalog(locale);
+                }
 
-            getDefaultCatalog: function () {
-                this.loadCatalog(this.getDefaultLocale());
-
-                return this.catalog;
+                return this.catalogs[locale];
             },
 
             loadCatalog: function (locale) {
-                var self = this,
-                    myLocale = (locale === undefined) ? self.locale : locale;
+                var self = this;
                 jQuery.ajax({
-                    'url': self.base + '/' + myLocale + '/global.json',
+                    'url': self.base + '/' + locale + '/global.json',
                     'data': 'json',
                     'async': false
                 })
                     .done(function (response) {
-                        self.catalog = JSON.parse(response, true);
+                        self.catalogs[locale] = JSON.parse(response);
                     });
             }
         };

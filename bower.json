@@ -33,6 +33,7 @@
     "ckeeditor": "git://github.com/ckeditor/ckeditor-releases.git#standard/stable"
   },
   "devDependencies": {
-    "uri.js": "~1.14.1"
+    "uri.js": "~1.14.1",
+    "es5-shim": "~4.1.0"
   }
 }

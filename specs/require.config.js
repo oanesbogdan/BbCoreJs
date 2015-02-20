@@ -4,6 +4,7 @@ require.config({
     paths: {
         'tb.core': 'src/tb/main',
         'component': 'src/tb/component/component',
+
         'jquery': 'bower_components/jquery/dist/jquery.min',
         'jqueryui': 'bower_components/jquery-ui/jquery-ui.min',
         'jsclass' : 'node_modules/jsclass/min/core',
@@ -18,8 +19,11 @@ require.config({
         'lib.jqtree': 'bower_components/jqtree/tree.jquery',
         'jssimplepagination': 'bower_components/jssimplepagination/jquery.simplePagination',
         'ckeeditor' : 'lib/ckeeditor/ckeditor',
+
         'jasmine': 'node_modules/grunt-contrib-jasmine/vendor/jasmine-2.0.0/jasmine',
         'jasmine-html': 'node_modules/grunt-contrib-jasmine/vendor/jasmine-2.0.0/jasmine-html',
+        'es5-shim': 'bower_components/es5-shim',
+
         'spec': 'specs/'
     },
     shim: {
