@@ -75,6 +75,10 @@ define([], function () {
             },
             'exceptions-viewer': {
                 show: true
+            },
+            translator: {
+                base: 'src/tb/i18n/',
+                locale: 'en_US'
             }
 
         },

@@ -50,7 +50,7 @@ define(['jquery'], function (jQuery) {
             var self = this;
 
             require(['tb.core', 'src/tb/config'], function (Core, config) {
-                require(['tb.core.RestDriver', 'component!authentication'], function (RestDriver, AuthenticationHandler) {
+                require(['tb.core.RestDriver', 'component!authentication', 'component!translator'], function (RestDriver, AuthenticationHandler) {
                     RestDriver.setBaseUrl(jQuery(self.tbSelector).attr('data-api'));
                     Core.set('is_connected', false);
 
