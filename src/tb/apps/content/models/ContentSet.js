@@ -21,6 +21,7 @@ define(
     [
         'content.models.AbstractContent',
         'jquery',
+        'content.manager',
         'jsclass'
     ],
     function (AbstractContent, jQuery) {
@@ -74,6 +75,8 @@ define(
                     }
 
                     self.setUpdated(true);
+
+                    require('content.manager').computeImages();
 
                     dfd.resolve();
                 });

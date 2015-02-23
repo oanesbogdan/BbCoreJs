@@ -81,6 +81,8 @@ define('app.main', ['tb.core', 'tb.core.ApplicationManager', 'main.view.index', 
                 });
             });
 
+            ApplicationManager.invokeService('content.main.computeImagesInDOM');
+
             // Listen event save
             Core.Mediator.subscribe('on:save:click', function () {
                 ApplicationManager.invokeService('content.main.save');

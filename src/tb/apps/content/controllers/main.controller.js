@@ -44,6 +44,10 @@ define(
                 this.repository = require('content.repository');
             },
 
+            computeImagesInDOMService: function () {
+                ContentManager.computeImages('body');
+            },
+
             /**
              * Return the content repository
              */
