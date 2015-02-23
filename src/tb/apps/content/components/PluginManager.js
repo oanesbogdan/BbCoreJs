@@ -210,11 +210,14 @@ define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 
                 try {
                     var pluginName = pluginInfos.name,
                         pluginInstance = new this.pluginsInfos[pluginName]();
+
                     this.pluginsInstance[pluginInfos.completeName] = pluginInstance;
                     pluginInstance.setConfig(pluginInfos.config);
                     pluginInstance.setContext(this.context);
+
+                    pluginInstance.onInit();
+
                     if (this.isScopeValid(pluginInstance) && pluginInstance.canApplyOnContext()) {
-                        pluginInstance.onInit();
                         pluginInstance.onEnable();
                         this.handlePluginActions(pluginInstance.getActions());
                     }
