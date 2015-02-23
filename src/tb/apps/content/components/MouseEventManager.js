@@ -67,16 +67,21 @@ define(
              */
             onClick: function (event) {
                 var currentSelected = jQuery('.' + this.contentSelectedClass),
-                    identifier = jQuery(event.currentTarget).data(this.identifierDataAttribute),
+                    currentTarget = jQuery(event.currentTarget),
+                    identifier = currentTarget.data(this.identifierDataAttribute),
                     content = ContentManager.buildElement(ContentManager.retrievalObjectIdentifier(identifier)),
                     currentContent;
-
 
                 if (ContentManager.isUsable(content.type)) {
 
                     if (currentSelected.length > 0) {
                         currentContent = ContentContainer.find(currentSelected.data(this.idDataAttribute));
                         currentContent.unSelect();
+                    }
+
+                    if (content.jQueryObject.length === 0) {
+                        content.jQueryObject = currentTarget;
+                        content.populate();
                     }
 
                     Core.Mediator.publish('on:classcontent:click', content, event);
