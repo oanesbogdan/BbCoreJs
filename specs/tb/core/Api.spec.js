@@ -1,9 +1,24 @@
-define(['tb.core', 'tb.core.Api'], function () {
+define(['tb.core', 'tb.core.ApplicationManager'], function (Core, ApplicationManager) {
     'use strict';
 
-    describe('Testing for jasmine', function () {
-        it('something', function () {
-            expect(true).toBe(true);
+    describe('Core Api test', function () {
+        it('Test if is fully initialized', function () {
+            expect(Core.ApplicationManager).toBe(ApplicationManager);
+        });
+
+        it('Test if is the registred value is protected', function () {
+            Core.register('ApplicationManager', {});
+            expect(Core.ApplicationManager).toBe(ApplicationManager);
+        });
+
+        it('Test getter and setter', function () {
+            Core.set('foo', 'bar');
+            expect(Core.get('foo')).toBe('bar');
+        });
+
+        it('Test unset', function () {
+            Core.unset('foo');
+            expect(Core.get('foo')).toBe(undefined);
         });
     });
 });
