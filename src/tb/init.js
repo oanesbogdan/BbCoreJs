@@ -88,10 +88,8 @@ define(['jquery'], function (jQuery) {
                         } else {
                             Core.Mediator.subscribe('onSuccessLogin', function () {
                                 self.toolBarDisplayed = true;
-                                /*
-                                 * @TODO: Load config by a rest when user connected
-                                 */
                                 initConfig();
+                                require(['component!exceptions-viewer'], {});
                             });
                             AuthenticationHandler.showForm();
                         }
