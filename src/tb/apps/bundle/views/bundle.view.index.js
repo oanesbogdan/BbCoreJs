@@ -60,7 +60,7 @@ define(
                 }
 
                 this.force = (config.force === true);
-                this.doBinding = (config.doBinding === true);
+                this.doBinding = (config.bindEvents === true);
             },
 
             /**
@@ -90,15 +90,22 @@ define(
              */
             doExtensionActivation: function (event) {
                 var self = jQuery(event.currentTarget),
-                    bundleId = self.parent().attr('data-bundle-id');
-
-                self.siblings('a').removeClass('active');
-                self.addClass('active');
+                    bundleId = self.parent().attr('data-bundle-id'),
+                    enableClass,
+                    enable;
 
                 if (self.hasClass('enable')) {
-                    BundleRepository.active(true, bundleId);
+                    enableClass = "enable";
+                    enable = true;
                 } else if (self.hasClass('disable')) {
-                    BundleRepository.active(false, bundleId);
+                    enableClass = "disable";
+                    enable = false;
+                }
+
+                if (confirm('Do you want to ' + enableClass + ' this bundle ?')) {
+                    self.siblings('a').removeClass('active');
+                    self.addClass('active');
+                    BundleRepository.active(enable, bundleId);
                 }
             },
 

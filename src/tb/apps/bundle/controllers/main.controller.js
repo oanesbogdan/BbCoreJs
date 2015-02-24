@@ -47,7 +47,7 @@ define(['tb.core', 'bundle.view.list', 'bundle.view.index'], function (Core, Lis
                 config.force = true;
                 config.bindEvents = true;
 
-                this.renderView(IndexView, {});
+                this.renderView(IndexView, config);
             }
 
             this.listAndRender(IndexView, config);
