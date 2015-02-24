@@ -27,6 +27,8 @@ define(['jquery'], function (jQuery) {
 
         toolBarDisplayed: false,
 
+        configUri: 'toolbar/config',
+
         listen: function () {
             var autoStart = jQuery(this.tbSelector).attr('data-autostart');
 
@@ -49,36 +51,53 @@ define(['jquery'], function (jQuery) {
         load: function (already_connected) {
             var self = this;
 
-            require(['tb.core', 'src/tb/config'], function (Core, config) {
-                require(['tb.core.RestDriver', 'component!authentication', 'component!translator'], function (RestDriver, AuthenticationHandler) {
-                    RestDriver.setBaseUrl(jQuery(self.tbSelector).attr('data-api'));
-                    Core.set('is_connected', false);
+            require(['tb.core'], function (Core) {
+                require(
+                    [
+                        'tb.core.DriverHandler',
+                        'tb.core.RestDriver',
+                        'component!authentication',
+                        'component!translator'
+                    ],
+                    function (DriverHandler, RestDriver, AuthenticationHandler) {
 
-                    var router = null;
+                        RestDriver.setBaseUrl(jQuery(self.tbSelector).attr('data-api'));
+                        DriverHandler.addDriver('rest', RestDriver);
 
-                    Core.ApplicationManager.on('routesLoaded', function () {
-                        /*cf http://backbonejs.org/#Router for available options */
-                        router = Core.RouteManager.initRouter({silent: true});
-                    });
+                        var initConfig = function () {
+                                DriverHandler.read(self.configUri).done(function (config) {
+                                    Core.initConfig(config);
+                                });
+                            },
+                            router = null;
 
-                    Core.ApplicationManager.on('appIsReady', function (app) {
-                        router.navigate(app.getMainRoute());
-                    });
+                        Core.set('is_connected', false);
 
-                    if (true === already_connected) {
-                        Core.initConfig(config);
-                        require(['component!exceptions-viewer'], {});
-                    } else {
-                        Core.Mediator.subscribe('onSuccessLogin', function () {
-                            self.toolBarDisplayed = true;
-                            /*
-                             * @TODO: Load config by a rest when user connected
-                             */
-                            Core.initConfig(config);
+                        Core.ApplicationManager.on('routesLoaded', function () {
+                            /*cf http://backbonejs.org/#Router for available options */
+                            router = Core.RouteManager.initRouter({silent: true});
                         });
-                        AuthenticationHandler.showForm();
-                    }
-                }, self.onError);
+
+                        Core.ApplicationManager.on('appIsReady', function (app) {
+                            router.navigate(app.getMainRoute());
+                        });
+
+                        if (true === already_connected) {
+                            initConfig();
+                            require(['component!exceptions-viewer'], {});
+                        } else {
+                            Core.Mediator.subscribe('onSuccessLogin', function () {
+                                self.toolBarDisplayed = true;
+                                /*
+                                 * @TODO: Load config by a rest when user connected
+                                 */
+                                initConfig();
+                            });
+                            AuthenticationHandler.showForm();
+                        }
+                    },
+                    self.onError
+                );
             }, this.onError);
         },
 
