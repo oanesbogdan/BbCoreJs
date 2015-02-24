@@ -45,6 +45,8 @@ define(
             identifierDataAttribute: 'bb-identifier',
             idDataAttribute: 'bb-id',
             dropZoneAttribute: '*[dropzone="true"]',
+            imageClass: 'Element/Image',
+            defaultPicturePath: '/resources/toolbar/html/img/filedrop.png',
 
             /**
              * Search all contentset with dragzone="true" attribute
@@ -188,6 +190,22 @@ define(
                 }
 
                 return object;
+            },
+
+            computeImages: function (selector) {
+
+                selector = selector || '';
+
+                var self = this,
+                    images = jQuery(selector + ' [data-' + this.identifierDataAttribute + '^="' + this.imageClass + '"]');
+
+                images.each(function () {
+                    var image = jQuery(this);
+
+                    if (image.context.naturalWidth === 0) {
+                        image.attr('src', self.defaultPicturePath);
+                    }
+                });
             },
 
             /**
