@@ -281,10 +281,23 @@ define('tb.core.Utils', ['jquery', 'tb.core.Api'], function (jQuery, Api) {
                 });
             }
             return def.promise();
+        },
+
+        castAsArray = function (values) {
+            if (values instanceof Object && !(values instanceof Array)) {
+                values = Object.keys(values).map(
+                    function (key) {
+                        return values[key];
+                    }
+                );
+            }
+            return values;
         };
+
     Api.register('SmartList', SmartList);
     return {
         SmartList: SmartList,
-        requireWithPromise: requireWithPromise
+        requireWithPromise: requireWithPromise,
+        castAsArray: castAsArray
     };
 });
