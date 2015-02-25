@@ -18,8 +18,8 @@
  */
 
 define(
-    ['tb.core', 'tb.core.Renderer', 'component!notify'],
-    function (Core, renderer, Notify) {
+    ['tb.core', 'tb.core.Renderer', 'component!notify', 'tb.core.Utils'],
+    function (Core, renderer, Notify, Utils) {
         'use strict';
 
         Core.ControllerManager.registerController('GroupController', {
@@ -56,6 +56,8 @@ define(
                 this.repository.paginate().then(
                     function (groups) {
                         var i;
+                        groups = Utils.castAsArray(groups);
+
                         for (i = 0; i < groups.length; i = i + 1) {
                             groups[i] = new View({group: groups[i]});
                         }

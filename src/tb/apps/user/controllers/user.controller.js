@@ -18,8 +18,8 @@
  */
 
 define(
-    ['tb.core', 'tb.core.Renderer', 'user/entity/user', 'component!notify', 'require'],
-    function (Core, renderer, User, Notify, require) {
+    ['tb.core', 'tb.core.Renderer', 'user/entity/user', 'component!notify', 'require', 'tb.core.Utils'],
+    function (Core, renderer, User, Notify, require, Utils) {
         'use strict';
 
         Core.ControllerManager.registerController('UserController', {
@@ -52,6 +52,8 @@ define(
                     function (users) {
                         var i,
                             user;
+
+                        users = Utils.castAsArray(users);
 
                         for (i = users.length - 1; i >= 0; i = i - 1) {
                             user = new User();
