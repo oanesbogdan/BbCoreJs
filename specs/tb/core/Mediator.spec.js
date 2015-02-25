@@ -21,7 +21,17 @@ define(['require', 'tb.core'], function (require) {
             spyOn(api.exception, 'silent');
 
             api.Mediator.publish('a fake event', argument);
-            expect(api.exception.silent).toHaveBeenCalledWith('MediatorException', 12201, 'Mediator as catch an error on "' + 'a fake event' + '" topic with the following message: "' + 'Fake error' + '"');
+            expect(api.exception.silent).toHaveBeenCalledWith(
+                'MediatorException',
+                12201,
+                'Mediator caught an error when the topic : "' + 'a fake event' + '" was published.',
+                {
+                    topic: 'a fake event',
+                    context: undefined,
+                    callback: fake.withoutThis,
+                    args: ['not realy']
+                }
+            );
 
             api.Mediator.unsubscribe('a fake event', fake.withoutThis);
         });
@@ -38,6 +48,14 @@ define(['require', 'tb.core'], function (require) {
 
             api.Mediator.publish('another fake event', argument);
             expect(console.info).not.toHaveBeenCalled();
+        });
+
+        it('Subscribe with no context them publish', function () {
+            api.Mediator.subscribe('another fake event', fake.withThis);
+            spyOn(fake, 'withoutThis');
+
+            api.Mediator.publish('another fake event', argument);
+            expect(fake.withoutThis).not.toHaveBeenCalledWith(argument);
         });
 
         it('Persistent publish an post subscribe', function () {
