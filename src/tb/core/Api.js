@@ -23,11 +23,8 @@ define('tb.core.Api', [], function () {
 
         api = {
             register:  function (ctn, object) {
-                var key;
-                for (key in this) {
-                    if (this.hasOwnProperty(key) && key === ctn) {
-                        return;
-                    }
+                if (this.hasOwnProperty(ctn)) {
+                    return;
                 }
                 this[ctn] = object;
             },
@@ -42,7 +39,7 @@ define('tb.core.Api', [], function () {
             },
 
             unset: function (ctn) {
-                this.container[ctn] = null;
+                container[ctn] = null;
                 delete container[ctn];
             }
         };
