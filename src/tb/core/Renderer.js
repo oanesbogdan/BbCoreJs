@@ -34,8 +34,7 @@ define('tb.core.Renderer', ['require', 'nunjucks', 'tb.core', 'jquery', 'tb.core
                 this.render_action = 'html';
                 this.error_msg = jQuery(error_tpl).clone();
                 this.placeholder = jQuery(placeholder);
-
-                Core.Mediator.persistentPublish('on:renderer:init', this);
+                this.functions = {};
             },
 
             getEngine: function () {
@@ -46,11 +45,33 @@ define('tb.core.Renderer', ['require', 'nunjucks', 'tb.core', 'jquery', 'tb.core
                 this.env.addFilter(name, func, async);
             },
 
+            addFunction: function (name, func) {
+                if (typeof func === 'function') {
+                    this.functions[name] = func;
+                }
+            },
+
+            mergeParameters: function (params) {
+                var key;
+
+                if (!params) {
+                    params = {};
+                }
+
+                for (key in this.functions) {
+                    if (this.functions.hasOwnProperty(key)) {
+                        params[key] = this.functions[key];
+                    }
+                }
+
+                return params;
+            },
+
             /**
              * @todo: this seems to no work.
              */
             asyncRender: function (path, params, config) {
-                params = params || {};
+                params = this.mergeParameters(params);
                 config = config || {};
                 config.placeholder = config.placeholder || this.placeholder;
                 config.action = config.action || 'html';
@@ -66,7 +87,7 @@ define('tb.core.Renderer', ['require', 'nunjucks', 'tb.core', 'jquery', 'tb.core
             },
 
             render: function (template, params) {
-                params = params || {};
+                params = this.mergeParameters(params);
                 try {
                     return this.engine.renderString(template, params);
                 } catch (e) {
@@ -107,7 +128,9 @@ define('tb.core.Renderer', ['require', 'nunjucks', 'tb.core', 'jquery', 'tb.core
             init: initRenderer,
             getEngine: invokeMethod('getEngine'),
             render: invokeMethod('render'),
-            asyncRender: invokeMethod('asyncRender')
+            asyncRender: invokeMethod('asyncRender'),
+            addFilter: invokeMethod('addFilter'),
+            addFunction: invokeMethod('addFunction')
         };
 
     return ApiRender;
