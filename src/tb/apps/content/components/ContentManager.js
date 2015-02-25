@@ -57,11 +57,10 @@ define(
                     dropzone = jQuery(this.dropZoneAttribute).not('[data-' + this.idDataAttribute + ']');
 
                 dropzone.each(function () {
-                    var currentTarget = jQuery(this),
-                        objectIdentifier = currentTarget.data(self.identifierDataAttribute);
+                    var currentTarget = jQuery(this);
 
-                    if (currentTarget.hasClass(self.contentClass) && typeof objectIdentifier === 'string') {
-                        ContentContainer.addContent(self.buildElement(self.retrievalObjectIdentifier(objectIdentifier)));
+                    if (currentTarget.hasClass(self.contentClass)) {
+                        ContentContainer.addContent(self.getContentByNode(currentTarget));
                     }
                 });
             },
