@@ -50,6 +50,12 @@ define(
                 this.bindEvents();
             },
 
+            enable: function (state) {
+                if (typeof state === 'boolean') {
+                    this.isEnabled = state;
+                }
+            },
+
             /**
              * Bind events for content
              */
@@ -68,28 +74,29 @@ define(
              * @returns {Boolean}
              */
             onClick: function (event) {
+                if (this.isEnabled === true) {
+                    var currentTarget = jQuery(event.currentTarget),
+                        content = ContentManager.getContentByNode(currentTarget);
 
-                var currentTarget = jQuery(event.currentTarget),
-                    content = ContentManager.getContentByNode(currentTarget);
+                    if (ContentManager.isUsable(content.type)) {
 
-                if (ContentManager.isUsable(content.type)) {
+                        ContentManager.unSelectContent();
 
-                    ContentManager.unSelectContent();
+                        Breadcrumb.show(content, this.breadcrumbSelector);
 
-                    Breadcrumb.show(content, this.breadcrumbSelector);
+                        if (content.jQueryObject.length === 0) {
+                            content.jQueryObject = currentTarget;
+                            content.populate();
+                        }
 
-                    if (content.jQueryObject.length === 0) {
-                        content.jQueryObject = currentTarget;
-                        content.populate();
+                        Core.Mediator.publish('on:classcontent:click', content, event);
+
+                        ContentContainer.addContent(content);
+
+                        content.select();
+
+                        return false;
                     }
-
-                    Core.Mediator.publish('on:classcontent:click', content, event);
-
-                    ContentContainer.addContent(content);
-
-                    content.select();
-
-                    return false;
                 }
             },
 
@@ -99,18 +106,20 @@ define(
              * @returns {Boolean}
              */
             onMouseEnter: function (event) {
-                event.stopImmediatePropagation();
+                if (this.isEnabled === true) {
+                    event.stopImmediatePropagation();
 
-                var identifier = jQuery(event.currentTarget).data(this.identifierDataAttribute),
-                    data = ContentManager.retrievalObjectIdentifier(identifier);
+                    var identifier = jQuery(event.currentTarget).data(this.identifierDataAttribute),
+                        data = ContentManager.retrievalObjectIdentifier(identifier);
 
-                if (ContentManager.isUsable(data.type)) {
+                    if (ContentManager.isUsable(data.type)) {
 
-                    Core.Mediator.publish('on:classcontent:mouseenter', event);
+                        Core.Mediator.publish('on:classcontent:mouseenter', event);
 
-                    jQuery('.' + this.contentHoverClass).removeClass(this.contentHoverClass);
+                        jQuery('.' + this.contentHoverClass).removeClass(this.contentHoverClass);
 
-                    jQuery(event.currentTarget).addClass(this.contentHoverClass);
+                        jQuery(event.currentTarget).addClass(this.contentHoverClass);
+                    }
                 }
             },
 
@@ -120,25 +129,26 @@ define(
              * @returns {Boolean}
              */
             onMouseLeave: function (event) {
+                if (this.isEnabled === true) {
+                    var identifier = jQuery(event.currentTarget).data(this.identifierDataAttribute),
+                        data = ContentManager.retrievalObjectIdentifier(identifier),
+                        currentTarget,
+                        parentToSelect;
 
-                var identifier = jQuery(event.currentTarget).data(this.identifierDataAttribute),
-                    data = ContentManager.retrievalObjectIdentifier(identifier),
-                    currentTarget,
-                    parentToSelect;
+                    if (ContentManager.isUsable(data.type)) {
 
-                if (ContentManager.isUsable(data.type)) {
+                        Core.Mediator.publish('on:classcontent:mouseleave', event);
 
-                    Core.Mediator.publish('on:classcontent:mouseleave', event);
+                        currentTarget = jQuery(event.currentTarget);
+                        parentToSelect = currentTarget.parents('.' + this.contentClass + ':first');
 
-                    currentTarget = jQuery(event.currentTarget);
-                    parentToSelect = currentTarget.parents('.' + this.contentClass + ':first');
+                        currentTarget.removeClass(this.contentHoverClass);
 
-                    currentTarget.removeClass(this.contentHoverClass);
-
-                    if (parentToSelect.length > 0) {
-                        jQuery(parentToSelect).trigger("mouseenter", {
-                            userTrigger: true
-                        });
+                        if (parentToSelect.length > 0) {
+                            jQuery(parentToSelect).trigger("mouseenter", {
+                                userTrigger: true
+                            });
+                        }
                     }
                 }
             }

@@ -55,6 +55,12 @@ define(
                     this.bindEvents();
                 },
 
+                enable: function (state) {
+                    if (typeof state === 'boolean') {
+                        this.isEnabled = state;
+                    }
+                },
+
                 bindEvents: function () {
                     dnd('body').addListeners('classcontent', '.' + this.dndClass);
 
@@ -208,46 +214,49 @@ define(
                  * @param {Object} event
                  */
                 onDragStart: function (event) {
-                    event.stopPropagation();
+                    if (this.isEnabled === true) {
 
-                    var target = jQuery(event.target),
-                        identifier = target.data(this.identifierDataAttribute),
-                        content,
-                        id,
-                        img,
-                        type;
+                        event.stopPropagation();
 
-                    event.dataTransfer.effectAllowed = 'move';
+                        var target = jQuery(event.target),
+                            identifier = target.data(this.identifierDataAttribute),
+                            content,
+                            id,
+                            img,
+                            type;
 
-                    if (identifier) {
+                        event.dataTransfer.effectAllowed = 'move';
 
-                        dataTransfer.onDrop = this.doDropContent;
+                        if (identifier) {
 
-                        content = ContentManager.getContentByNode(target);
-                        ContentContainer.addContent(content);
+                            dataTransfer.onDrop = this.doDropContent;
 
-                        type = content.type;
-                        id = content.id;
-                        dataTransfer.id = id;
+                            content = ContentManager.getContentByNode(target);
+                            ContentContainer.addContent(content);
 
-                        img = document.createElement('img');
-                        img.src = content.definition.image;
+                            type = content.type;
+                            id = content.id;
+                            dataTransfer.id = id;
 
-                        event.dataTransfer.setDragImage(img, 50, 50);
-                    } else {
-                        if (target.data(this.typeDataAttribute)) {
-                            dataTransfer.onDrop = this.doDropNewContent;
-                            type = target.data(this.typeDataAttribute);
+                            img = document.createElement('img');
+                            img.src = content.definition.image;
+
+                            event.dataTransfer.setDragImage(img, 50, 50);
+                        } else {
+                            if (target.data(this.typeDataAttribute)) {
+                                dataTransfer.onDrop = this.doDropNewContent;
+                                type = target.data(this.typeDataAttribute);
+                            }
                         }
+
+                        dataTransfer.type = type;
+
+                        ContentManager.buildContentSet();
+
+                        dataTransfer.contentSetDroppable = ContentContainer.findContentSetByAccept(type);
+
+                        this.showHTMLZoneForContentSet(dataTransfer.contentSetDroppable, id);
                     }
-
-                    dataTransfer.type = type;
-
-                    ContentManager.buildContentSet();
-
-                    dataTransfer.contentSetDroppable = ContentContainer.findContentSetByAccept(type);
-
-                    this.showHTMLZoneForContentSet(dataTransfer.contentSetDroppable, id);
                 },
 
                 /**
@@ -255,8 +264,10 @@ define(
                  * @param {Object} event
                  */
                 onDragOver: function (event) {
-                    if (jQuery(event.target).hasClass('bb-dropzone')) {
-                        event.preventDefault();
+                    if (this.isEnabled === true) {
+                        if (jQuery(event.target).hasClass('bb-dropzone')) {
+                            event.preventDefault();
+                        }
                     }
                 },
 
@@ -266,21 +277,23 @@ define(
                  * @returns {Boolean}
                  */
                 onDrop: function (event) {
-                    event.stopPropagation();
+                    if (this.isEnabled === true) {
+                        event.stopPropagation();
 
-                    var target = jQuery(event.target),
-                        config = {},
-                        parent = target.parents(this.dropZoneAttribute + ':first');
+                        var target = jQuery(event.target),
+                            config = {},
+                            parent = target.parents(this.dropZoneAttribute + ':first');
 
-                    config.event = event;
+                        config.event = event;
 
-                    config.position = this.getPosition(target);
-                    config.parent = ContentManager.getContentByNode(parent);
-                    config.type = dataTransfer.type;
+                        config.position = this.getPosition(target);
+                        config.parent = ContentManager.getContentByNode(parent);
+                        config.type = dataTransfer.type;
 
-                    dataTransfer.onDrop.call(this, config);
+                        dataTransfer.onDrop.call(this, config);
 
-                    return false;
+                        return false;
+                    }
                 },
 
                 /**
@@ -289,13 +302,15 @@ define(
                  * @returns {Boolean}
                  */
                 onDragEnd: function (event) {
-                    event.stopPropagation();
+                    if (this.isEnabled === true) {
+                        event.stopPropagation();
 
-                    this.cleanHTMLZoneForContentset();
+                        this.cleanHTMLZoneForContentset();
 
-                    dataTransfer = {};
+                        dataTransfer = {};
 
-                    return false;
+                        return false;
+                    }
                 }
 
                 /***** EVENTS END *****/

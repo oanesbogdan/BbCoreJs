@@ -24,6 +24,8 @@ define(['tb.core', 'contribution.view.index'], function (Core, IndexView) {
             var config = {},
                 view;
 
+            Core.Scope.register('contribution');
+
             if (this.viewIsLoaded !== true) {
                 this.viewIsLoaded = true;
             } else {

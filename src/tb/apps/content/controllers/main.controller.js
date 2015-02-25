@@ -179,6 +179,14 @@ define(
             listenDOMService: function (definitions) {
                 DefinitionManager.setDefinitions(definitions);
 
+                Core.Scope.subscribe('contribution', function () {
+                    DndManager.enable(true);
+                    MouseEventManager.enable(true);
+                }, function () {
+                    DndManager.enable(false);
+                    MouseEventManager.enable(false);
+                });
+
                 DndManager.listen();
                 MouseEventManager.listen();
             }

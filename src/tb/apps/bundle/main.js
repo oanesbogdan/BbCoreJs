@@ -32,39 +32,20 @@ require.config({
     }
 });
 
-define('app.bundle', ['tb.core'], function (BbCore) {
+define('app.bundle', ['tb.core'], function (Core) {
     'use strict';
 
     /**
      * bundle application declaration
      */
-    BbCore.ApplicationManager.registerApplication('bundle', {
-        /**
-         * occurs on initialization of bundle application
-         */
-        onInit: function () {
-            console.log('init bundle application');
-        },
+    Core.ApplicationManager.registerApplication('bundle', {
 
-        /**
-         * occurs on start of bundle application
-         */
         onStart: function () {
-            console.log('start bundle application');
+            Core.Scope.register('bundle');
         },
 
-        /**
-         * occurs on stop of bundle application
-         */
-        onStop: function () {
-            console.log('stop bundle application');
-        },
-
-        /**
-         * occurs on error of bundle application
-         */
-        onError: function () {
-            console.log('error in bundle application');
+        onResume: function () {
+            Core.Scope.register('bundle');
         }
     });
 

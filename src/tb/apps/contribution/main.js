@@ -14,21 +14,22 @@ require.config({
     }
 });
 
-define('app.contribution', ['tb.core', 'content.pluginmanager', 'jquery'], function (BbCore, PluginManager, jQuery) {
+define('app.contribution', ['tb.core', 'content.pluginmanager', 'jquery'], function (Core, PluginManager, jQuery) {
     'use strict';
 
     /**
      * Contribution application declaration
      */
-    BbCore.ApplicationManager.registerApplication('contribution', {
+    Core.ApplicationManager.registerApplication('contribution', {
         /**
          * occurs on initialization of contribution application
          */
         onInit: function () {
             PluginManager.getInstance().init();
-            BbCore.Scope.subscribe('block', jQuery.proxy(this.enablePluginManager, this, "contribution.block"), jQuery.proxy(this.disablePluginManager, this));
-            BbCore.Scope.subscribe('content', jQuery.proxy(this.enablePluginManager, this, "contribution.content"), jQuery.proxy(this.disablePluginManager, this));
-            BbCore.Scope.subscribe('page', jQuery.proxy(this.enablePluginManager, this, "contribution.page"), jQuery.proxy(this.disablePluginManager, this));
+
+            Core.Scope.subscribe('block', jQuery.proxy(this.enablePluginManager, this, "contribution.block"), jQuery.proxy(this.disablePluginManager, this));
+            Core.Scope.subscribe('content', jQuery.proxy(this.enablePluginManager, this, "contribution.content"), jQuery.proxy(this.disablePluginManager, this));
+            Core.Scope.subscribe('page', jQuery.proxy(this.enablePluginManager, this, "contribution.page"), jQuery.proxy(this.disablePluginManager, this));
         },
 
         /**
