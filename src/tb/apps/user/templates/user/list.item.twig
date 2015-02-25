@@ -1,5 +1,5 @@
 <li class="bb5-list-data-item bb5-list-users-item">
-    <div class="bb5-data-toggle bb5-manage-user">
+    <div class="bb5-data-toggle bb5-manage-user" draggable="true" data-user="{{ user.id() }}">
         <div class="bb5-data-toggle-header">
             <div class="bb5-data-picture">
                 <figure><img src="{{ user.picture() }}" alt="{{ user.lastname() }} {{ user.firstname() }}"></figure>
@@ -14,20 +14,20 @@
                     <strong>E-mail :</strong> {{ user.email() }}
                 </p>
                 <p class="col-bb5-22 user-group">
-                    <strong>Group :</strong> {{ user.groups() }}
+                    <strong>Group :</strong> {{ user.groups()|join(', ') }}
                 </p>
                 <p class="col-bb5-20 user-status">
                     <strong>Status :</strong>
-                        <span class="bb5-button-selector">
-                            <a href="#" class="btn btn-default btn-sm fa fa-angle-left">
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <span class="bb5-button-selector-status">{{ user.activated() }}</span>
-                            <a href="#" class="btn btn-default btn-sm fa fa-angle-right">
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </span>
-                    </p>
+                    <span class="bb5-button-selector">
+                        <a href="#" class="btn btn-default btn-sm fa fa-angle-left">
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <span class="bb5-button-selector-status">{{ user.activated() }}</span>
+                        <a href="#" class="btn btn-default btn-sm fa fa-angle-right">
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </span>
+                </p>
             </div>
             <div class="col-bb5-5 bb5-data-drpdown-footer">
                 <p data-user="{{ user.id() }}">

@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jsclass'], function () {
+define(['tb.core.Utils', 'cryptojs.md5', 'jsclass'], function (Utils, CryptoJS) {
     'use strict';
 
     return new JS.Class({
@@ -76,7 +76,9 @@ define(['jsclass'], function () {
         },
 
         picture: function () {
-            return this.data.picture === undefined ? 'resources/toolbar/html/img/default-user.png' : this.data.picture;
+            return this.data.picture === undefined ?
+                    'http://www.gravatar.com/avatar/' + CryptoJS.MD5(this.email().toLowerCase()) + '?s=45&r=pg&d=mm' :
+                    this.data.picture;
         },
 
         firstname: function () {
@@ -88,7 +90,7 @@ define(['jsclass'], function () {
         },
 
         groups: function () {
-            return this.data.groups;
+            return Utils.castAsArray(this.data.groups || []);
         },
 
         api_key: function () {

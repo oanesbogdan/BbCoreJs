@@ -1,15 +1,21 @@
 <li class="bb5-list-data-item bb5-list-group-item">
-    <div id="toolbar-group-{{ group.id }}" class="bb5-manage-group ui-droppable">
+    <div id="toolbar-group-{{ group.id }}" class="bb5-manage-group ui-droppable" dropzone="true" data-group="{{ group.id }}">
         <div class="bb5-manage-group-header">
             <p class="bb5-group-name">{{ group.name }}</p>
             <p>
-                <span class="group-counter">5 Users</span>
+                <span class="group-counter">
+                    {% if group.user_count < 2 %}
+                        {{ group.user_count }} User
+                    {% else %}
+                        {{ group.user_count }} Users
+                    {% endif %}
+                </span>
             </p>
         </div>
         <div class="bb5-manage-group-body">
             <div class="row">
-                <div class="col-sm-6">
-                    <button type="button" class="btn btn-simple btn-xs">
+                <div class="col-sm-6" data-group="{{ group.id }}">
+                    <button type="button" class="btn btn-simple btn-xs btn-action" data-action="showUsers">
                         <i class="fa fa-user"></i> Users
                     </button>
                     <button type="button" class="btn btn-simple btn-xs">

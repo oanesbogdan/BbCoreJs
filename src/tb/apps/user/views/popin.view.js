@@ -17,8 +17,8 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 define(
-    ['require', 'jquery', 'tb.core', 'component!popin', 'text!user/templates/popin.twig'],
-    function (require, jQuery, Core) {
+    ['require', 'jquery', 'tb.core', 'component!dnd', 'component!popin', 'text!user/templates/popin.twig'],
+    function (require, jQuery, Core, dnd) {
         'use strict';
 
         /**
@@ -42,14 +42,91 @@ define(
                 this.popin = this.popinManager.createPopIn(this.popin_config);
                 this.popin.setContent(require('text!user/templates/popin.twig'));
                 this.popin.display();
+                dnd('#toolbar-user-group-popin').addListeners('user');
+                this.bindDnd();
+            },
+
+            bindDnd: function () {
+                var data = {
+                    inDropZone: false,
+                    popin: this,
+                    user: 0,
+                    group: 0
+                };
+
+                Core.Mediator.subscribe('on:user:dragstart', function (event) {
+                    var target = jQuery(event.target);
+
+                    if (target.hasClass('open')) {
+                        target.removeClass('open');
+                    }
+
+                    event.dataTransfer.effectAllowed = 'move';
+                    event.dataTransfer.setData('text', 'user-add-user');
+
+                    this.user =  target.attr('data-user');
+                    this.inDropZone = false;
+                }, data);
+                Core.Mediator.subscribe('on:user:dragenter', function (event) {
+                    if (undefined !== event &&
+                            event.target.getAttribute('dropzone')) {
+
+                        this.inDropZone = true;
+                        this.group = event.target.getAttribute('data-group');
+                    }
+                }, data);
+                Core.Mediator.subscribe('on:user:dragleave', function (event) {
+
+                    if (undefined !== event &&
+                            event.target.getAttribute('dropzone') &&
+                            !event.target.hasChildNodes(event.target.toElement)) {
+
+                        this.inDropZone = false;
+                        this.group = 0;
+                    }
+                }, data);
+                Core.Mediator.subscribe('on:user:dragover', function (event) {
+                    if (undefined !== event &&
+                            true === this.inDropZone) {
+
+                        event.preventDefault();
+                    }
+                }, data);
+                Core.Mediator.subscribe('on:user:drop', function (event) {
+                    if (undefined !== event) {
+                        event.stopPropagation();
+                        event.preventDefault();
+                    }
+
+                    if (0 !== this.group && 0 !== this.user && true === this.inDropZone) {
+                        Core.ApplicationManager.invokeService(
+                            'user.user.addGroup',
+                            this.popin,
+                            this.user,
+                            this.group
+                        );
+                    }
+                }, data);
+                Core.Mediator.subscribe('on:user:dragend', function () {
+                    this.user = 0;
+                    this.group = 0;
+                    this.inDropZone = false;
+                }, data);
             },
 
             bindUsers: function () {
                 var class_name = '.bb5-list-users-item',
                     self = this;
                 jQuery(class_name).click(function () {
-                    jQuery(class_name + ' .bb5-manage-user.open').removeClass('open');
-                    jQuery(this).find('.bb5-manage-user').addClass('open');
+                    var parent_class = '.bb5-manage-user',
+                        user = jQuery(this).find(parent_class),
+                        open = 'open';
+                    if (user.hasClass(open)) {
+                        user.removeClass(open);
+                    } else {
+                        jQuery(class_name + ' ' + parent_class + '.' + open).removeClass(open);
+                        user.addClass(open);
+                    }
                 });
                 jQuery(class_name + ' .btn-edit').click(function () {
                     var user = jQuery(this).parent().attr('data-user');

@@ -33,7 +33,8 @@ define(
                     newService: ['user/views/group/form.view'],
                     editService: ['user/views/group/form.view'],
                     duplicateService: ['user/views/group/duplicate.view'],
-                    deleteService: ['user/views/group/delete.view']
+                    deleteService: ['user/views/group/delete.view'],
+                    showUsersService: ['user/repository/user.repository', 'user/views/user/view.list', 'text!user/templates/user/list.twig']
                 }
             },
 
@@ -100,7 +101,6 @@ define(
                 });
             },
 
-
             deleteService: function (req, popin, group_id) {
                 var self = this,
                     View = req('user/views/group/delete.view'),
@@ -113,7 +113,7 @@ define(
                         function () {
                             self.repository.delete(group_id).done(function () {
                                 self.indexService(require, popin);
-                                Notify.success('group ' + group.login() + ' has been deleted.');
+                                Notify.success('group ' + group.name + ' has been deleted.');
                             });
                             view.destruct();
                         },
@@ -122,6 +122,37 @@ define(
                         }
                     );
                 });
+            },
+
+            showUsersService: function (req, main_popin, group_id) {
+                req('user/repository/user.repository').findBy({'groups': group_id}).then(
+                    function (users) {
+                        var View = req('user/views/user/view.list'),
+                            tpl = req('text!user/templates/user/list.twig'),
+                            popin = main_popin.popinManager.createSubPopIn(
+                                main_popin.popin,
+                                {
+                                    id: 'new-user-subpopin',
+                                    width: 250,
+                                    top: 180
+                                }
+                            ),
+                            i;
+
+                        users = Utils.castAsArray(users);
+
+                        for (i = users.length - 1; i >= 0; i = i - 1) {
+                            users[i] = new View({user: users[i]});
+                        }
+
+                        popin.setContent(renderer.render(tpl, {users: users}));
+
+                        popin.display();
+                    },
+                    function () {
+                        Notify.success('group ' + group_id + ' has been called.');
+                    }
+                );
             }
         });
     }

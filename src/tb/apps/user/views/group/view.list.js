@@ -17,8 +17,8 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 define(
-    ['require', 'tb.core.Renderer', 'text!user/templates/group/list.item.twig'],
-    function (require, renderer) {
+    ['require', 'tb.core.Renderer', 'tb.core.Utils', 'text!user/templates/group/list.item.twig'],
+    function (require, renderer, Utils) {
         'use strict';
 
         /**
@@ -32,6 +32,7 @@ define(
              */
             initialize: function (data) {
                 this.group = data.group;
+                this.group.user_count = Utils.castAsArray(data.group.users || []).length;
             },
 
             /**
