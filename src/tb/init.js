@@ -56,18 +56,27 @@ define(['jquery'], function (jQuery) {
                     [
                         'tb.core.DriverHandler',
                         'tb.core.RestDriver',
+                        'tb.core.Renderer',
                         'component!authentication',
                         'component!translator'
                     ],
-                    function (DriverHandler, RestDriver, AuthenticationHandler) {
+                    function (DriverHandler, RestDriver, Renderer, AuthenticationHandler, Translator) {
 
                         RestDriver.setBaseUrl(jQuery(self.tbSelector).attr('data-api'));
                         DriverHandler.addDriver('rest', RestDriver);
 
-                        var initConfig = function () {
+                        var initOnConnect = function () {
                                 DriverHandler.read(self.configUri).done(function (config) {
                                     Core.initConfig(config);
+
+                                    Translator.init(Core.config('component:translator'));
+
+                                    Renderer.addFunction('trans', jQuery.proxy(Translator.translate, Translator));
+                                    Renderer.addFilter('trans', jQuery.proxy(Translator.translate, Translator));
+
+                                    require(['component!exceptions-viewer'], {});
                                 });
+
                             },
                             router = null;
 
@@ -83,13 +92,11 @@ define(['jquery'], function (jQuery) {
                         });
 
                         if (true === already_connected) {
-                            initConfig();
-                            require(['component!exceptions-viewer'], {});
+                            initOnConnect();
                         } else {
                             Core.Mediator.subscribe('onSuccessLogin', function () {
                                 self.toolBarDisplayed = true;
-                                initConfig();
-                                require(['component!exceptions-viewer'], {});
+                                initOnConnect();
                             });
                             AuthenticationHandler.showForm();
                         }
