@@ -5,6 +5,24 @@ define(['require', 'tb.core', "tb.core.Utils"], function (require) {
         bbUtils = require("tb.core.Utils");
     describe("Utils spec", function () {
         /* setup */
+        it("Test castAsArray", function () {
+            var obj = {
+                    'test': 'value',
+                    2: 'value',
+                    '3': 'value3'
+                },
+
+                arr = [
+                    'value',
+                    'value'
+                ],
+
+                objInArr = bbUtils.castAsArray(obj);
+
+            expect(objInArr instanceof Array).toBe(true);
+            expect(objInArr.length).toBe(3);
+            expect(bbUtils.castAsArray(arr)).toBe(arr);
+        });
         it("Creates a SmartList", function () {
             smartList = new core.SmartList();
             expect(smartList).toBeDefined();
