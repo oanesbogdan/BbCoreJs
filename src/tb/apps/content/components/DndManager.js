@@ -159,8 +159,7 @@ define(
                 getPosition: function (zone) {
                     var prev = zone.prev('.' + this.contentClass),
                         parent = zone.parents(this.dropZoneAttribute + ':first'),
-                        identifier = parent.data(this.identifierDataAttribute),
-                        contentSet = ContentManager.buildElement(ContentManager.retrievalObjectIdentifier(identifier)),
+                        contentSet = ContentManager.getContentByNode(parent),
                         pos = 0;
 
                     if (prev.length > 0) {
@@ -224,7 +223,7 @@ define(
 
                         dataTransfer.onDrop = this.doDropContent;
 
-                        content = ContentManager.buildElement(ContentManager.retrievalObjectIdentifier(identifier));
+                        content = ContentManager.getContentByNode(target);
                         ContentContainer.addContent(content);
 
                         type = content.type;
@@ -271,13 +270,12 @@ define(
 
                     var target = jQuery(event.target),
                         config = {},
-                        parent = target.parents(this.dropZoneAttribute + ':first'),
-                        parentObjectIdentifier = ContentManager.retrievalObjectIdentifier(parent.data(this.identifierDataAttribute));
+                        parent = target.parents(this.dropZoneAttribute + ':first');
 
                     config.event = event;
 
                     config.position = this.getPosition(target);
-                    config.parent = ContentManager.buildElement(parentObjectIdentifier);
+                    config.parent = ContentManager.getContentByNode(parent);
                     config.type = dataTransfer.type;
 
                     dataTransfer.onDrop.call(this, config);

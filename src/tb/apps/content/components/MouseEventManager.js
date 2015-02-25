@@ -68,8 +68,7 @@ define(
             onClick: function (event) {
                 var currentSelected = jQuery('.' + this.contentSelectedClass),
                     currentTarget = jQuery(event.currentTarget),
-                    identifier = currentTarget.data(this.identifierDataAttribute),
-                    content = ContentManager.buildElement(ContentManager.retrievalObjectIdentifier(identifier)),
+                    content = ContentManager.getContentByNode(currentTarget),
                     currentContent;
 
                 if (ContentManager.isUsable(content.type)) {
