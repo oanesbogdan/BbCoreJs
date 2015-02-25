@@ -1,6 +1,9 @@
-define(['require', 'jquery', 'jsclass', 'datetimepicker', 'text!cs-templates/searchengine.tpl'], function (require, jQuery) {
+define(['tb.core', 'require', 'jquery', 'jsclass', 'datetimepicker', 'text!cs-templates/searchengine.tpl'], function (Core, require, jQuery) {
     'use strict';
     var ContentSearchEngine = new JS.Class({
+
+        mainSelector: Core.config('wrapper_toolbar_selector'),
+
         defaultConfig: {
             datepickerClass: '.show-calendar',
             datepickerFieldClass: '.bb5-datepicker',
@@ -19,11 +22,13 @@ define(['require', 'jquery', 'jsclass', 'datetimepicker', 'text!cs-templates/sea
         },
 
         initDatepicker: function () {
+            var self = this;
+
             this.widget.find(this.config.datepickerFieldClass).datetimepicker({
                 timepicker: false,
                 closeOnDateSelect: true,
                 format: "d/m/Y",
-                parentID: "#bb5-ui",
+                parentID: self.mainSelector,
                 onSelectDate: function (ct, field) {
                     jQuery(field).data('selectedTime', Math.ceil(ct.getTime() / 1000));
                 }

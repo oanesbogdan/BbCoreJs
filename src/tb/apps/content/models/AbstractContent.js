@@ -32,7 +32,7 @@ define(
 
         var AbstractContent = new JS.Class({
 
-            mainTag: '#bb5-ui',
+            mainTag: Core.config('wrapper_toolbar_selector'),
 
             contentClass: '.bb-content',
 

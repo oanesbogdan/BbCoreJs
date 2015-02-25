@@ -17,11 +17,13 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core.Renderer', 'BackBone', 'jquery'], function (Renderer, Backbone, jQuery) {
+define(['tb.core', 'tb.core.Renderer', 'BackBone', 'jquery'], function (Core, Renderer, Backbone, jQuery) {
 
     'use strict';
 
     var FormView = Backbone.View.extend({
+
+        el: Core.config('wrapper_toolbar_selector'),
 
         /**
          * Initialize of FormView
@@ -30,7 +32,6 @@ define(['tb.core.Renderer', 'BackBone', 'jquery'], function (Renderer, Backbone,
          * @param {Object} form
          */
         initialize: function (template, groups, form) {
-            this.el = '#bb5-ui';
             this.form_button_id = '#bb-submit-form';
             this.template = template;
             this.groups = groups;

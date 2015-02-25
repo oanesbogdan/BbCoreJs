@@ -1,7 +1,10 @@
-define(["jquery", "tb.component/treeview/TreeView", "tb.component/popin/main"], function (jQuery, TreeViewMng, PopInMng) {
+define(['tb.core', "jquery", "tb.component/treeview/TreeView", "tb.component/popin/main"], function (Core, jQuery, TreeViewMng, PopInMng) {
     'use strict';
     var popInTemplate = jQuery("<div class='bb5-windowpane-tree'><div class='action-ctn'><input type='checkbox'/>Show folder</div><div class='bb5-treeview'>Loading...</div></div>").clone(),
         PopInTreeview = new JS.Class({
+
+            mainSelector: Core.config('wrapper_toolbar_selector'),
+
             defaultConfig: {
                 height: 300,
                 width: 350,
@@ -54,7 +57,7 @@ define(["jquery", "tb.component/treeview/TreeView", "tb.component/popin/main"], 
                 this.isLoaded = true;
             },
             createPopIn: function () {
-                PopInMng.init("#bb5-ui");
+                PopInMng.init(this.mainSelector);
                 return PopInMng.createPopIn(this.options);
             },
             display: function () {

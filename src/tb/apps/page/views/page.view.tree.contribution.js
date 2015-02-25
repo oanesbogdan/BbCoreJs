@@ -19,6 +19,7 @@
 
 define(
     [
+        'tb.core',
         'tb.core.ApplicationManager',
         'page.view.tree',
         'component!contextmenu',
@@ -27,7 +28,7 @@ define(
         'tb.core.Request',
         'tb.core.RequestHandler'
     ],
-    function (ApplicationManager, TreeView, ContextMenu, PageRepository, jQuery, Request, RequestHandler) {
+    function (Core, ApplicationManager, TreeView, ContextMenu, PageRepository, jQuery, Request, RequestHandler) {
 
         'use strict';
 
@@ -36,6 +37,8 @@ define(
          * @type {Object} Backbone.View
          */
         var PageViewTreeContribution = Backbone.View.extend({
+
+            mainSelector: Core.config('wrapper_toolbar_selector'),
 
             /**
              * Initialize of PageViewTreeContribution
@@ -139,7 +142,7 @@ define(
             buildContextMenuConfig: function () {
                 var self = this,
                     config = {
-                        domTag: '#bb5-ui',
+                        domTag: self.mainSelector,
                         menuActions : [
                             {
                                 btnCls: "bb5-context-menu-add",
