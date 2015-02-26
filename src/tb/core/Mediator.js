@@ -111,7 +111,17 @@ define('tb.core.Mediator', ['tb.core.Api'], function (Api) {
                 try {
                     this.topics[topic][i].execute.apply(this.topics[topic][i], args);
                 } catch (e) {
-                    Api.exception.silent('MediatorException', 12201, 'Mediator as catch an error on "' + topic + '" topic with the following message: "' + e + '"');
+                    Api.exception.silent(
+                        'MediatorException',
+                        12201,
+                        'Mediator caught an error when the topic : "' + topic + '" was published.',
+                        {
+                            topic: topic,
+                            context: this.topics[topic][i].context,
+                            callback: this.topics[topic][i].callback,
+                            args: args
+                        }
+                    );
                 }
                 if (this.subscribe_once.hasOwnProperty(topic)) {
                     for (i = 0; i < this.subscribe_once[topic].length; i = i + 1) {
