@@ -23,6 +23,7 @@ define(['tb.core', 'tb.core.Renderer', 'tb.core.ApplicationManager', 'BackBone',
     var NodeSelector = Backbone.View.extend({
 
         nodeSelectorBtnClass: 'node-selector-btn',
+        mainSelector: Core.config('wrapper_toolbar_selector'),
 
         /**
          * Initialize of node selector
@@ -40,7 +41,7 @@ define(['tb.core', 'tb.core.Renderer', 'tb.core.ApplicationManager', 'BackBone',
          * Bind events
          */
         bindEvents: function () {
-            jQuery('#bb5-ui').on('click', 'form#' + this.el + ' .' + this.nodeSelectorBtnClass, jQuery.proxy(this.onClick, this));
+            jQuery(this.mainSelector).on('click', 'form#' + this.el + ' .' + this.nodeSelectorBtnClass, jQuery.proxy(this.onClick, this));
         },
 
         /**

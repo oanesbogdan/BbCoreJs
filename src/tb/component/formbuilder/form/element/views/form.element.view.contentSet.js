@@ -19,6 +19,7 @@
 
 define(
     [
+        'tb.core',
         'require',
         'tb.core.Renderer',
         'BackBone',
@@ -27,13 +28,14 @@ define(
         'tb.core.ApplicationManager',
         'component!contentselector'
     ],
-    function (require, Renderer, Backbone, jQuery, itemTemplate) {
+    function (Core, require, Renderer, Backbone, jQuery, itemTemplate) {
 
         'use strict';
 
         var ContentSetView = Backbone.View.extend({
 
             blockClass: '.bb-block',
+            mainSelector: Core.config('wrapper_toolbar_selector'),
 
             initialize: function (template, formTag, element) {
 
@@ -54,12 +56,14 @@ define(
             },
 
             bindEvents: function () {
-                jQuery('#bb5-ui').on('click', 'form#' + this.el + ' ' + this.trashId, jQuery.proxy(this.onDelete, this));
-                jQuery('#bb5-ui').on('click', 'form#' + this.el + ' ' + this.moveClass, jQuery.proxy(this.onMove, this));
+                var mainNode = jQuery(this.mainSelector);
 
-                jQuery('#bb5-ui').on('click', 'form#' + this.el + ' ' + this.trashAllId, jQuery.proxy(this.onDeleteAll, this));
-                jQuery('#bb5-ui').on('click', 'form#' + this.el + ' ' + this.addContentId, jQuery.proxy(this.onAddContent, this));
-                jQuery('#bb5-ui').on('click', 'form#' + this.el + ' ' + this.searchContentId, jQuery.proxy(this.onSearchContent, this));
+                mainNode.on('click', 'form#' + this.el + ' ' + this.trashId, jQuery.proxy(this.onDelete, this));
+                mainNode.on('click', 'form#' + this.el + ' ' + this.moveClass, jQuery.proxy(this.onMove, this));
+
+                mainNode.on('click', 'form#' + this.el + ' ' + this.trashAllId, jQuery.proxy(this.onDeleteAll, this));
+                mainNode.on('click', 'form#' + this.el + ' ' + this.addContentId, jQuery.proxy(this.onAddContent, this));
+                mainNode.on('click', 'form#' + this.el + ' ' + this.searchContentId, jQuery.proxy(this.onSearchContent, this));
             },
 
             onSearchContent: function () {

@@ -9,7 +9,7 @@ require.config({
         'content.datastore': 'src/tb/component/contentselector/datastore/content.datastore'
     }
 });
-define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'component!popin', 'underscore', 'BackBone', 'component!rangeselector', 'component!dataview', 'component!mask', 'text!cs-templates/layout.tpl', 'content.renderer', 'cs-control/searchengine.control', 'jquery-layout', "component!datastore", "component!treeview", "component!pagination", "node.formater", 'nunjucks', 'content.datastore'], function (require, jQuery, layout, PopInMng) {
+define(['tb.core', 'require', 'jquery', 'text!cs-templates/layout.tpl', 'component!popin', 'underscore', 'BackBone', 'component!rangeselector', 'component!dataview', 'component!mask', 'text!cs-templates/layout.tpl', 'content.renderer', 'cs-control/searchengine.control', 'jquery-layout', "component!datastore", "component!treeview", "component!pagination", "node.formater", 'nunjucks', 'content.datastore'], function (Core, require, jQuery, layout, PopInMng) {
     'use strict';
     var formater = require('node.formater'),
         underscore = require('underscore'),
@@ -17,6 +17,7 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'component!popin', 
         ContentSelectorWidget = new JS.Class({
             VIEW_MODE: "view",
             EDIT_MODE: "edit",
+            mainSelector: Core.config('wrapper_toolbar_selector'),
             defautConfig: {
                 autoDisplay: true,
                 dialogConfig: {
@@ -326,7 +327,7 @@ define(['require', 'jquery', 'text!cs-templates/layout.tpl', 'component!popin', 
             },
 
             initPopIn: function () {
-                PopInMng.init("#bb5-ui");
+                PopInMng.init(this.mainSelector);
                 return PopInMng.createPopIn(this.config.dialogConfig);
             },
 

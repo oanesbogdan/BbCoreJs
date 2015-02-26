@@ -17,7 +17,7 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('tb.component/popin/main', ['tb.component/popin/PopIn', 'jquery', 'jqueryui', 'jsclass'], function (PopIn, jQuery) {
+define('tb.component/popin/main', ['tb.core', 'tb.component/popin/PopIn', 'jquery', 'jqueryui', 'jsclass'], function (Core, PopIn, jQuery) {
     'use strict';
 
     /**
@@ -42,7 +42,7 @@ define('tb.component/popin/main', ['tb.component/popin/PopIn', 'jquery', 'jquery
             /**
              * @type {String}
              */
-            toolbarId: '#bb5-ui',
+            toolbarId: Core.config('wrapper_toolbar_selector'),
 
             /**
              * @type {String}

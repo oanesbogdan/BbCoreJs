@@ -17,10 +17,12 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core.Renderer', 'BackBone', 'component!popin', 'jquery'], function (Renderer, Backbone, PopinManager, jQuery) {
+define(['tb.core', 'tb.core.Renderer', 'BackBone', 'component!popin', 'jquery'], function (Core, Renderer, Backbone, PopinManager, jQuery) {
     'use strict';
 
     var ContentView = Backbone.View.extend({
+
+        mainSelector: Core.config('wrapper_toolbar_selector'),
 
         initialize: function (template, formTag, element) {
             this.el = formTag;
@@ -41,7 +43,7 @@ define(['tb.core.Renderer', 'BackBone', 'component!popin', 'jquery'], function (
         },
 
         bindEvents: function () {
-            jQuery('#bb5-ui').on('click', this.updateBtnId, jQuery.proxy(this.onUpdateClick, this));
+            jQuery(this.mainSelector).on('click', this.updateBtnId, jQuery.proxy(this.onUpdateClick, this));
         },
 
         onUpdateClick: function () {

@@ -46,7 +46,7 @@ define('app.main', ['tb.core', 'tb.core.ApplicationManager', 'main.view.index', 
          */
         onInit: function () {
             this.config = {
-                tbSelector: '#bb5-ui'
+                tbSelector: Core.config('wrapper_toolbar_selector')
             };
 
             var toolbar = jQuery(this.config.tbSelector),

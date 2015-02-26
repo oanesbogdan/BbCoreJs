@@ -55,6 +55,8 @@ define(
              */
             el: '#page-contrib-tab',
 
+            mainSelector: Core.config('wrapper_toolbar_selector'),
+
             schedulingFormTag: '#contribution-scheduling-form',
             schedulingBtnTag: '#contribution-scheduling-btn',
             schedulingTag: '#contribution-scheduling',
@@ -190,7 +192,7 @@ define(
                             height: 120,
                             autoOpen: false,
                             resizable: false,
-                            appendTo: "#bb5-ui .bb5-dialog-container",
+                            appendTo: self.mainSelector + " .bb5-dialog-container",
                             dialogClass: "ui-dialog-no-title ui-dialog-pinned-to-banner"
                         });
 

@@ -17,10 +17,12 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core.Renderer', 'BackBone', 'jquery'], function (Renderer, Backbone, jQuery) {
+define(['tb.core', 'tb.core.Renderer', 'BackBone', 'jquery'], function (Core, Renderer, Backbone, jQuery) {
     'use strict';
 
     var DatetimepickerView = Backbone.View.extend({
+
+        mainSelector: Core.config('wrapper_toolbar_selector'),
 
         initialize: function (template, formTag, element) {
             this.el = formTag;
@@ -29,14 +31,15 @@ define(['tb.core.Renderer', 'BackBone', 'jquery'], function (Renderer, Backbone,
         },
 
         bindEvents: function () {
-            jQuery('#bb5-ui').on('click', 'form#' + this.el + ' input[name=' + this.element.getKey() + ']', this.manageDatetimepicker);
+            jQuery(this.mainSelector).on('click', 'form#' + this.el + ' input[name=' + this.element.getKey() + ']', this.manageDatetimepicker);
         },
 
         manageDatetimepicker: function () {
-            var element = jQuery(this);
+            var self = this,
+                element = jQuery(this);
 
             element.datetimepicker({
-                parentID: '#bb5-ui'
+                parentID: self.mainSelector
             });
 
             element.datetimepicker('show');
