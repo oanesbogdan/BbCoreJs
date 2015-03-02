@@ -1,4 +1,48 @@
 {
     "app_validate": "Validate",
-    "app_only_default": "Only default"
+    "app_only_default": "Only default",
+
+    "all": "All",
+
+    "cancel": "Cancel",
+    "create_group": "Create group",
+    "create_user": "Create user",
+
+    "data_base": "Data base",
+    "delete": "Delete",
+
+    "edit": "Edit",
+    "email": "E-mail",
+    "export": "Export",
+
+    "filters": "Filters",
+    "find_users": "Find users",
+
+    "group": "Group",
+    "groups": "Groups",
+
+    "import": "Import",
+
+    "loading": "Loading",
+
+    "next": "Next",
+
+    "previous": "Previous",
+
+    "remove_group_confirmation_message": "Do you want remove the group",
+    "remove_user_confirmation_message": "Do you want remove the user",
+    "rename": "Rename",
+    "restore": "Restore",
+
+    "save": "Save",
+    "search": "Search",
+    "status": "Status",
+
+    "user": "User",
+    "user_filters": "User filters",
+    "users": "Users",
+
+    "validate": "Validate",
+
+    "write_and_acces": "write/access"
 }
