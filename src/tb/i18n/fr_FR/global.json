@@ -1,3 +1,47 @@
 {
-    "app_validate": "Valider"
+    "app_validate": "Valider",
+
+    "all": "Tous",
+
+    "cancel": "Annuler",
+    "create_group": "Créer un groupe",
+    "create_user": "Créer un utilisateur",
+
+    "data_base": "Base de données",
+    "delete": "Supprimer",
+
+    "edit": "Édition",
+    "email": "E-mail",
+    "export": "Exporter",
+
+    "filters": "Filtres",
+    "find_users": "Rechercher des utilisateurs",
+
+    "group": "Groupe",
+    "groups": "Groupes",
+
+    "import": "Importer",
+
+    "loading": "Chargement",
+
+    "next": "Suivant",
+
+    "previous": "Précédent",
+
+    "remove_group_confirmation_message": "Êtes-vous sur de vouloir supprimer le groupe",
+    "remove_user_confirmation_message": "Êtes-vous sur de vouloir supprimer l'utilisateur",
+    "rename": "Renomer",
+    "restore": "Restaurer",
+
+    "save": "Sauvegarder",
+    "search": "Rechercher",
+    "status": "Statut",
+
+    "user": "Utilisateur",
+    "user_filters": "Filtrer les utilisateurs",
+    "users": "Utilisateurs",
+
+    "validate": "Valider",
+
+    "write_and_acces": "doits/accés"
 }

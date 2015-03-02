@@ -17,8 +17,8 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 define(
-    ['require', 'tb.core.Renderer', 'text!user/templates/user/list.item.twig'],
-    function (require, renderer) {
+    ['require', 'tb.core.Renderer', 'user/entity/user', 'text!user/templates/user/list.item.twig'],
+    function (require, renderer, User) {
         'use strict';
 
         /**
@@ -31,7 +31,8 @@ define(
              * Initialize of UserViewList
              */
             initialize: function (data) {
-                this.user = data.user;
+                this.user = new User();
+                this.user.populate(data.user);
             },
 
             /**

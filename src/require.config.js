@@ -38,7 +38,10 @@ require.config({
         'lib.jqtree': 'bower_components/jqtree/tree.jquery',
         'jssimplepagination': 'bower_components/jssimplepagination/jquery.simplePagination',
         'bootstrapjs': 'bower_components/bootstrap/dist/js/bootstrap.min',
-        'ckeeditor' : 'bower_components/ckeeditor/ckeditor'
+        'ckeeditor': 'bower_components/ckeeditor/ckeditor',
+
+        'cryptojs.core': 'bower_components/cryptojslib/components/core-min',
+        'cryptojs.md5': 'bower_components/cryptojslib/components/md5-min'
     },
     'shim': {
         underscore: {
@@ -53,6 +56,13 @@ require.config({
         },
         'jquery-layout': {
             deps: ['jquery']
+        },
+        'cryptojs.core': {
+            exports: "CryptoJS"
+        },
+        'cryptojs.md5': {
+            deps: ['cryptojs.core'],
+            exports: "CryptoJS"
         }
     },
     deps: ['src/tb/init'],

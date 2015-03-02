@@ -50,15 +50,12 @@ define(
 
                 this.repository.paginate().then(
                     function (users) {
-                        var i,
-                            user;
+                        var i;
 
                         users = Utils.castAsArray(users);
 
                         for (i = users.length - 1; i >= 0; i = i - 1) {
-                            user = new User();
-                            user.populate(users[i]);
-                            users[i] = new View({user: user});
+                            users[i] = new View({user: users[i]});
                         }
 
                         popin.addUsers(renderer.render(template, {users: users}));
@@ -126,6 +123,38 @@ define(
                         }
                     );
                 });
+            },
+
+            addGroupService: function (popin, user_id, group_id) {
+                var user = new User(),
+                    self = this;
+
+                self.repository.find(user_id).then(
+                    function (user_values) {
+                        if (undefined === user_values.groups[group_id]) {
+                            user_values.groups[group_id] = 'added';
+                            user.populate({
+                                id: user_id,
+                                groups: user_values.groups
+                            });
+
+                            self.repository.save(user.getObject()).then(
+                                function () {
+                                    Core.ApplicationManager.invokeService('user.group.index', popin);
+                                    Notify.success('User update success.');
+                                },
+                                function () {
+                                    Notify.error('User update fail.');
+                                }
+                            );
+                        }
+                    },
+                    function () {
+                        self.indexService(require, popin);
+                        Notify.error('User not found.');
+                    }
+                );
+
             }
         });
     }
