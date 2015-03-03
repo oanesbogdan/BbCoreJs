@@ -23,7 +23,7 @@ define(['tb.core', 'tb.core.Renderer', 'tb.core.ApplicationManager', 'BackBone',
     var NodeSelector = Backbone.View.extend({
 
         nodeSelectorBtnClass: 'node-selector-btn',
-        mainSelector: Core.config('wrapper_toolbar_selector'),
+        mainSelector: Core.get('wrapper_toolbar_selector'),
 
         /**
          * Initialize of node selector

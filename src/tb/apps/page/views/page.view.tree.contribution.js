@@ -38,7 +38,7 @@ define(
          */
         var PageViewTreeContribution = Backbone.View.extend({
 
-            mainSelector: Core.config('wrapper_toolbar_selector'),
+            mainSelector: Core.get('wrapper_toolbar_selector'),
 
             /**
              * Initialize of PageViewTreeContribution

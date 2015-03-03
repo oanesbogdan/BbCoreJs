@@ -42,7 +42,7 @@ define('tb.component/popin/main', ['tb.core', 'tb.component/popin/PopIn', 'jquer
             /**
              * @type {String}
              */
-            toolbarId: Core.config('wrapper_toolbar_selector'),
+            toolbarId: Core.get('wrapper_toolbar_selector'),
 
             /**
              * @type {String}

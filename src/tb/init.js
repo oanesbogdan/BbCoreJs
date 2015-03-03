@@ -21,94 +21,96 @@ define(['jquery'], function (jQuery) {
 
     'use strict';
 
-    var init = {
+    var selector = jQuery('[data-toolbar-selector="true"]'),
+        toolbarSelector = '#' + selector.attr('id'),
+        init = {
 
-        tbSelector: '#bb5-ui',
+            toolBarDisplayed: false,
 
-        toolBarDisplayed: false,
+            configUri: 'toolbar/config',
 
-        configUri: 'toolbar/config',
+            listen: function () {
+                var autoStart = selector.attr('data-autostart');
 
-        listen: function () {
-            var autoStart = jQuery(this.tbSelector).attr('data-autostart');
-
-            if (autoStart === undefined || autoStart === false) {
-                jQuery(document).bind('keyup', jQuery.proxy(this.manageAccess, this));
-            } else {
-                this.load(true);
-            }
-        },
-
-        manageAccess: function (event) {
-            if (!this.toolBarDisplayed) {
-                if (!event.altKey || !event.ctrlKey || 66 !== event.keyCode) {
-                    return;
+                if (autoStart === undefined || autoStart === false) {
+                    jQuery(document).bind('keyup', jQuery.proxy(this.manageAccess, this));
+                } else {
+                    this.load(true);
                 }
-                this.load(false);
-            }
-        },
+            },
 
-        load: function (already_connected) {
-            var self = this;
+            manageAccess: function (event) {
+                if (!this.toolBarDisplayed) {
+                    if (!event.altKey || !event.ctrlKey || 66 !== event.keyCode) {
+                        return;
+                    }
+                    this.load(false);
+                }
+            },
 
-            require(['tb.core'], function (Core) {
-                require(
-                    [
-                        'tb.core.DriverHandler',
-                        'tb.core.RestDriver',
-                        'tb.core.Renderer',
-                        'component!authentication',
-                        'component!translator'
-                    ],
-                    function (DriverHandler, RestDriver, Renderer, AuthenticationHandler, Translator) {
+            load: function (already_connected) {
+                var self = this;
 
-                        RestDriver.setBaseUrl(jQuery(self.tbSelector).attr('data-api'));
-                        DriverHandler.addDriver('rest', RestDriver);
+                require(['tb.core'], function (Core) {
 
-                        var initOnConnect = function () {
-                                DriverHandler.read(self.configUri).done(function (config) {
-                                    Core.initConfig(config);
+                    Core.set('is_connected', false);
+                    Core.set('wrapper_toolbar_selector', toolbarSelector);
 
-                                    Translator.init(Core.config('component:translator'));
+                    require(
+                        [
+                            'tb.core.DriverHandler',
+                            'tb.core.RestDriver',
+                            'tb.core.Renderer',
+                            'component!authentication',
+                            'component!translator'
+                        ],
+                        function (DriverHandler, RestDriver, Renderer, AuthenticationHandler, Translator) {
 
-                                    Renderer.addFunction('trans', jQuery.proxy(Translator.translate, Translator));
-                                    Renderer.addFilter('trans', jQuery.proxy(Translator.translate, Translator));
+                            RestDriver.setBaseUrl(selector.attr('data-api'));
+                            DriverHandler.addDriver('rest', RestDriver);
 
-                                    require(['component!exceptions-viewer'], {});
-                                });
+                            var initOnConnect = function () {
+                                    DriverHandler.read(self.configUri).done(function (config) {
+                                        Core.initConfig(config);
 
-                            },
-                            router = null;
+                                        Translator.init(Core.config('component:translator'));
 
-                        Core.set('is_connected', false);
+                                        Renderer.addFunction('trans', jQuery.proxy(Translator.translate, Translator));
+                                        Renderer.addFilter('trans', jQuery.proxy(Translator.translate, Translator));
 
-                        Core.ApplicationManager.on('routesLoaded', function () {
-                            /*cf http://backbonejs.org/#Router for available options */
-                            router = Core.RouteManager.initRouter({silent: true});
-                        });
+                                        require(['component!exceptions-viewer'], {});
+                                    });
 
-                        Core.ApplicationManager.on('appIsReady', function (app) {
-                            router.navigate(app.getMainRoute());
-                        });
+                                },
+                                router = null;
 
-                        if (true === already_connected) {
-                            initOnConnect();
-                        } else {
-                            Core.Mediator.subscribe('onSuccessLogin', function () {
-                                self.toolBarDisplayed = true;
-                                initOnConnect();
+                            Core.ApplicationManager.on('routesLoaded', function () {
+                                /*cf http://backbonejs.org/#Router for available options */
+                                router = Core.RouteManager.initRouter({silent: true});
                             });
-                            AuthenticationHandler.showForm();
-                        }
-                    },
-                    self.onError
-                );
-            }, this.onError);
-        },
 
-        onError: function (error) {
-            console.log(error);
-        }
-    };
+                            Core.ApplicationManager.on('appIsReady', function (app) {
+                                router.navigate(app.getMainRoute());
+                            });
+
+                            if (true === already_connected) {
+                                initOnConnect();
+                            } else {
+                                Core.Mediator.subscribe('onSuccessLogin', function () {
+                                    self.toolBarDisplayed = true;
+                                    initOnConnect();
+                                });
+                                AuthenticationHandler.showForm();
+                            }
+                        },
+                        self.onError
+                    );
+                }, this.onError);
+            },
+
+            onError: function (error) {
+                console.log(error);
+            }
+        };
     return init;
 });

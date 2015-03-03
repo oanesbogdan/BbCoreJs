@@ -40,7 +40,7 @@ define(
              */
             el: '.bb5-dialog-container',
 
-            mainSelector: Core.config('wrapper_toolbar_selector'),
+            mainSelector: Core.get('wrapper_toolbar_selector'),
 
             /**
              * Initialize of BundleViewList
