@@ -7,6 +7,8 @@
     "cancel": "Cancel",
     "create_group": "Create group",
     "create_user": "Create user",
+    "creation_date": "Creation date",
+    "current_directory": "Current directory",
 
     "data_base": "Data base",
     "delete": "Delete",
@@ -14,6 +16,7 @@
     "edit": "Edit",
     "email": "E-mail",
     "export": "Export",
+    "external_link": "External link",
 
     "filters": "Filters",
     "find_users": "Find users",
@@ -22,8 +25,12 @@
     "groups": "Groups",
 
     "import": "Import",
+    "internal_link": "Internal link",
 
+    "link_selector_label": "Link Selector",
     "loading": "Loading",
+    
+    "modified_date": "Modified date",
 
     "next": "Next",
 
@@ -36,8 +43,10 @@
 
     "save": "Save",
     "search": "Search",
+    "select": "Select",
     "status": "Status",
-
+    
+    "url_required": "Url is required",
     "user": "User",
     "user_filters": "User filters",
     "users": "Users",
