@@ -32,7 +32,7 @@ define(
 
         var AbstractContent = new JS.Class({
 
-            mainTag: Core.config('wrapper_toolbar_selector'),
+            mainTag: Core.get('wrapper_toolbar_selector'),
 
             contentClass: '.bb-content',
 

@@ -22,7 +22,7 @@ define(['tb.core', 'tb.core.Renderer', 'BackBone', 'component!popin', 'jquery'],
 
     var ContentView = Backbone.View.extend({
 
-        mainSelector: Core.config('wrapper_toolbar_selector'),
+        mainSelector: Core.get('wrapper_toolbar_selector'),
 
         initialize: function (template, formTag, element) {
             this.el = formTag;

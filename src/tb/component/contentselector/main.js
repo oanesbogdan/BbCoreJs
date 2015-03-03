@@ -17,7 +17,7 @@ define(['tb.core', 'require', 'jquery', 'text!cs-templates/layout.tpl', 'compone
         ContentSelectorWidget = new JS.Class({
             VIEW_MODE: "view",
             EDIT_MODE: "edit",
-            mainSelector: Core.config('wrapper_toolbar_selector'),
+            mainSelector: Core.get('wrapper_toolbar_selector'),
             defautConfig: {
                 autoDisplay: true,
                 dialogConfig: {

@@ -55,7 +55,7 @@ define(
              */
             el: '#page-contrib-tab',
 
-            mainSelector: Core.config('wrapper_toolbar_selector'),
+            mainSelector: Core.get('wrapper_toolbar_selector'),
 
             schedulingFormTag: '#contribution-scheduling-form',
             schedulingBtnTag: '#contribution-scheduling-btn',

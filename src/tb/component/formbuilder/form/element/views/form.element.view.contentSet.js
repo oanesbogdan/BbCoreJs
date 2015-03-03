@@ -35,7 +35,7 @@ define(
         var ContentSetView = Backbone.View.extend({
 
             blockClass: '.bb-block',
-            mainSelector: Core.config('wrapper_toolbar_selector'),
+            mainSelector: Core.get('wrapper_toolbar_selector'),
 
             initialize: function (template, formTag, element) {
 

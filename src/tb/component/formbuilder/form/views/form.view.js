@@ -23,7 +23,7 @@ define(['tb.core', 'tb.core.Renderer', 'BackBone', 'jquery'], function (Core, Re
 
     var FormView = Backbone.View.extend({
 
-        el: Core.config('wrapper_toolbar_selector'),
+        el: Core.get('wrapper_toolbar_selector'),
 
         /**
          * Initialize of FormView

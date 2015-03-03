@@ -3,7 +3,7 @@ define(['tb.core', "jquery", "tb.component/treeview/TreeView", "tb.component/pop
     var popInTemplate = jQuery("<div class='bb5-windowpane-tree'><div class='action-ctn'><input type='checkbox'/>Show folder</div><div class='bb5-treeview'>Loading...</div></div>").clone(),
         PopInTreeview = new JS.Class({
 
-            mainSelector: Core.config('wrapper_toolbar_selector'),
+            mainSelector: Core.get('wrapper_toolbar_selector'),
 
             defaultConfig: {
                 height: 300,

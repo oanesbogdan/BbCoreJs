@@ -2,7 +2,7 @@ define(['tb.core', 'require', 'jquery', 'jsclass', 'datetimepicker', 'text!cs-te
     'use strict';
     var ContentSearchEngine = new JS.Class({
 
-        mainSelector: Core.config('wrapper_toolbar_selector'),
+        mainSelector: Core.get('wrapper_toolbar_selector'),
 
         defaultConfig: {
             datepickerClass: '.show-calendar',
