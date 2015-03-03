@@ -204,18 +204,22 @@ define('tb.component/popin/main', ['tb.core', 'tb.component/popin/PopIn', 'jquer
             if (popIn.isClose()) {
                 popIn.open();
 
-                if (null === document.getElementById(manager.containerId)) {
-                    jQuery(manager.toolbarId).append('<div id="' + manager.containerId + '"></div>');
-                }
-
                 if (jQuery('#' + popIn.getId()).length === 0) {
-                    jQuery('#' + manager.containerId).append('<div id="' + popIn.getId() + '"></div>');
+                    if (null === document.getElementById(manager.containerId)) {
+                        jQuery(manager.toolbarId).append('<div id="' + manager.containerId + '"></div>');
+                    }
+
+                    if (jQuery('#' + popIn.getId()).length === 0) {
+                        jQuery('#' + manager.containerId).append('<div id="' + popIn.getId() + '"></div>');
+                    }
+
+                    if (popIn.getContent().length || popIn.getContent() !== '') {
+                        jQuery('#' + popIn.getId()).html(popIn.getContent());
+                    }
+
+                    jQuery('#' + popIn.getId()).dialog(popIn.getOptions());
                 }
 
-                if (popIn.getContent().length || popIn.getContent() !== '') {
-                    jQuery('#' + popIn.getId()).html(popIn.getContent());
-                }
-                jQuery('#' + popIn.getId()).dialog(popIn.getOptions());
                 jQuery('#' + popIn.getId()).dialog('open');
             }
         },
