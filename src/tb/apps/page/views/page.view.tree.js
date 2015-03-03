@@ -53,18 +53,19 @@ define(
              * Initialize tree
              */
             initializeTree: function () {
-                var self = this,
-                    config = {
+                var config = {
                         dragAndDrop: true,
                         onCreateLi: this.onCreateLi
                     };
 
                 this.formatedData = [];
-                config.open = function () {
-                    this.getTreeView().setData(self.formatedData);
-                };
-                this.tree = Tree.createPopinTreeView(config);
-                this.treeView = this.tree.treeView;
+
+                if (this.config.popin === true) {
+                    this.tree = Tree.createPopinTreeView(config);
+                    this.treeView = this.tree.treeView;
+                } else {
+                    this.treeView = this.tree = Tree.createTreeView(config);
+                }
 
                 this.bindDefaultEvents();
             },
@@ -247,19 +248,22 @@ define(
                 }
             },
 
-            /**
-             * Show tree in popin
-             */
-            render: function () {
-                var self = this;
+
+            getTree: function () {
+                var self = this,
+                    dfd = jQuery.Deferred();
 
                 PageRepository.findRoot().done(function (data) {
                     if (data.hasOwnProperty(0)) {
-                        self.formatedData = [self.formatePageToNode(data[0])];
+                        data = [self.formatePageToNode(data[0])];
                     }
 
-                    self.tree.display();
+                    self.treeView.setData(data);
+
+                    dfd.resolve(self.tree);
                 });
+
+                return dfd.promise();
             }
         });
 

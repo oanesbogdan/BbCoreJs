@@ -27,7 +27,8 @@ define(
         'page.view.clone',
         'page.view.manage',
         'page.view.tree',
-        'page.view.tree.contribution'
+        'page.view.tree.contribution',
+        'page.repository'
     ],
     function (Core,
               ContributionIndexView,
@@ -37,7 +38,8 @@ define(
               CloneView,
               ManageView,
               PageTreeView,
-              PageTreeViewContribution
+              PageTreeViewContribution,
+              PageRepository
             ) {
 
         'use strict';
@@ -86,7 +88,8 @@ define(
                 var config = {
                         do_loading: true,
                         do_pagination: true,
-                        site_uid: Core.get('site.uid')
+                        site_uid: Core.get('site.uid'),
+                        popin: true
                     },
                     view = new PageTreeViewContribution(config);
 
@@ -95,6 +98,10 @@ define(
 
             getPageTreeViewInstanceService: function () {
                 return PageTreeView;
+            },
+
+            getPageRepositoryService: function () {
+                return PageRepository;
             },
 
             /**

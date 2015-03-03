@@ -326,7 +326,9 @@ define(
              * @returns {Object} PageViewClone
              */
             render: function () {
-                this.view.render();
+                this.view.getTree().done(function (tree) {
+                    tree.display();
+                });
 
                 return this;
             }
