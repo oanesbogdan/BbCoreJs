@@ -21,6 +21,7 @@ define(['jquery', 'jssimplepagination'], function (jQuery) {
                 this.widget = $("<div/>").clone();
                 this.bindEvents();
                 this.build();
+                this.setItemsOnPage(this.config.itemsOnPage, true);
             },
 
             setItems: function (nb) {
@@ -178,6 +179,12 @@ define(['jquery', 'jssimplepagination'], function (jQuery) {
 
             enable: function () {
                 this.invoke('enable');
+            },
+
+            getItemsOnPage: function () {
+                var conf = this.getPaginationConf();
+
+                return conf.itemsOnPage;
             }
         });
     return {
