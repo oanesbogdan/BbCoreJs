@@ -67,9 +67,10 @@ define(
                 );
             },
 
-            initFormView: function (user, popin, View, action) {
+            initFormView: function (user, popin, View, action, error) {
                 var self = this,
-                    view = new View({popin: popin, user: user}, action);
+                    view = new View({popin: popin, user: user, errors: error}, action),
+                    user_id = user.id();
 
                 view.display().then(function (user) {
 
@@ -79,8 +80,18 @@ define(
                             self.indexService(require, popin);
                             Notify.success('User save success.');
                         },
-                        function () {
+                        function (error) {
+                            var errors;
                             Notify.error('User save fail.');
+
+                            error = JSON.parse(error);
+                            errors = error.errors || undefined;
+                            if (undefined !== user_id) {
+                                user.populate({id: user_id});
+                            }
+
+                            popin.popinManager.destroy(view.popin);
+                            self.initFormView(user, popin, View, action, errors);
                         }
                     );
                 });

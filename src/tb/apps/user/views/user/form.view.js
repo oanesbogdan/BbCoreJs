@@ -37,12 +37,14 @@ define(
              * Initialize of PageViewEdit
              */
             initialize: function (data, action) {
-                var self = this;
+                var self = this,
+                    form;
                 this.mainPopin = data.popin;
                 this.user = data.user;
                 this.popin = this.mainPopin.popinManager.createSubPopIn(this.mainPopin.popin, this.popin_config);
 
-                require('user/form/' + action + '.user.form').construct(self);
+                form = require('user/form/' + action + '.user.form');
+                form.construct(self, data.errors);
             },
 
             display: function () {
