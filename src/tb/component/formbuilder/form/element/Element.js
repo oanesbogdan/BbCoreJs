@@ -71,6 +71,10 @@ define(['tb.core', 'jsclass'], function (Core) {
             if (config.hasOwnProperty('group')) {
                 this.group = config.group;
             }
+
+            if (config.hasOwnProperty('error')) {
+                this.error = config.error;
+            }
         },
 
         /**
