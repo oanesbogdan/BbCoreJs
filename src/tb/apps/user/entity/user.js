@@ -39,9 +39,7 @@ define(['tb.core.Utils', 'cryptojs.md5', 'jsclass'], function (Utils, CryptoJS) 
                 'password',
                 'activated',
                 'groups',
-                'api_key',
-                'created',
-                'modified'
+                'api_key'
             ];
         },
 

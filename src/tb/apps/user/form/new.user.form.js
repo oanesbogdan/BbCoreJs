@@ -78,8 +78,22 @@ define(['component!formbuilder'], function (formbuilder) {
     };
 
     return {
-        construct: function (view) {
-            var form = formbuilder.renderForm(configure(view));
+        construct: function (view, errors) {
+            var config = configure(view),
+                form,
+                key;
+
+            if (undefined !== errors) {
+                for (key in errors) {
+                    if (errors.hasOwnProperty(key) &&
+                            config.elements.hasOwnProperty(key)) {
+                        config.elements[key].error = errors[key];
+                    }
+                }
+            }
+
+            form = formbuilder.renderForm(config);
+
             form.done(function (tpl) {
                 view.popin.setContent(tpl);
             });
