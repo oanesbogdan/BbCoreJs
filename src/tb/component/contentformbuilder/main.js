@@ -17,45 +17,43 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
+require.config({
+    paths: {
+        //Elements
+        'cf.edition.elements': 'src/tb/component/contentformbuilder/elements',
+
+        'ElementInterpreter': 'src/tb/component/contentformbuilder/ElementInterpreter'
+    }
+});
+
 define(
     [
-        'require',
+        'tb.core.Utils',
         'jquery',
-        'content.repository',
         'jsclass'
     ],
-    function (require, jQuery) {
+    function (Utils, jQuery) {
 
         'use strict';
 
-        var All = {
+        return {
+            getConfig: function (classname, object) {
 
-            init: function (definition) {
-                this.definition = definition;
+                var dfd = jQuery.Deferred();
 
-                return this;
-            },
+                Utils.requireWithPromise(['ElementInterpreter!' + classname]).done(function (element) {
 
-            getConfig: function (object) {
-                var dfd = jQuery.Deferred(),
-                    config;
-
-                require('content.repository').find(object.type, object.uid).done(function (content) {
-
-                    config = {
-                        'type': 'content',
-                        'label': object.name,
-                        'object_name': object.name,
-                        'image': content.image
-                    };
-
-                    dfd.resolve(config);
+                    if (element !== null) {
+                        element.getConfig(object).done(function (config) {
+                            dfd.resolve(config);
+                        });
+                    } else {
+                        dfd.resolve(null);
+                    }
                 });
 
                 return dfd.promise();
             }
         };
-
-        return All;
     }
 );

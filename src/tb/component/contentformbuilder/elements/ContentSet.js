@@ -19,18 +19,19 @@
 
 define(
     [
-        'require',
         'jquery',
-        'content.manager',
-        'content.repository',
-        'definition.manager',
         'jsclass'
     ],
-    function (require, jQuery) {
+    function (jQuery) {
 
         'use strict';
 
         var ContentSet = {
+
+            services: {
+                'ContentManager': 'content.main.getContentManager',
+                'DefinitionManager': 'content.main.getDefinitionManager'
+            },
 
             init: function (definition) {
                 this.definition = definition;
@@ -41,8 +42,7 @@ define(
             getConfig: function (object) {
                 var dfd = jQuery.Deferred(),
                     config,
-                    ContentManager = require('content.manager'),
-                    element = ContentManager.buildElement({'uid': object.uid, 'type': object.type});
+                    element = this.ContentManager.buildElement({'uid': object.uid, 'type': object.type});
 
                 element.getData().done(function () {
 
@@ -69,7 +69,7 @@ define(
                     for (key in elements) {
                         if (elements.hasOwnProperty(key)) {
                             element = elements[key];
-                            element.definition = require('definition.manager').find(element.type);
+                            element.definition = this.DefinitionManager.find(element.type);
                         }
                     }
                 }
