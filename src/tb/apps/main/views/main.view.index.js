@@ -36,31 +36,31 @@ define(['jquery', 'tb.core.Renderer', 'text!main/tpl/toolbar'], function (jQuery
                 menus: [
                     {
                         label: 'parameter',
-                        text: 'General settings',
+                        text: 'general_settings',
                         url: '#',
                         active: true,
                         items: [
                             {
                                 label: 'site',
-                                text: 'Website parameters',
+                                text: 'website_parameters',
                                 url: '#site',
                                 active: true
                             },
                             {
                                 label: 'template',
-                                text: 'Gabarit',
+                                text: 'gabarit',
                                 url: '#appLayout/home',
                                 active: false
                             },
                             {
                                 label: 'theme',
-                                text: 'Theme',
+                                text: 'theme',
                                 url: '#theme',
                                 active: false
                             },
                             {
                                 label: 'block',
-                                text: 'Bloc',
+                                text: 'block',
                                 url: '#block',
                                 active: false
                             }
@@ -74,25 +74,25 @@ define(['jquery', 'tb.core.Renderer', 'text!main/tpl/toolbar'], function (jQuery
                         items: [
                             {
                                 label: 'user',
-                                text: 'Users management',
+                                text: 'users_management',
                                 url: '#user',
                                 active: false
                             },
                             {
                                 label: 'role',
-                                text: 'Roles managements',
+                                text: 'roles_management',
                                 url: '#role',
                                 active: false
                             },
                             {
                                 label: 'right',
-                                text: 'Rights managements',
+                                text: 'rights_management',
                                 url: '#right',
                                 active: false
                             },
                             {
                                 label: 'workflow',
-                                text: 'Workflow management',
+                                text: 'workflow_management',
                                 url: '#workflow',
                                 active: false
                             }
@@ -100,31 +100,31 @@ define(['jquery', 'tb.core.Renderer', 'text!main/tpl/toolbar'], function (jQuery
                     },
                     {
                         label: 'contribute',
-                        text: 'Contribution',
+                        text: 'contribution',
                         url: '#/contribution/index',
                         active: false,
                         items: [
                             {
                                 label: 'edit',
-                                text: 'Edition',
+                                text: 'edition',
                                 url: '#/contribution/index',
                                 active: false
                             },
                             {
                                 label: 'page',
-                                text: 'Pages management',
+                                text: 'pages_management',
                                 url: '#pages',
                                 active: false
                             },
                             {
                                 label: 'content',
-                                text: 'Content management',
+                                text: 'content_management',
                                 url: '#content',
                                 active: false
                             },
                             {
                                 label: 'library',
-                                text: 'Media',
+                                text: 'media',
                                 url: '#library',
                                 active: false
                             }
@@ -132,7 +132,7 @@ define(['jquery', 'tb.core.Renderer', 'text!main/tpl/toolbar'], function (jQuery
                     },
                     {
                         label: 'pages',
-                        text: 'Pages management',
+                        text: 'pages_management',
                         url: '#/page/manage',
                         active: false,
                         items: [
@@ -140,19 +140,19 @@ define(['jquery', 'tb.core.Renderer', 'text!main/tpl/toolbar'], function (jQuery
                     },
                     {
                         label: 'bundle',
-                        text: 'Extensions',
+                        text: 'extensions',
                         url: '#/bundle/index',
                         active: false,
                         items: [
                             {
                                 label: 'activate',
-                                text: 'Activate / Deactivate',
+                                text: 'activate_deactivate',
                                 url: '#',
                                 active: false
                             },
                             {
                                 label: 'admin',
-                                text: 'Manage',
+                                text: 'manage',
                                 url: '#',
                                 active: false
                             }

@@ -4,13 +4,13 @@
         {% for menu in menus %}
             <li class="dropdown">
                 <a class="dropdown-toggle" id="{{ menu.label }}-menu" href="{{ menu.url }}">
-                    {{ menu.text }}
+                    {{ menu.text|trans }}
                     <b class="caret"></b>
                 </a>
                 <ul aria-labelledby="{{ menu.label }}" role="menu" class="dropdown-menu">
                     {% for item in menu.items %}
                         <li>
-                            <a data-toggle="tab" class="bb-item-menu" tabindex="-1" href="{{ item.url }}">{{ item.text }}</a>
+                            <a data-toggle="tab" class="bb-item-menu" tabindex="-1" href="{{ item.url }}">{{ item.text|trans }}</a>
                         </li>
                     {% endfor %}
                 </ul>
@@ -23,7 +23,7 @@
 <nav id="bb5-navbar-secondary" class="navbar navbar-default">
     <div class="navbar-header">
         <span class="navbar-brand"><img src="resources/toolbar/html/img/backbee.png" alt="BackBee"></span>
-        <div class="bb5-ui-width-setter"><span class="bb5-ui-tab-title">Edit</span></div>
+        <div class="bb5-ui-width-setter"><span class="bb5-ui-tab-title">{{ 'edit'|trans }}</span></div>
         <ul class="nav navbar-nav pull-right"></ul>
     </div>
 </nav>

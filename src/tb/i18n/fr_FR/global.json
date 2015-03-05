@@ -1,22 +1,33 @@
 {
     "app_validate": "Valider",
 
+    "activate": "Activer",
+    "activate_deactivate": "Activer / Désactiver",
     "all": "Tous",
 
+    "block": "Bloc",
+
     "cancel": "Annuler",
+    "content_management": "Gestion de contenus",
+    "contribution": "Contribution",
     "create_group": "Créer un groupe",
     "create_user": "Créer un utilisateur",
 
     "data_base": "Base de données",
+    "deactivate": "Désactiver",
     "delete": "Supprimer",
 
-    "edit": "Édition",
+    "edit": "Éditer",
+    "edition": "Édition",
     "email": "E-mail",
     "export": "Exporter",
+    "extensions": "Extensions",
 
     "filters": "Filtres",
     "find_users": "Rechercher des utilisateurs",
 
+    "gabarit": "Gabarit",
+    "general_settings": "Paramètres généraux",
     "group": "Groupe",
     "groups": "Groupes",
 
@@ -24,24 +35,34 @@
 
     "loading": "Chargement",
 
+    "manage": "Administrer",
+    "media": "Médiathèque",
+
     "next": "Suivant",
 
+    "pages_management": "Gestion des pages",
     "previous": "Précédent",
 
     "remove_group_confirmation_message": "Êtes-vous sur de vouloir supprimer le groupe",
     "remove_user_confirmation_message": "Êtes-vous sur de vouloir supprimer l'utilisateur",
     "rename": "Renomer",
     "restore": "Restaurer",
+    "rights_management": "Gestion des droits",
+    "roles_management": "Gestion des rôles",
 
     "save": "Sauvegarder",
     "search": "Rechercher",
     "status": "Statut",
 
+    "theme": "Thème",
+
     "user": "Utilisateur",
     "user_filters": "Filtrer les utilisateurs",
     "users": "Utilisateurs",
+    "users_management": "Gestion des utilisateurs",
 
     "validate": "Valider",
 
-    "write_and_acces": "doits/accés"
+    "website_parameters": "Paramètres du site",
+    "workflow_management": "Gestion du workflow"
 }

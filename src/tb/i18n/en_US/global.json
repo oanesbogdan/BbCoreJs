@@ -2,25 +2,36 @@
     "app_validate": "Validate",
     "app_only_default": "Only default",
 
+    "activate": "Activate",
+    "activate_deactivate": "Activate / Deactivate",
     "all": "All",
 
+    "block": "Block",
+
     "cancel": "Cancel",
+    "content_management": "Content management",
+    "contribution": "Contribution",
     "create_group": "Create group",
     "create_user": "Create user",
     "creation_date": "Creation date",
     "current_directory": "Current directory",
 
     "data_base": "Data base",
+    "deactivate": "Deactivate",
     "delete": "Delete",
 
     "edit": "Edit",
+    "edition": "Edition",
     "email": "E-mail",
     "export": "Export",
+    "extensions": "Extensions",
     "external_link": "External link",
 
     "filters": "Filters",
     "find_users": "Find users",
 
+    "gabarit": "Template",
+    "general_settings": "General Settings",
     "group": "Group",
     "groups": "Groups",
 
@@ -29,29 +40,38 @@
 
     "link_selector_label": "Link Selector",
     "loading": "Loading",
-    
+
+    "manage": "Manage",
+    "media": "Media",
     "modified_date": "Modified date",
 
     "next": "Next",
 
+    "pages_management": "Pages management",
     "previous": "Previous",
 
     "remove_group_confirmation_message": "Do you want remove the group",
     "remove_user_confirmation_message": "Do you want remove the user",
     "rename": "Rename",
     "restore": "Restore",
+    "rights_management": "Rights management",
+    "roles_management": "Roles management",
 
     "save": "Save",
     "search": "Search",
     "select": "Select",
     "status": "Status",
-    
+
+    "theme": "Theme",
+
     "url_required": "Url is required",
     "user": "User",
     "user_filters": "User filters",
     "users": "Users",
+    "users_management": "Users management",
 
     "validate": "Validate",
 
-    "write_and_acces": "write/access"
+    "website_parameters": "Website parameters",
+    "workflow_management": "Workflow management"
 }
