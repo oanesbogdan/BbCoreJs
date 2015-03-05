@@ -30,7 +30,7 @@
     "filters": "Filters",
     "find_users": "Find users",
 
-    "gabarit": "Gabarit",
+    "gabarit": "Template",
     "general_settings": "General Settings",
     "group": "Group",
     "groups": "Groups",
@@ -73,6 +73,5 @@
     "validate": "Validate",
 
     "website_parameters": "Website parameters",
-    "write_and_acces": "write/access",
     "workflow_management": "Workflow management"
 }
