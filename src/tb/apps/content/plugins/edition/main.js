@@ -17,29 +17,28 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-require.config({
-    paths: {
-        //Elements
-        'plugin.edition.elements': 'src/tb/apps/content/plugins/edition/elements',
-
-        'ElementInterpreter': 'src/tb/apps/content/plugins/edition/ElementInterpreter'
-    }
-});
-
 define(
     [
-        'require',
         'tb.core.ApplicationManager',
         'jquery',
-        'tb.core.Utils',
         'content.pluginmanager',
         'content.manager',
         'content.container',
         'component!formbuilder',
         'component!popin',
+        'component!contentformbuilder',
         'jsclass'
     ],
-    function (require, ApplicationManager, jQuery, Utils, PluginManager, ContentManager, ContentContainer, FormBuilder, PopinManager) {
+    function (
+        ApplicationManager,
+        jQuery,
+        PluginManager,
+        ContentManager,
+        ContentContainer,
+        FormBuilder,
+        PopinManager,
+        ContentFormBuilder
+    ) {
 
         'use strict';
 
@@ -73,32 +72,25 @@ define(
 
                     var key,
                         object,
-                        def,
                         element,
-                        elementArray = [],
-                        requireArray = [];
+                        elementArray = [];
 
                     for (key in elements) {
                         if (elements.hasOwnProperty(key)) {
 
                             element = elements[key];
-                            def = 'ElementInterpreter!' + element.type;
                             object = {
-                                'def': def,
                                 'type': element.type,
                                 'uid': element.uid,
                                 'name': key
                             };
 
                             elementArray.push(object);
-                            requireArray.push(def);
                         }
                     }
 
-                    Utils.requireWithPromise(requireArray).done(function () {
-                        self.getElementsConfig(elementArray).done(function () {
-                            dfd.resolve(self.buildConfig(arguments));
-                        });
+                    self.getElementsConfig(elementArray).done(function () {
+                        dfd.resolve(self.buildConfig(arguments));
                     });
                 });
 
@@ -116,8 +108,11 @@ define(
                 for (key in parameters) {
                     if (parameters.hasOwnProperty(key)) {
                         param = parameters[key];
-                        param.popinInstance = this.popin;
-                        config.elements[param.object_name] = param;
+
+                        if (param !== null) {
+                            param.popinInstance = this.popin;
+                            config.elements[param.object_name] = param;
+                        }
                     }
                 }
 
@@ -128,18 +123,14 @@ define(
 
                 var key,
                     promises = [],
-                    element,
                     object;
 
                 for (key in elementsArray) {
                     if (elementsArray.hasOwnProperty(key)) {
 
                         object = elementsArray[key];
-                        element = require(object.def);
 
-                        if (element !== null) {
-                            promises.push(element.getConfig(object));
-                        }
+                        promises.push(ContentFormBuilder.getConfig(object.type, object));
                     }
                 }
 

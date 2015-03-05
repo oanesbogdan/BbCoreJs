@@ -19,16 +19,14 @@
 
 define(
     [
-        'require',
         'jquery',
-        'content.manager',
         'jsclass'
     ],
-    function (require, jQuery) {
+    function (jQuery) {
 
         'use strict';
 
-        var Text = {
+        var All = {
 
             init: function (definition) {
                 this.definition = definition;
@@ -38,28 +36,30 @@ define(
 
             getConfig: function (object) {
                 var dfd = jQuery.Deferred(),
-                    config,
-                    element,
-                    ContentManager = require('content.manager');
-
-                element = ContentManager.buildElement({'uid': object.uid, 'type': object.type});
-
-                element.getData().done(function () {
-
                     config = {
-                        'type': 'textarea',
-                        'label': object.name,
-                        'value': element.get('value'),
-                        'object_name': object.name
+                        'type': 'content',
+                        'image': this.definition.image,
+                        'label': this.definition.type
                     };
 
+                if (object !== undefined) {
+                    this.populateConfig(object, config, dfd);
+                } else {
                     dfd.resolve(config);
-                });
+                }
 
                 return dfd.promise();
+            },
+
+            populateConfig: function (object, config, dfd) {
+
+                config.label = object.name;
+                config.object_name = object.name;
+
+                dfd.resolve(config);
             }
         };
 
-        return Text;
+        return All;
     }
 );
