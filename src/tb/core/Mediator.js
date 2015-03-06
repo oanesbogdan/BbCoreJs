@@ -119,7 +119,8 @@ define('tb.core.Mediator', ['tb.core.Api'], function (Api) {
                             topic: topic,
                             context: this.topics[topic][i].context,
                             callback: this.topics[topic][i].callback,
-                            args: args
+                            args: args,
+                            error: e
                         }
                     );
                 }

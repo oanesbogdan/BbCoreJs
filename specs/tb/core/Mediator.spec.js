@@ -29,7 +29,8 @@ define(['require', 'tb.core'], function (require) {
                     topic: 'a fake event',
                     context: undefined,
                     callback: fake.withoutThis,
-                    args: ['not realy']
+                    args: ['not realy'],
+                    error: 'Fake error'
                 }
             );
 
