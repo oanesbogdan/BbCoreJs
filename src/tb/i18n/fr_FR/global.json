@@ -4,18 +4,27 @@
     "activate": "Activer",
     "activate_deactivate": "Activer / Désactiver",
     "all": "Tous",
+    "apply_to_all_selected_pages": "Appliquer aux pages sélectionnées",
+    "author": "Auteur",
+    "available_in_menus": "Disponible dans les menus",
 
     "block": "Bloc",
 
     "cancel": "Annuler",
     "content_management": "Gestion de contenus",
     "contribution": "Contribution",
+    "create_a_draft": "Créer un brouillon",
     "create_group": "Créer un groupe",
     "create_user": "Créer un utilisateur",
 
     "data_base": "Base de données",
     "deactivate": "Désactiver",
     "delete": "Supprimer",
+    "display": "Affichage",
+    "display_external_content": "Affichage de contenu externe",
+    "display_links": "Affichage de liens",
+    "draft": "Brouillon",
+    "duplicate": "Dupliquer",
 
     "edit": "Éditer",
     "edition": "Édition",
@@ -37,11 +46,18 @@
 
     "manage": "Administrer",
     "media": "Médiathèque",
+    "modified_date": "Date de modification",
 
     "next": "Suivant",
+    "no_one": "Aucun",
+
+    "online": "En ligne",
 
     "pages_management": "Gestion des pages",
+    "page_seo": "Page SEO",
+    "page_status": "Status de la page",
     "previous": "Précédent",
+    "publishing_archiving": "Publication / Archivage",
 
     "remove_group_confirmation_message": "Êtes-vous sur de vouloir supprimer le groupe",
     "remove_user_confirmation_message": "Êtes-vous sur de vouloir supprimer l'utilisateur",
@@ -51,11 +67,15 @@
     "roles_management": "Gestion des rôles",
 
     "save": "Sauvegarder",
+    "scheduling": "Planification",
     "search": "Rechercher",
     "status": "Statut",
 
     "theme": "Thème",
+    "title": "Titre",
+    "tree": "Arborescence",
 
+    "updated": "Mis(e) à jour",
     "user": "Utilisateur",
     "user_filters": "Filtrer les utilisateurs",
     "users": "Utilisateurs",
@@ -64,5 +84,6 @@
     "validate": "Valider",
 
     "website_parameters": "Paramètres du site",
-    "workflow_management": "Gestion du workflow"
+    "workflow_management": "Gestion du workflow",
+    "write_and_acces": "doits/accés"
 }
