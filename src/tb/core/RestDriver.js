@@ -62,6 +62,7 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
                 this.request = new Request();
                 this.request.headers = {};
                 this.request.setContentType('application/json');
+                this.request.addHeader('Accept', 'application/json');
 
                 url.segment(type);
 

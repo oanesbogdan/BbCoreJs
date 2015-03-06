@@ -29,7 +29,7 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
                 expect(req.url).toEqual(baseUrl + type + '?parent_uid=abcdef1234567890');
                 expect(req.type).toEqual('GET');
                 expect(req.data).toEqual(null);
-                expect(req.headers).toEqual({'Content-Type': 'application/json', 'Range': '5,10'});
+                expect(req.headers).toEqual({'Content-Type': 'application/json', 'Accept': 'application/json', 'Range': '5,10'});
                 d.resolve('', '', fakeXhr);
 
                 return d.promise();
@@ -50,7 +50,7 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
                 expect(req.url).toEqual(baseUrl + type + '/' + uid);
                 expect(req.type).toEqual('GET');
                 expect(req.data).toEqual(null);
-                expect(req.headers).toEqual({'Content-Type': 'application/json'});
+                expect(req.headers).toEqual({'Content-Type': 'application/json', 'Accept': 'application/json'});
                 d.resolve('', '', fakeXhr);
 
                 return d.promise();
@@ -65,7 +65,7 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
                 expect(req.url).toEqual(baseUrl + type);
                 expect(req.type).toEqual('POST');
                 expect(req.data).toEqual(JSON.stringify(datas));
-                expect(req.headers).toEqual({'Content-Type': 'application/json'});
+                expect(req.headers).toEqual({'Content-Type': 'application/json', 'Accept': 'application/json'});
                 d.resolve('', '', fakeXhr);
 
                 return d.promise();
@@ -80,7 +80,7 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
                 expect(req.url).toEqual(baseUrl + type + '/' + uid + '?parent_uid=abcdef1234567890');
                 expect(req.type).toEqual('PUT');
                 expect(req.data).toEqual(JSON.stringify(datas));
-                expect(req.headers).toEqual({'Content-Type': 'application/json'});
+                expect(req.headers).toEqual({'Content-Type': 'application/json', 'Accept': 'application/json'});
                 d.resolve('', '', fakeXhr);
 
                 return d.promise();
@@ -101,7 +101,7 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
                 expect(req.url).toEqual(baseUrl + type + '?parent_uid=abcdef1234567890');
                 expect(req.type).toEqual('DELETE');
                 expect(req.data).toEqual(null);
-                expect(req.headers).toEqual({'Content-Type': 'application/json', 'Range': '0,10'});
+                expect(req.headers).toEqual({'Content-Type': 'application/json', 'Accept': 'application/json', 'Range': '0,10'});
                 d.resolve('', '', fakeXhr);
 
                 return d.promise();
@@ -128,7 +128,7 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
 
                     }
                 ]));
-                expect(req.headers).toEqual({'Content-Type': 'application/json'});
+                expect(req.headers).toEqual({'Content-Type': 'application/json', 'Accept': 'application/json'});
                 d.resolve('', '', fakeXhr);
 
                 return d.promise();
@@ -148,7 +148,7 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
                 expect(req.url).toEqual(baseUrl + type + '/' + uid);
                 expect(req.type).toEqual('LINK');
                 expect(req.data).toEqual(JSON.stringify({'next_node': 'abcdef1234567890'}));
-                expect(req.headers).toEqual({'Content-Type': 'application/json'});
+                expect(req.headers).toEqual({'Content-Type': 'application/json', 'Accept': 'application/json'});
                 d.resolve('', '', fakeXhr);
 
                 return d.promise();
