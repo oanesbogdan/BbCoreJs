@@ -76,6 +76,7 @@
     "tree": "Arborescence",
 
     "updated": "Mis(e) à jour",
+    "upload_drop_message": "Glisser le fichier ici ou cliquer pour télécharger",
     "user": "Utilisateur",
     "user_filters": "Filtrer les utilisateurs",
     "users": "Utilisateurs",

@@ -83,6 +83,7 @@
     "tree": "Tree",
 
     "updated": "Updated",
+    "upload_drop_message": "Drop files here or click to upload.",
     "url_required": "Url is required",
     "user": "User",
     "user_filters": "User filters",

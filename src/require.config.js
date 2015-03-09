@@ -39,6 +39,7 @@ require.config({
         'jssimplepagination': 'bower_components/jssimplepagination/jquery.simplePagination',
         'bootstrapjs': 'bower_components/bootstrap/dist/js/bootstrap.min',
         'ckeeditor': 'bower_components/ckeeditor/ckeditor',
+        'dropzone': 'bower_components/dropzone/dist/dropzone',
 
         'cryptojs.core': 'bower_components/cryptojslib/components/core-min',
         'cryptojs.md5': 'bower_components/cryptojslib/components/md5-min'
