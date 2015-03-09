@@ -90,7 +90,7 @@ define('tb.component/formbuilder/form/Form', ['tb.core.Api', 'underscore', 'Back
          */
         computeDefaultValue: function (config) {
 
-            this.id = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+            this.id = 'form_' + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
 
             this.method = 'POST';
             if (config.hasOwnProperty('method') && us.contains(this.AVAILABLE_METHOD, config.method)) {

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
-
+/*global MutationObserver */
 define(
     'tb.component/formbuilder/main',
     [
@@ -64,6 +64,8 @@ define(
 
                     form = new FormConstructor(config.form);
 
+                    this.listenDOM(form);
+
                     this.parseElementConfig(config.elements, form);
 
                     Utils.requireWithPromise(this.mappingRequire).done(function () {
@@ -73,6 +75,34 @@ define(
                     });
 
                     return dfd.promise();
+                },
+
+                listenDOM: function (form) {
+
+                    if (window.MutationObserver !== undefined) {
+                        var observer = new MutationObserver(function (mutations) {
+                            mutations.forEach(function (mutation) {
+                                var key,
+                                    addedNodes = mutation.addedNodes,
+                                    element;
+
+                                for (key in addedNodes) {
+                                    if (addedNodes.hasOwnProperty(key)) {
+                                        element = jQuery(addedNodes[key]);
+                                        if (element.attr('id') === form.id) {
+
+                                            Core.Mediator.publish('on:form:render', element);
+
+                                            observer.disconnect();
+
+                                            return;
+                                        }
+                                    }
+                                }
+                            });
+                        });
+                        observer.observe(jQuery('body').get(0), {childList: true, subtree: true});
+                    }
                 },
 
                 parseGlobalConfig: function (config) {

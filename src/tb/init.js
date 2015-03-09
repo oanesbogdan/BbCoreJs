@@ -55,6 +55,7 @@ define(['jquery'], function (jQuery) {
 
                     Core.set('is_connected', false);
                     Core.set('wrapper_toolbar_selector', toolbarSelector);
+                    Core.set('api_base_url', selector.attr('data-api'));
 
                     require(
                         [
@@ -66,7 +67,7 @@ define(['jquery'], function (jQuery) {
                         ],
                         function (DriverHandler, RestDriver, Renderer, AuthenticationHandler, Translator) {
 
-                            RestDriver.setBaseUrl(selector.attr('data-api'));
+                            RestDriver.setBaseUrl(Core.get('api_base_url'));
                             DriverHandler.addDriver('rest', RestDriver);
 
                             var initOnConnect = function () {
