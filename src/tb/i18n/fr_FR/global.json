@@ -13,6 +13,7 @@
     "cancel": "Annuler",
     "content_management": "Gestion de contenus",
     "contribution": "Contribution",
+    "contents": "Contenus",
     "create_a_draft": "Créer un brouillon",
     "create_group": "Créer un groupe",
     "create_user": "Créer un utilisateur",
@@ -47,12 +48,16 @@
     "manage": "Administrer",
     "media": "Médiathèque",
     "modified_date": "Date de modification",
+    "media": "Média",
+    "media_library": "Médiathèque",
 
+    "new_page": "Nouvelle page",
     "next": "Suivant",
     "no_one": "Aucun",
 
     "online": "En ligne",
 
+    "page": "Page",
     "pages_management": "Gestion des pages",
     "page_seo": "Page SEO",
     "page_status": "Status de la page",
