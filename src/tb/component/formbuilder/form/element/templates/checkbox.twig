@@ -1,3 +1,4 @@
+<label for="{{ element.getKey() }}" class="label">{{ element.getLabel() }}</label>
 {% for key, item in element.getOptions() %}
     <label class="checkbox{% if element.isInline() %}-inline{% endif %}">
         <input type="checkbox"
