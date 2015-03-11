@@ -9,7 +9,7 @@ require.config({
         'content.datastore': 'src/tb/component/contentselector/datastore/content.datastore'
     }
 });
-define(['tb.core', 'require', 'jquery', 'text!cs-templates/layout.tpl', 'component!popin', 'underscore', 'BackBone', 'component!rangeselector', 'component!dataview', 'component!mask', 'text!cs-templates/layout.tpl', 'content.renderer', 'cs-control/searchengine.control', 'jquery-layout', "component!datastore", "component!treeview", "component!pagination", "node.formater", 'nunjucks', 'content.datastore'], function (Core, require, jQuery, layout, PopInMng) {
+define(['tb.core', 'require', 'jquery', 'text!cs-templates/layout.tpl', 'component!popin', 'underscore', 'BackBone', 'component!rangeselector', 'component!dataview', 'component!mask', 'text!cs-templates/layout.tpl', 'content.renderer', 'cs-control/searchengine.control', 'component!jquery-layout', "component!datastore", "component!treeview", "component!pagination", "node.formater", 'nunjucks', 'content.datastore'], function (Core, require, jQuery, layout, PopInMng) {
     'use strict';
     var formater = require('node.formater'),
         underscore = require('underscore'),
@@ -158,7 +158,7 @@ define(['tb.core', 'require', 'jquery', 'text!cs-templates/layout.tpl', 'compone
 
             /**
              * This fonction is called only once for each instance
-             * the tree is loaded here the prevent useless rest call
+             * the tree is loaded here to prevent useless rest call
              **/
             onReady: function () {
                 var catTreeCtn = jQuery(this.widget).find('.bb5-windowpane-tree .bb5-treeview').eq(0),

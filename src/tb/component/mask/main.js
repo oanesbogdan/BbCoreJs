@@ -42,6 +42,10 @@ define(['tb.core.Api', 'jquery', 'jsclass'], function (Api, jQuery) {
             jQuery(content).append(loader);
         },
 
+        hasMask: function (content) {
+            return jQuery(content).find("." + this.config.loaderCls).eq(0).length;
+        },
+
         unmask: function (content) {
             if (content) {
                 jQuery(content).find("." + this.config.loaderCls).remove();

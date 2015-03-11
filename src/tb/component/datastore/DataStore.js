@@ -6,6 +6,7 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
             defaultConfig: {
                 idKey: 'uid'
             },
+
             initialize: function (config) {
                 jQuery.extend(this, {}, BackBone.Events);
                 this.config = jQuery.extend({}, this.defaultConfig, config);
@@ -46,6 +47,10 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
             setLimit: function (limit) {
                 this.limit = limit;
                 return this;
+            },
+
+            triggerProcessing: function () {
+                this.trigger("processing");
             },
 
             getActionInfos: function (name) {
@@ -91,7 +96,6 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
                 });
                 return this;
             },
-
             unApplySorter: function (sorterName) {
                 this.tasksQueue = underscore.reject(this.tasksQueue, function (task) {
                     return task.name === "sorters:" + sorterName;
@@ -135,6 +139,7 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
                 this.createGenericSorter();
                 this.previousDataState = {};
             },
+
             createGenericSorter: function () {
                 this.addSorter("fieldSorter", function (fieldName, direction, data) {
                     if (!direction && typeof direction !== "string") {
@@ -159,6 +164,7 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
                     return data;
                 });
             },
+
             processTasks: function () {
                 var self = this,
                     dataState = this.dataList.toArray(true);
@@ -181,9 +187,9 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
         /* RestDataAdapter */
         RestDataStore = new JS.Class(AbstractDataStore, {
             defaultConfig: {
-                autoLoad: false
+                autoLoad: false,
+                idKey: 'uid'
             },
-
             getTotal: function () {
                 return this.total;
             },
@@ -206,30 +212,31 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
 
             initRestHandler: function () {
                 CoreDriverHandler.addDriver('rest', CoreRestDriver);
+                this.restHandler = CoreDriverHandler.addDriver('rest', CoreRestDriver);
             },
 
             /* build resquest here */
             processTasks: function () {
                 var self = this,
-                    resParams = {
+                    restParams = {
                         limit: this.limit,
                         sorters: {},
                         start: this.start,
                         criterias: {}
                     },
                     resultPromise = new jQuery.Deferred();
-                resParams.limit = this.limit;
+                restParams.limit = this.limit;
                 jQuery.each(this.tasksQueue, function (i, task) {
                     try {
                         var taskAction = self.getActionInfos(task.name);
-                        task.params.push(resParams);
-                        resParams = taskAction.apply({}, task.params, i);
+                        task.params.push(restParams);
+                        restParams = taskAction.apply({}, task.params, i);
                     } catch (e) {
                         self.trigger('dataStoreError', e);
                         return true; //continue
                     }
                 });
-                CoreDriverHandler.read(this.config.resourceEndpoint, resParams.criterias, resParams.sorters, this.start, this.limit).done(function (data, response) {
+                CoreDriverHandler.read(this.config.resourceEndpoint, restParams.criterias, restParams.sorters, this.start, this.limit).done(function (data, response) {
                     self.total = response.getRangeTotal();
                     self.setData(data);
                     resultPromise.resolve(data);
@@ -245,21 +252,67 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
                 return this.data.length;
             },
 
-            remove: function (itemData) {
+            save: function (itemData) {
                 var self = this,
+                    dfd = new jQuery.Deferred();
+                self.trigger("processing");
+                if (itemData.hasOwnProperty(this.config.idKey) && itemData[this.config.idKey]) {
+                    CoreDriverHandler.update(this.config.resourceEndpoint, itemData, {
+                        'id': itemData[this.config.idKey]
+                    }).done(function (response, headers) {
+                        self.trigger('change', 'update', itemData);
+                        self.trigger("doneProcessing");
+                        dfd.resolve(itemData, response, headers);
+                    }).fail(function (reason) {
+                        self.trigger("doneProcessing");
+                        dfd.reject(reason);
+                    });
+                } else {
+                    CoreDriverHandler.create(this.config.resourceEndpoint, itemData).done(function (response, headers) {
+                        itemData.uid = headers.getHeader('BB-RESOURCE-UID');
+                        self.trigger('change', 'create', itemData);
+                        self.trigger("doneProcessing");
+                        dfd.resolve(itemData, response, headers);
+                    }).fail(function (reason) {
+                        self.trigger("doneProcessing");
+                        dfd.reject(reason);
+                    });
+                }
+                return dfd.promise();
+            },
+
+            computeNextStart: function (page) {
+                this.setStart((page - 1) * this.limit);
+            },
+
+            remove: function (itemData) {
+                this.trigger("processing");
+                var self = this,
+                    dfd = new jQuery.Deferred(),
+                    uid = itemData.hasOwnProperty(this.config.idKey) ? itemData[this.config.idKey] : null,
                     /* compute new start */
                     nextTotal = self.total - 1,
                     nbPage = Math.ceil(nextTotal / self.limit),
                     nextStart = (nbPage >= this.start + 1) ? this.start : this.start - 1;
                 nextStart = (nextStart < 0) ? nextStart : 0;
-                this.setStart(nextStart);
-                CoreDriverHandler["delete"](this.config.resourceEndpoint + '/' + itemData.contentType, {
-                    uid: itemData.contentUid
+                if (!uid) {
+                    Api.exception('DataStoreException', 75001, '[remove] ' + this.idKey + ' key can\'t be found');
+                }
+                CoreDriverHandler["delete"](this.config.resourceEndpoint, {
+                    uid: itemData[this.config.idKey]
                 }).done(function () {
+                    dfd.resolve(itemData);
+                    self.setStart(nextStart);
                     self.trigger("dataDelete", itemData);
-                    self.triger("doneProcessing");
-                    self.execute();
+                    self.trigger("doneProcessing");
+                }).fail(function (reason) {
+                    dfd.reject(reason);
+                    self.trigger("error", {
+                        method: "remove"
+                    });
+                    self.trigger("doneProcessing");
                 });
+                return dfd.promise();
             }
         });
     return {

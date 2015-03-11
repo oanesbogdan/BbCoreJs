@@ -30,44 +30,7 @@ define(['jquery', 'jsclass'], function (jQuery) {
          */
         settings: {
             contentSelector : null,
-            menuActions : [
-                {
-                    btnCls: "bb5-button bb5-ico-info",
-                    btnLabel: "Informations",
-                    btnCallback: function () {
-                        return;
-                    }
-                },
-
-                {
-                    btnCls: "bb5-button bb5-ico-parameter",
-                    btnLabel: "Settings",
-                    btnCallback: function () {
-                        return;
-                    }
-                },
-                {
-                    btnCls: "bb5-button bb5-ico-select",
-                    btnLabel: "Select",
-                    btnCallback: function () {
-                        return;
-                    }
-                },
-                {
-                    btnCls: "bb5-button bb5-ico-lib",
-                    btnLabel: "Content selector",
-                    btnCallback: function () {
-                        return;
-                    }
-                },
-                {
-                    btnCls: "bb5-button bb5-ico-del",
-                    btnLabel: "Delete",
-                    btnCallback: function () {
-                        return;
-                    }
-                }
-            ],
+            menuActions : [],
             menuCls : "bb5-context-menu",
             actionBuilder : null,
             domTag: 'body'
@@ -88,7 +51,9 @@ define(['jquery', 'jsclass'], function (jQuery) {
             if (this.settings.hasOwnProperty('defaultItemBuilder') && typeof this.settings.defaultItemBuilder === 'function') {
                 this.defaultItemBuilder = this.settings.defaultItemBuilder;
             }
-            this.contextMenu = this.buildContextmenu();
+            if (this.settings.menuActions.length) {
+                this.contextMenu = this.buildContextmenu();
+            }
             this.beforeShow = (typeof this.settings.beforeShow === "function") ? jQuery.proxy(this.settings.beforeShow, this) : jQuery.noop;
             this.bindEvents();
         },
@@ -97,7 +62,19 @@ define(['jquery', 'jsclass'], function (jQuery) {
          * Bind events
          */
         bindEvents: function () {
+            var self = this,
+                body = jQuery('body');
+
             jQuery(this.settings.contentSelector).on("contextmenu", jQuery.proxy(this.show, this));
+            body.on('contextmenu', function () {
+                self.hide();
+                return true;
+            });
+
+            body.on('click', function () {
+                self.hide();
+                return true;
+            });
         },
 
         /**
@@ -119,6 +96,11 @@ define(['jquery', 'jsclass'], function (jQuery) {
                     jQuery(self.contextMenu).find("." + filter).eq(0).parent().hide(); //hide li
                 }
             }
+        },
+
+        addMenuItem: function (menuItem) {
+            this.settings.menuActions.push(menuItem);
+            this.contextMenu = this.buildContextmenu();
         },
 
         defaultItemBuilder: function (btnInfo) {
@@ -146,7 +128,6 @@ define(['jquery', 'jsclass'], function (jQuery) {
 
             jQuery(this.template).addClass(this.settings.menuCls);
 
-
             jQuery.each(this.settings.menuActions, function (btnType, item) {
                 item.btnType = btnType;
                 item = self.defaultItemBuilder(item);
@@ -164,29 +145,29 @@ define(['jquery', 'jsclass'], function (jQuery) {
             if (!this.isEnabled) {
                 return false;
             }
-
             this.beforeShow(e.currentTarget);
 
             e.preventDefault();
             e.stopPropagation();
-
             var position = {
                 left: e.pageX,
                 top: e.pageY
             };
-
             jQuery(this.contextMenu).css({
                 position: "absolute",
                 left: position.left + "px",
                 top: position.top + "px"
+                //zIndex: jQuery(e.currentTarget).zIndex()+1
             });
-
             this.contextMenuTarget = jQuery(e.currentTarget);
             this.applyFilters(this.filters);
-
+            this.resetFilters();
             jQuery(this.contextMenu).show();
         },
 
+        resetFilters: function () {
+            this.filters = [];
+        },
         /**
          * Hide contextmenu
          */
@@ -215,6 +196,15 @@ define(['jquery', 'jsclass'], function (jQuery) {
          */
         setFilters: function (filters) {
             this.filters = (jQuery.isArray(filters)) ? filters : [];
+        },
+
+        addFilter: function (key) {
+            if (!jQuery.isArray(this.filters)) {
+                this.filters = [];
+            }
+            if (typeof key === "string") {
+                this.filters.push(key);
+            }
         }
     });
 

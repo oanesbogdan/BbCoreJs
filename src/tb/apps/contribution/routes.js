@@ -10,6 +10,11 @@ define(["tb.core"], function (BbCore) {
             'index': {
                 url: '/index',
                 action: 'MainController:index'
+            },
+
+            'media-library': {
+                url: '/medialibrary',
+                action: 'MainController:showMediaLibrary'
             }
         }
     });
