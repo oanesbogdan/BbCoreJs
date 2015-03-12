@@ -21,9 +21,10 @@
     require.config({
         paths: {
             'tb.core.Api': 'src/tb/core/Api',
+            'tb.core.Mediator': 'src/tb/core/Mediator',
+            'tb.core.Scope': 'src/tb/core/Scope',
             'tb.core.ApplicationManager': 'src/tb/core/ApplicationManager',
             'tb.core.ApplicationContainer': 'src/tb/core/ApplicationContainer',
-            'tb.core.Mediator': 'src/tb/core/Mediator',
             'tb.core.RouteManager': 'src/tb/core/RouteManager',
             'tb.core.Renderer': 'src/tb/core/Renderer',
             'tb.core.ControllerManager': 'src/tb/core/ControllerManager',
@@ -34,7 +35,6 @@
             'tb.core.RequestHandler': 'src/tb/core/RequestHandler',
             'tb.core.Response': 'src/tb/core/Response',
             'tb.core.RestDriver': 'src/tb/core/RestDriver',
-            'tb.core.Scope': 'src/tb/core/Scope',
             'tb.core.Config': 'src/tb/core/Config'
         }
     });

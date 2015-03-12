@@ -27,7 +27,9 @@ define('tb.core.Scope', ['tb.core.Api', 'underscore'], function (Api, Under) {
 
     var Scope = function scope() {
             this.scopes = [];
-            Api.Mediator.persistentPublish('scope:global:opening');
+            Api.Mediator.subscribeOnce('on:application:ready', function () {
+                Api.Mediator.persistentPublish('scope:global:opening');
+            });
         },
 
         /**
