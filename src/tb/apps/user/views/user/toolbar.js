@@ -17,8 +17,8 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 define(
-    ['require', 'tb.core.Renderer', 'user/entity/user', 'text!user/templates/user/list.item.twig'],
-    function (require, renderer, User) {
+    ['require', 'tb.core.Renderer', 'user/entity/user', 'tb.core', 'jquery', 'text!user/templates/user/toolbar.twig'],
+    function (require, renderer, User, Core, jQuery) {
         'use strict';
 
         /**
@@ -26,6 +26,11 @@ define(
          * @type {Object} Backbone.View
          */
         return Backbone.View.extend({
+            events: {
+                'click .bb-service': 'executeService'
+            },
+
+            template: require('text!user/templates/user/toolbar.twig'),
 
             /**
              * Initialize of UserViewList
@@ -33,7 +38,6 @@ define(
             initialize: function (data) {
                 this.user = new User();
                 this.user.populate(data.user);
-                this.render();
             },
 
             /**
@@ -41,7 +45,13 @@ define(
              * @returns {Object} PageViewEdit
              */
             render: function () {
-                return renderer.render(require('text!user/templates/user/list.item.twig'), {user: this.user});
+                this.$el.append(renderer.render(this.template, {login: this.user.login()}));
+                return this;
+            },
+
+            executeService: function (event) {
+                var service = jQuery(event.currentTarget).data('service');
+                Core.ApplicationManager.invokeService('user.user.' + service, this.user);
             }
         });
     }
