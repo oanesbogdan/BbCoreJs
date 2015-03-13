@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define(['component!formbuilder'], function (formbuilder) {
+define(['component!formbuilder', 'component!translator'], function (formbuilder, translator) {
     'use strict';
 
     var configure = function (view) {
@@ -25,38 +25,38 @@ define(['component!formbuilder'], function (formbuilder) {
             elements: {
                 firstname: {
                     type: 'text',
-                    label: 'firstname',
+                    label: translator.translate('first_name'),
                     placeholder: 'John',
                     value: view.user.getObject().firstname
                 },
                 lastname: {
                     type: 'text',
-                    label: 'lastname',
+                    label: translator.translate('last_name'),
                     placeholder: 'Doe',
                     value: view.user.getObject().lastname
                 },
                 email: {
                     type: 'text',
-                    label: 'email',
+                    label: translator.translate('email'),
                     placeholder: 'john.doe@unknown.com',
                     value: view.user.getObject().email
                 },
                 activated: {
                     type: 'checkbox',
                     options: {
-                        activated: 'activated'
+                        activated: translator.translate('activated')
                     },
                     checked: (view.user.getObject().activated === true) ? 'activated' : ''
                 },
                 changepwd: {
                     type: 'checkbox',
                     options: {
-                        yes: 'change password'
+                        yes: translator.translate('change_password')
                     }
                 },
                 passwd: {
                     type: 'password',
-                    label: 'password'
+                    label: translator.translate('password')
                 }
             },
 
@@ -73,16 +73,16 @@ define(['component!formbuilder'], function (formbuilder) {
 
             onValidate: function (form, data) {
                 if (!data.hasOwnProperty('email') || data.email.trim().length === 0) {
-                    form.addError('email', 'email is required');
+                    form.addError('email', translator.translate('email_is_required'));
                 } else {
                     if (!/^[aA-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,6}$/i.test(data.email.trim())) {
-                        form.addError('email', 'email is invalid');
+                        form.addError('email', translator.translate('email_is_invalid'));
                     }
                 }
                 if (data.changepwd === 'yes' && (!data.hasOwnProperty('passwd') || data.passwd.trim().length === 0)) {
-                    form.addError('passwd', 'Password invalid');
+                    form.addError('passwd', translator.translate('password_is_invalid'));
                 } else if (data.changepwd === 'yes' && (data.passwd.length < 5 && data.passwd.length > 33)) {
-                    form.addError('passwd', 'Password must be 6 character long');
+                    form.addError('passwd', translator.translate('password_is_too_short'));
                 }
             }
         };

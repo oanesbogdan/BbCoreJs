@@ -24,10 +24,11 @@ define(
         'jquery',
         'page.repository',
         'page.form',
+        'component!translator',
         'component!popin',
         'component!formbuilder'
     ],
-    function (require, Api, jQuery, PageRepository, PageForm) {
+    function (require, Api, jQuery, PageRepository, PageForm, translator) {
 
         'use strict';
 
@@ -77,7 +78,7 @@ define(
 
             onValidate: function (form, data) {
                 if (!data.hasOwnProperty('title') || data.title.trim().length === 0) {
-                    form.addError('title', 'Title is required');
+                    form.addError('title', translator.translate('title_is_required'));
                 }
             },
 
@@ -89,7 +90,7 @@ define(
 
                 var self = this;
 
-                this.popin.setTitle('Clone page');
+                this.popin.setTitle(translator.translate('clone_page'));
                 this.popin.display();
                 this.popin.mask();
 

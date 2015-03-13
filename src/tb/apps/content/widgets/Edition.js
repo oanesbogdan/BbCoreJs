@@ -25,9 +25,10 @@ define(
         'component!popin',
         'component!contentformbuilder',
         'component!formbuilder',
-        'component!formsubmitter'
+        'component!formsubmitter',
+        'component!translator'
     ],
-    function (ApplicationManager, jQuery, ContentManager, PopinManager, ContentFormBuilder, FormBuilder, FormSubmitter) {
+    function (ApplicationManager, jQuery, ContentManager, PopinManager, ContentFormBuilder, FormBuilder, FormSubmitter, translator) {
 
         'use strict';
 
@@ -50,7 +51,7 @@ define(
                     this.popin.destroy();
                 }
                 this.popin = PopinManager.createPopIn();
-                this.popin.setTitle('Edit');
+                this.popin.setTitle(translator.translate('edit'));
                 this.popin.addOption('width', '500px');
             },
 

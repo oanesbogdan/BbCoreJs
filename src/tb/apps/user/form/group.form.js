@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define(['component!formbuilder'], function (formbuilder) {
+define(['component!formbuilder', 'component!translator'], function (formbuilder, translator) {
     'use strict';
 
     var configure = function (view) {
@@ -25,7 +25,7 @@ define(['component!formbuilder'], function (formbuilder) {
             elements: {
                 name: {
                     type: 'text',
-                    label: 'name',
+                    label: translator.translate('name'),
                     placeholder: 'name',
                     value: view.group.name
                 }
@@ -38,7 +38,7 @@ define(['component!formbuilder'], function (formbuilder) {
 
             onValidate: function (form, data) {
                 if (!data.hasOwnProperty('name') || data.name.trim().length === 0) {
-                    form.addError('name', 'name is required');
+                    form.addError('name', translator.translate('name_is_required'));
                 }
             }
         };

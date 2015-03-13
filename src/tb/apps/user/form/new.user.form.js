@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define(['component!formbuilder'], function (formbuilder) {
+define(['component!formbuilder', 'component!translator'], function (formbuilder, translator) {
     'use strict';
 
     var configure = function (view) {
@@ -25,13 +25,13 @@ define(['component!formbuilder'], function (formbuilder) {
             elements: {
                 firstname: {
                     type: 'text',
-                    label: 'firstname',
+                    label: translator.translate('first_name'),
                     placeholder: 'John',
                     value: view.user.getObject().firstname
                 },
                 lastname: {
                     type: 'text',
-                    label: 'lastname',
+                    label: translator.translate('last_name'),
                     placeholder: 'Doe',
                     value: view.user.getObject().lastname
                 },
@@ -64,13 +64,13 @@ define(['component!formbuilder'], function (formbuilder) {
 
             onValidate: function (form, data) {
                 if (!data.hasOwnProperty('login') || data.login.trim().length === 0) {
-                    form.addError('login', 'login is required');
+                    form.addError('login', translator.translate('login_is_required'));
                 }
                 if (!data.hasOwnProperty('email') || data.email.trim().length === 0) {
-                    form.addError('email', 'email is required');
+                    form.addError('email', translator.translate('email_is_required'));
                 } else {
                     if (!/^[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,6}$/i.test(data.email.trim())) {
-                        form.addError('email', 'email is invalid');
+                        form.addError('email', translator.translate('email is invalid'));
                     }
                 }
             }

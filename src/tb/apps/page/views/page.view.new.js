@@ -1,4 +1,4 @@
-define(['require', 'jquery', 'page.repository', 'page.form', 'component!popin', 'component!formbuilder'], function (require, jQuery, PageRepository, PageForm) {
+define(['require', 'jquery', 'page.repository', 'page.form', 'component!translator', 'component!popin', 'component!formbuilder'], function (require, jQuery, PageRepository, PageForm, translator) {
 
     'use strict';
 
@@ -57,11 +57,11 @@ define(['require', 'jquery', 'page.repository', 'page.form', 'component!popin', 
 
         onValidate: function (form, data) {
             if (!data.hasOwnProperty('title') || data.title.trim().length === 0) {
-                form.addError('title', 'Title is required');
+                form.addError('title', translator.translate('title_is_required'));
             }
 
             if (!data.hasOwnProperty('layout_uid') || data.layout_uid.trim().length === 0) {
-                form.addError('layout_uid', 'Template is required.');
+                form.addError('layout_uid', translator.translate('template_is_required'));
             }
         },
 
@@ -72,7 +72,7 @@ define(['require', 'jquery', 'page.repository', 'page.form', 'component!popin', 
         render: function () {
             var self = this;
 
-            this.popin.setTitle('Create page');
+            this.popin.setTitle(translator.translate('create_page'));
             this.popin.display();
             this.popin.mask();
 
