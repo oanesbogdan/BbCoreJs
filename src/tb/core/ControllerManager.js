@@ -73,7 +73,8 @@ define('tb.core.ControllerManager', ['require', 'tb.core.Api', 'tb.core.Applicat
                         function () {
                             dfd.resolve.call(self, require);
                         },
-                        function () {
+                        function (reason) {
+                            Api.exception.silent('ControllerManagerException', 15007, 'Something goes worng during the depencies loading of ' + callName, {service: callName, reason: reason, depencies: self.config.define[callName]});
                             dfd.reject.call(self);
                         }
                     );
