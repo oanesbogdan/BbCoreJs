@@ -148,6 +148,7 @@ define(
                     function (user_values) {
                         if (undefined === user_values.groups[group_id]) {
                             user_values.groups[group_id] = 'added';
+                            console.log(user_values.groups);
                             user.populate({
                                 id: user_id,
                                 groups: user_values.groups
@@ -156,6 +157,7 @@ define(
                             self.repository.save(user.getObject()).then(
                                 function () {
                                     Core.ApplicationManager.invokeService('user.group.index', popin);
+                                    Core.ApplicationManager.invokeService('user.user.index', popin);
                                     Notify.success('User update success.');
                                 },
                                 function () {
@@ -232,6 +234,20 @@ define(
                         }
                     );
                 });
+            },
+
+            updateStatusService: function (popin, user) {
+                console.log(user);
+
+                self.repository.save(user).then(
+                    function () {
+                        Notify.success('User update success.');
+                    },
+                    function () {
+                        Notify.error('User update fail.');
+                        self.indexService(require, popin);
+                    }
+                );
             }
         });
     }

@@ -134,7 +134,10 @@ define(
                                 {
                                     id: 'new-user-subpopin',
                                     width: 250,
-                                    top: 180
+                                    top: 180,
+                                    close: function () {
+                                        main_popin.popinManager.destroy(popin);
+                                    }
                                 }
                             ),
                             i;
