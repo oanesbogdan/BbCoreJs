@@ -42,6 +42,7 @@ require.config({
         //Widgets
         'content.widget.DialogContentsList': 'src/tb/apps/content/widgets/DialogContentsList',
         'content.widget.Breadcrumb': 'src/tb/apps/content/widgets/Breadcrumb',
+        'content.widget.Edition': 'src/tb/apps/content/widgets/Edition',
 
         //Models
         'content.models.AbstractContent': 'src/tb/apps/content/models/AbstractContent',

@@ -24,7 +24,8 @@
     define(['tb.core.ApplicationManager', 'jquery'], function (ApplicationManager, jQuery) {
 
         var association = {
-                'Element/Text': 'Text'
+                'Element/Text': 'Text',
+                'Element/Image': 'Image'
             };
 
         return {

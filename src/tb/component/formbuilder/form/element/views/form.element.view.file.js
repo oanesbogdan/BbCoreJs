@@ -31,7 +31,7 @@ define(['tb.core', 'tb.core.Renderer', 'BackBone', 'jquery'], function (Core, Re
             dictDefaultMessage: 'Drop files here or click to upload.',
             addRemoveLinks: true,
             maxFiles: 1,
-            thumbnailWidth: '200'
+            thumbnailWidth: 200
         },
 
         initialize: function (template, formTag, element) {
@@ -50,19 +50,31 @@ define(['tb.core', 'tb.core.Renderer', 'BackBone', 'jquery'], function (Core, Re
 
             Core.Mediator.subscribeOnce('on:form:render', function (form) {
                 var dropzone = new Dropzone(form.find(self.dropzoneSelector).eq(0).get(0), config),
-                    element = form.find('input[name=' + self.element.getKey() + ']');
+                    element = form.find('input[name=' + self.element.getKey() + ']'),
+                    elementPath = form.find('span.' + self.element.getKey() + '_path'),
+                    elementSrc = form.find('span.' + self.element.getKey() + '_src'),
+                    elementOriginalName = form.find('span.' + self.element.getKey() + '_originalname');
 
                 self.buildValue(dropzone, self.element.value, element);
 
-                dropzone.on('success', function (file, stringResponse, response) {
-                    var location = response.target.getResponseHeader('Location');
-                    element.val(location);
+                dropzone.on('success', function (file, response) {
+                    elementPath.text(response.path);
+                    elementOriginalName.text(response.originalname);
 
-                    return {'file': file, 'stringResponse': stringResponse};
+                    if (response.src !== undefined) {
+                        elementSrc.text(response.src);
+                    }
+
+                    element.val('uploaded');
+
+                    return file;
                 });
 
                 dropzone.on('removedfile', function () {
                     if (this.files.length === 0) {
+                        elementPath.text('');
+                        elementSrc.text('');
+                        elementOriginalName.text('');
                         element.val('');
                     }
                 });
@@ -79,8 +91,8 @@ define(['tb.core', 'tb.core.Renderer', 'BackBone', 'jquery'], function (Core, Re
                 var file = {'name': value.name};
 
                 dropzone.options.addedfile.call(dropzone, file);
-                dropzone.options.thumbnail.call(dropzone, file, value.thumbnail);
-                dropzone.options.resize.call(dropzone, file);
+                dropzone.createThumbnailFromUrl(file, value.thumbnail);
+
                 element.val(value.path);
             }
         },
