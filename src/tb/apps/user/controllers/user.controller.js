@@ -20,6 +20,7 @@ define(
     ['tb.core', 'tb.core.Renderer', 'user/entity/user', 'component!notify', 'require', 'tb.core.Utils', 'jquery'],
     function (Core, renderer, User, Notify, require, Utils, jQuery) {
         'use strict';
+        var trans = Core.get('trans') || function (value) {return value; };
 
         Core.ControllerManager.registerController('UserController', {
 
@@ -85,10 +86,10 @@ define(
                         function () {
                             popin.popinManager.destroy(view.popin);
                             self.indexService(require, popin);
-                            Notify.success('User save success.');
+                            Notify.success(trans('User save success.'));
                         },
                         function (error) {
-                            Notify.error('User save fail.');
+                            Notify.error(trans('User save fail.'));
 
                             if (undefined !== user_id) {
                                 user.populate({id: user_id});
@@ -129,7 +130,7 @@ define(
                         function () {
                             self.repository.delete(user_id).done(function () {
                                 self.indexService(require, popin);
-                                Notify.success('User ' + user.login() + ' has been deleted.');
+                                Notify.success(trans('User') + ' ' + user.login() + ' ' + trans('has been deleted.'));
                             });
                             view.destruct();
                         },
@@ -146,9 +147,17 @@ define(
 
                 self.repository.find(user_id).then(
                     function (user_values) {
-                        if (undefined === user_values.groups[group_id]) {
+                        var already_grouped = false;
+
+                        user_values.groups.forEach(function (group) {
+                            if (parseInt(group_id, 10) === group.id) {
+                                already_grouped = true;
+                            }
+                        });
+
+                        if (!already_grouped) {
                             user_values.groups[group_id] = 'added';
-                            console.log(user_values.groups);
+
                             user.populate({
                                 id: user_id,
                                 groups: user_values.groups
@@ -158,17 +167,19 @@ define(
                                 function () {
                                     Core.ApplicationManager.invokeService('user.group.index', popin);
                                     Core.ApplicationManager.invokeService('user.user.index', popin);
-                                    Notify.success('User update success.');
+                                    Notify.success(trans('User update success.'));
                                 },
                                 function () {
-                                    Notify.error('User update fail.');
+                                    Notify.error(trans('User update fail.'));
                                 }
                             );
+                        } else {
+                            Notify.warning(trans('User is already in this group.'));
                         }
                     },
                     function () {
                         self.indexService(require, popin);
-                        Notify.error('User not found.');
+                        Notify.error(trans('User not found.'));
                     }
                 );
             },
@@ -237,15 +248,14 @@ define(
             },
 
             updateStatusService: function (popin, user) {
-                console.log(user);
                 var self = this;
 
                 self.repository.save(user).then(
                     function () {
-                        Notify.success('User update success.');
+                        Notify.success(trans('User update success.'));
                     },
                     function () {
-                        Notify.error('User update fail.');
+                        Notify.error(trans('User update fail.'));
                         self.indexService(require, popin);
                     }
                 );

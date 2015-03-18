@@ -21,6 +21,7 @@ define(
     ['tb.core', 'tb.core.Renderer', 'component!notify', 'tb.core.Utils'],
     function (Core, renderer, Notify, Utils) {
         'use strict';
+        var trans = Core.get('trans') || function (value) {return value; };
 
         Core.ControllerManager.registerController('GroupController', {
 
@@ -80,10 +81,10 @@ define(
                     self.repository.save(group).then(
                         function () {
                             self.indexService(require, popin);
-                            Notify.success('Group save success.');
+                            Notify.success(trans('Group save success.'));
                         },
                         function () {
-                            Notify.error('Group save fail.');
+                            Notify.error(trans('Group save fail.'));
                         }
                     );
                 });
@@ -113,7 +114,7 @@ define(
                         function () {
                             self.repository.delete(group_id).done(function () {
                                 self.indexService(require, popin);
-                                Notify.success('group ' + group.name + ' has been deleted.');
+                                Notify.success(trans('group') + ' ' + group.name + ' ' + trans('has been deleted.'));
                             });
                             view.destruct();
                         },
@@ -153,7 +154,7 @@ define(
                         popin.display();
                     },
                     function () {
-                        Notify.success('group ' + group_id + ' has been called.');
+                        Notify.success(trans('group request fail'));
                     }
                 );
             }

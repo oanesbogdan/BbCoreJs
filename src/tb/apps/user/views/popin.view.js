@@ -20,6 +20,7 @@ define(
     ['require', 'jquery', 'tb.core', 'user/controllers/dnd.controller', 'component!dnd', 'component!popin', 'component!translator', 'text!user/templates/popin.twig'],
     function (require, jQuery, Core, DnDController, dnd) {
         'use strict';
+        var trans = Core.get('trans') || function (value) {return value; };
 
         /**
          * View of new page
@@ -73,8 +74,7 @@ define(
 
             bindUsers: function () {
                 var class_name = '.bb5-list-users-item',
-                    self = this,
-                    trans = Core.get('trans');
+                    self = this;
 
                 jQuery(class_name).click(function () {
                     var parent_class = '.bb5-manage-user',
@@ -109,12 +109,14 @@ define(
                         };
 
                     clicked.parent().find('.bb-toggle-status').text(function () {
-                        if (arguments[1] === trans('active')) {
+                        var args = Array.prototype.slice.call(arguments),
+                            activated = args[1];
+
+                        if (activated === trans('active')) {
                             return trans('inactive');
-                        } else {
-                            user.activated = true;
-                            return trans('active');
                         }
+                        user.activated = true;
+                        return trans('active');
                     });
                     Core.ApplicationManager.invokeService('user.user.updateStatus', self, user);
                 });
