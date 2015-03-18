@@ -17,7 +17,7 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('tb.component/translator/main', ['component!logger', 'jquery'], function (Logger, jQuery) {
+define('tb.component/translator/main', ['component!logger', 'jquery', 'tb.core'], function (Logger, jQuery, Core) {
     'use strict';
 
     /*
@@ -46,6 +46,7 @@ define('tb.component/translator/main', ['component!logger', 'jquery'], function 
                 this.default_locale =  config.locale || 'en_US';
                 this.locale = this.default_locale;
                 this.loadCatalog(this.locale);
+                Core.set('trans', this.translate.bind(this));
             },
 
             /**
@@ -57,7 +58,7 @@ define('tb.component/translator/main', ['component!logger', 'jquery'], function 
             },
 
             /**
-             * Set the locale 
+             * Set the locale
              * @param {String} locale
              */
             setLocale: function (locale) {
@@ -75,11 +76,11 @@ define('tb.component/translator/main', ['component!logger', 'jquery'], function 
 
             /**
              * Translate the key from the json file
-             * 
+             *
              * Translate with the current locale
              * else translate with the default locale
              * else show the key
-             * 
+             *
              * @param {String} key
              * @returns {String}
              */

@@ -238,6 +238,7 @@ define(
 
             updateStatusService: function (popin, user) {
                 console.log(user);
+                var self = this;
 
                 self.repository.save(user).then(
                     function () {
