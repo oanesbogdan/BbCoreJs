@@ -19,13 +19,14 @@
 
 define(
     [
+        'require',
         'jquery',
-        'content.manager',
         'content.container',
         'tb.core.Renderer',
-        'text!content/tpl/breadcrumb'
+        'text!content/tpl/breadcrumb',
+        'content.manager'
     ],
-    function (jQuery, ContentManager, ContentContainer, Renderer, template) {
+    function (require, jQuery, ContentContainer, Renderer, template) {
 
         'use strict';
 
@@ -48,10 +49,11 @@ define(
                 elements.push(this.computeElement(content));
 
                 parents.each(function () {
-                    var parent = jQuery(this),
-                        element = ContentManager.getContentByNode(parent);
 
-                    if (ContentManager.isUsable(element.type)) {
+                    var parent = jQuery(this),
+                        element = require('content.manager').getContentByNode(parent);
+
+                    if (require('content.manager').isUsable(element.type)) {
                         elements.push(self.computeElement(element));
                     }
                 });
@@ -76,7 +78,7 @@ define(
                 var target = jQuery(event.currentTarget),
                     content = ContentContainer.find(target.data(this.contentIdAttribute));
 
-                ContentManager.unSelectContent();
+                require('content.manager').unSelectContent();
 
                 content.select();
 

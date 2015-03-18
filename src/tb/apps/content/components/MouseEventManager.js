@@ -23,14 +23,12 @@ define(
         'jquery',
         'content.container',
         'content.manager',
-        'content.widget.Breadcrumb',
         'jsclass'
     ],
     function (Core,
               jQuery,
               ContentContainer,
-              ContentManager,
-              Breadcrumb
+              ContentManager
             ) {
 
         'use strict';
@@ -41,7 +39,6 @@ define(
             contentHoverClass: 'bb-content-hover',
             identifierDataAttribute: 'bb-identifier',
             idDataAttribute: 'bb-id',
-            breadcrumbSelector: 'div.bb5-content-breadcrumb div.bb5-ui-width-setter',
 
             /**
              * listen the DOM
@@ -81,8 +78,6 @@ define(
                     if (ContentManager.isUsable(content.type)) {
 
                         ContentManager.unSelectContent();
-
-                        Breadcrumb.show(content, this.breadcrumbSelector);
 
                         if (content.jQueryObject.length === 0) {
                             content.jQueryObject = currentTarget;

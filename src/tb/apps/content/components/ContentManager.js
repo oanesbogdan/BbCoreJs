@@ -149,6 +149,8 @@ define(
 
                     content.jQueryObject.remove();
                     ContentContainer.remove(content);
+
+                    parent.select();
                 }
             },
 

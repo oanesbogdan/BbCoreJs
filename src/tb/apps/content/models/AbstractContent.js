@@ -23,18 +23,19 @@ define(
         'content.repository',
         'content.models.ContentRevision',
         'jquery',
+        'content.widget.Breadcrumb',
         'content.manager',
         'jsclass'
     ],
-    function (Core, ContentRepository, ContentRevision, jQuery) {
+    function (Core, ContentRepository, ContentRevision, jQuery, Breadcrumb) {
 
         'use strict';
 
         var AbstractContent = new JS.Class({
 
             mainTag: Core.get('wrapper_toolbar_selector'),
-
             contentClass: '.bb-content',
+            breadcrumbSelector: 'div.bb5-content-breadcrumb div.bb5-ui-width-setter',
 
             /**
              * Initialize AbstractContent
@@ -292,6 +293,8 @@ define(
              */
             select: function () {
                 this.addClass('bb-content-selected');
+
+                Breadcrumb.show(this, this.breadcrumbSelector);
             },
 
             /*
