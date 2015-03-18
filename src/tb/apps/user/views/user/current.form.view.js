@@ -17,8 +17,8 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 define(
-    ['require', 'tb.core.Renderer', 'user/entity/user', 'text!user/templates/user/list.item.twig'],
-    function (require, renderer, User) {
+    ['require', 'jquery', 'component!popin'],
+    function (require, jQuery) {
         'use strict';
 
         /**
@@ -27,21 +27,34 @@ define(
          */
         return Backbone.View.extend({
 
-            /**
-             * Initialize of UserViewList
-             */
-            initialize: function (data) {
-                this.user = new User();
-                this.user.populate(data.user);
-                this.render();
+            popin_config: {
+                id: 'new-user-subpopin',
+                width: 250,
+                top: 180
             },
 
             /**
-             * Render the template into the DOM with the ViewManager
-             * @returns {Object} PageViewEdit
+             * Initialize of PageViewEdit
              */
-            render: function () {
-                return renderer.render(require('text!user/templates/user/list.item.twig'), {user: this.user});
+            initialize: function (data, action) {
+                var self = this,
+                    form;
+                this.popinManager = require('component!popin');
+                this.popin = this.popinManager.createPopIn({id: 'current-user-popin'});
+                this.user = data.user;
+
+                form = require('user/form/' + action + '.user.form');
+                form.construct(self, data.errors);
+            },
+
+            display: function () {
+                this.dfd = jQuery.Deferred();
+                this.popin.display();
+                return this.dfd.promise();
+            },
+
+            destroy: function () {
+                this.popinManager.destroy(this.popin);
             }
         });
     }

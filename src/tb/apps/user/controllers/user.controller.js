@@ -16,10 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-
 define(
-    ['tb.core', 'tb.core.Renderer', 'user/entity/user', 'component!notify', 'require', 'tb.core.Utils'],
-    function (Core, renderer, User, Notify, require, Utils) {
+    ['tb.core', 'tb.core.Renderer', 'user/entity/user', 'component!notify', 'require', 'tb.core.Utils', 'jquery'],
+    function (Core, renderer, User, Notify, require, Utils, jQuery) {
         'use strict';
 
         Core.ControllerManager.registerController('UserController', {
@@ -32,12 +31,20 @@ define(
                     indexService: ['user/views/user/view.list', 'text!user/templates/user/list.twig'],
                     newService: ['user/views/user/form.view', 'user/form/new.user.form'],
                     editService:  ['user/views/user/form.view', 'user/form/edit.user.form'],
-                    deleteService: ['user/views/user/delete.view']
+                    deleteService: ['user/views/user/delete.view'],
+                    showCurrentService: ['user/views/user/toolbar'],
+                    editCurrentService:  ['user/views/user/current.form.view', 'user/form/current.user.form'],
+                    changePasswordService:  ['user/views/user/current.form.view', 'user/form/password.user.form']
                 }
             },
 
             onInit: function (req) {
                 this.repository = req('user/repository/user.repository');
+            },
+
+            parseRestError: function (error) {
+                error = JSON.parse(error);
+                return error.errors || undefined;
             },
 
             /**
@@ -81,17 +88,14 @@ define(
                             Notify.success('User save success.');
                         },
                         function (error) {
-                            var errors;
                             Notify.error('User save fail.');
 
-                            error = JSON.parse(error);
-                            errors = error.errors || undefined;
                             if (undefined !== user_id) {
                                 user.populate({id: user_id});
                             }
 
                             popin.popinManager.destroy(view.popin);
-                            self.initFormView(user, popin, View, action, errors);
+                            self.initFormView(user, popin, View, action, self.parseRestError(error));
                         }
                     );
                 });
@@ -165,7 +169,69 @@ define(
                         Notify.error('User not found.');
                     }
                 );
+            },
 
+            showCurrentService: function (req) {
+                var View = req('user/views/user/toolbar'),
+                    view;
+                this.repository.find('current').then(
+                    function (user_values) {
+                        view = new View({el: jQuery('#bb5-navbar-secondary > div'), user: user_values});
+                        view.render();
+                    },
+                    function () {
+                        Notify.error('Error.');
+                    }
+                );
+            },
+
+            changePasswordService: function (req, user, error) {
+                var self = this,
+                    View = req('user/views/user/current.form.view'),
+                    view = new View({user: user, errors: error}, 'password');
+
+                view.display().then(function (patch) {
+                    patch.id = user.id();
+
+                    self.repository.save(patch).then(
+                        function () {
+                            view.destroy();
+                            Notify.success('Password updated.');
+                        },
+                        function (error) {
+                            view.destroy();
+                            self.editCurrentService(user, self.parseRestError(error));
+                        }
+                    );
+                });
+            },
+
+            editCurrentService: function (req, user, error) {
+                var self = this,
+                    View = req('user/views/user/current.form.view'),
+                    view = new View({user: user, errors: error}, 'current');
+
+                view.display().then(function (user) {
+                    var patch = {
+                        id: user.id(),
+                        firstname: user.firstname(),
+                        lastname: user.lastname(),
+                        email: user.email()
+                    };
+
+                    self.repository.save(patch).then(
+                        function () {
+                            view.destroy();
+                            Notify.success('Account updated.');
+                        },
+                        function (error) {
+                            Notify.error('Error, retry later.');
+
+                            view.destroy();
+                            self.editCurrentService(user, self.parseRestError(error));
+                        }
+                    );
+                });
             }
         });
     }
