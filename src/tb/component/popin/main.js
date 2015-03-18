@@ -164,6 +164,11 @@ define('tb.component/popin/main', ['tb.core', 'tb.component/popin/PopIn', 'jquer
                 element.css('text-align', 'center');
                 element.css('top', '0');
                 element.css('width', '100%');
+                element.find('.fa').css({
+                    'color': '#fff',
+                    'margin-right': '0.5em'
+                });
+
                 jQuery(popInId).parent().find('div.loader').remove();
                 element.appendTo(jQuery(popInId).parent());
             };
