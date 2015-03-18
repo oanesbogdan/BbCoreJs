@@ -1671,6 +1671,20 @@ Version: 2.10 Dec2014
     /*widget*/
     .ui-widget {
         background-color:#fff; border:1px solid #cecece;
+        .ui-dialog-titlebar {
+            padding: .4em 1em;
+        }
+        .ui-draggable-handle {
+            cursor: move;
+        }
+    }
+    
+    .ui-dialog {
+        overflow: hidden;
+        position: absolute;
+        padding: 0.2em;
+        outline: 0;
+        z-index: 100;
     }
 
     .ui-widget-header {
