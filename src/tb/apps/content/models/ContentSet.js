@@ -55,30 +55,36 @@ define(
                     dfd = jQuery.Deferred(),
                     children = this.getNodeChildren();
 
-                content.getHtml().done(function (html) {
-                    if (position === 'last') {
-                        self.jQueryObject.append(html);
-                        done = true;
-                    } else {
-                        children.each(function (key) {
-                            if (key === position) {
-                                jQuery(this).before(html);
-                                done = true;
+                this.getData('parameters').done(function () {
 
-                                return false;
-                            }
-                        });
-                    }
+                    var renderModeParam = self.getParameters('rendermode'),
+                        renderMode = (renderModeParam !== undefined) ? renderModeParam.value : undefined;
 
-                    if (done === false) {
-                        self.jQueryObject.prepend(html);
-                    }
+                    content.getHtml(renderMode).done(function (html) {
+                        if (position === 'last') {
+                            self.jQueryObject.append(html);
+                            done = true;
+                        } else {
+                            children.each(function (key) {
+                                if (key === position) {
+                                    jQuery(this).before(html);
+                                    done = true;
 
-                    self.setUpdated(true);
+                                    return false;
+                                }
+                            });
+                        }
 
-                    require('content.manager').computeImages();
+                        if (done === false) {
+                            self.jQueryObject.prepend(html);
+                        }
 
-                    dfd.resolve();
+                        self.setUpdated(true);
+
+                        require('content.manager').computeImages();
+
+                        dfd.resolve();
+                    });
                 });
 
                 return dfd.promise();
