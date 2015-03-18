@@ -19,11 +19,11 @@
                 <p class="col-bb5-20 user-status">
                     <strong>{{ 'status'|trans }} :</strong>
                     <span class="bb5-button-selector">
-                        <a href="#" class="btn btn-default btn-sm fa fa-angle-left">
+                        <a href="#" class="btn btn-default btn-sm fa fa-angle-left btn-service" data-service="updateStatus">
                             <span class="sr-only">{{ 'previous'|trans }}</span>
                         </a>
-                        <span class="bb5-button-selector-status">{{ user.activated() }}</span>
-                        <a href="#" class="btn btn-default btn-sm fa fa-angle-right">
+                        <span class="bb5-button-selector-status bb-toggle-status">{{ user.activated() }}</span>
+                        <a href="#" class="btn btn-default btn-sm fa fa-angle-right btn-service"  data-service="updateStatus">
                             <span class="sr-only">{{ 'next'|trans }}</span>
                         </a>
                     </span>

@@ -58,6 +58,7 @@ define('app.user', ['tb.core', 'user/views/toolbar.view'], function (Core, View)
 
         onStop: function () {
             this.popin.popinManager.destroy(this.popin.popin);
+            this.popin.unbindDnD();
             this.popin = null;
         }
     });

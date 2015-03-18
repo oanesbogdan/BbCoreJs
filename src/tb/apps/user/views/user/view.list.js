@@ -33,7 +33,9 @@ define(
             initialize: function (data) {
                 this.user = new User();
                 this.user.populate(data.user);
-                this.render();
+                this.user.groups().forEach(function (group, key) {
+                    this.user.groups()[key] = group.name;
+                }, this);
             },
 
             /**

@@ -88,7 +88,8 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
 
             invokeControllerService: function (controller, service, params) {
                 var dfd = new jQuery.Deferred(),
-                    serviceName;
+                    serviceName,
+                    self = this;
 
                 ControllerManager.loadControllerByShortName(this.getName(), controller).done(function (controller) {
                     try {
@@ -98,7 +99,11 @@ define('tb.core.ApplicationManager', ['require', 'BackBone', 'jsclass', 'jquery'
                                 if (req) {
                                     params.unshift(req);
                                 }
-                                dfd.resolve(controller[serviceName].apply(controller, params));
+                                try {
+                                    dfd.resolve(controller[serviceName].apply(controller, params));
+                                } catch (e) {
+                                    Api.exception.silent('InvokeServiceException', 15008, 'Something goes worng during the service ' + serviceName + ' execution', {controller: self.getName(), service: serviceName, error: e});
+                                }
                             },
                             function () {
                                 dfd.resolve(controller[serviceName].apply(controller, params));

@@ -52,7 +52,7 @@ define(['component!formbuilder'], function (formbuilder) {
                     options: {
                         activated: 'activated'
                     },
-                    checked: (view.user.getObject().activated === true) ? 'activated' : false
+                    checked: (view.user.getObject().activated === true) ? 'activated' : ''
                 },
                 changepwd: {
                     type: 'checkbox',

@@ -17,9 +17,10 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 define(
-    ['require', 'jquery', 'tb.core', 'component!dnd', 'component!popin', 'text!user/templates/popin.twig'],
-    function (require, jQuery, Core, dnd) {
+    ['require', 'jquery', 'tb.core', 'user/controllers/dnd.controller', 'component!dnd', 'component!popin', 'component!translator', 'text!user/templates/popin.twig'],
+    function (require, jQuery, Core, DnDController, dnd) {
         'use strict';
+        var trans = Core.get('trans') || function (value) {return value; };
 
         /**
          * View of new page
@@ -43,10 +44,10 @@ define(
                 this.popin.setContent(require('text!user/templates/popin.twig'));
                 this.popin.display();
                 dnd('#toolbar-user-group-popin').addListeners('user');
-                this.bindDnd();
+                this.bindDnD();
             },
 
-            bindDnd: function () {
+            bindDnD: function () {
                 var data = {
                     inDropZone: false,
                     popin: this,
@@ -54,69 +55,27 @@ define(
                     group: 0
                 };
 
-                Core.Mediator.subscribe('on:user:dragstart', function (event) {
-                    var target = jQuery(event.target);
+                Core.Mediator.subscribe('on:user:dragstart', DnDController.dragStart, data);
+                Core.Mediator.subscribe('on:user:dragenter', DnDController.dragEnter, data);
+                Core.Mediator.subscribe('on:user:dragleave', DnDController.dragLeave, data);
+                Core.Mediator.subscribe('on:user:dragover', DnDController.dragOver, data);
+                Core.Mediator.subscribe('on:user:drop', DnDController.drop, data);
+                Core.Mediator.subscribe('on:user:dragend', DnDController.dragEnd, data);
+            },
 
-                    if (target.hasClass('open')) {
-                        target.removeClass('open');
-                    }
-
-                    event.dataTransfer.effectAllowed = 'move';
-                    event.dataTransfer.setData('text', 'user-add-user');
-
-                    this.user =  target.attr('data-user');
-                    this.inDropZone = false;
-                }, data);
-                Core.Mediator.subscribe('on:user:dragenter', function (event) {
-                    if (undefined !== event &&
-                            event.target.getAttribute('dropzone')) {
-
-                        this.inDropZone = true;
-                        this.group = event.target.getAttribute('data-group');
-                    }
-                }, data);
-                Core.Mediator.subscribe('on:user:dragleave', function (event) {
-
-                    if (undefined !== event &&
-                            event.target.getAttribute('dropzone') &&
-                            !event.target.hasChildNodes(event.target.toElement)) {
-
-                        this.inDropZone = false;
-                        this.group = 0;
-                    }
-                }, data);
-                Core.Mediator.subscribe('on:user:dragover', function (event) {
-                    if (undefined !== event &&
-                            true === this.inDropZone) {
-
-                        event.preventDefault();
-                    }
-                }, data);
-                Core.Mediator.subscribe('on:user:drop', function (event) {
-                    if (undefined !== event) {
-                        event.stopPropagation();
-                        event.preventDefault();
-                    }
-
-                    if (0 !== this.group && 0 !== this.user && true === this.inDropZone) {
-                        Core.ApplicationManager.invokeService(
-                            'user.user.addGroup',
-                            this.popin,
-                            this.user,
-                            this.group
-                        );
-                    }
-                }, data);
-                Core.Mediator.subscribe('on:user:dragend', function () {
-                    this.user = 0;
-                    this.group = 0;
-                    this.inDropZone = false;
-                }, data);
+            unbindDnD: function () {
+                Core.Mediator.unsubscribe('on:user:dragstart', DnDController.dragStart);
+                Core.Mediator.unsubscribe('on:user:dragenter', DnDController.dragEnter);
+                Core.Mediator.unsubscribe('on:user:dragleave', DnDController.dragLeave);
+                Core.Mediator.unsubscribe('on:user:dragover', DnDController.dragOver);
+                Core.Mediator.unsubscribe('on:user:drop', DnDController.drop);
+                Core.Mediator.unsubscribe('on:user:dragend', DnDController.dragEnd);
             },
 
             bindUsers: function () {
                 var class_name = '.bb5-list-users-item',
                     self = this;
+
                 jQuery(class_name).click(function () {
                     var parent_class = '.bb5-manage-user',
                         user = jQuery(this).find(parent_class),
@@ -128,13 +87,38 @@ define(
                         user.addClass(open);
                     }
                 });
+
                 jQuery(class_name + ' .btn-edit').click(function () {
                     var user = jQuery(this).parent().attr('data-user');
                     Core.ApplicationManager.invokeService('user.user.edit', self, user);
                 });
+
                 jQuery(class_name + ' .btn-delete').click(function () {
                     var user = jQuery(this).parent().attr('data-user');
                     Core.ApplicationManager.invokeService('user.user.delete', self, user);
+                });
+
+                jQuery(class_name + ' .bb5-button-selector a').click(function (event) {
+                    event.stopPropagation();
+                    event.preventDefault();
+
+                    var clicked = jQuery(this),
+                        user = {
+                            id: clicked.parents('.bb5-manage-user:first').data('user'),
+                            activated: false
+                        };
+
+                    clicked.parent().find('.bb-toggle-status').text(function () {
+                        var args = Array.prototype.slice.call(arguments),
+                            activated = args[1];
+
+                        if (activated === trans('active')) {
+                            return trans('inactive');
+                        }
+                        user.activated = true;
+                        return trans('active');
+                    });
+                    Core.ApplicationManager.invokeService('user.user.updateStatus', self, user);
                 });
             },
 
