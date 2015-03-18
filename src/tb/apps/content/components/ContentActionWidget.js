@@ -43,7 +43,7 @@ define(['jquery', 'text!content/tpl/content-action', 'jsclass'], function (jQuer
                 button.attr("title", actionInfos.label);
                 button.attr('draggable', 'true');
                 button.addClass(actionInfos.ico);
-                //jQuery(button).on("click", actionInfos.cmd.execute);
+                jQuery(button).on("click", actionInfos.cmd.execute);
                 btnCtn.appendChild(jQuery(button).get(0));
             });
             return btnCtn;

@@ -22,11 +22,13 @@ define(
     [
         'tb.core',
         'content.manager',
+        'content.container',
         'jquery',
         'jsclass'
     ],
     function (Core,
               ContentManager,
+              ContentContainer,
               jQuery
             ) {
 
@@ -35,13 +37,11 @@ define(
         return new JS.Class({
 
             bindEvents: function (Manager) {
-                Core.Mediator.subscribe('on:newclasscontent:dragstart', this.onNewContentDragStart, Manager);
-                Core.Mediator.subscribe('on:classcontent:dragstart', this.onContentDragStart, Manager);
+                Core.Mediator.subscribe('on:classcontent:dragstart', this.onDragStart, Manager);
             },
 
             unbindEvents: function () {
-                Core.Mediator.unsubscribe('on:newclasscontent:dragstart', this.onNewContentDragStart);
-                Core.Mediator.unsubscribe('on:classcontent:dragstart', this.onContentDragStart);
+                Core.Mediator.unsubscribe('on:classcontent:dragstart', this.onDragStart);
             },
 
             /**
@@ -58,24 +58,44 @@ define(
              * Event trigged on start drag content
              * @param {Object} event
              */
-            onContentDragStart: function (event) {
-                var target = jQuery(event.target).parents('.' + this.contentClass + ':first'),
-                    content = ContentManager.getContentByNode(target),
-                    img = document.createElement('img');
+            onDragStart: function (event) {
+                event.stopPropagation();
 
-                // this.dataTransfer.target = target.clone();
-                // target.replaceWith('<div id="old-position"></div>');
-                this.dataTransfer.is_drop = false;
+                var target = jQuery(event.target),
+                    content,
+                    img;
+
+                this.dataTransfer.isNew = false;
+                if (target.data(this.typeDataAttribute)) {
+                    this.dataTransfer.isNew = true;
+                    content = {type: target.data(this.typeDataAttribute)};
+                } else {
+                    content = ContentManager.getContentByNode(target.parents('.' + this.contentClass + ':first'));
+
+                    img = document.createElement('img');
+                    img.src = content.definition.image;
+                    img.style = {
+                        width: '25px',
+                        height: '25px'
+                    };
+
+                    event.dataTransfer.setDragImage(img, 25, 25);
+                }
 
                 this.dataTransfer.content = content;
+                event.dataTransfer.effectAllowed = 'move';
+                event.dataTransfer.setData('text', 'draging-content');
 
-                img.src = content.definition.image;
-                img.style = {
-                    width: '25px',
-                    height: '25px'
-                };
+                ContentManager.buildContentSet();
 
-                event.dataTransfer.setDragImage(img, 25, 25);
+                this.dataTransfer.contentSetDroppable = ContentContainer.findContentSetByAccept(content.type);
+
+                setTimeout(
+                    this.showHTMLZoneForContentSet.bind(this),
+                    10,
+                    this.dataTransfer.contentSetDroppable,
+                    this.dataTransfer.content.id
+                );
             }
         });
     }

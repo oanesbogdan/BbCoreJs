@@ -51,7 +51,7 @@ define(
 
             typeDataAttribute: 'bb-type',
 
-            dropZoneAttribute: '*[dropzone="true"]',
+            droppableClass: '.bb-droppable',
 
             dropZoneClass: 'bb-dropzone',
 
@@ -65,7 +65,7 @@ define(
             },
 
             initDnD: function () {
-                dnd('#block-contrib-tab').addListeners('newclasscontent', '.' + this.dndClass);
+                dnd('#block-contrib-tab').addListeners('classcontent', '.' + this.dndClass);
                 dnd('#bb5-site-wrapper').addListeners('classcontent', '.' + this.dndClass);
             },
 
@@ -104,9 +104,10 @@ define(
 
                 for (key in contentSets) {
                     if (contentSets.hasOwnProperty(key)) {
-                        contentSet = contentSets[key];
 
+                        contentSet = contentSets[key];
                         contentSet.isChildrenOf(currentContentId);
+
                         if (contentSet.id !== currentContentId && !contentSet.isChildrenOf(currentContentId)) {
 
                             children = contentSet.getNodeChildren();

@@ -21,12 +21,14 @@ define(
     'app.content/components/dnd/ContentDrop',
     [
         'tb.core',
+        'jquery',
         'component!notify',
         'content.container',
         'content.manager',
         'jsclass'
     ],
     function (Core,
+              jQuery,
               Notify,
               ContentContainer,
               ContentManager
@@ -37,35 +39,35 @@ define(
         return new JS.Class({
 
             bindEvents: function (Manager) {
-                Core.Mediator.subscribe('on:newclasscontent:dragstart', this.onDragStart, Manager);
-                Core.Mediator.subscribe('on:classcontent:dragstart', this.onDragStart, Manager);
 
-                Core.Mediator.subscribe('on:newclasscontent:drop', this.addContent, Manager);
-                Core.Mediator.subscribe('on:classcontent:drop', this.updateContent, Manager);
+                this.manager = Manager;
+
+                Core.Mediator.subscribe('on:classcontent:drop', this.onDrop, this);
             },
 
             unbindEvents: function () {
-                Core.Mediator.unsubscribe('on:newclasscontent:dragstart', this.onDragStart);
-                Core.Mediator.unsubscribe('on:classcontent:dragstart', this.onDragStart);
-
-                Core.Mediator.unsubscribe('on:newclasscontent:drop', this.addContent);
-                Core.Mediator.unsubscribe('on:classcontent:drop', this.updateContent);
+                Core.Mediator.unsubscribe('on:classcontent:drop', this.onDrop);
             },
 
-            /**
-             * Event trigged on start drag content
-             * @param {Object} event
-             */
-            onDragStart: function () {
-                ContentManager.buildContentSet();
+            onDrop: function (event) {
+                event.stopPropagation();
 
-                this.dataTransfer.contentSetDroppable = ContentContainer.findContentSetByAccept(this.dataTransfer.content.type);
-                setTimeout(
-                    this.showHTMLZoneForContentSet.bind(this),
-                    10,
-                    this.dataTransfer.contentSetDroppable,
-                    this.dataTransfer.content.id
-                );
+                var target = jQuery(event.target),
+                    config = {},
+                    parent = target.parents(this.manager.droppableClass + ':first'),
+                    parentObjectIdentifier = ContentManager.retrievalObjectIdentifier(parent.data(this.manager.identifierDataAttribute));
+
+                config.event = event;
+
+                config.position = this.manager.getPosition(target, parent);
+                config.parent = ContentManager.buildElement(parentObjectIdentifier);
+                config.type = this.manager.dataTransfer.content.type;
+
+                if (this.manager.dataTransfer.isNew === true) {
+                    this.addContent(config);
+                } else {
+                    this.updateContent(config);
+                }
             },
 
             /**
@@ -74,15 +76,16 @@ define(
              * from api and show him on the html
              * @param {Object} config
              */
-            addContent: function () {
-                if (ContentContainer.isInArray(this.dataTransfer.contentSetDroppable, 'type', this.dataTransfer.parent.type)) {
+            addContent: function (config) {
 
-                    ContentManager.createElement(this.dataTransfer.content.type).then(
+                if (ContentContainer.isInArray(this.manager.dataTransfer.contentSetDroppable, 'type', config.parent.type)) {
+
+                    ContentManager.createElement(config.type).then(
                         function (content) {
-                            this.dataTransfer.parent.append(content, this.dataTransfer.content.position);
+                            config.parent.append(content, config.position);
                         },
                         function () {
-                            Notify.error('Error: update fail');
+                            Notify.error('An error occured when drop a new content');
                         }
                     );
                 }
@@ -94,20 +97,20 @@ define(
              * and set updated old contentset
              * @param {Object} config
              */
-            updateContent: function () {
-                var content = ContentContainer.find(this.dataTransfer.content.id),
-                    oldParent = content.jQueryObject.parents('.' + this.contentClass + ':first'),
+            updateContent: function (config) {
+
+                var content = ContentContainer.find(this.manager.dataTransfer.content.id),
+                    oldParent = content.jQueryObject.parents('.' + this.manager.contentClass + ':first'),
                     oldParentAsContent;
 
-                if (oldParent.data(this.idDataAttribute)) {
-                    oldParentAsContent = ContentContainer.find(oldParent.data(this.idDataAttribute));
-                } else {
-                    oldParentAsContent = ContentManager.buildElement(oldParent);
-                }
+                oldParentAsContent = ContentManager.getContentByNode(oldParent);
+
+                content.jQueryObject.remove();
+                content.jQueryObject.length = 0;
+
+                config.parent.append(content, config.position);
 
                 oldParentAsContent.setUpdated(true);
-
-                this.dataTransfer.parent.append(content, this.dataTransfer.content.position);
             }
         });
     }
