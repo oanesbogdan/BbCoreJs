@@ -44,7 +44,7 @@ define(
             contentClass: 'bb-content',
             identifierDataAttribute: 'bb-identifier',
             idDataAttribute: 'bb-id',
-            dropZoneAttribute: '*[dropzone="true"]',
+            droppableClass: '.bb-droppable',
             imageClass: 'Element/Image',
             defaultPicturePath: '/resources/toolbar/html/img/filedrop.png',
             contentSelectedClass: 'bb-content-selected',
@@ -55,7 +55,7 @@ define(
              */
             buildContentSet: function () {
                 var self = this,
-                    dropzone = jQuery(this.dropZoneAttribute).not('[data-' + this.idDataAttribute + ']');
+                    dropzone = jQuery(this.droppableClass).not('[data-' + this.idDataAttribute + ']');
 
                 dropzone.each(function () {
                     var currentTarget = jQuery(this);
