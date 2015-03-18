@@ -21,9 +21,10 @@ define(
     [
         'content.pluginmanager',
         'content.manager',
+        'component!translator',
         'jsclass'
     ],
-    function (PluginManager, ContentManager) {
+    function (PluginManager, ContentManager, Translator) {
 
         'use strict';
 
@@ -40,7 +41,9 @@ define(
              * Remove the content
              */
             remove: function () {
-                ContentManager.remove(this.getCurrentContent());
+                if (confirm(Translator.translate('remove_content_confirmation_message'))) {
+                    ContentManager.remove(this.getCurrentContent());
+                }
             },
 
             /**
