@@ -41,12 +41,6 @@ define(['component!formbuilder'], function (formbuilder) {
                     placeholder: 'john.doe@unknown.com',
                     value: view.user.getObject().email
                 },
-                login: {
-                    type: 'text',
-                    label: 'login',
-                    placeholder: 'john.doe',
-                    value: view.user.getObject().login
-                },
                 activated: {
                     type: 'checkbox',
                     options: {
@@ -78,9 +72,6 @@ define(['component!formbuilder'], function (formbuilder) {
             },
 
             onValidate: function (form, data) {
-                if (!data.hasOwnProperty('login') || data.login.trim().length === 0) {
-                    form.addError('login', 'login is required');
-                }
                 if (!data.hasOwnProperty('email') || data.email.trim().length === 0) {
                     form.addError('email', 'email is required');
                 } else {

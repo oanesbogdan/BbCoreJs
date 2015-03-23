@@ -137,7 +137,6 @@ define(
                 var identifier,
                     promise;
 
-                console.log(data);
                 if (data.hasOwnProperty(this.identifier)) {
                     identifier = data[this.identifier];
                     delete data[this.identifier];
