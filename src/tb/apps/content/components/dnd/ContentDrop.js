@@ -25,13 +25,19 @@ define(
         'component!notify',
         'content.container',
         'content.manager',
+        'resource.repository',
+        'tb.core.ApplicationManager',
+        'component!mask',
         'jsclass'
     ],
     function (Core,
               jQuery,
               Notify,
               ContentContainer,
-              ContentManager
+              ContentManager,
+              ResourceRepository,
+              ApplicationManager,
+              Mask
             ) {
 
         'use strict';
@@ -49,8 +55,52 @@ define(
                 Core.Mediator.unsubscribe('on:classcontent:drop', this.onDrop);
             },
 
+            doDropMedia: function (event) {
+                var target = jQuery(event.target),
+                    file = event.dataTransfer.files[0],
+                    reader = new window.FileReader(),
+                    content = ContentManager.getContentByNode(target),
+                    mask = Mask.createMask(),
+                    parent = content.jQueryObject.parent();
+
+                reader.onload = function (e) {
+
+                    var data = {
+                            'src': window.btoa(e.target.result),
+                            'originalname': file.name
+                        },
+                        elements = {};
+
+                    mask.mask(parent);
+
+                    ResourceRepository.upload(data).done(function (response) {
+
+                        elements.path = response.path;
+                        elements.originalname = response.originalname;
+                        content.setElements(elements);
+
+                        ApplicationManager.invokeService('content.main.save').done(function (promise) {
+                            promise.done(function () {
+                                content.refresh();
+                                mask.unmask(parent);
+                                content.jQueryObject.unwrap();
+                            });
+                        });
+                    });
+                };
+
+                reader.readAsBinaryString(file);
+            },
+
             onDrop: function (event) {
-                event.stopPropagation();
+                event.preventDefault();
+
+                if (this.manager.dataTransfer.isMedia === true) {
+
+                    this.doDropMedia(event);
+
+                    return;
+                }
 
                 var target = jQuery(event.target),
                     config = {},
