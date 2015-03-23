@@ -1,4 +1,4 @@
-define(['tb.core.Api', 'component!authentication', 'tb.core.Request', 'tb.core.Response', 'jquery'], function (Api, Authentication, Request, Response, jQuery) {
+define(['tb.core.Api', 'component!session', 'component!authentication', 'tb.core.Request', 'tb.core.Response', 'jquery'], function (Api, session, authentication, Request, Response, jQuery) {
     'use strict';
 
     var request = new Request(),
@@ -13,17 +13,19 @@ define(['tb.core.Api', 'component!authentication', 'tb.core.Request', 'tb.core.R
         };
 
     sessionStorage.clear();
+    session.destroy();
 
     describe('Authentication test', function () {
 
         it('Testing onBeforeSend event', function () {
-            Authentication.onBeforeSend(request);
+            session.onBeforeSend(request);
             expect(request.getHeader('X-API-KEY')).toBe(null);
             expect(request.getHeader('X-API-SIGNATURE')).toBe(null);
 
-            sessionStorage.setItem('bb5-session-auth', apiKey + ';' + apiSignature);
+            sessionStorage.setItem('bb-session-auth', JSON.stringify({key: apiKey, signature: apiSignature}));
+            session.load();
 
-            Authentication.onBeforeSend(request);
+            session.onBeforeSend(request);
             expect(request.getHeader('X-API-KEY')).toEqual(apiKey);
             expect(request.getHeader('X-API-SIGNATURE')).toEqual(apiSignature);
         });
@@ -48,8 +50,18 @@ define(['tb.core.Api', 'component!authentication', 'tb.core.Request', 'tb.core.R
                 return d.promise();
             });
 
-            Authentication.authenticate(username, password);
+            authentication.authenticate(username, password);
             expect(callback).toHaveBeenCalled();
+        });
+
+        it('Testing persist session', function () {
+            session.setKey(apiKey);
+            session.setSignature(apiSignature);
+
+            sessionStorage.clear();
+            session.persist();
+
+            expect(sessionStorage.getItem('bb-session-auth')).toEqual(JSON.stringify({key: apiKey, signature: apiSignature}));
         });
 
         it('Testing onRequestDone event', function () {
@@ -60,41 +72,41 @@ define(['tb.core.Api', 'component!authentication', 'tb.core.Request', 'tb.core.R
 
             sessionStorage.clear();
 
-            Authentication.onRequestDone(response);
-            expect(sessionStorage.getItem('bb5-session-auth')).toEqual(apiKey + ';' + apiSignature);
+            authentication.onRequestDone(response);
+            expect(sessionStorage.getItem('bb-session-auth')).toEqual(JSON.stringify({key: apiKey, signature: apiSignature}));
         });
 
         it('Testing onRequestFail event', function () {
             var response = new Response();
 
             response.setStatus(401);
-            Authentication.onRequestFail(response);
+            session.onRequestFail(response);
             expect(Api.get('is_connected')).toEqual(false);
 
             response.setStatus(403);
-            Authentication.onRequestFail(response);
+            session.onRequestFail(response);
         });
 
         it('Testing logOut function', function () {
-            sessionStorage.setItem('bb5-session-auth', apiKey + ';' + apiSignature);
+            sessionStorage.setItem('bb-session-auth', JSON.stringify({key: apiKey, signature: apiSignature}));
 
             window.onbeforeunload = function () {
                 return false;
             };
 
-            Authentication.logOut();
-            expect(sessionStorage.getItem('bb5-session-auth')).toEqual(null);
+            session.destroy();
+            expect(sessionStorage.getItem('bb-session-auth')).toEqual(null);
         });
 
         it('Testing onLogOut event', function () {
-            sessionStorage.setItem('bb5-session-auth', apiKey + ';' + apiSignature);
+            sessionStorage.setItem('bb5=-session-auth', JSON.stringify({key: apiKey, signature: apiSignature}));
 
             window.onbeforeunload = function () {
                 return false;
             };
 
-            Authentication.onLogOut();
-            expect(sessionStorage.getItem('bb5-session-auth')).toEqual(null);
+            session.destroy();
+            expect(sessionStorage.getItem('bb-session-auth')).toEqual(null);
         });
     });
 });

@@ -35,7 +35,8 @@ define(
                     deleteService: ['user/views/user/delete.view'],
                     showCurrentService: ['user/views/user/toolbar'],
                     editCurrentService:  ['user/views/user/current.form.view', 'user/form/current.user.form'],
-                    changePasswordService:  ['user/views/user/current.form.view', 'user/form/password.user.form']
+                    changePasswordService:  ['user/views/user/current.form.view', 'user/form/password.user.form'],
+                    logoutService: ['component!session', 'tb.core.DriverHandler', 'tb.core.RestDriver']
                 }
             },
 
@@ -257,6 +258,18 @@ define(
                     function () {
                         Notify.error(trans('User update fail.'));
                         self.indexService(require, popin);
+                    }
+                );
+            },
+
+            logoutService: function (req) {
+                var DriverHandler = req('tb.core.DriverHandler');
+                DriverHandler.addDriver('rest', req('tb.core.RestDriver'));
+                DriverHandler.delete('security/session').then(
+                    function () {
+                        req('component!session').destroy();
+                        document.cookie = 'PHPSESSID=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                        document.location.reload();
                     }
                 );
             }

@@ -5,13 +5,19 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-right" role="menu">
             <li>
-                <a href="#/user/edit" class="bb-service" data-service="editCurrent"><i class="fa fa-pencil"></i> {{ 'Edit'|trans }}</a>
+                <a href="#/user/edit" class="bb-service" data-service="editCurrent">
+                    <i class="fa fa-pencil"></i> {{ 'Edit'|trans }}
+                </a>
             </li>
             <li>
-                <a href="#/user/edit/password" class="bb-service" data-service="changePassword"><i class="fa fa-unlock-alt"></i> {{ 'Change password'|trans }}</a>
+                <a href="#/user/edit/password" class="bb-service" data-service="changePassword">
+                    <i class="fa fa-unlock-alt"></i> {{ 'Change password'|trans }}
+                </a>
             </li>
             <li>
-                <a href="#/user/logout"><i class="fa fa-power-off"></i> {{ 'Logout'|trans }}</a>
+                <a href="#/user/logout" class="bb-service" data-service="logout">
+                    <i class="fa fa-power-off"></i> {{ 'Logout'|trans }}
+                </a>
             </li>
         </ul>
     </div>

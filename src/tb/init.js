@@ -35,7 +35,7 @@ define(['jquery'], function (jQuery) {
                 if (autoStart === undefined || autoStart === false) {
                     jQuery(document).bind('keyup', jQuery.proxy(this.manageAccess, this));
                 } else {
-                    this.load(true);
+                    this.load();
                 }
             },
 
@@ -44,16 +44,17 @@ define(['jquery'], function (jQuery) {
                     if (!event.altKey || !event.ctrlKey || 66 !== event.keyCode) {
                         return;
                     }
-                    this.load(false);
+                    this.load();
                 }
             },
 
-            load: function (already_connected) {
+            load: function () {
                 var self = this;
 
-                require(['tb.core'], function (Core) {
+                require(['tb.core', 'component!session'], function (Core, session) {
 
-                    Core.set('is_connected', false);
+                    Core.set('session', session);
+                    Core.set('is_connected', session.isAuthenticated());
                     Core.set('wrapper_toolbar_selector', toolbarSelector);
                     Core.set('api_base_url', selector.attr('data-api'));
 
@@ -62,10 +63,9 @@ define(['jquery'], function (jQuery) {
                             'tb.core.DriverHandler',
                             'tb.core.RestDriver',
                             'tb.core.Renderer',
-                            'component!authentication',
                             'component!translator'
                         ],
-                        function (DriverHandler, RestDriver, Renderer, AuthenticationHandler, Translator) {
+                        function (DriverHandler, RestDriver, Renderer, Translator) {
 
                             RestDriver.setBaseUrl(Core.get('api_base_url'));
                             DriverHandler.addDriver('rest', RestDriver);
@@ -94,14 +94,13 @@ define(['jquery'], function (jQuery) {
                                 router.navigate(app.getMainRoute());
                             });
 
-                            if (true === already_connected) {
+                            if (session.isAuthenticated()) {
                                 initOnConnect();
                             } else {
-                                Core.Mediator.subscribe('onSuccessLogin', function () {
+                                Core.Mediator.subscribe('on:success:login', function () {
                                     self.toolBarDisplayed = true;
                                     initOnConnect();
                                 });
-                                AuthenticationHandler.showForm();
                             }
                         },
                         self.onError
