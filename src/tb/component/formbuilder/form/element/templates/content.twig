@@ -1,8 +1,8 @@
-<p>{{ element.getLabel() }}</p>
+<p class="label">{{ element.getLabel() }}</p>
 
 <div class="row clearfix">
     <div class="col-md-5">
-        <img src="{{ element.image }}" style="width:80px;"/>
+        <img class="img-responsive" src="{{ element.image }}" />
     </div>
   <div class="col-md-7">
       <p><button id="{{ element.getKey() }}_update_btn" class="btn btn-default-grey btn-sm">Modifier</button></p>
