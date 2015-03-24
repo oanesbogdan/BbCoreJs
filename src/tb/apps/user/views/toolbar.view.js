@@ -44,8 +44,40 @@ define(
                 Core.ApplicationManager.invokeService('user.user.new', Core.get('application.user').popin);
             },
 
+            searchUsers: function (event) {
+                var values = jQuery(this).serializeArray(),
+                    params = {};
+
+                event.preventDefault();
+
+                values.forEach(function (data) {
+                    if (data.name !== 'activated' && data.value !== '') {
+                        params[data.name] = data.value;
+                    } else if (data.name === 'activated' && data.value !== 'all') {
+                        params[data.name] = data.value;
+                    }
+                });
+
+                Core.ApplicationManager.invokeService('user.user.index', Core.get('application.user').popin, params);
+            },
+
+            resetSearchUsers: function (event) {
+                event.preventDefault();
+                var inputs = jQuery(this).parents('form:first').find('input');
+                jQuery.each(inputs, function (index) {
+                    var input = jQuery(inputs.get(index));
+
+                    input.val('');
+                });
+
+                jQuery(this).parents('form:first').find('select').val('all');
+                Core.ApplicationManager.invokeService('user.user.index', Core.get('application.user').popin, {reset: true});
+            },
+
             bindAction: function () {
                 this.zone.find('#toolbar-new-user-action').click(this.newUser);
+                this.zone.find('#bb-toolbar-user-search-form').submit(this.searchUsers);
+                this.zone.find('#bb-toolbar-user-reset-search-form').click(this.resetSearchUsers);
             },
 
             destruct: function () {
