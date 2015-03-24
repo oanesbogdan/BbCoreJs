@@ -20,7 +20,9 @@ define(
     ['require', 'jquery', 'tb.core', 'user/controllers/dnd.controller', 'component!dnd', 'component!popin', 'component!translator', 'text!user/templates/popin.twig'],
     function (require, jQuery, Core, DnDController, dnd) {
         'use strict';
-        var trans = Core.get('trans') || function (value) {return value; };
+        var trans = Core.get('trans') || function (value) {return value; },
+            popinManager,
+            popin;
 
         /**
          * View of new page
@@ -32,17 +34,26 @@ define(
                 id: 'user-popin-picker',
                 height: window.innerHeight - 200,
                 width: window.innerWidth - 100,
-                top: 180
+                top: 180,
+                close: function () {
+                    popinManager.destroy(popin);
+                }
             },
 
             /**
              * Initialize of PageViewEdit
              */
             initialize: function () {
+                this.display();
+            },
+
+            display: function () {
                 this.popinManager = require('component!popin');
                 this.popin = this.popinManager.createPopIn(this.popin_config);
                 this.popin.setContent(require('text!user/templates/popin.twig'));
                 this.popin.display();
+                popinManager = this.popinManager;
+                popin = this.popin;
                 dnd('#toolbar-user-group-popin').addListeners('user');
                 this.bindDnD();
             },
