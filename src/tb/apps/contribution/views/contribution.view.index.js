@@ -52,7 +52,7 @@ define(
             },
 
             showNewPage: function () {
-                return ApplicationManager.invokeService('page.main.newPage', {'parent_uid': Core.get('page.uid')});
+                return ApplicationManager.invokeService('page.main.newPage', {'parent_uid': Core.get('page.uid'), 'flag': 'redirect'});
             },
 
             manageMenu: function (event) {
