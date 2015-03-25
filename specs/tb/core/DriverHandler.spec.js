@@ -86,13 +86,13 @@ define(['require', 'tb.core.DriverHandler', 'jquery', 'tb.core.RestDriver'], fun
             expect(dh.mappings.page.hasOwnProperty('link')).toEqual(false);
         });
 
-        it('FormatDatas will always return an object with datas, criterias, orderBy, start and limit properties', function () {
-            var datas = dh.formatDatas();
-            expect(datas.hasOwnProperty('datas')).toEqual(true);
-            expect(datas.hasOwnProperty('criterias')).toEqual(true);
-            expect(datas.hasOwnProperty('orderBy')).toEqual(true);
-            expect(datas.hasOwnProperty('start')).toEqual(true);
-            expect(datas.hasOwnProperty('limit')).toEqual(true);
+        it('FormatData will always return an object with data, criteria, orderBy, start and limit properties', function () {
+            var data = dh.formatData();
+            expect(data.hasOwnProperty('data')).toEqual(true);
+            expect(data.hasOwnProperty('criteria')).toEqual(true);
+            expect(data.hasOwnProperty('orderBy')).toEqual(true);
+            expect(data.hasOwnProperty('start')).toEqual(true);
+            expect(data.hasOwnProperty('limit')).toEqual(true);
         });
 
         it('Retrieve drivers for a given type and action is always valid; it returns list of drivers according to your mappings or default driver', function () {

@@ -22,13 +22,13 @@ define(['tb.core.Request'], function (TbRequest) {
             expect(Request.getMethod()).toEqual(method);
         });
 
-        it('Testing Datas getter/setter', function () {
-            var datas = {foo: 'bar'};
+        it('Testing Data getter/setter', function () {
+            var data = {foo: 'bar'};
 
-            expect(Request.getDatas()).toEqual(null);
+            expect(Request.getData()).toEqual(null);
 
-            Request.setDatas(datas);
-            expect(Request.getDatas()).toEqual(datas);
+            Request.setData(data);
+            expect(Request.getData()).toEqual(data);
         });
 
         it('Testing Headers getter/setter', function () {

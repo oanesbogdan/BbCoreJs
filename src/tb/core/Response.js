@@ -38,13 +38,13 @@ define('tb.core.Response', ['jsclass'], function () {
             * Mixed data value of Response
             * @type {Mixed}
             */
-            this.datas = '';
+            this.data = '';
 
             /**
-            * Raw datas of Response
+            * Raw data of Response
             * @type {String}
             */
-            this.rawDatas = '';
+            this.rawData = '';
 
             /**
             * Status code of Response
@@ -83,24 +83,24 @@ define('tb.core.Response', ['jsclass'], function () {
         },
 
         /**
-         * Return datas, if datas not set it
-         * will return datas raw
+         * Return data, if data not set it
+         * will return data raw
          * @returns {Mixed}
          */
-        getDatas: function () {
-            if ('' === this.datas) {
-                return this.rawDatas;
+        getData: function () {
+            if ('' === this.data) {
+                return this.rawData;
             }
 
-            return this.datas;
+            return this.data;
         },
 
         /**
          * Return raw datas
          * @returns {String}
          */
-        getRawDatas: function () {
-            return this.rawDatas;
+        getRawData: function () {
+            return this.rawData;
         },
 
         /**
@@ -235,23 +235,23 @@ define('tb.core.Response', ['jsclass'], function () {
         },
 
         /**
-         * Set the datas
-         * @param {String} datas
+         * Set the data
+         * @param {String} data
          * @returns {Response}
          */
-        setDatas: function (datas) {
-            this.datas = datas;
+        setData: function (data) {
+            this.data = data;
 
             return this;
         },
 
         /**
-         * Set the raw datas
-         * @param {String} rawDatas
+         * Set the raw data
+         * @param {String} rawData
          * @returns {Response}
          */
-        setRawDatas: function (rawDatas) {
-            this.rawDatas = rawDatas;
+        setRawData: function (rawData) {
+            this.rawData = rawData;
 
             return this;
         },

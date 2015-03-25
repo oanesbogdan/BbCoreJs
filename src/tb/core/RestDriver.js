@@ -52,10 +52,10 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
              * the response provided by server
              * @param  {String} action the action to execute ('read', 'create', 'delete', 'update', 'patch', 'link')
              * @param  {String} type   your entity namespace
-             * @param  {Object} datas  datas contains request limit, start, criterias and datas
+             * @param  {Object} data  data contains request limit, start, criteria and data
              * @return {Object}        the response data provided by performing your request
              */
-            handle: function (action, type, datas) {
+            handle: function (action, type, data) {
                 var url = new URI(this.baseUrl),
                     range;
 
@@ -68,38 +68,38 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
 
                 if ('read' === action) {
                     this.request.setMethod('GET');
-                    this.computeCriterias(url, datas);
+                    this.computeCriteria(url, data);
                 } else if ('update' === action || 'patch' === action || 'link' === action || 'delete' === action) {
                     this.request.setMethod('update' === action ? 'put' : action);
-                    this.computeCriterias(url, datas);
+                    this.computeCriteria(url, data);
 
-                    if (datas.hasOwnProperty('datas')) {
+                    if (data.hasOwnProperty('data')) {
                         if ('patch' === action) {
-                            this.request.setDatas(this.computePatchOperations(datas.datas));
+                            this.request.setData(this.computePatchOperations(data.data));
                         } else {
-                            this.request.setDatas(datas.datas);
+                            this.request.setData(data.data);
                         }
                     }
                 } else if ('create' === action) {
                     this.request.setMethod('POST');
-                    this.computeCriterias(url, datas);
+                    this.computeCriteria(url, data);
 
-                    if (datas.hasOwnProperty('datas')) {
-                        this.request.setDatas(datas.datas);
+                    if (data.hasOwnProperty('data')) {
+                        this.request.setData(data.data);
                     }
                 }
 
-                if (datas.hasOwnProperty('limit') && null !== datas.limit) {
-                    range = (datas.hasOwnProperty('start') ? datas.start : '0') + ',' + datas.limit;
+                if (data.hasOwnProperty('limit') && null !== data.limit) {
+                    range = (data.hasOwnProperty('start') ? data.start : '0') + ',' + data.limit;
                     this.request.addHeader('Range',  range);
                 }
 
-                this.computeOrderBy(url, datas);
+                this.computeOrderBy(url, data);
 
                 this.request.setUrl(url.normalize().toString());
 
-                if (null !== this.request.getDatas()) {
-                    this.request.setDatas(JSON.stringify(this.request.getDatas()));
+                if (null !== this.request.getData()) {
+                    this.request.setData(JSON.stringify(this.request.getData()));
                 }
 
                 Core.Mediator.publish('rest:send:before', this.request);
@@ -108,25 +108,25 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
             },
 
             /**
-             * Checks if datas has criterias and add them to url
+             * Checks if data has criteria and add them to url
              * @param  {Object} url   object which must be type of URI which represent the request url
-             * @param  {Object} datas
+             * @param  {Object} data
              * @return {Object}       self
              */
-            computeCriterias: function (url, datas) {
-                var criterias = datas.hasOwnProperty('criterias') ? datas.criterias : null,
-                    criteria;
+            computeCriteria: function (url, data) {
+                var criteria = data.hasOwnProperty('criteria') ? data.criteria : null,
+                    criterion;
 
-                if (null === criterias) {
+                if (null === criteria) {
                     return this;
                 }
 
-                for (criteria in criterias) {
-                    if (criterias.hasOwnProperty(criteria)) {
-                        if ('uid' === criteria || 'id' === criteria) {
-                            url.segment(criterias[criteria].toString());
+                for (criterion in criteria) {
+                    if (criteria.hasOwnProperty(criterion)) {
+                        if ('uid' === criterion || 'id' === criterion) {
+                            url.segment(criteria[criterion].toString());
                         } else {
-                            url.addSearch(criteria + (typeof criterias[criteria] === 'object' ? '[]' : ''), criterias[criteria]);
+                            url.addSearch(criterion + (typeof criteria[criterion] === 'object' ? '[]' : ''), criteria[criterion]);
                         }
                     }
                 }
@@ -135,18 +135,18 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
             },
 
             /**
-             * Checks if datas has orderBy and add them to url
+             * Checks if data has orderBy and add them to url
              * @param  {Object} url   object which must be type of URI which represent the request url
-             * @param  {Object} datas
+             * @param  {Object} data
              * @return {Object}       self
              */
-            computeOrderBy: function (url, datas) {
+            computeOrderBy: function (url, data) {
                 var order;
 
-                if (datas.hasOwnProperty('orderBy') && typeof datas.orderBy === 'object') {
-                    for (order in datas.orderBy) {
-                        if (datas.orderBy.hasOwnProperty(order)) {
-                            url.addSearch('order_by[' + order + ']', datas.orderBy[order]);
+                if (data.hasOwnProperty('orderBy') && typeof data.orderBy === 'object') {
+                    for (order in data.orderBy) {
+                        if (data.orderBy.hasOwnProperty(order)) {
+                            url.addSearch('order_by[' + order + ']', data.orderBy[order]);
                         }
                     }
                 }
@@ -155,20 +155,20 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
             },
 
             /**
-             * Format request datas to match with path operations standard (RFC 6902: http://tools.ietf.org/html/rfc6902)
-             * @param  {Object} datas patch raw datas
-             * @return {Object}       formatted patch datas
+             * Format request data to match with path operations standard (RFC 6902: http://tools.ietf.org/html/rfc6902)
+             * @param  {Object} data patch raw data
+             * @return {Object}       formatted patch data
              */
-            computePatchOperations: function (datas) {
+            computePatchOperations: function (data) {
                 var operations = [],
                     key;
 
-                for (key in datas) {
-                    if (datas.hasOwnProperty(key)) {
+                for (key in data) {
+                    if (data.hasOwnProperty(key)) {
                         operations.push({
                             op: 'replace',
                             path: '/' + key,
-                            value: datas[key]
+                            value: data[key]
                         });
                     }
                 }
@@ -185,11 +185,11 @@ define('tb.core.RestDriver', ['tb.core.Request', 'tb.core.RequestHandler', 'URIj
          * the response provided by server
          * @param  {String} action the action to execute ('read', 'create', 'delete', 'update', 'patch', 'link')
          * @param  {String} type   your entity namespace
-         * @param  {Object} datas  datas contains request limit, start, criterias and datas
+         * @param  {Object} data   data contains request limit, start, criteria and data
          * @return {Object}        the response data provided by performing your request
          */
-        handle: function (action, type, datas) {
-            return rest.handle(action, type, datas);
+        handle: function (action, type, data) {
+            return rest.handle(action, type, data);
         },
 
         /**

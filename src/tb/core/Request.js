@@ -39,7 +39,7 @@ define('tb.core.Request', ['jsclass'], function () {
              * Data of request
              * @type {Mixed}
              */
-            this.datas = null;
+            this.data = null;
             /**
              * Headers of request
              * @type {Object}
@@ -74,8 +74,8 @@ define('tb.core.Request', ['jsclass'], function () {
          * @param {Mixed} data
          * @returns {Object} Request
          */
-        setDatas: function (datas) {
-            this.datas = datas;
+        setData: function (data) {
+            this.data = data;
 
             return this;
         },
@@ -134,8 +134,8 @@ define('tb.core.Request', ['jsclass'], function () {
          * Get the data of request
          * @returns {Mixed}
          */
-        getDatas: function () {
-            return this.datas;
+        getData: function () {
+            return this.data;
         },
         /**
          * Get header by key
