@@ -171,88 +171,88 @@ define('tb.core.DriverHandler', ['underscore', 'jquery', 'jsclass'], function (u
         /**
          * Perform a create request
          * @param  {String}   type     type/namespace of your entity
-         * @param  {Object}   datas    contains every datas required to create your entity
+         * @param  {Object}   data    contains every data required to create your entity
          */
-        create: function (type, datas) {
-            return this.doGenericAction('create', type, {datas: datas});
+        create: function (type, data) {
+            return this.doGenericAction('create', type, {data: data});
         },
 
         /**
          * Perform a read request
          * @param  {String}   type      type/namespace of your entity
-         * @param  {Object}   criterias
+         * @param  {Object}   criteria
          * @param  {Object}   orderBy
          * @param  {Number}   start
          * @param  {Number}   limit
          */
-        read: function (type, criterias, orderBy, start, limit) {
-            return this.doGenericAction('read', type, this.formatDatas({}, criterias, orderBy, start, limit));
+        read: function (type, criteria, orderBy, start, limit) {
+            return this.doGenericAction('read', type, this.formatData({}, criteria, orderBy, start, limit));
         },
 
         /**
          * Perform an update request
          * @param  {String}   type      type/namespace of your entity
-         * @param  {Object}   datas
-         * @param  {Object}   criterias
+         * @param  {Object}   data
+         * @param  {Object}   criteria
          * @param  {Object}   orderBy
          * @param  {Number}   start
          * @param  {Number}   limit
          */
-        update: function (type, datas, criterias, orderBy, start, limit) {
-            return this.doGenericAction('update', type, this.formatDatas(datas, criterias, orderBy, start, limit));
+        update: function (type, data, criteria, orderBy, start, limit) {
+            return this.doGenericAction('update', type, this.formatData(data, criteria, orderBy, start, limit));
         },
 
         /**
          * Perform an delete request
          * @param  {String}   type      type/namespace of your entity
-         * @param  {Object}   criterias
+         * @param  {Object}   criteria
          * @param  {Object}   orderBy
          * @param  {Number}   start
          * @param  {Number}   limit
          */
-        delete: function (type, criterias, orderBy, start, limit) {
-            return this.doGenericAction('delete', type, this.formatDatas({}, criterias, orderBy, start, limit));
+        delete: function (type, criteria, orderBy, start, limit) {
+            return this.doGenericAction('delete', type, this.formatData({}, criteria, orderBy, start, limit));
         },
 
         /**
          * Perform an link request
          * @param  {String}   type      type/namespace of your entity
-         * @param  {Object}   datas
-         * @param  {Object}   criterias
+         * @param  {Object}   data
+         * @param  {Object}   criteria
          * @param  {Object}   orderBy
          * @param  {Number}   start
          * @param  {Number}   limit
          */
-        link: function (type, datas, criterias, orderBy, start, limit) {
-            return this.doGenericAction('link', type, this.formatDatas(datas, criterias, orderBy, start, limit));
+        link: function (type, data, criteria, orderBy, start, limit) {
+            return this.doGenericAction('link', type, this.formatData(data, criteria, orderBy, start, limit));
         },
 
         /**
          * Perform an patch request
          * @param  {String}   type      type/namespace of your entity
-         * @param  {Object}   datas
-         * @param  {Object}   criterias
+         * @param  {Object}   data
+         * @param  {Object}   criteria
          * @param  {Object}   orderBy
          * @param  {Number}   start
          * @param  {Number}   limit
          */
-        patch: function (type, datas, criterias, orderBy, start, limit) {
-            return this.doGenericAction('patch', type, this.formatDatas(datas, criterias, orderBy, start, limit));
+        patch: function (type, data, criteria, orderBy, start, limit) {
+            return this.doGenericAction('patch', type, this.formatData(data, criteria, orderBy, start, limit));
         },
 
         /**
-         * Generate a well formated datas object from criterias, orderBy,start and limit parameters
+         * Generate a well formated data object from criteria, orderBy,start and limit parameters
          * @param  {String} type      type/namespace of your entity
-         * @param  {Object} criterias
+         * @param  {Object} criteria
          * @param  {Object} orderBy
          * @param  {Number} start
          * @param  {Number} limit
          * @return {Object}
          */
-        formatDatas: function (datas, criterias, orderBy, start, limit) {
+        formatData: function (data, criteria, orderBy, start, limit) {
             return {
-                datas: datas,
-                criterias: criterias || {},
+                data: data,
+                criteria: criteria || {},
                 orderBy: orderBy || {},
                 start: start || 0,
                 limit: limit || null
@@ -263,15 +263,15 @@ define('tb.core.DriverHandler', ['underscore', 'jquery', 'jsclass'], function (u
          * Generic way to find action/driver mapping with type and then call handle() on every valid drivers
          * @param  {String}   action   the name of the action to execute
          * @param  {String}   type     type/namespace of your entity
-         * @param  {Object}   datas
+         * @param  {Object}   data
          * @param  {Function} callback
          */
-        doGenericAction: function (action, type, datas) {
+        doGenericAction: function (action, type, data) {
             var drivers = this.getDriversByTypeAndAction(type, action),
                 driver,
                 dfd = jQuery.Deferred(),
-                done = function (datas, response) {
-                    dfd.resolve(datas, response);
+                done = function (data, response) {
+                    dfd.resolve(data, response);
                 },
                 fail = function (e) {
                     console.log(e);
@@ -280,7 +280,7 @@ define('tb.core.DriverHandler', ['underscore', 'jquery', 'jsclass'], function (u
 
             for (driver in drivers) {
                 if (drivers.hasOwnProperty(driver)) {
-                    this.drivers[drivers[driver]].handle(action, type, datas).done(done).fail(fail);
+                    this.drivers[drivers[driver]].handle(action, type, data).done(done).fail(fail);
                 }
             }
 

@@ -18,22 +18,22 @@ define(['tb.core.Response'], function (TbResponse) {
             expect(Response.getHeader('bar')).toEqual('foo');
         });
 
-        it('Testing RawDatas getter/setter', function () {
-            var rawDatas = '{"foo": "bar"}';
+        it('Testing RawData getter/setter', function () {
+            var rawData = '{"foo": "bar"}';
 
-            expect(Response.getRawDatas()).toEqual('');
+            expect(Response.getRawData()).toEqual('');
 
-            Response.setRawDatas(rawDatas);
-            expect(Response.getRawDatas()).toEqual(rawDatas);
+            Response.setRawData(rawData);
+            expect(Response.getRawData()).toEqual(rawData);
         });
 
-        it('Testing Datas getter/setter', function () {
-            var datas = [{"foo": "bar"}, {"bar": "foo"}];
+        it('Testing Data getter/setter', function () {
+            var data = [{"foo": "bar"}, {"bar": "foo"}];
 
-            expect(Response.getDatas()).toEqual('{"foo": "bar"}');
+            expect(Response.getData()).toEqual('{"foo": "bar"}');
 
-            Response.setDatas(datas);
-            expect(Response.getDatas()).toEqual(datas);
+            Response.setData(data);
+            expect(Response.getData()).toEqual(data);
         });
 
         it('Testing Status getter/setter', function () {

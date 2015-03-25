@@ -13,7 +13,7 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
                 return '';
             }
         },
-        datas = {
+        data = {
             title: 'Test RestDriver'
         };
 
@@ -36,7 +36,7 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
             });
 
             Rest.handle('read', 'page', {
-                criterias: {
+                criteria: {
                     parent_uid: 'abcdef1234567890'
                 },
                 start: 5,
@@ -56,7 +56,7 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
                 return d.promise();
             });
 
-            Rest.handle('read', 'page', {criterias: {uid: uid}}, callback);
+            Rest.handle('read', 'page', {criteria: {uid: uid}}, callback);
         });
 
         it('Create a page', function () {
@@ -64,14 +64,14 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
                 var d = jQuery.Deferred();
                 expect(req.url).toEqual(baseUrl + type);
                 expect(req.type).toEqual('POST');
-                expect(req.data).toEqual(JSON.stringify(datas));
+                expect(req.data).toEqual(JSON.stringify(data));
                 expect(req.headers).toEqual({'Content-Type': 'application/json', 'Accept': 'application/json'});
                 d.resolve('', '', fakeXhr);
 
                 return d.promise();
             });
 
-            Rest.handle('create', 'page', {datas: datas}, callback);
+            Rest.handle('create', 'page', {data: data}, callback);
         });
 
         it('Update a page', function () {
@@ -79,7 +79,7 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
                 var d = jQuery.Deferred();
                 expect(req.url).toEqual(baseUrl + type + '/' + uid + '?parent_uid=abcdef1234567890');
                 expect(req.type).toEqual('PUT');
-                expect(req.data).toEqual(JSON.stringify(datas));
+                expect(req.data).toEqual(JSON.stringify(data));
                 expect(req.headers).toEqual({'Content-Type': 'application/json', 'Accept': 'application/json'});
                 d.resolve('', '', fakeXhr);
 
@@ -87,8 +87,8 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
             });
 
             Rest.handle('update', 'page', {
-                datas: datas,
-                criterias: {
+                data: data,
+                criteria: {
                     uid: uid,
                     parent_uid: 'abcdef1234567890'
                 }
@@ -108,7 +108,7 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
             });
 
             Rest.handle('delete', 'page', {
-                criterias: {
+                criteria: {
                     parent_uid: 'abcdef1234567890'
                 },
                 limit: 10
@@ -135,8 +135,8 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
             });
 
             Rest.handle('patch', 'page', {
-                datas: datas,
-                criterias: {
+                data: data,
+                criteria: {
                     uid: uid
                 }
             }, callback);
@@ -155,10 +155,10 @@ define(['tb.core.RestDriver', 'jquery'], function (Rest, jQuery) {
             });
 
             Rest.handle('link', 'page', {
-                datas: {
+                data: {
                     'next_node': 'abcdef1234567890'
                 },
-                criterias: {
+                criteria: {
                     uid: uid
                 }
             }, callback);

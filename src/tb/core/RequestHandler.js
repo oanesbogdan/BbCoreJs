@@ -47,7 +47,7 @@ define('tb.core.RequestHandler', ['tb.core.Api', 'jquery', 'underscore', 'BackBo
                 jQuery.ajax({
                     url: request.getUrl(),
                     type: request.getMethod(),
-                    data: request.getDatas(),
+                    data: request.getData(),
                     headers: request.getHeaders()
                 }).done(function (data, textStatus, xhr) {
                     var response = self.buildResponse(
@@ -61,7 +61,7 @@ define('tb.core.RequestHandler', ['tb.core.Api', 'jquery', 'underscore', 'BackBo
 
                     Api.Mediator.publish('request:send:done', response);
 
-                    dfd.resolve(response.getDatas(), response);
+                    dfd.resolve(response.getData(), response);
                 }).fail(function (xhr, textStatus, errorThrown) {
                     var response = self.buildResponse(
                             xhr.getAllResponseHeaders(),
@@ -74,7 +74,7 @@ define('tb.core.RequestHandler', ['tb.core.Api', 'jquery', 'underscore', 'BackBo
 
                     Api.Mediator.publish('request:send:fail', response);
 
-                    dfd.reject(response.getDatas(), response);
+                    dfd.reject(response.getData(), response);
                 });
             }
 
@@ -84,19 +84,19 @@ define('tb.core.RequestHandler', ['tb.core.Api', 'jquery', 'underscore', 'BackBo
         /**
          * Build the Response Object
          * @param {String} headers
-         * @param {String} datas
-         * @param {String} rawDatas
+         * @param {String} data
+         * @param {String} rawData
          * @param {Number} status
          * @param {String} statusText
          * @param {String} errorText
          */
-        buildResponse: function (headers, datas, rawDatas, status, statusText, errorText) {
+        buildResponse: function (headers, data, rawData, status, statusText, errorText) {
             var Response = new TbResponse();
 
             this.buildHeaders(Response, headers);
 
-            Response.setDatas(datas);
-            Response.setRawDatas(rawDatas);
+            Response.setData(data);
+            Response.setRawData(rawData);
             Response.setStatus(status);
             Response.setStatusText(statusText);
             Response.setErrorText(errorText);
