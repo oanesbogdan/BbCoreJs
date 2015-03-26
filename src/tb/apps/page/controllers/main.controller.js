@@ -28,19 +28,24 @@ define(
         'page.view.manage',
         'page.view.tree',
         'page.view.tree.contribution',
-        'page.repository'
+        'page.repository',
+        'tb.core.Request',
+        'tb.core.RequestHandler'
     ],
-    function (Core,
-              ContributionIndexView,
-              DeleteView,
-              NewView,
-              EditView,
-              CloneView,
-              ManageView,
-              PageTreeView,
-              PageTreeViewContribution,
-              PageRepository
-            ) {
+    function (
+        Core,
+        ContributionIndexView,
+        DeleteView,
+        NewView,
+        EditView,
+        CloneView,
+        ManageView,
+        PageTreeView,
+        PageTreeViewContribution,
+        PageRepository,
+        Request,
+        RequestHandler
+    ) {
 
         'use strict';
 
@@ -104,12 +109,8 @@ define(
              * @param {String} uid
              */
             deletePageService: function (config) {
-                try {
-                    var view = new DeleteView(config);
-                    view.render();
-                } catch (e) {
-                    console.log(e);
-                }
+                var view = new DeleteView(config);
+                view.render();
             },
 
             findCurrentPageService: function () {
@@ -117,43 +118,44 @@ define(
             },
 
             clonePageService: function (config) {
-                try {
-                    var view = new CloneView(config);
-                    view.render();
-                } catch (e) {
-                    console.log(e);
-                }
+                var view = new CloneView(config);
+                view.render();
             },
 
             newPageService: function (config) {
-
-                try {
-                    var view = new NewView(config);
-                    view.render();
-                } catch (e) {
-                    console.log(e);
+                if ('redirect' === config.flag) {
+                    config.callbackAfterSubmit = this.newPageRedirect;
                 }
+                var view = new NewView(config);
+                view.render();
             },
 
             editPageService: function (config) {
-                try {
-                    var view = new EditView(config);
-                    view.render();
-                } catch (e) {
-                    console.log(e);
-                }
+                var view = new EditView(config);
+                view.render();
             },
 
             /**
              * Manage pages action
              */
             manageAction: function () {
-                try {
-                    var view = new ManageView();
-                    view.render();
-                } catch (e) {
-                    console.log(e);
+                var view = new ManageView();
+                view.render();
+            },
+
+            newPageRedirect: function (data, response) {
+                if (response.getHeader('Location')) {
+                    var request = new Request();
+                    request.setUrl(response.getHeader('Location'));
+                    RequestHandler.send(request).then(
+                        function (page) {
+                            if (page.uri) {
+                                document.location.href = page.uri;
+                            }
+                        }
+                    );
                 }
+                return data;
             }
         });
     }
