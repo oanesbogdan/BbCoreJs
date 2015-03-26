@@ -26,6 +26,8 @@ define(
 
             appName: 'user',
 
+            pagination_params: null,
+
             config: {
                 imports: ['user/repository/user.repository'],
                 define: {
@@ -53,11 +55,19 @@ define(
              * Index action
              * Show the index in the edit contribution toolbar
              */
-            indexService: function (req, popin) {
+            indexService: function (req, popin, params) {
                 var View = req('user/views/user/view.list'),
                     template = req('text!user/templates/user/list.twig');
 
-                this.repository.paginate().then(
+                if (params !== undefined) {
+                    if (params.reset === true) {
+                        this.pagination_params = null;
+                    } else {
+                        this.pagination_params = params;
+                    }
+                }
+
+                this.repository.paginate(this.pagination_params).then(
                     function (users) {
                         var i;
 
