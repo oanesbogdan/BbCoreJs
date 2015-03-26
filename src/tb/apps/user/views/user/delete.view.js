@@ -21,6 +21,9 @@ define(
     function (require, Renderer, jQuery) {
         'use strict';
 
+        var mainPopin,
+            popin;
+
         /**
          * View of new page
          * @type {Object} Backbone.View
@@ -30,7 +33,10 @@ define(
             popin_config: {
                 id: 'new-user-subpopin',
                 width: 250,
-                top: 180
+                top: 180,
+                close: function () {
+                    mainPopin.popinManager.destroy(popin);
+                }
             },
 
             bindAction: function () {
@@ -48,23 +54,23 @@ define(
              * Initialize of PageViewEdit
              */
             initialize: function (data) {
-                this.mainPopin = data.popin;
+                mainPopin = data.popin;
                 this.user = data.user;
-                this.popin = this.mainPopin.popinManager.createSubPopIn(this.mainPopin.popin, this.popin_config);
+                popin = mainPopin.popinManager.createSubPopIn(mainPopin.popin, this.popin_config);
                 this.tpl = Renderer.render(require('text!user/templates/user/delete.twig'), {user: this.user});
-                this.popin.setContent(this.tpl);
+                popin.setContent(this.tpl);
             },
 
 
             display: function () {
                 this.dfd = jQuery.Deferred();
-                this.popin.display();
+                popin.display();
                 this.bindAction();
                 return this.dfd.promise();
             },
 
             destruct: function () {
-                this.mainPopin.popinManager.destroy(this.popin);
+                mainPopin.popinManager.destroy(this.popin);
             }
         });
     }

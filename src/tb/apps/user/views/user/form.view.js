@@ -21,6 +21,9 @@ define(
     function (require, jQuery) {
         'use strict';
 
+        var mainPopin,
+            popin;
+
         /**
          * View of new page
          * @type {Object} Backbone.View
@@ -30,7 +33,10 @@ define(
             popin_config: {
                 id: 'new-user-subpopin',
                 width: 250,
-                top: 180
+                top: 180,
+                close: function () {
+                    mainPopin.popinManager.destroy(popin);
+                }
             },
 
             /**
@@ -39,9 +45,10 @@ define(
             initialize: function (data, action) {
                 var self = this,
                     form;
-                this.mainPopin = data.popin;
+                mainPopin = data.popin;
                 this.user = data.user;
-                this.popin = this.mainPopin.popinManager.createSubPopIn(this.mainPopin.popin, this.popin_config);
+                popin = mainPopin.popinManager.createSubPopIn(mainPopin.popin, this.popin_config);
+                this.popin = popin;
 
                 form = require('user/form/' + action + '.user.form');
                 form.construct(self, data.errors);
@@ -49,7 +56,7 @@ define(
 
             display: function () {
                 this.dfd = jQuery.Deferred();
-                this.popin.display();
+                popin.display();
                 return this.dfd.promise();
             },
 
