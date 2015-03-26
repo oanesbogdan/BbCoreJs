@@ -34,8 +34,10 @@ define(
         var Edition = {
 
             contentSetClass: '.contentset',
+            config: {onSave: null},
 
-            show: function (content) {
+            show: function (content, config) {
+                this.config = config || {};
                 if (content !== undefined) {
                     this.content = content;
                     this.createPopin();
@@ -148,6 +150,9 @@ define(
 
                 ApplicationManager.invokeService('content.main.save').done(function (promise) {
                     promise.done(function () {
+                        if (typeof self.config.onSave === "function") {
+                            self.config.onSave(data);
+                        }
                         self.content.refresh().done(function () {
                             self.content.refresh();
 
@@ -155,6 +160,7 @@ define(
 
                             self.popin.hide();
                         });
+                        self.config.onSave = null;
                     });
                 });
             },

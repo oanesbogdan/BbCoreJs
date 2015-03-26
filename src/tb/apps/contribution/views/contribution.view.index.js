@@ -38,6 +38,7 @@ define(
                 element.on('click', '#bundle-toolbar-tree', this.showTree);
                 element.on('click', '#bundle-toolbar-global-validate', this.manageValidate);
                 element.on('click', '#bundle-toolbar-global-cancel', this.manageCancel);
+                element.on("click", "#btn-show-mediaLibrary", this.showMediaLibrary);
             },
 
             showTree: function () {
@@ -53,6 +54,10 @@ define(
 
             showNewPage: function () {
                 return ApplicationManager.invokeService('page.main.newPage', {'parent_uid': Core.get('page.uid')});
+            },
+
+            showMediaLibrary: function (config) {
+                return ApplicationManager.invokeService('contribution.main.showMediaLibrary', config);
             },
 
             manageMenu: function (event) {

@@ -55,6 +55,9 @@ require.config({
         bootstrapjs: {
             deps: ['jquery']
         },
+        'lib.jqtree': {
+            deps: ['jquery']
+        },
         'jquery-layout': {
             deps: ['jquery']
         },

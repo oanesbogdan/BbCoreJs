@@ -130,7 +130,6 @@ define(
                  */
                 save: function (data) {
                     var result;
-
                     if (data.hasOwnProperty('uid')) {
                         result = CoreDriverHandler.update(this.TYPE + '/' + data.type, data, {'id': data.uid});
                     } else {

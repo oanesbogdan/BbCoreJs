@@ -1,8 +1,19 @@
-define(['jquery', 'jssimplepagination'], function (jQuery) {
+/*global jQuery:false, $:false, Backbone:false */
+/*jshint -W004 */
+define(['jquery', 'jssimplepagination'], function (CorejQuery) {
     'use strict';
-    var $ = jQuery,
+    /*make sure our jQuery instance has the extension*/
+    if (!CorejQuery.fn.hasOwnProperty("pagination")) {
+        if ($) {
+            CorejQuery.fn.pagination = $.fn.pagination;
+        }
+        if (jQuery) {
+            CorejQuery.fn.pagination = jQuery.fn.pagination;
+        }
+    }
+    var $ = CorejQuery,
         Pagination = new JS.Class({
-            IS_VISIBLE : false,
+
             defaultConfig: {
                 css: {},
                 cls: 'pagination clearfix',
@@ -16,6 +27,7 @@ define(['jquery', 'jssimplepagination'], function (jQuery) {
 
             initialize: function (config) {
                 this.config = $.extend({}, this.defaultConfig, config);
+                this.IS_VISIBLE = false;
                 this.silenceNextEvent = false;
                 $.extend(this, {}, Backbone.Events);
                 this.widget = $("<div/>").clone();
@@ -64,7 +76,6 @@ define(['jquery', 'jssimplepagination'], function (jQuery) {
                 if (hideWidget) {
                     $(this.widget).hide();
                     this.IS_VISIBLE = false;
-
                 } else {
                     $(this.widget).show();
                     this.IS_VISIBLE = true;
@@ -96,7 +107,7 @@ define(['jquery', 'jssimplepagination'], function (jQuery) {
                 this.trigger('pageChange', currentPage);
             },
 
-            /* We provide a programatic way to adapt the render to  */
+            /* We provide a programatic way to adapt the render view */
             beforeRender: function (widget) {
                 var mainContainer = $(widget).find('ul'),
                     firstBtn = mainContainer.find('.first-btn'),
@@ -165,6 +176,7 @@ define(['jquery', 'jssimplepagination'], function (jQuery) {
             getPagesCount: function () {
                 return this.invoke('getPagesCount');
             },
+
             getCurrentPage: function () {
                 return this.invoke('getCurrentPage');
             },
@@ -172,7 +184,6 @@ define(['jquery', 'jssimplepagination'], function (jQuery) {
             destroy: function () {
                 this.invoke('destroy');
             },
-
             disable: function () {
                 this.invoke('disable');
             },
@@ -183,7 +194,6 @@ define(['jquery', 'jssimplepagination'], function (jQuery) {
 
             getItemsOnPage: function () {
                 var conf = this.getPaginationConf();
-
                 return conf.itemsOnPage;
             }
         });

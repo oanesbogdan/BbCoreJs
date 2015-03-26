@@ -1,8 +1,17 @@
-define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
+/*global $:false */
+define(["jquery", 'tb.component/treeview/NodeEditor', "BackBone", "lib.jqtree", "jsclass"], function (jQuery, NodeEditor) {
     "use strict";
     /**
      * TreeView's class
      */
+
+    /**
+     * making sure our jQuery instance has the jqtree plugin
+     *  */
+    if (!jQuery.fn.hasOwnProperty("tree")) {
+        jQuery.fn.tree = $.fn.tree;
+    }
+
     var TreeView = new JS.Class({
         defaultOptions: {
             loadingMessage: "Loading...",
@@ -25,7 +34,7 @@ define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
                 jQuery("body").append(this.el);
                 this.useWrapper = true;
             }
-
+            this.nodeEditor = new NodeEditor(this);
             this.treeEl = jQuery(this.el).tree(this.options);
         },
         /* hasRoot */
@@ -98,6 +107,24 @@ define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
                 this.reload();
             }
         },
+
+        editNode: function (node) {
+            this.nodeEditor.edit(node);
+        },
+
+        createNode: function () {
+            this.nodeEditor.createNode();
+        },
+
+        cancelEdit: function () {
+            this.nodeEditor.cancel();
+        },
+
+        getEditedNode: function () {
+            return this.editor.getEditedNode();
+        },
+
+
         /**
          * Get the selected node
          * @param {object}
@@ -184,6 +211,15 @@ define(["jquery", "lib.jqtree", "jsclass"], function (jQuery) {
                 throw "TreeViewException [setData] data should be an Array";
             }
             return this.invoke("loadData", data, parentNode);
+        },
+
+        isNodeOpened: function (node) {
+            var treeSate = this.invoke("getState"),
+                result = false;
+            if (jQuery.inArray(node.id, treeSate.open_nodes) !== -1) {
+                result = true;
+            }
+            return result;
         },
         /**
          * Check if the provided node is the root node

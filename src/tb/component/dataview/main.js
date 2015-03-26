@@ -19,9 +19,11 @@ define(['require', 'tb.core.Api', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api'
                     width: "450px",
                     height: "400px"
                 },
+                itemKey: 'uid',
                 itemCls: 'data-view-item',
                 itemSelectedCls: 'selected',
                 rendererClass: '',
+                renderMode: 'list',
                 renderAsCollection: false,
                 allowMultiSelection: true,
                 customItemEvents: {},
@@ -29,12 +31,12 @@ define(['require', 'tb.core.Api', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api'
                     return '<p>An item renderer must be provided</p>';
                 }
             },
-
             initialize: function (config) {
                 jQuery.extend(this, {}, Backbone.Events);
                 this.config = jQuery.extend({}, this.defaultConfig, config);
+                this.itemKey = this.config.itemKey;
+                this.renderMode = this.config.renderMode;
                 this.build();
-                this.currentRenderMode = this.LIST_MODE;
                 this.renderers = {};
                 this.buildDefaultRenderers();
                 this.itemRenderer = this.config.itemRenderer;
@@ -44,7 +46,6 @@ define(['require', 'tb.core.Api', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api'
                 this.data = {};
                 this.bindEvents();
             },
-
             handleCustomItemEvents: function () {
                 var self = this;
                 if (jQuery.isEmptyObject(this.config.customItemEvents)) {
@@ -60,7 +61,6 @@ define(['require', 'tb.core.Api', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api'
                     });
                 });
             },
-
             buildDefaultRenderers: function () {
                 var listRenderer = {
                     name: "list",
@@ -86,7 +86,6 @@ define(['require', 'tb.core.Api', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api'
                 }
                 /* register renderer */
             },
-
             bindEvents: function () {
                 jQuery(this.widget).on("click", "." + this.config.itemCls, jQuery.proxy(this.handleItemClick, this));
                 if (this.config.dataStore && typeof this.config.dataStore.on === "function") {
@@ -124,7 +123,7 @@ define(['require', 'tb.core.Api', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api'
 
             updateUi: function () {
                 var items = (this.renderAsCollection) ? this.data : this.renderItems(),
-                    renderer = this.getModeRenderer(this.currentRenderMode).render(items);
+                    renderer = this.getModeRenderer(this.renderMode).render(items);
                 jQuery(this.dataWrapper).html(renderer);
                 this.trigger('afterRender');
             },
@@ -168,7 +167,7 @@ define(['require', 'tb.core.Api', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api'
                 var self = this,
                     ctn = document.createDocumentFragment();
                 jQuery.each(this.data, function (i, item) {
-                    var itemRender = jQuery(self.itemRenderer(self.currentRenderMode, item)); // when is a class it should provide a render
+                    var itemRender = jQuery(self.itemRenderer(self.renderMode, item)); // when is a class it should provide a render
                     jQuery(itemRender).data("view-item", self.genId("item"));
                     jQuery(itemRender).data("item-data", item);
                     jQuery(itemRender).data("item-no", i);
@@ -183,7 +182,7 @@ define(['require', 'tb.core.Api', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api'
 
             setRenderMode: function (mode) {
                 var selections = this.getSelection();
-                this.currentRenderMode = mode;
+                this.renderMode = mode;
                 this.updateUi();
                 this.selectItems(selections);
             },
@@ -224,7 +223,7 @@ define(['require', 'tb.core.Api', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api'
                 items = (jQuery.isArray(items)) ? items : [items];
                 jQuery.each(items, function (i) {
                     item = items[i];
-                    var selector = '[data-uid="' + item.uid + '"]';
+                    var selector = '[data-uid="' + item[this.itemKey] + '"]';
                     itemRender = self.dataWrapper.find(selector);
                     if (itemRender.length) {
                         jQuery(itemRender).addClass(self.config.itemSelectedCls);

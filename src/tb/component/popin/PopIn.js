@@ -167,12 +167,12 @@ define('tb.component/popin/PopIn', ['jquery', 'jsclass'], function (jQuery) {
              * @return {PopIn} self
              */
             destroy: function () {
+                jQuery('#' + this.getId()).dialog("destroy");
                 this.state = DESTROY_STATE;
                 delete this.id;
                 delete this.content;
                 delete this.options;
                 delete this.children;
-
                 return this;
             },
 
@@ -238,8 +238,20 @@ define('tb.component/popin/PopIn', ['jquery', 'jsclass'], function (jQuery) {
                 }
 
                 this.options.buttons[label] = callback;
-
+                if (this.isOpen) {
+                    jQuery('#' + this.getId()).dialog("option", "buttons", this.options.buttons);
+                }
                 return this;
+            },
+
+            getDialog: function () {
+                return jQuery('#' + this.getId()).dialog("widget");
+            },
+
+            moveToTop: function () {
+                if (this.isOpen) {
+                    jQuery('#' + this.getId()).dialog("moveToTop");
+                }
             },
 
             /**
