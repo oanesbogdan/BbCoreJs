@@ -238,7 +238,7 @@ define('tb.component/popin/PopIn', ['jquery', 'jsclass'], function (jQuery) {
                 }
 
                 this.options.buttons[label] = callback;
-                if (this.isOpen) {
+                if (this.isOpen()) {
                     jQuery('#' + this.getId()).dialog("option", "buttons", this.options.buttons);
                 }
                 return this;
@@ -249,7 +249,7 @@ define('tb.component/popin/PopIn', ['jquery', 'jsclass'], function (jQuery) {
             },
 
             moveToTop: function () {
-                if (this.isOpen) {
+                if (this.isOpen()) {
                     jQuery('#' + this.getId()).dialog("moveToTop");
                 }
             },
