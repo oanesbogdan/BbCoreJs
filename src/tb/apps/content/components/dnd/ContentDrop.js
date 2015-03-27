@@ -95,7 +95,7 @@ define(
             onDrop: function (event) {
                 event.preventDefault();
 
-                if (this.manager.dataTransfer.isMedia === true) {
+                if (event.dataTransfer.files.length > 0) {
 
                     this.doDropMedia(event);
 
