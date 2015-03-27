@@ -21,7 +21,6 @@ define(
     function (require, jQuery, Core, DnDController, dnd) {
         'use strict';
         var trans = Core.get('trans') || function (value) {return value; },
-            popinManager,
             popin;
 
         /**
@@ -32,11 +31,17 @@ define(
 
             popin_config: {
                 id: 'user-popin-picker',
-                height: window.innerHeight - 200,
-                width: window.innerWidth - 100,
+                width: window.innerWidth,
                 top: 180,
-                close: function () {
-                    popinManager.destroy(popin);
+                height: window.innerHeight - 192,
+                closeOnEscape: false,
+                draggable: false,
+                open: function () {
+                    var parent = jQuery(this).parent('.ui-dialog:first');
+                    parent.css({
+                        top: 192
+                    });
+                    parent.find(".ui-dialog-titlebar-close").hide();
                 }
             },
 
@@ -52,9 +57,16 @@ define(
                 this.popin = this.popinManager.createPopIn(this.popin_config);
                 this.popin.setContent(require('text!user/templates/popin.twig'));
                 this.popin.display();
-                popinManager = this.popinManager;
                 popin = this.popin;
                 dnd('#toolbar-user-group-popin').addListeners('user');
+
+                jQuery(window).resize(function () {
+                    popin.getDialog().css({
+                        width: window.innerWidth,
+                        height: window.innerHeight - 192
+                    });
+                });
+
                 this.bindDnD();
             },
 
