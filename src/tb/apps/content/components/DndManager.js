@@ -67,6 +67,7 @@ define(
             initDnD: function () {
                 dnd('#block-contrib-tab').addListeners('classcontent', '.' + this.dndClass);
                 dnd('#bb5-site-wrapper').addListeners('classcontent', '.' + this.dndClass);
+                jQuery('body').on('dragenter', jQuery.proxy(this.mediaDragEnter, this));
             },
 
             resetDataTransfert: function () {
@@ -74,7 +75,8 @@ define(
                     content: {},
                     identifier: null,
                     contentSetDroppable: null,
-                    parent: null
+                    parent: null,
+                    isMedia: false
                 };
             },
 
@@ -90,6 +92,19 @@ define(
                 this.drop.unbindEvents();
             },
 
+            mediaDragEnter: function () {
+                var img = jQuery('[data-bb-identifier^="Element/Image"]');
+
+                img.addClass('bb-dnd');
+                img.attr('dropzone', true);
+                img.css('opacity', '0.6');
+
+                if (!img.parent().hasClass('img-wrap-dnd')) {
+                    img.wrap('<div class="img-wrap-dnd">');
+                }
+
+                this.dataTransfer.isMedia = true;
+            },
 
             /**
              * Show the dropzone after and before each children

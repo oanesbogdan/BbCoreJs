@@ -280,7 +280,10 @@ define(
                     dfd = jQuery.Deferred();
 
                 ContentRepository.getHtml(this.type, this.uid).done(function (html) {
+                    html = jQuery(html);
+
                     self.jQueryObject.replaceWith(html);
+                    self.jQueryObject = html;
 
                     dfd.resolve();
                 });
