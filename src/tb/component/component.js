@@ -20,11 +20,11 @@
     'use strict';
     require.config({
         paths: {
-            'tb.component': 'src/tb/component/'
+            'tb.component': 'src/tb/component'
         }
     });
 
-    define(['tb.core.Api'], function (Core) {
+    define(['tb.core'], function (Core) {
         return {
             load: function (name, req, onload) {
                 req(['tb.component/' + name + '/main'], function (component) {
