@@ -46,9 +46,17 @@ define(
             },
 
             createPopin: function () {
+                if (this.popin) {
+                    this.popin.destroy();
+                }
                 this.popin = PopinManager.createPopIn();
                 this.popin.setTitle('Edit');
                 this.popin.addOption('width', '500px');
+            },
+
+            getDialog: function () {
+                var dialog = this.popin || null;
+                return dialog;
             },
 
             getFormConfig: function () {
@@ -262,7 +270,8 @@ define(
         };
 
         return {
-            show: jQuery.proxy(Edition.show, Edition)
+            show: jQuery.proxy(Edition.show, Edition),
+            getDialog: jQuery.proxy(Edition.getDialog, Edition)
         };
     }
 );

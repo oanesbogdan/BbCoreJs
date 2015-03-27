@@ -32,12 +32,6 @@ define(['tb.core', 'nunjucks', 'jquery', 'component!popin', 'component!mask', 'j
 
         setSelector: function (selector) {
             this.selector = selector;
-            var self = this;
-            this.selector.on("focus", function () {
-                if (self.popin) {
-                    self.popin.moveToTop();
-                }
-            });
         },
 
         getSelector: function () {
@@ -59,11 +53,12 @@ define(['tb.core', 'nunjucks', 'jquery', 'component!popin', 'component!mask', 'j
             item.on('click', '.show-media-btn', jQuery.proxy(this.handleMediaPreview, this, itemData));
             item.on('click', '.del-media-btn', jQuery.proxy(this.deleteMedia, this, itemData));
             item.on('click', '.edit-media-btn', jQuery.proxy(this.showMediaEditForm, this, itemData));
-            item.on('click', '.addandclose', jQuery.proxy(this.addAndClose, this, itemData));
+            item.on('click', '.addandclose-btn', jQuery.proxy(this.addAndClose, this, itemData));
             return item;
         },
 
         handleMediaPreview: function (media, e) {
+            this.selector.hideEditForm();
             e.stopPropagation();
             var self = this;
             this.initPopin().setTitle("Media Preview");
@@ -72,7 +67,9 @@ define(['tb.core', 'nunjucks', 'jquery', 'component!popin', 'component!mask', 'j
             this.popin.moveToTop();
             this.popin.mask();
             this.loadMediaPreview(media.content).done(function (content) {
-                self.popin.setContent(jQuery(content));
+                content = jQuery(content);
+                content.removeClass();
+                self.popin.setContent(content);
                 self.popin.unmask();
             });
         },
@@ -93,6 +90,7 @@ define(['tb.core', 'nunjucks', 'jquery', 'component!popin', 'component!mask', 'j
         },
 
         showMediaEditForm: function (media, e) {
+            this.hidePopin();
             e.stopPropagation();
             this.selector.showMediaEditForm(media.type, media);
         },
@@ -123,6 +121,7 @@ define(['tb.core', 'nunjucks', 'jquery', 'component!popin', 'component!mask', 'j
         },
 
         deleteMedia: function (media, e) {
+            this.selector.hideEditForm();
             e.stopPropagation();
             this.media = media;
             this.initPopin();

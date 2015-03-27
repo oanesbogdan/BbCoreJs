@@ -223,7 +223,7 @@ define(['require', 'tb.core.Api', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api'
                 items = (jQuery.isArray(items)) ? items : [items];
                 jQuery.each(items, function (i) {
                     item = items[i];
-                    var selector = '[data-uid="' + item[this.itemKey] + '"]';
+                    var selector = '[data-uid="' + item[self.itemKey] + '"]';
                     itemRender = self.dataWrapper.find(selector);
                     if (itemRender.length) {
                         jQuery(itemRender).addClass(self.config.itemSelectedCls);
