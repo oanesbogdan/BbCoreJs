@@ -27,7 +27,7 @@ define(['require', 'tb.core', 'component!popin', 'component!treeview', 'componen
             range: [10, 50, 10],
             selected: 10
         },
-        mode: 'view',
+        mode: 'edit',
         searchEngine: {},
         mediaView: {
             allowMultiSelection: true,
@@ -38,7 +38,7 @@ define(['require', 'tb.core', 'component!popin', 'component!treeview', 'componen
             }
         },
         resetOnClose: true,
-        categoryTreeView: {}
+        mediaFolderTreeView: {}
     },
         MediaLibrary = new JS.Class({
             VIEW_MODE: 'view',
@@ -50,16 +50,16 @@ define(['require', 'tb.core', 'component!popin', 'component!treeview', 'componen
                 this.resetOnClose = this.config.resetOnClose || false;
                 this.dialog = this.initPopin();
                 this.dialog.addOption("open", jQuery.proxy(this.onOpen, null, this));
+                this.dialog.addOption("close", jQuery.proxy(this.onClose, this, this));
                 this.dialog.addOption("focus", jQuery.proxy(this.onFocus, this));
                 this.widget = jQuery(layout).clone();
                 this.handleViewModeChange();
                 this.loadingMap = {};
                 this.openedMediaFolder = null;
-                this.mediaRenderer = new ItemRenderer();
-                this.mediaRenderer.setSelector(this);
+                this.mediaItemRenderer = new ItemRenderer();
+                this.mediaItemRenderer.setSelector(this);
                 this.loadedNode = null;
                 this.initComponents();
-                this.bindEvents();
                 this.setMode(this.config.mode);
             },
 
@@ -76,14 +76,35 @@ define(['require', 'tb.core', 'component!popin', 'component!treeview', 'componen
             },
 
             onFocus: function () {
-                this.trigger("focus");
+                this.trigger("focus"); //useful for child popin
+            },
+
+            onClose: function () {
+                if (this.config.mode === this.EDIT_MODE) {
+                    if (this.triggerEvent) {
+                        this.trigger("close", this.mediaListView.getSelection());
+                    }
+                }
+                if (this.resetOnClose) {
+                    this.reset();
+                }
+                this.triggerEvent = true;
+            },
+
+            reset: function () {
+                this.mediaListView.reset();
+                this.mediaPagination.setItems(0);
+                this.rangeSelector.reset();
+                jQuery(this.widget).find(".result-infos").html("");
+                this.mediaFolderTreeView.unselectNode();
             },
 
             setMode: function (mode) {
-                if (this.mode === this.EDIT_MODE) {
+                if (this.config.mode === this.EDIT_MODE) {
                     this.addButtons();
+                    this.resetOnClose = true; //force reset
                 }
-                this.mediaRenderer.setMode(mode);
+                this.mediaItemRenderer.setMode(mode);
                 /* edit mode */
             },
 
@@ -96,8 +117,16 @@ define(['require', 'tb.core', 'component!popin', 'component!treeview', 'componen
             },
 
             addButtons: function () {
-                this.dialog.addButton("Yes", jQuery.noop);
-                this.dialog.addButton("No", jQuery.noop);
+                var self = this;
+                this.dialog.addButton("Add & Close", function () {
+                    self.close();
+                });
+                this.dialog.addButton("Cancel", function () {
+                    self.triggerEvent = false;
+                    self.close();
+                });
+
+                jQuery("#" + this.dialog.getId() + " .ui-dialog-buttonset").addClass("pull-right");
             },
 
             initLayouts: function () {
@@ -166,7 +195,7 @@ define(['require', 'tb.core', 'component!popin', 'component!treeview', 'componen
             },
 
             createMediaFolderView: function () {
-                return TreeView.createTreeView(this.config.categoryTreeView);
+                return TreeView.createTreeView(this.config.mediaFolderTreeView);
             },
 
             createRangeSelector: function () {
@@ -182,7 +211,7 @@ define(['require', 'tb.core', 'component!popin', 'component!treeview', 'componen
                 if (this.config.hasOwnProperty("viewmode")) {
                     mediaViewConfig.renderMode = this.config.viewmode;
                 }
-                mediaViewConfig.itemRenderer = jQuery.proxy(this.mediaRenderer.render, this.mediaRenderer);
+                mediaViewConfig.itemRenderer = jQuery.proxy(this.mediaItemRenderer.render, this.mediaItemRenderer);
                 mediaViewConfig.dataStore = this.mediaDataStore;
                 return DataViewMng.createDataView(mediaViewConfig);
             },
@@ -196,8 +225,14 @@ define(['require', 'tb.core', 'component!popin', 'component!treeview', 'componen
                 var self = this;
                 this.mediaDataStore.remove(media).done(function () {
                     self.mediaDataStore.execute();
-                    self.mediaRenderer.hidePopin();
+                    self.mediaItemRenderer.hidePopin();
                 });
+            },
+
+            hideEditForm: function () {
+                if (this.mediaEditorDialog) {
+                    this.mediaEditorDialog.hide();
+                }
             },
 
             showMediaEditForm: function (type, mediaItem) {
@@ -206,6 +241,7 @@ define(['require', 'tb.core', 'component!popin', 'component!treeview', 'componen
                         content = null,
                         mediaInfos;
                     require("tb.core").ApplicationManager.invokeService('content.main.edition').done(function (deps) {
+
                         if (mediaItem) {
                             content = deps.ContentHelper.buildElement(mediaItem.content);
                             mediaInfos = {
@@ -218,6 +254,9 @@ define(['require', 'tb.core', 'component!popin', 'component!treeview', 'componen
                             deps.EditionHelper.show(content, {
                                 onSave: jQuery.proxy(self.onSaveHandler, self, mediaInfos)
                             });
+                            /* deal with main dialog getting focus while editing */
+                            self.dialog.addChild(deps.EditionHelper.getDialog());
+                            self.mediaEditorDialog = deps.EditionHelper.getDialog();
                         } else {
                             deps.ContentHelper.createElement(type).done(function (content) {
                                 mediaInfos = {
@@ -228,6 +267,9 @@ define(['require', 'tb.core', 'component!popin', 'component!treeview', 'componen
                                 deps.EditionHelper.show(content, {
                                     onSave: jQuery.proxy(self.onSaveHandler, self, mediaInfos)
                                 });
+                                /* deal with main dialog getting focus while editing */
+                                self.dialog.addChild(deps.EditionHelper.getDialog());
+                                self.mediaEditorDialog = deps.EditionHelper.getDialog();
                             }).fail(function (reason) {
                                 require("component!notify").error(reason);
                             });
@@ -273,11 +315,13 @@ define(['require', 'tb.core', 'component!popin', 'component!treeview', 'componen
                     searchEnginerCtn = jQuery(this.widget).find(".search-engine-ctn").eq(0);
                 this.rangeSelector.render(rangeSelectorCtn, 'replaceWith');
                 this.treeContainer = jQuery(this.widget).find('.bb5-windowpane-tree').eq(0);
+                this.bindEvents();
                 this.mediaPagination.render(paginationCtn, 'replaceWith');
                 this.mediaListView.render(dataViewCtn);
                 this.mediaFolderTreeView.render(catTreeCtn);
                 this.searchEngine.render(searchEnginerCtn);
                 this.loadMediaFolder();
+
             },
 
             loadMediaFolder: function () {
@@ -353,7 +397,7 @@ define(['require', 'tb.core', 'component!popin', 'component!treeview', 'componen
             },
 
             onMediaStoreUpdate: function () {
-                this.fixDataviewLayout(400);
+                this.fixDataviewLayout();
                 var resultTotal, rootNode;
                 if (!this.loadedNode) {
                     rootNode = this.mediaFolderTreeView.getRootNode();
@@ -415,11 +459,11 @@ define(['require', 'tb.core', 'component!popin', 'component!treeview', 'componen
 
             display: function () {
                 this.dialog.display();
+                this.trigger("open");
             },
 
             close: function () {
                 this.dialog.hide();
-                this.trigger("close", this.contentDataView.getSelection());
             }
         });
     return {

@@ -86,7 +86,6 @@ define('tb.component/popin/PopIn', ['jquery', 'jsclass'], function (jQuery) {
              */
             setContent: function (content) {
                 this.content = content;
-
                 return this;
             },
 
@@ -105,7 +104,7 @@ define('tb.component/popin/PopIn', ['jquery', 'jsclass'], function (jQuery) {
              * @return {PopIn} self
              */
             addChild: function (child) {
-                if (typeof child === 'object' && typeof child.isA === 'function' && child.isA(PopIn) && false === child.isDestroy() && false === this.isDestroy()) {
+                if (child && typeof child === 'object' && typeof child.isA === 'function' && child.isA(PopIn) && false === child.isDestroy() && false === this.isDestroy()) {
                     this.children.push(child);
                 } else {
                     throw 'PopIn::addChild only accept PopIn object which is not in destroy state.';
@@ -168,6 +167,7 @@ define('tb.component/popin/PopIn', ['jquery', 'jsclass'], function (jQuery) {
              */
             destroy: function () {
                 jQuery('#' + this.getId()).dialog("destroy");
+                jQuery('#' + this.getId()).remove();
                 this.state = DESTROY_STATE;
                 delete this.id;
                 delete this.content;
@@ -238,14 +238,18 @@ define('tb.component/popin/PopIn', ['jquery', 'jsclass'], function (jQuery) {
                 }
 
                 this.options.buttons[label] = callback;
-                if (this.isOpen()) {
-                    jQuery('#' + this.getId()).dialog("option", "buttons", this.options.buttons);
-                }
+
+                jQuery('#' + this.getId()).dialog("option", "buttons", this.options.buttons);
                 return this;
             },
 
             getDialog: function () {
-                return jQuery('#' + this.getId()).dialog("widget");
+                var dialog = null,
+                    root = jQuery('#' + this.getId());
+                if (root.is(':data(uiDialog)')) {
+                    dialog = root.dialog("widget");
+                }
+                return dialog;
             },
 
             moveToTop: function () {
