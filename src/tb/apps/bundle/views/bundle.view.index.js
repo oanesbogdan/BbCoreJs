@@ -34,11 +34,6 @@ define(
          */
         var BundleViewIndex = Backbone.View.extend({
 
-            /**
-             * Point of bundle's application in DOM
-             */
-            listEl: '#extensions',
-
             id: 'bundle-tab',
 
             /**
@@ -67,20 +62,25 @@ define(
              * Events of the view
              */
             bindEvents: function () {
-                var element = jQuery('#' + this.id);
+                var listElement = jQuery('#' + this.id + ' .btn-dialog-extension'),
+                    activeElement = jQuery('#' + this.id + ' div.activation-btn-group a');
 
-                element.off('click').on('click', '.btn-dialog-extension', this.doListDialog);
-                element.off('click').on('click', 'div.activation-btn-group a', this.doExtensionActivation);
+                listElement.off('click').on('click', this.doListDialog);
+                activeElement.off('click').on('click', this.doExtensionActivation);
             },
 
             /**
              * Show or Hide a dialog with bundle list
              */
             doListDialog: function () {
-                if (jQuery(this.listEl).dialog('isOpen')) {
-                    jQuery(this.listEl).dialog('close');
+                var dialog = jQuery('#extensions');
+
+                if (!dialog.get(0)) {
+                    ApplicationManager.invokeService('bundle.main.list');
+                } else if (dialog.get(0) && !dialog.dialog('isOpen')) {
+                    dialog.dialog('open');
                 } else {
-                    jQuery(this.listEl).dialog('open');
+                    dialog.dialog('close');
                 }
             },
 

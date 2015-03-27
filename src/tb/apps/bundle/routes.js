@@ -28,10 +28,6 @@ define(["tb.core"], function (BbCore) {
             'index': {
                 url: '/index',
                 action: 'MainController:index'
-            },
-            'list': {
-                url: '/list',
-                action: 'MainController:list'
             }
         }
     });
