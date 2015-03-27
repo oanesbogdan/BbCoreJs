@@ -102,8 +102,6 @@ define(
                 if (!img.parent().hasClass('img-wrap-dnd')) {
                     img.wrap('<div class="img-wrap-dnd">');
                 }
-
-                this.dataTransfer.isMedia = true;
             },
 
             /**
