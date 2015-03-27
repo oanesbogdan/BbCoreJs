@@ -25,8 +25,8 @@ define('tb.component/popin/main', ['tb.core', 'tb.component/popin/PopIn', 'jquer
      * @type {Object}
      */
     var DEFAULT_POPIN_OPTIONS = {
-            autoOpen: false
-        },
+        autoOpen: false
+    },
 
         /**
          * PopInManager allow us to handle with ease tb.core.PopIn
@@ -206,6 +206,7 @@ define('tb.component/popin/main', ['tb.core', 'tb.component/popin/PopIn', 'jquer
          * @param {PopIn} popIn the pop-in to display
          */
         display: function (popIn) {
+            var self = this;
             if (popIn.isClose()) {
                 popIn.open();
 
@@ -223,11 +224,33 @@ define('tb.component/popin/main', ['tb.core', 'tb.component/popin/PopIn', 'jquer
                     }
 
                     jQuery('#' + popIn.getId()).dialog(popIn.getOptions());
+                    jQuery('#' + popIn.getId()).on('dialogclose', function () {
+                        self.hide(popIn);
+                    });
+                    /*deal with focus*/
+                    jQuery("#" + popIn.getId()).on('dialogfocus', jQuery.proxy(this.handleFocus, this, popIn));
                 }
 
                 jQuery('#' + popIn.getId()).dialog('open');
             }
         },
+
+        /**
+         * Make sure, if the popin is focused on,
+         * that its children are still visible
+         **/
+
+        handleFocus: function (popIn) {
+            var child, children;
+            children = popIn.getChildren();
+            for (child in children) {
+                if (children.hasOwnProperty(child)) {
+                    children[child].moveToTop();
+                }
+            }
+
+        },
+
 
         /**
          * Hide pop-in and its children
