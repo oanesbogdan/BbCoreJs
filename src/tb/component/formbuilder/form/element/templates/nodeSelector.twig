@@ -3,6 +3,8 @@
     <span class="input-group-btn">
         <button class="btn btn-default node-selector-btn" type="button"><i class="fa fa-columns"></i></button>
     </span>
-    <input type="text" disabled class="form-control">
-    <input type="hidden" name="{{ element.getKey() }}" value="{{ element.getValue() }}" class="form-control">
+    <input type="text" disabled value="{{ item.title }}" class="form-control title">
+    <input type="hidden" value="{{ item.pageUid }}" class="form-control pageuid">
+    <input type="hidden" name="{{ element.getKey() }}">
 </div><!-- /input-group -->
+<span class="form_error help-block {% if element.getError() == null %}hidden{% endif %}">{{ element.getError() }}</span>

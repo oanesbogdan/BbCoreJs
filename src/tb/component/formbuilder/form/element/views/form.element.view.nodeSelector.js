@@ -35,13 +35,41 @@ define(['tb.core', 'tb.core.Renderer', 'tb.core.ApplicationManager', 'BackBone',
             this.el = formTag;
             this.template = template;
             this.element = element;
+
+            this.elementSelector = 'form#' + this.el + ' .element_' + this.element.getKey();
+
+            this.bindEvents();
         },
 
         /**
          * Bind events
          */
         bindEvents: function () {
+            var self = this;
+
             jQuery(this.mainSelector).on('click', 'form#' + this.el + ' .' + this.nodeSelectorBtnClass, jQuery.proxy(this.onClick, this));
+
+            Core.Mediator.subscribe('before:form:submit', function (form) {
+                if (form.attr('id') === self.el) {
+                    var node = self.getCurrentNode(),
+                        oldNode = self.element.value,
+                        element = jQuery(form).find('input[name="' + self.element.getKey() + '"]');
+
+                    if (node.pageUid !== oldNode.pageUid) {
+                        element.val('updated');
+                    } else {
+                        element.val('');
+                    }
+                }
+            });
+        },
+
+        getCurrentNode: function () {
+            var element = jQuery(this.elementSelector),
+                inputPageUid = element.find('input.pageuid'),
+                inputTitle = element.find('input.title');
+
+            return {'pageUid': inputPageUid.val(), 'title': inputTitle.val()};
         },
 
         /**
@@ -53,15 +81,19 @@ define(['tb.core', 'tb.core.Renderer', 'tb.core.ApplicationManager', 'BackBone',
                 config = {
                     do_loading: true,
                     do_pagination: true,
-                    site_uid: Core.get('site.uid')
+                    site_uid: Core.get('site.uid'),
+                    popin: true
                 };
 
             ApplicationManager.invokeService('page.main.getPageTreeViewInstance').done(function (TreeView) {
-                self.pageTree = new TreeView(config);
+                self.pageTreeView = new TreeView(config);
 
                 self.bindTreeEvents();
 
-                self.pageTree.render();
+                self.pageTreeView.getTree().done(function (tree) {
+                    self.pageTree = tree;
+                    self.pageTree.display();
+                });
             });
         },
 
@@ -69,7 +101,7 @@ define(['tb.core', 'tb.core.Renderer', 'tb.core.ApplicationManager', 'BackBone',
          * Bind tree events
          */
         bindTreeEvents: function () {
-            this.pageTree.treeView.on('tree.dblclick', jQuery.proxy(this.onTreeDoubleClick, this));
+            this.pageTreeView.treeView.on('tree.dblclick', jQuery.proxy(this.onTreeDoubleClick, this));
         },
 
         /**
@@ -82,13 +114,14 @@ define(['tb.core', 'tb.core.Renderer', 'tb.core.ApplicationManager', 'BackBone',
                 return;
             }
 
-            var inputHidden = jQuery('#' + this.element.formTag + ' input[name="' + this.element.key + '"]'),
-                inputText = inputHidden.siblings('input[type="text"]').first();
+            var element = jQuery(this.elementSelector),
+                inputPageUid = element.find('input.pageuid'),
+                inputTitle = element.find('input.title');
 
-            inputHidden.val(event.node.id);
-            inputText.val(event.node.name);
+            inputPageUid.val(event.node.id);
+            inputTitle.val(event.node.name);
 
-            this.pageTree.tree.hide();
+            this.pageTree.hide();
         },
 
         /**
@@ -96,9 +129,7 @@ define(['tb.core', 'tb.core.Renderer', 'tb.core.ApplicationManager', 'BackBone',
          * @returns {String}
          */
         render: function () {
-            this.bindEvents();
-
-            return Renderer.render(this.template, {element: this.element});
+            return Renderer.render(this.template, {element: this.element, item: this.element.value});
         }
     });
 

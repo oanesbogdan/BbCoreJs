@@ -8,7 +8,4 @@
       <p><button id="{{ element.getKey() }}_update_btn" class="btn btn-default-grey btn-sm">Modifier</button></p>
   </div>
 </div>
-
-{% if element.getError() != null %}
-    <span class="help-block">{{ element.getError() }}</span>
-{% endif %}
+<span class="form_error help-block {% if element.getError() == null %}hidden{% endif %}">{{ element.getError() }}</span>

@@ -43,27 +43,69 @@ define(
                 this.template = template;
                 this.element = element;
 
-                this.trashId = '#' + this.element.getKey() + '_trash';
-                this.trashAllId = '#' + this.element.getKey() + '_trashall';
-                this.addContentId = '#' + this.element.getKey() + '_addcontent';
-                this.searchContentId = '#' + this.element.getKey() + '_searchcontent';
-                this.listId = '#' + this.element.getKey() + '_list';
-                this.moveClass = '.' + this.element.getKey() + '_move';
-                this.moveDownClass = '.move-down';
-                this.moveUpClass = '.move-up';
+                this.trashClass = 'trash';
+                this.trashAllClass = 'trashall';
+                this.addContentClass = 'addcontent';
+                this.searchContentClass = 'searchcontent';
+                this.listClass = 'contentset_list';
+                this.moveClass = 'move';
+                this.moveDownClass = 'move-down';
+                this.moveUpClass = 'move-up';
+                this.elementSelector = 'form#' + this.el + ' .element_' + this.element.getKey();
 
                 this.bindEvents();
             },
 
             bindEvents: function () {
-                var mainNode = jQuery(this.mainSelector);
+                var self = this,
+                    mainNode = jQuery(this.mainSelector);
 
-                mainNode.on('click', 'form#' + this.el + ' ' + this.trashId, jQuery.proxy(this.onDelete, this));
-                mainNode.on('click', 'form#' + this.el + ' ' + this.moveClass, jQuery.proxy(this.onMove, this));
+                mainNode.on('click', this.elementSelector + ' .' + this.trashClass, jQuery.proxy(this.onDelete, this));
+                mainNode.on('click', this.elementSelector + ' .' + this.moveClass, jQuery.proxy(this.onMove, this));
 
-                mainNode.on('click', 'form#' + this.el + ' ' + this.trashAllId, jQuery.proxy(this.onDeleteAll, this));
-                mainNode.on('click', 'form#' + this.el + ' ' + this.addContentId, jQuery.proxy(this.onAddContent, this));
-                mainNode.on('click', 'form#' + this.el + ' ' + this.searchContentId, jQuery.proxy(this.onSearchContent, this));
+                mainNode.on('click', this.elementSelector + ' .' + this.trashAllClass, jQuery.proxy(this.onDeleteAll, this));
+                mainNode.on('click', this.elementSelector + ' .' + this.addContentClass, jQuery.proxy(this.onAddContent, this));
+                mainNode.on('click', this.elementSelector + ' .' + this.searchContentClass, jQuery.proxy(this.onSearchContent, this));
+
+                Core.Mediator.subscribe('before:form:submit', function (form) {
+                    if (form.attr('id') === self.el) {
+                        var contents = self.getCurrentContents(),
+                            oldContents = self.element.children,
+                            element = jQuery(form).find('input[name="' + self.element.getKey() + '"]'),
+                            i,
+                            updated = false;
+
+                        if (contents.length !== oldContents.length) {
+                            updated = true;
+                        } else {
+                            for (i = 0; i < oldContents.length; i = i + 1) {
+                                if (oldContents[i].uid !== contents[i].uid) {
+                                    updated = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (updated === true) {
+                            element.val('updated');
+                        } else {
+                            element.val('');
+                        }
+                    }
+                });
+            },
+
+            getCurrentContents: function () {
+                var list = jQuery(this.elementSelector + ' .' + this.listClass),
+                    contents = [];
+
+                list.children('li').each(function () {
+                    var li = jQuery(this);
+
+                    contents.push({'uid': li.data('uid'), 'type': li.data('type')});
+                });
+
+                return contents;
             },
 
             onSearchContent: function () {
@@ -198,9 +240,11 @@ define(
             },
 
             addItem: function (content) {
-                var list = jQuery(this.listId);
+                var list = jQuery(this.elementSelector + ' .' + this.listClass);
 
                 list.prepend(Renderer.render(itemTemplate, {'element': this.element, 'item': content}));
+
+                this.updateMoveBtn();
             },
 
             onMove: function (event) {
@@ -224,15 +268,15 @@ define(
 
             updateMoveBtn: function () {
                 var self = this,
-                    list = jQuery(this.listId),
+                    list = jQuery(this.elementSelector + ' .' + this.listClass),
                     children = list.children('li'),
                     count = children.length;
 
                 list.children('li').each(function (index) {
 
                     var element = jQuery(this),
-                        moveDownBtn = element.find(self.moveDownClass),
-                        moveUpBtn = element.find(self.moveUpClass);
+                        moveDownBtn = element.find('.' + self.moveDownClass),
+                        moveUpBtn = element.find('.' + self.moveUpClass);
 
                     moveDownBtn.addClass('hidden');
                     moveUpBtn.addClass('hidden');
@@ -249,7 +293,7 @@ define(
             },
 
             onDeleteAll: function () {
-                jQuery(this.listId).children('li').remove();
+                jQuery(this.elementSelector + ' .' + this.listClass).children('li').remove();
             },
 
             onDelete: function (event) {

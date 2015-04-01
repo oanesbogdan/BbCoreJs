@@ -17,7 +17,7 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core.Renderer', 'BackBone'], function (Renderer, Backbone) {
+define(['tb.core', 'tb.core.Renderer', 'BackBone', 'jquery'], function (Core, Renderer, Backbone, jQuery) {
     'use strict';
 
     var RadioView = Backbone.View.extend({
@@ -26,6 +26,48 @@ define(['tb.core.Renderer', 'BackBone'], function (Renderer, Backbone) {
             this.el = formTag;
             this.template = template;
             this.element = element;
+
+            this.bindEvents();
+        },
+
+        bindEvents: function () {
+            var self = this;
+
+            Core.Mediator.subscribe('before:form:submit', function (form) {
+                if (form.attr('id') === self.el) {
+                    var element = form.find('.element_' + self.element.getKey()),
+                        input = element.find('input[name="' + self.element.getKey() + '"]:checked'),
+                        span = element.find('span.updated'),
+                        key,
+                        data = [],
+                        oldData = self.element.value,
+                        updated = false;
+
+                    input.each(function () {
+                        var target = jQuery(this);
+                        data.push(target.val());
+                    });
+
+                    if (oldData.length !== data.length) {
+                        updated = true;
+                    } else {
+                        for (key in data) {
+                            if (data.hasOwnProperty(key)) {
+                                if (data[key] !== oldData[key]) {
+                                    updated = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (updated === true) {
+                        span.text('updated');
+                    } else {
+                        span.text('');
+                    }
+                }
+            });
         },
 
         /**

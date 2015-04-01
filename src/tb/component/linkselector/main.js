@@ -93,8 +93,6 @@ define(
             },
 
             initInternal: function () {
-                jQuery.extend(this, {}, Backbone.Events);
-
                 this.initPopin();
                 this.initDataStore();
                 this.initDataView();
@@ -139,9 +137,6 @@ define(
                     this.initExternal();
 
                     this.widget = jQuery(Renderer.render(layoutTemplate)).clone();
-
-                } else {
-                    this.popin.addOption('open', jQuery.noop);
                 }
 
                 this.popin.display();
@@ -182,6 +177,10 @@ define(
             },
 
             onOpen: function (Selector) {
+
+                if (Selector.isShown === true) {
+                    return;
+                }
 
                 var internalLink = Selector.widget.find(Selector.internalLinkSelector);
 
@@ -322,24 +321,17 @@ define(
 
                 element.on('click', this.btnSelectSelector, function () {
                     self.dataView.selectItems(item);
-                    self.close({'pageUid': item.uid});
+                    self.close({'pageUid': item.uid, 'url': item.url});
                 });
 
                 return element;
             },
 
             close: function (data) {
+                var object = {};
 
-                var object = {
-                        url: null,
-                        pageUid: null
-                    };
-
-                if (data.pageUid !== undefined) {
-                    object.pageUid = data.pageUid;
-                } else if (data.url !== undefined) {
-                    object.url = data.url;
-                }
+                object.url = (data.url === undefined) ? null : data.url;
+                object.pageUid = (data.pageUid === undefined) ? null : data.pageUid;
 
                 this.popin.hide();
 
@@ -357,7 +349,11 @@ define(
 
         return {
             create: function () {
-                return new LinkSelector();
+                var linkSelector = new LinkSelector();
+
+                jQuery.extend(linkSelector, {}, Backbone.Events);
+
+                return linkSelector;
             }
         };
     }

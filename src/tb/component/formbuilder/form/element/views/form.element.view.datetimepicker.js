@@ -28,10 +28,29 @@ define(['tb.core', 'tb.core.Renderer', 'BackBone', 'jquery'], function (Core, Re
             this.el = formTag;
             this.template = template;
             this.element = element;
+
+            this.bindEvents();
         },
 
         bindEvents: function () {
+            var self = this;
+
             jQuery(this.mainSelector).on('click', 'form#' + this.el + ' input[name=' + this.element.getKey() + ']', this.manageDatetimepicker);
+
+            Core.Mediator.subscribe('before:form:submit', function (form) {
+                if (form.attr('id') === self.el) {
+                    var element = form.find('.element_' + self.element.getKey()),
+                        input = element.find('input[name="' + self.element.getKey() + '"]'),
+                        span = element.find('span.updated'),
+                        oldValue = self.element.value;
+
+                    if (input.val() !== oldValue) {
+                        span.text('updated');
+                    } else {
+                        span.text('');
+                    }
+                }
+            });
         },
 
         manageDatetimepicker: function () {
@@ -50,8 +69,6 @@ define(['tb.core', 'tb.core.Renderer', 'BackBone', 'jquery'], function (Core, Re
          * @returns {String} html
          */
         render: function () {
-            this.bindEvents();
-
             return Renderer.render(this.template, {element: this.element});
         }
     });

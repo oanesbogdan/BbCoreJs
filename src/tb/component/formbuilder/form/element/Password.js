@@ -30,12 +30,12 @@ define('tb.component/formbuilder/form/element/Password', function () {
             this.callSuper(key, config, formTag, error);
             this.view = view;
             this.template = template;
+
+            this.viewObject = new this.view(this.template, this.formTag, this);
         },
 
         render: function () {
-            var view = new this.view(this.template, this.formTag, this);
-
-            return view.render();
+            return this.viewObject.render();
         }
     };
 });

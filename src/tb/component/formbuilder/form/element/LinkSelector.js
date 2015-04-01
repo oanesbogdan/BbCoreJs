@@ -17,12 +17,12 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('tb.component/formbuilder/form/element/Checkbox', function () {
+define(function () {
 
     'use strict';
 
     /**
-     * ElementText object
+     * LinkSelector object
      */
     return {
 
@@ -31,36 +31,11 @@ define('tb.component/formbuilder/form/element/Checkbox', function () {
             this.view = view;
             this.template = template;
 
-            this.buildCustomConfig(config);
             this.viewObject = new this.view(this.template, this.formTag, this);
         },
 
         render: function () {
             return this.viewObject.render();
-        },
-
-        buildCustomConfig: function (config) {
-            this.options = {};
-            if (config.hasOwnProperty('options')) {
-                this.options = config.options;
-            }
-
-            if (config.hasOwnProperty('checked')) {
-                this.setValue(config.checked);
-            }
-
-            this.inline = false;
-            if (config.hasOwnProperty('inline') && config.inline === true) {
-                this.inline = config.inline;
-            }
-        },
-
-        getOptions: function () {
-            return this.options;
-        },
-
-        isInline: function () {
-            return this.inline;
         }
     };
 });
