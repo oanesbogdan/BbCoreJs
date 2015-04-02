@@ -20,7 +20,7 @@
 define(
     'app.content/components/dnd/ContentDrag',
     [
-        'tb.core',
+        'Core',
         'content.manager',
         'content.container',
         'jquery',

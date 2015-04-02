@@ -22,7 +22,7 @@ define(
         'require',
         'jquery',
         'content.container',
-        'tb.core.Renderer',
+        'Core/Renderer',
         'text!content/tpl/breadcrumb',
         'content.manager'
     ],

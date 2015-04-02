@@ -1,9 +1,9 @@
 define(
     [
-        'tb.core.Api',
+        'Core/Api',
         'jquery',
-        'tb.core.ApplicationManager',
-        'tb.core.Renderer',
+        'Core/ApplicationManager',
+        'Core/Renderer',
         'text!contribution/tpl/index'
     ],
     function (Core, jQuery, ApplicationManager, Renderer, template) {

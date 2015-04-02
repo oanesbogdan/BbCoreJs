@@ -19,7 +19,7 @@
 
 define(
     [
-        'tb.core',
+        'Core',
         'content.repository',
         'content.models.ContentRevision',
         'jquery',
@@ -165,7 +165,7 @@ define(
             },
 
             /**
-             * Set parameters to revision if a difference exist between new 
+             * Set parameters to revision if a difference exist between new
              * and old parameters
              * @param {Object} parameters
              */

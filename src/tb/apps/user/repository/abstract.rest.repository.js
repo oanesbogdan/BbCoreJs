@@ -19,7 +19,7 @@
  */
 
 define(
-    ['tb.core.DriverHandler', 'tb.core.RestDriver', 'jquery', 'jsclass'],
+    ['Core/DriverHandler', 'Core/RestDriver', 'jquery', 'jsclass'],
     function (CoreDriverHandler, CoreRestDriver, jQuery) {
         'use strict';
 

@@ -167,7 +167,7 @@ module.exports = function (grunt) {
         jasmine: {
 
             test: {
-                src: ['<%= dir.src %>/core/**/*.js', '<%= dir.src %>/component/**/*.js'],
+                src: ['<%= dir.src %>/component/**/*.js'],
                 options: {
                     specs: path || '<%= dir.specs %>/**/*.spec.js',
                     helpers: '<%= dir.specs %>/**/*.helper.js',

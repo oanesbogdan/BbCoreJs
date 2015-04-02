@@ -3,11 +3,11 @@ require.config({
         'content.datastore': 'src/tb/component/contentselector/datastore/content.datastore'
     }
 });
-define(['require', 'content.datastore', 'jquery', 'jsclass', 'nunjucks', 'text!cs-templates/content.list.edit.view.tpl', 'text!cs-templates/content.delete.tpl', 'text!cs-templates/content.grid.view.tpl', 'tb.core.Api', 'text!cs-templates/content.list.view.tpl'], function (require) {
+define(['require', 'content.datastore', 'jquery', 'jsclass', 'nunjucks', 'text!cs-templates/content.list.edit.view.tpl', 'text!cs-templates/content.delete.tpl', 'text!cs-templates/content.grid.view.tpl', 'Core', 'text!cs-templates/content.list.view.tpl'], function (require) {
     'use strict';
     var nunjucks = require('nunjucks'),
         jQuery = require('jquery'),
-        Api = require('tb.core.Api'),
+        Core = require('Core'),
         ContentRenderer = new JS.Class({
             initialize: function () {
                 this.templates = {
@@ -83,7 +83,7 @@ define(['require', 'content.datastore', 'jquery', 'jsclass', 'nunjucks', 'text!c
                     self.popin.display();
                 }).fail(function (response) {
                     self.popin.unmask();
-                    Api.exception('ContentRendererException', 57567, 'error while showing showContentPreview ' + response);
+                    Core.exception('ContentRendererException', 57567, 'error while showing showContentPreview ' + response);
                 });
             },
 
@@ -113,7 +113,7 @@ define(['require', 'content.datastore', 'jquery', 'jsclass', 'nunjucks', 'text!c
                     self.popin.display();
                 }).fail(function (response) {
                     self.popin.unmask();
-                    Api.exception('ContentRendererException', 57567, '[deleteContent] ContentRendererException error while deleting content ' + response);
+                    Core.exception('ContentRendererException', 57567, '[deleteContent] ContentRendererException error while deleting content ' + response);
                 });
             },
 

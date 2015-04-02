@@ -20,13 +20,13 @@
 define(
     'app.content/components/dnd/ContentDrop',
     [
-        'tb.core',
+        'Core',
         'jquery',
         'component!notify',
         'content.container',
         'content.manager',
         'resource.repository',
-        'tb.core.ApplicationManager',
+        'Core/ApplicationManager',
         'component!mask',
         'jsclass'
     ],

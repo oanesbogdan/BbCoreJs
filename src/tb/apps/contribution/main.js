@@ -14,7 +14,7 @@ require.config({
     }
 });
 
-define('app.contribution', ['tb.core', 'content.pluginmanager', 'jquery'], function (Core, PluginManager, jQuery) {
+define('app.contribution', ['Core', 'content.pluginmanager', 'jquery'], function (Core, PluginManager, jQuery) {
     'use strict';
 
     /**

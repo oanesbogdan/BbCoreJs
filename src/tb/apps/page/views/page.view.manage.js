@@ -1,7 +1,7 @@
 define([
     'jquery',
     'page.repository',
-    'tb.core.Renderer',
+    'Core/Renderer',
     'text!page/tpl/manage_list'
 
 ], function (jQuery, PageRepository, Renderer, template) {

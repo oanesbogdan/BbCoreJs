@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
-define(['tb.core', 'bundle.view.list', 'bundle.view.index'], function (Core, ListView, IndexView) {
+define(['Core', 'bundle.view.list', 'bundle.view.index'], function (Core, ListView, IndexView) {
     'use strict';
 
     Core.ControllerManager.registerController('MainController', {

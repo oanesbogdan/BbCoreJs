@@ -21,7 +21,7 @@
 
     'use strict';
 
-    define(['tb.core.ApplicationManager', 'jquery'], function (ApplicationManager, jQuery) {
+    define(['Core', 'jquery'], function (Core, jQuery) {
 
 
         var textSubmitter = [
@@ -73,7 +73,7 @@
                 for (key in services) {
                     if (services.hasOwnProperty(key)) {
 
-                        promises.push(ApplicationManager.invokeService(services[key]));
+                        promises.push(Core.ApplicationManager.invokeService(services[key]));
                     }
                 }
 

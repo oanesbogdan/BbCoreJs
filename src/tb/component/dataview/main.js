@@ -4,12 +4,11 @@ require.config({
         'dataStore': 'src/tb/component/dataview/DataStore'
     }
 });
-define(['require', 'tb.core.Api', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api', 'text!dataviewTemplate/layout.tpl'], function (require) {
+define(['require', 'Core', 'BackBone', 'jquery', 'jsclass', 'text!dataviewTemplate/layout.tpl'], function (require) {
     'use strict';
     var mainTpl = require('text!dataviewTemplate/layout.tpl'),
         jQuery = require('jquery'),
-        Api = require('tb.core.Api'),
-        coreApi = require('tb.core.Api'),
+        Core = require('Core'),
         BaseDataView = new JS.Class({
             LIST_MODE: 'list',
             GRID_MODE: 'grid',
@@ -82,7 +81,7 @@ define(['require', 'tb.core.Api', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api'
                     this.registerRenderer(listRenderer);
                     this.registerRenderer(gridRenderer);
                 } catch (e) {
-                    Api.exception('BaseDataViewException', 46897, e);
+                    Core.exception('BaseDataViewException', 46897, e);
                 }
                 /* register renderer */
             },
@@ -132,24 +131,24 @@ define(['require', 'tb.core.Api', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api'
                 var rendererName = mode + 'Renderer',
                     renderer;
                 if (!this.renderers.hasOwnProperty(rendererName)) {
-                    Api.exception('BaseDataViewException', 46897, '[getModeRenderer] "' + rendererName + '" can\'t be found.');
+                    Core.exception('BaseDataViewException', 46897, '[getModeRenderer] "' + rendererName + '" can\'t be found.');
                 }
                 renderer = this.renderers[rendererName];
                 if (typeof renderer.render !== "function") {
-                    Api.exception('BaseDataViewException', 46898, '[getModeRenderer] renderer "' + rendererName + '" should provide a render function');
+                    Core.exception('BaseDataViewException', 46898, '[getModeRenderer] renderer "' + rendererName + '" should provide a render function');
                 }
                 return this.renderers[mode + 'Renderer'];
             },
 
             registerRenderer: function (renderer) {
                 if (jQuery.isEmptyObject(renderer)) {
-                    Api.exception('BaseDataViewException', 46898, '[registerRenderer] renderer must be an object and should not be empty');
+                    Core.exception('BaseDataViewException', 46898, '[registerRenderer] renderer must be an object and should not be empty');
                 }
                 if (!renderer.hasOwnProperty('name') || typeof renderer.name !== 'string') {
-                    Api.exception('BaseDataViewException', 46899, '[registerRenderer] renderer must have a name "' + JSON.stringify(renderer));
+                    Core.exception('BaseDataViewException', 46899, '[registerRenderer] renderer must have a name "' + JSON.stringify(renderer));
                 }
                 if (!renderer.hasOwnProperty("render") && typeof renderer.render !== "function") {
-                    Api.exception('BaseDataViewException', 46900, '[registerRenderer] must provided a render function');
+                    Core.exception('BaseDataViewException', 46900, '[registerRenderer] must provided a render function');
                 }
                 this.renderers[renderer.name + 'Renderer'] = renderer;
             },
@@ -173,7 +172,7 @@ define(['require', 'tb.core.Api', 'BackBone', 'jquery', 'jsclass', 'tb.core.Api'
                     jQuery(itemRender).data("item-no", i);
                     jQuery(itemRender).addClass(self.config.itemCls);
                     if (!itemRender || itemRender.length === 0) {
-                        coreApi.exception('BaseDataViewException', 50002, '[renderItems] InvalidAppConfig [appPath] key is missing');
+                        Core.exception('BaseDataViewException', 50002, '[renderItems] InvalidAppConfig [appPath] key is missing');
                     }
                     ctn.appendChild(jQuery(itemRender).get(0));
                 });

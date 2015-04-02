@@ -1,4 +1,4 @@
-define(['tb.core.Api', 'component!session', 'component!authentication', 'tb.core.Request', 'tb.core.Response', 'jquery'], function (Api, session, authentication, Request, Response, jQuery) {
+define(['Core', 'component!session', 'component!authentication', 'Core/Request', 'Core/Response', 'jquery'], function (Core, session, authentication, Request, Response, jQuery) {
     'use strict';
 
     var request = new Request(),
@@ -81,7 +81,7 @@ define(['tb.core.Api', 'component!session', 'component!authentication', 'tb.core
 
             response.setStatus(401);
             session.onRequestFail(response);
-            expect(Api.get('is_connected')).toEqual(false);
+            expect(Core.get('is_connected')).toEqual(false);
 
             response.setStatus(403);
             session.onRequestFail(response);

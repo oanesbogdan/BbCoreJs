@@ -19,7 +19,7 @@
 
 define(
     [
-        'tb.core.Api',
+        'Core/Api',
         'jquery',
         'page.repository',
         'component!treeview'

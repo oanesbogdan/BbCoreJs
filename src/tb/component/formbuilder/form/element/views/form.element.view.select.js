@@ -17,7 +17,7 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core', 'tb.core.Renderer', 'BackBone', 'jquery'], function (Core, Renderer, Backbone, jQuery) {
+define(['Core', 'Core/Renderer', 'BackBone', 'jquery'], function (Core, Renderer, Backbone, jQuery) {
     'use strict';
 
     var SelectView = Backbone.View.extend({

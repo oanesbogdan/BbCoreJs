@@ -31,8 +31,8 @@ require.config({
 define(
     'tb.component/revisionselector/main',
     [
-        'tb.core.Renderer',
-        'tb.core.ApplicationManager',
+        'Core',
+        'Core/Renderer',
         'text!revisionselector.templates/tree.twig',
         'component!popin',
         'revisionselector.managers/Draft',
@@ -42,8 +42,8 @@ define(
         'jsclass'
     ],
     function (
+        Core,
         Renderer,
-        ApplicationManager,
         treeTemplate,
         PopinManager,
         DraftManager,
@@ -75,7 +75,7 @@ define(
 
                     this.selector = '#' + this.popin.getId() + ' ' + this.revisionSelectorClass;
 
-                    ApplicationManager.invokeService('content.main.getRepository').done(function (repository) {
+                    Core.ApplicationManager.invokeService('content.main.getRepository').done(function (repository) {
                         self.repository = repository;
                     });
                 },

@@ -19,9 +19,9 @@
 
 define(
     [
-        'tb.core',
+        'Core',
         'jquery',
-        'tb.core.Renderer',
+        'Core/Renderer',
         'tb.component/treeview/TreeView',
         'tb.component/popin/main',
         'text!treeview.templates/popin.twig'

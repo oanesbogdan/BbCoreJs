@@ -2,7 +2,7 @@ require.config({
     baseUrl: './',
     urlArgs: 'cb=' + Math.random(),
     paths: {
-        'tb.core': 'src/tb/main',
+        'Core': 'bower_components/backbee-core-js/src/Core',
         'component': 'src/tb/component/component',
 
         'jquery': 'bower_components/jquery/dist/jquery.min',

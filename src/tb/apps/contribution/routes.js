@@ -1,10 +1,10 @@
-define(["tb.core"], function (BbCore) {
+define(['Core'], function (Core) {
     'use strict';
 
     /**
-     * Register every routes of contribution application into BbCore.routeManager
+     * Register every routes of contribution application into Core.routeManager
      */
-    BbCore.RouteManager.registerRoute('contribution', {
+    Core.RouteManager.registerRoute('contribution', {
         prefix: 'contribution',
         routes: {
             'index': {

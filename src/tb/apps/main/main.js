@@ -33,7 +33,7 @@ require.config({
     }
 });
 
-define('app.main', ['tb.core', 'tb.core.ApplicationManager', 'main.view.index', 'jquery', 'component!popin', 'bootstrapjs'], function (Core, ApplicationManager, MainViewIndex, jQuery, Popin) {
+define('app.main', ['Core', 'Core/ApplicationManager', 'main.view.index', 'jquery', 'component!popin', 'bootstrapjs'], function (Core, ApplicationManager, MainViewIndex, jQuery, Popin) {
     'use strict';
 
     /**

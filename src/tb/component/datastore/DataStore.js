@@ -1,7 +1,7 @@
-define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass', 'tb.core.DriverHandler', 'tb.core.RestDriver'], function (require, jQuery, BackBone, Api, underscore) {
+define(['require', 'jquery', 'BackBone', 'Core', 'underscore', 'jsclass', 'Core/DriverHandler', 'Core/RestDriver'], function (require, jQuery, BackBone, Core, underscore) {
     'use strict';
-    var CoreDriverHandler = require('tb.core.DriverHandler'),
-        CoreRestDriver = require('tb.core.RestDriver'),
+    var CoreDriverHandler = require('Core/DriverHandler'),
+        CoreRestDriver = require('Core/RestDriver'),
         AbstractDataStore = new JS.Class({
             defaultConfig: {
                 idKey: 'uid'
@@ -21,20 +21,20 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
 
             addFilter: function (name, def) {
                 if (!name || typeof name !== "string") {
-                    Api.exception('DataStoreException', 74000, '[addFilter] filter name should be a string');
+                    Core.exception('DataStoreException', 74000, '[addFilter] filter name should be a string');
                 }
                 if (!def || typeof def !== 'function') {
-                    Api.exception('DataStoreException', 74001, '[addFilter] def should be a function');
+                    Core.exception('DataStoreException', 74001, '[addFilter] def should be a function');
                 }
                 this.filters[name] = def;
             },
 
             addSorter: function (name, def) {
                 if (!name || typeof name !== "string") {
-                    Api.exception('DataStoreException', 74000, '[addSorter] sorter name should be a string');
+                    Core.exception('DataStoreException', 74000, '[addSorter] sorter name should be a string');
                 }
                 if (!def || typeof def !== 'function') {
-                    Api.exception('DataStoreException', 74001, '[addSorter] def should be a function');
+                    Core.exception('DataStoreException', 74001, '[addSorter] def should be a function');
                 }
                 this.sorters[name] = def;
             },
@@ -59,7 +59,7 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
             },
 
             processTasks: function () {
-                Api.exception.silent('DataStoreException', 74005, 'You must implement processTasks');
+                Core.exception.silent('DataStoreException', 74005, 'You must implement processTasks');
             },
 
             applyFilter: function (name) {
@@ -132,7 +132,7 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
             initialize: function (config) {
                 this.callSuper(config);
                 var data = (this.config.hasOwnProperty('data')) ? this.config.data : [];
-                this.dataList = new Api.SmartList({
+                this.dataList = new Core.SmartList({
                     idKey: this.config.idKey,
                     data: data
                 });
@@ -177,7 +177,7 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
                         task.params.push(dataState);
                         dataState = taskAction.apply({}, task.params, i);
                     } catch (e) {
-                        Api.exception.silent('DataStoreException', 74001, '[processTasks] ' + e);
+                        Core.exception.silent('DataStoreException', 74001, '[processTasks] ' + e);
                     }
                 });
                 /* notify the new state */
@@ -296,7 +296,7 @@ define(['require', 'jquery', 'BackBone', 'tb.core.Api', 'underscore', 'jsclass',
                     nextStart = (nbPage >= this.start + 1) ? this.start : this.start - 1;
                 nextStart = (nextStart < 0) ? nextStart : 0;
                 if (!uid) {
-                    Api.exception('DataStoreException', 75001, '[remove] ' + this.idKey + ' key can\'t be found');
+                    Core.exception('DataStoreException', 75001, '[remove] ' + this.idKey + ' key can\'t be found');
                 }
                 CoreDriverHandler["delete"](this.config.resourceEndpoint, {
                     uid: itemData[this.config.idKey]

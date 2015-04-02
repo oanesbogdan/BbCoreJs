@@ -4,7 +4,7 @@ require.config({
         'actionContainer': 'src/tb/apps/content/components/ContentActionWidget'
     }
 });
-define(['tb.core', 'jquery', 'tb.core.Utils', 'tb.core.Api', 'actionContainer', 'jsclass'], function (Core, jQuery, Utils, Api, ContentActionWidget) {
+define(['Core', 'jquery', 'Core/Utils', 'Core/Api', 'actionContainer', 'jsclass'], function (Core, jQuery, Utils, Api, ContentActionWidget) {
     'use strict';
     var mediator = Core.Mediator,
         pluginsInfos = {},

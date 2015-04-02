@@ -1,5 +1,5 @@
 /*global CKEDITOR:false */
-define(['tb.core.Utils', 'tb.core.ApplicationManager', 'jquery', 'component!rtemanager'], function (Utils, ApplicationManager, jQuery, RteManager) {
+define(['Core', 'Core/Utils', 'jquery', 'component!rtemanager'], function (Core, Utils, jQuery, RteManager) {
     "use strict";
     return RteManager.createAdapter("cke", {
         onInit: function () {
@@ -54,7 +54,7 @@ define(['tb.core.Utils', 'tb.core.ApplicationManager', 'jquery', 'component!rtem
             var dfd = new jQuery.Deferred(),
                 self = this;
             if (!this.conciseInfos.hasOwnProperty(content.uid)) {
-                ApplicationManager.invokeService('content.main.getEditableContent', content).done(function (promise) {
+                Core.ApplicationManager.invokeService('content.main.getEditableContent', content).done(function (promise) {
                     promise.done(function (editableContents) {
                         self.conciseInfos[content.uid] = editableContents;
                         dfd.resolve(editableContents);
@@ -88,7 +88,7 @@ define(['tb.core.Utils', 'tb.core.ApplicationManager', 'jquery', 'component!rtem
                         data: evt.editor.getData()
                     });
                     /* save value here */
-                    ApplicationManager.invokeService('content.main.getContentManager').done(function (ContentManager) {
+                    Core.ApplicationManager.invokeService('content.main.getContentManager').done(function (ContentManager) {
                         var content = ContentManager.getContentByNode(jQuery(evt.editor.container.$));
                         content.set('value', evt.editor.getData());
                     });

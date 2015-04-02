@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
-define('tb.component/logger/main', ['moment', 'tb.core.Api', 'jsclass'], function (moment) {
+define('tb.component/logger/main', ['moment', 'Core', 'jsclass'], function (moment) {
     'use strict';
 
     /**
@@ -49,13 +49,13 @@ define('tb.component/logger/main', ['moment', 'tb.core.Api', 'jsclass'], functio
             },
 
             pushLog: function (log) {
-                var api = require('tb.core.Api');
+                var Core = require('Core');
 
-                if (undefined === api.get('logs')) {
-                    api.set('logs', []);
+                if (undefined === Core.get('logs')) {
+                    Core.set('logs', []);
                 }
 
-                api.get('logs').push(log);
+                Core.get('logs').push(log);
             },
 
             consoleLog: function (level, message) {

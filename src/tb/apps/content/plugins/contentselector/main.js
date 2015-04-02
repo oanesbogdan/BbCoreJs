@@ -1,4 +1,4 @@
-define(['content.pluginmanager', 'tb.core.Api', 'component!contentselector', 'jquery', 'content.manager', 'jsclass'], function (PluginManager, Core, ContentSelector, jQuery, ContentManager) {
+define(['content.pluginmanager', 'Core/Api', 'component!contentselector', 'jquery', 'content.manager', 'jsclass'], function (PluginManager, Core, ContentSelector, jQuery, ContentManager) {
     'use strict';
     PluginManager.registerPlugin('contentselector', {
         onInit: function () {

@@ -3,7 +3,7 @@ require.config({
         'rteadapter': 'src/tb/apps/content/plugins/rte/adapter/rteadapter' //plugin
     }
 });
-define(['content.pluginmanager', 'component!rtemanager', 'tb.core.Api', 'jquery', 'jsclass'], function (PluginManager, RteManager, Core, jQuery) {
+define(['content.pluginmanager', 'component!rtemanager', 'Core/Api', 'jquery', 'jsclass'], function (PluginManager, RteManager, Core, jQuery) {
     'use strict';
     PluginManager.registerPlugin("rte", {
         scope: PluginManager.scope.CONTENT,

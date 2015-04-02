@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
-define(['require', 'tb.core', 'tb.core.Renderer', "component!treeview", 'jquery', 'component!contentselector', 'component!dataview', 'component!datastore'], function (require, bbCore, Renderer, TreeViewMng, jQuery, ContentSelector) {
+define(['require', 'Core', 'Core/Renderer', "component!treeview", 'jquery', 'component!contentselector', 'component!dataview', 'component!datastore'], function (require, bbCore, Renderer, TreeViewMng, jQuery, ContentSelector) {
     'use strict';
 
     bbCore.ControllerManager.registerController('MainController', {

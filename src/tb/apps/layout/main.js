@@ -25,16 +25,16 @@ require.config({
         "layout/tpl/home": "src/tb/apps/layout/templates/home.tpl"
     }
 });
-define("app.layout", ["require", "tb.core", 'datetimepicker'], function (require) {
+define("app.layout", ["require", "Core", 'datetimepicker'], function (require) {
     'use strict';
-    var bbCore = require("tb.core");
-    bbCore.ApplicationManager.registerApplication("layout", {
+    var Core = require("Core");
+    Core.ApplicationManager.registerApplication("layout", {
         config: {
             root: "route"
         },
 
         onInit: function () {
-            console.log(" LayoutApplication is initialized ");
+            console.log("LayoutApplication is initialized");
         },
 
         onStart: function () {

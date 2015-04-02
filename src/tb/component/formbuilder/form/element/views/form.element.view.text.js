@@ -17,7 +17,7 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core', 'tb.core.Renderer', 'BackBone'], function (Core, Renderer, Backbone) {
+define(['Core', 'Core/Renderer', 'BackBone'], function (Core, Renderer, Backbone) {
     'use strict';
 
     var TextView = Backbone.View.extend({

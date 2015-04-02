@@ -28,13 +28,16 @@ require.config({
 
 define(
     [
-        'tb.core.Utils',
+        'require',
         'jquery',
+        'Core',
+        'Core/Utils',
         'jsclass'
     ],
-    function (Utils, jQuery) {
-
+    function (require, jQuery) {
         'use strict';
+
+        var Utils = require('Core/Utils');
 
         return {
             getConfig: function (classname, object) {

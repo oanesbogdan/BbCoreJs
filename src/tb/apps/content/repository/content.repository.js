@@ -19,10 +19,10 @@
 
 define(
     [
-        'tb.core.DriverHandler',
-        'tb.core.RestDriver',
-        'tb.core.RequestHandler',
-        'tb.core.Request',
+        'Core/DriverHandler',
+        'Core/RestDriver',
+        'Core/RequestHandler',
+        'Core/Request',
         'jquery'
     ],
     function (CoreDriverHandler, CoreRestDriver, RequestHandler, Request, jQuery) {

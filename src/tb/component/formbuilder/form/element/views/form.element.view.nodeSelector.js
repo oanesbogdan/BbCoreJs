@@ -17,7 +17,7 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core', 'tb.core.Renderer', 'tb.core.ApplicationManager', 'BackBone', 'jquery'], function (Core, Renderer, ApplicationManager, Backbone, jQuery) {
+define(['Core', 'Core/Renderer', 'BackBone', 'jquery'], function (Core, Renderer, Backbone, jQuery) {
     'use strict';
 
     var NodeSelector = Backbone.View.extend({
@@ -85,7 +85,7 @@ define(['tb.core', 'tb.core.Renderer', 'tb.core.ApplicationManager', 'BackBone',
                     popin: true
                 };
 
-            ApplicationManager.invokeService('page.main.getPageTreeViewInstance').done(function (TreeView) {
+            Core.ApplicationManager.invokeService('page.main.getPageTreeViewInstance').done(function (TreeView) {
                 self.pageTreeView = new TreeView(config);
 
                 self.bindTreeEvents();

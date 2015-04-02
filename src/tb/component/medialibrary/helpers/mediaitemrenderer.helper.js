@@ -3,7 +3,7 @@ require.config({
         'item.templates': 'src/tb/component/medialibrary/templates/'
     }
 });
-define(['tb.core', 'nunjucks', 'jquery', 'component!popin', 'component!mask', 'jsclass', 'text!item.templates/media.viewmode.tpl', 'text!item.templates/media.deletemode.tpl', 'text!item.templates/media.editmode.tpl'], function (Api, nunjucks, jQuery, PopInManager, MaskManager) {
+define(['Core', 'nunjucks', 'jquery', 'component!popin', 'component!mask', 'jsclass', 'text!item.templates/media.viewmode.tpl', 'text!item.templates/media.deletemode.tpl', 'text!item.templates/media.editmode.tpl'], function (Api, nunjucks, jQuery, PopInManager, MaskManager) {
     'use strict';
     var MediaItemRenderer = new JS.Class({
         initialize: function () {

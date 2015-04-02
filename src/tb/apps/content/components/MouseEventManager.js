@@ -19,7 +19,7 @@
 
 define(
     [
-        'tb.core',
+        'Core',
         'jquery',
         'content.container',
         'content.manager',

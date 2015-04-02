@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
-define('tb.component/exceptions-viewer/viewer', ['tb.core'], function (Core) {
+define('tb.component/exceptions-viewer/viewer', ['Core'], function (Core) {
     'use strict';
 
     var template = '<div id="toolbar-count-errors" class="errors">0</div>',

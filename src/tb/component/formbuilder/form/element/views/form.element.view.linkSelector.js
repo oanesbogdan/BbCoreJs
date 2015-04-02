@@ -19,8 +19,8 @@
 
 define(
     [
-        'tb.core',
-        'tb.core.Renderer',
+        'Core',
+        'Core/Renderer',
         'jquery',
         'text!tb.component/formbuilder/form/element/templates/linkSelector_item.twig',
         'tb.component/linkselector/main'

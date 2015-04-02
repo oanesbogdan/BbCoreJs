@@ -9,7 +9,7 @@ require.config({
         'content.datastore': 'src/tb/component/contentselector/datastore/content.datastore'
     }
 });
-define(['tb.core', 'require', 'jquery', 'text!cs-templates/layout.tpl', 'component!popin', 'underscore', 'BackBone', 'component!rangeselector', 'component!dataview', 'component!mask', 'text!cs-templates/layout.tpl', 'content.renderer', 'cs-control/searchengine.control', 'component!jquery-layout', "component!datastore", "component!treeview", "component!pagination", "node.formater", 'nunjucks', 'content.datastore'], function (Core, require, jQuery, layout, PopInMng) {
+define(['Core', 'require', 'jquery', 'text!cs-templates/layout.tpl', 'component!popin', 'underscore', 'BackBone', 'component!rangeselector', 'component!dataview', 'component!mask', 'text!cs-templates/layout.tpl', 'content.renderer', 'cs-control/searchengine.control', 'component!jquery-layout', "component!datastore", "component!treeview", "component!pagination", "node.formater", 'nunjucks', 'content.datastore'], function (Core, require, jQuery, layout, PopInMng) {
     'use strict';
     var formater = require('node.formater'),
         underscore = require('underscore'),

@@ -20,9 +20,9 @@ require.config({
     baseUrl: 'resources/',
     catchError: true,
     paths: {
-        'tb.core': 'src/tb/main.build',
         'component': 'src/tb/component/component',
 
+        'Core': 'bower_components/backbee-core-js/dist/Core.min',
         'jquery': 'bower_components/jquery/dist/jquery.min',
         'jqueryui': 'bower_components/jquery-ui/jquery-ui.min',
         'jsclass' : 'node_modules/jsclass/min/core',
@@ -34,8 +34,15 @@ require.config({
         'URIjs': 'bower_components/uri.js/src',
         'datetimepicker': 'bower_components/datetimepicker/jquery.datetimepicker',
         'jquery-layout' : 'bower_components/jquery.layout/dist/jquery.layout-latest.min',
+        'jqLayout': 'bower_components/jquery.layout/dist/jquery.layout-latest.min',
         'lib.jqtree': 'bower_components/jqtree/tree.jquery',
-        'bootstrapjs': 'bower_components/bootstrap/dist/js/bootstrap.min'
+        'jssimplepagination': 'bower_components/jssimplepagination/jquery.simplePagination',
+        'bootstrapjs': 'bower_components/bootstrap/dist/js/bootstrap.min',
+        'ckeeditor': 'bower_components/ckeeditor/ckeditor',
+        'dropzone': 'bower_components/dropzone/dist/dropzone',
+
+        'cryptojs.core': 'bower_components/cryptojslib/components/core-min',
+        'cryptojs.md5': 'bower_components/cryptojslib/components/md5-min'
     },
     'shim': {
         underscore: {
@@ -48,9 +55,23 @@ require.config({
         bootstrapjs: {
             deps: ['jquery']
         },
+        'lib.jqtree': {
+            deps: ['jquery']
+        },
         'jquery-layout': {
             deps: ['jquery']
+        },
+        'cryptojs.core': {
+            exports: "CryptoJS"
+        },
+        'cryptojs.md5': {
+            deps: ['cryptojs.core'],
+            exports: "CryptoJS"
         }
-
+    },
+    deps: ['src/tb/init'],
+    callback: function (init) {
+        'use strict';
+        init.listen();
     }
 });

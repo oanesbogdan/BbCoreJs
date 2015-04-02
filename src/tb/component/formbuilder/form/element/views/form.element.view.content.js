@@ -17,7 +17,7 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core', 'tb.core.Renderer', 'BackBone', 'component!popin', 'jquery'], function (Core, Renderer, Backbone, PopinManager, jQuery) {
+define(['Core', 'Core/Renderer', 'BackBone', 'component!popin', 'jquery'], function (Core, Renderer, Backbone, PopinManager, jQuery) {
     'use strict';
 
     var ContentView = Backbone.View.extend({

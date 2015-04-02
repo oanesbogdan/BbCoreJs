@@ -16,13 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
-define(["tb.core"], function (BbCore) {
+define(['Core'], function (Core) {
     'use strict';
 
     /**
-     * Register every routes of bundle application into BbCore.routeManager
+     * Register every routes of bundle application into Core.routeManager
      */
-    BbCore.RouteManager.registerRoute('bundle', {
+    Core.RouteManager.registerRoute('bundle', {
         prefix: 'bundle',
         routes: {
             'index': {

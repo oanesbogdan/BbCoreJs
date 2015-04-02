@@ -18,8 +18,8 @@
  */
 define(
     [
-        'tb.core.DriverHandler',
-        'tb.core.RestDriver',
+        'Core/DriverHandler',
+        'Core/RestDriver',
         'jquery',
         'jsclass'
     ],

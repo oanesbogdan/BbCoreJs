@@ -17,7 +17,7 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('tb.component/formbuilder/form/Form', ['tb.core.Api', 'underscore', 'BackBone', 'jsclass'], function (Core, us, Backbone) {
+define('tb.component/formbuilder/form/Form', ['Core', 'underscore', 'BackBone', 'jsclass'], function (Core, us, Backbone) {
     'use strict';
 
     /**

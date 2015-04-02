@@ -10,7 +10,40 @@ require.config({
         'mediaItem.renderer': 'src/tb/component/medialibrary/helpers/mediaitemrenderer.helper'
     }
 });
-define(['require', 'tb.core', 'component!popin', 'component!treeview', 'component!dataview', 'component!rangeselector', 'jquery', 'text!../medialibrary/templates/layout.tpl', 'BackBone', 'mediaItem.renderer', 'component!searchengine', 'mediaFolder.datastore', 'media.datastore', 'mediaFolder.contextMenuHelper', '../medialibrary/datastore/media.datastore', 'component!mask', "jsclass", "component!pagination", "component!mask", "component!notify", "component!jquery-layout"], function (require, Api, PopInMng, TreeView, DataViewMng, RangeSelector, jQuery, layout, BackBone, ItemRenderer) {
+define([
+    'require',
+    'Core',
+    'component!popin',
+    'component!treeview',
+    'component!dataview',
+    'component!rangeselector',
+    'jquery',
+    'text!tb.component/medialibrary/templates/layout.tpl',
+    'BackBone',
+    'mediaItem.renderer',
+    'component!searchengine',
+    'mediaFolder.datastore',
+    'media.datastore',
+    'mediaFolder.contextMenuHelper',
+    'media.datastore',
+    'component!mask',
+    "jsclass",
+    "component!pagination",
+    "component!notify",
+    "component!jquery-layout"
+], function (
+    require,
+    Api,
+    PopInMng,
+    TreeView,
+    DataViewMng,
+    RangeSelector,
+    jQuery,
+    layout,
+    BackBone,
+    ItemRenderer
+) {
+
     'use strict';
     var defaultConfig = {
         autoDisplay: true,
@@ -240,7 +273,7 @@ define(['require', 'tb.core', 'component!popin', 'component!treeview', 'componen
                     var self = this,
                         content = null,
                         mediaInfos;
-                    require("tb.core").ApplicationManager.invokeService('content.main.edition').done(function (deps) {
+                    require("Core").ApplicationManager.invokeService('content.main.edition').done(function (deps) {
 
                         if (mediaItem) {
                             content = deps.ContentHelper.buildElement(mediaItem.content);

@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
-define(["tb.core"], function (bbCore) {
+define(["Core"], function (Core) {
     'use strict';
 
-    bbCore.RouteManager.registerRoute("layout", {
+    Core.RouteManager.registerRoute("layout", {
         prefix: "appLayout",
         routes: {
             "default": {

@@ -17,7 +17,7 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 /*global MutationObserver */
-define(['tb.core', 'jquery'], function (Core, jQuery) {
+define(['Core', 'jquery'], function (Core, jQuery) {
     'use strict';
 
     var parent,

@@ -27,7 +27,7 @@ require.config({
     }
 });
 
-define('app.user', ['tb.core', 'user/views/toolbar.view'], function (Core, View) {
+define('app.user', ['Core', 'user/views/toolbar.view'], function (Core, View) {
     'use strict';
 
     /**

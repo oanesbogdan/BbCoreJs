@@ -19,7 +19,7 @@
 
 define(
     [
-        'tb.core.ApplicationManager',
+        'Core/ApplicationManager',
         'jquery',
         'content.manager',
         'content.container',

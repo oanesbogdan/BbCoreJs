@@ -20,7 +20,7 @@
 define(
     [
         'content.repository',
-        'tb.core.Renderer',
+        'Core/Renderer',
         'component!popin',
         'text!content/tpl/palette_blocks',
         'jquery',

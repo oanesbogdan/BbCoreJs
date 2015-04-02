@@ -19,7 +19,7 @@
 
 define(
     [
-        'tb.core.Renderer',
+        'Core/Renderer',
         'jquery',
         'text!content/tpl/dropzone',
         'component!dnd',

@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    define(['tb.core.Api'], function (Core) {
+    define(['Core/Api'], function (Core) {
         return {
             load: function (pluginName, req, onload) {
 

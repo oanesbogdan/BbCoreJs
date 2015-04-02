@@ -17,7 +17,7 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('tb.component/translator/main', ['component!logger', 'jquery', 'tb.core'], function (Logger, jQuery, Core) {
+define('tb.component/translator/main', ['component!logger', 'jquery', 'Core'], function (Logger, jQuery, Core) {
     'use strict';
 
     /*

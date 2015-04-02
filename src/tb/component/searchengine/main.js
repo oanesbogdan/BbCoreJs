@@ -1,5 +1,5 @@
 /*global $:false, jQuery:false */
-define(['tb.core', 'require', 'jquery', 'jsclass', 'datetimepicker', 'text!../searchengine/templates/layout.tpl'], function (Core, require, corejQuery) {
+define(['Core', 'require', 'jquery', 'jsclass', 'datetimepicker', 'text!../searchengine/templates/layout.tpl'], function (Core, require, corejQuery) {
     'use strict';
     if (!corejQuery.fn.hasOwnProperty("datetimepicker")) {
         if (jQuery) {

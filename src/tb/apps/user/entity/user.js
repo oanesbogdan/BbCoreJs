@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core.Utils', 'cryptojs.md5', 'jsclass'], function (Utils, CryptoJS) {
+define(['Core/Utils', 'cryptojs.md5', 'jsclass'], function (Utils, CryptoJS) {
     'use strict';
 
     return new JS.Class({

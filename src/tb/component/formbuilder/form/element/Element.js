@@ -17,7 +17,7 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core', 'jquery', 'jsclass'], function (Core, jQuery) {
+define(['Core', 'jquery', 'jsclass'], function (Core, jQuery) {
     'use strict';
 
     /**

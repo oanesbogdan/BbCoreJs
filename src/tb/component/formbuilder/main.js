@@ -20,10 +20,10 @@
 define(
     'tb.component/formbuilder/main',
     [
-        'tb.core.Api',
+        'Core',
         'jquery',
         'tb.component/formbuilder/form/Form',
-        'tb.core.Utils',
+        'Core/Utils',
         'jsclass'
     ],
     function (Core, jQuery, FormConstructor, Utils) {

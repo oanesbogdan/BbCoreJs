@@ -1,4 +1,4 @@
-define(['tb.core.Api', 'jquery'], function (Api, jquery) {
+define(['Core', 'jquery'], function (Core, jquery) {
     'use strict';
     var formaterMap = {
         category: 'formatCategory',
@@ -23,7 +23,7 @@ define(['tb.core.Api', 'jquery'], function (Api, jquery) {
                 var formater = formaterMap[type],
                     contents = data || {};
                 if (typeof this[formater] !== "function") {
-                    Api.exception('NodeFormaterException', 12201, 'format: formater ' + formater + 'doesn\'t exist');
+                    Core.exception('NodeFormaterException', 12201, 'format: formater ' + formater + 'doesn\'t exist');
                 }
                 return this[formater](contents);
             },
