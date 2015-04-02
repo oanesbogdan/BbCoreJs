@@ -131,7 +131,8 @@ define('tb.component/popin/main', ['tb.core', 'tb.component/popin/PopIn', 'jquer
              */
             popIn.setContent = function (content) {
                 popIn.content = content;
-                if (popIn.getDialog()) {
+
+                if (popIn.isOpen()) {
                     // if the dialog exists, just update the html
                     jQuery('#' + popIn.getId()).html(popIn.getContent());
                 }
