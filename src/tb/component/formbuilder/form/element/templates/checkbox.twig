@@ -11,3 +11,5 @@
         {{ item }}
     </label>
 {% endfor %}
+<span class="hidden updated"></span>
+<span class="form_error help-block {% if element.getError() == null %}hidden{% endif %}">{{ element.getError() }}</span>

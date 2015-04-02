@@ -65,7 +65,7 @@ define(['tb.core', 'tb.core.Renderer', 'BackBone', 'jquery'], function (Core, Re
                         elementSrc.text(response.src);
                     }
 
-                    element.val('uploaded');
+                    element.val('updated');
 
                     return file;
                 });

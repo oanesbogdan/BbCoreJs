@@ -17,7 +17,7 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core', 'jsclass'], function (Core) {
+define(['tb.core', 'jquery', 'jsclass'], function (Core, jQuery) {
     'use strict';
 
     /**
@@ -34,11 +34,11 @@ define(['tb.core', 'jsclass'], function (Core) {
             this.key = key;
             this.config = config;
             this.formTag = formTag;
-            this.error = error;
 
             this.computeMandatoryConfig(config);
-
             this.computeDefaultValue(config);
+
+            this.setError(error);
         },
 
         /**
@@ -174,6 +174,27 @@ define(['tb.core', 'jsclass'], function (Core) {
             this.value = value;
 
             return this;
+        },
+
+        /**
+         * Set the error of element
+         * @returns {String} error
+         */
+        setError: function (error) {
+            var div = jQuery('form#' + this.formTag + ' .element_' + this.key),
+                span = div.find('.form_error');
+
+            if (span.length > 0) {
+                if (error === undefined) {
+                    span.addClass('hidden');
+                    span.text('');
+                } else {
+                    span.text(error);
+                    span.removeClass('hidden');
+                }
+            }
+
+            this.error = error;
         },
 
         /**

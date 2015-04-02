@@ -6,8 +6,10 @@
                {% if element.isDisabled() %}disabled{% endif %}
                value="{{ key }}"
                {% if element.getValue() == key %}checked{% endif %}
-               style="margin-top:0px;";
+               style="margin-top:0px;"
                >
         {{ item }}
     </label>
 {% endfor %}
+<span class="hidden updated"></span>
+<span class="form_error help-block {% if element.getError() == null %}hidden{% endif %}">{{ element.getError() }}</span>

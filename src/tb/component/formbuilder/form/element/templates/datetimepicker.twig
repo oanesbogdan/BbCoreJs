@@ -5,6 +5,5 @@
        value="{{ element.getValue() }}"
        class="form-control"
        >
-{% if element.getError() != null %}
-    <span class="help-block">{{ element.getError() }}</span>
-{% endif %}
+<span class="hidden updated"></span>
+<span class="form_error help-block {% if element.getError() == null %}hidden{% endif %}">{{ element.getError() }}</span>

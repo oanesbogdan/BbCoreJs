@@ -243,11 +243,10 @@ define('tb.component/formbuilder/form/Form', ['tb.core.Api', 'underscore', 'Back
          * Render each element in form
          * @returns {String} HTML
          */
-        render: function (data) {
+        render: function (showError) {
             var key,
                 items = {},
                 View,
-                view,
                 template,
                 elementConfig,
                 ElementClass,
@@ -261,31 +260,58 @@ define('tb.component/formbuilder/form/Form', ['tb.core.Api', 'underscore', 'Back
 
             for (key in this.elements) {
                 if (this.elements.hasOwnProperty(key)) {
-                    elementConfig = this.elements[key];
 
-                    ElementClass = require(elementConfig.class);
-                    elementTemplate = require(elementConfig.template);
-                    elementView = require(elementConfig.view);
-
-                    element = new ElementClass(key, elementConfig, this.id, elementView, elementTemplate, this.getError(key));
-                    group = element.group;
-
-                    if (data !== undefined) {
-                        if (data.hasOwnProperty(key)) {
-                            element.value = data[key];
+                    if (showError === true) {
+                        element = this.getElementRendered(key);
+                        if (null !== element) {
+                            element.setError(this.getError(key));
                         }
-                    }
+                    } else {
+                        elementConfig = this.elements[key];
 
-                    if (!items.hasOwnProperty(group)) {
-                        items[group] = [];
+                        ElementClass = require(elementConfig.class);
+                        elementTemplate = require(elementConfig.template);
+                        elementView = require(elementConfig.view);
+
+                        element = new ElementClass(key, elementConfig, this.id, elementView, elementTemplate, this.getError(key));
+
+                        if (this.elementsRendered === undefined) {
+                            this.elementsRendered = [];
+                        }
+
+                        this.elementsRendered.push(element);
+                        group = element.group;
+
+                        if (!items.hasOwnProperty(group)) {
+                            items[group] = [];
+                        }
+
+                        items[group].push(element);
                     }
-                    items[group].push(element);
                 }
             }
 
-            view = new View(template, items, this);
+            if (showError !== true) {
+                return new View(template, items, this).render();
+            }
+        },
 
-            return view.render();
+        getElementRendered: function (key) {
+            var i,
+                element,
+                res = null;
+
+            for (i in this.elementsRendered) {
+                if (this.elementsRendered.hasOwnProperty(i)) {
+                    element = this.elementsRendered[i];
+                    if (element.getKey() === key) {
+                        res = element;
+                        break;
+                    }
+                }
+            }
+
+            return res;
         }
     });
 

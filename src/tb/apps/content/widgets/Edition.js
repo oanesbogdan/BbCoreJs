@@ -25,9 +25,10 @@ define(
         'content.container',
         'component!popin',
         'component!contentformbuilder',
-        'component!formbuilder'
+        'component!formbuilder',
+        'component!formsubmitter'
     ],
-    function (ApplicationManager, jQuery, ContentManager, ContentContainer, PopinManager, ContentFormBuilder, FormBuilder) {
+    function (ApplicationManager, jQuery, ContentManager, ContentContainer, PopinManager, ContentFormBuilder, FormBuilder, FormSubmitter) {
 
         'use strict';
 
@@ -153,97 +154,32 @@ define(
             onSubmit: function (data, form) {
                 var self = this;
 
-                this.computeData(data, form);
-                this.computeContentSet(form);
+                FormSubmitter.process(data, form).done(function (res) {
 
-                ApplicationManager.invokeService('content.main.save').done(function (promise) {
-                    promise.done(function () {
-                        if (typeof self.config.onSave === "function") {
-                            self.config.onSave(data);
-                        }
-                        self.content.refresh().done(function () {
-                            self.content.refresh();
+                    self.computeData(res);
 
-                            ContentContainer.clear();
+                    ApplicationManager.invokeService('content.main.save').done(function (promise) {
+                        promise.done(function () {
 
-                            self.popin.hide();
+                            if (typeof self.config.onSave === "function") {
+                                self.config.onSave(data);
+                            }
+
+                            self.content.refresh().done(function () {
+                                self.content.refresh();
+
+                                ContentContainer.clear();
+
+                                self.popin.hide();
+                            });
+
+                            self.config.onSave = null;
                         });
-                        self.config.onSave = null;
                     });
                 });
             },
 
-            computeImage: function (key, value, element, formObject) {
-                var elements = {},
-                    form = jQuery('#' + formObject.id),
-                    elementPath = form.find('span.' + key + '_path'),
-                    elementSrc = form.find('span.' + key + '_src'),
-                    elementOriginalName = form.find('span.' + key + '_originalname');
-
-                if (value === 'uploaded') {
-                    elements.path = elementPath.text();
-                    elements.originalname = elementOriginalName.text();
-
-                    if (elementSrc.text().length > 0) {
-                        elements.src = elementSrc.text();
-                    }
-
-                    element.setElements(elements);
-                }
-            },
-
-            computeContentSet: function (form) {
-                var self = this,
-                    formElement = jQuery('#' + form.id),
-                    contentSets = formElement.find(this.contentSetClass);
-
-                contentSets.each(function () {
-                    var contentSetElement = jQuery(this),
-                        uid = contentSetElement.data('uid'),
-                        type = contentSetElement.data('type'),
-                        contentSet = ContentManager.buildElement({'uid': uid, 'type': type}),
-                        elements = self.buildContentSetElements(contentSetElement);
-
-                    self.compareElements(contentSet, elements);
-                });
-            },
-
-            compareElements: function (contentSet, elements) {
-                var currentElements = contentSet.data.elements,
-                    i,
-                    doSet = false;
-
-                if (currentElements.length !== elements.length) {
-                    doSet = true;
-                } else {
-                    for (i = 0; i < elements.length; i = i + 1) {
-                        if (elements[i].uid !== currentElements[i].uid) {
-                            doSet = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (doSet === true) {
-                    contentSet.setElements(elements);
-                }
-
-            },
-
-            buildContentSetElements: function (contentSetElement) {
-                var li = contentSetElement.find('li'),
-                    elements = [];
-
-                li.each(function () {
-                    var $li = jQuery(this);
-
-                    elements.push({'uid': $li.data('uid'), 'type': $li.data('type')});
-                });
-
-                return elements;
-            },
-
-            computeData: function (data, form) {
+            computeData: function (data) {
                 var element,
                     contentElements = this.content.data.elements,
                     key,
@@ -257,11 +193,13 @@ define(
 
                         element = ContentManager.buildElement(item);
 
-                        if (element.type === 'Element/Image') {
-                            this.computeImage(key, value, element, form);
-                        } else {
+                        if (element.type === 'Element/Text') {
                             if (element.get('value') !== value) {
                                 element.set('value', value);
+                            }
+                        } else {
+                            if (value !== null) {
+                                element.setElements(value);
                             }
                         }
                     }

@@ -32,6 +32,8 @@ define('tb.component/formbuilder/form/element/Content', function () {
             this.template = template;
 
             this.buildCustomConfig(config);
+
+            this.viewObject = new this.view(this.template, this.formTag, this);
         },
 
         buildCustomConfig: function (config) {
@@ -40,9 +42,7 @@ define('tb.component/formbuilder/form/element/Content', function () {
         },
 
         render: function () {
-            var view = new this.view(this.template, this.formTag, this);
-
-            return view.render();
+            return this.viewObject.render();
         }
     };
 });

@@ -32,17 +32,18 @@ define(['tb.core', 'tb.core.Renderer', 'BackBone', 'jquery'], function (Core, Re
          * @param {Object} form
          */
         initialize: function (template, groups, form) {
-            this.form_button_id = '#bb-submit-form';
+            this.form_button_class = 'bb-submit-form';
             this.template = template;
             this.groups = groups;
             this.form = form;
+            this.bindEvents();
         },
 
         /**
          * Events of view
          */
-        bindUiEvents: function () {
-            jQuery(this.el).off('click.form').on('click.form', this.form_button_id, jQuery.proxy(this.computeForm, this));
+        bindEvents: function () {
+            jQuery(this.el).on('click', '#' + this.form.getId() + ' .' + this.form_button_class, jQuery.proxy(this.computeForm, this));
         },
 
         /**
@@ -75,13 +76,15 @@ define(['tb.core', 'tb.core.Renderer', 'BackBone', 'jquery'], function (Core, Re
          * Compute the form
          */
         computeForm: function () {
+            Core.Mediator.publish('before:form:submit', jQuery('#' + this.form.id));
+
             var jqueryForm = jQuery('form#' + this.form.id),
                 data = this.computeData(jqueryForm);
 
             if (this.form.isValid()) {
                 this.form.onSubmit(data, this.form);
             } else {
-                this.replaceForm(data);
+                this.replaceForm();
             }
         },
 
@@ -89,12 +92,8 @@ define(['tb.core', 'tb.core.Renderer', 'BackBone', 'jquery'], function (Core, Re
          * Replace html form if form has errors
          * @param {Object} data
          */
-        replaceForm: function (data) {
-            var html = this.form.render(data),
-                jqueryForm = jQuery('form#' + this.form.id),
-                parent = jqueryForm.parent();
-
-            parent.html(html);
+        replaceForm: function () {
+            this.form.render(true);
         },
 
         /**
@@ -102,8 +101,6 @@ define(['tb.core', 'tb.core.Renderer', 'BackBone', 'jquery'], function (Core, Re
          * @returns {String} html
          */
         render: function () {
-            this.bindUiEvents();
-
             return Renderer.render(this.template, {groups: this.groups, form: this.form});
         }
     });

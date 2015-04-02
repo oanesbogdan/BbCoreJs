@@ -58,7 +58,6 @@ define(['tb.core', 'bundle.view.list', 'bundle.view.index'], function (Core, Lis
          * Show all bundle in toolbar
          */
         listService: function () {
-
             if (undefined === this.bundles) {
                 this.listAndRender(ListView);
             } else {

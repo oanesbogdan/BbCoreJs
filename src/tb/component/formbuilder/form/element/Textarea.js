@@ -32,12 +32,12 @@ define('tb.component/formbuilder/form/element/Textarea', function () {
             this.template = template;
 
             this.buildCustomConfig(config);
+
+            this.viewObject = new this.view(this.template, this.formTag, this);
         },
 
         render: function () {
-            var view = new this.view(this.template, this.formTag, this);
-
-            return view.render();
+            return this.viewObject.render();
         },
 
         buildCustomConfig: function (config) {

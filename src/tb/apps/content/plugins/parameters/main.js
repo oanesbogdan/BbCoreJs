@@ -19,13 +19,17 @@
 
 define(
     [
+        'tb.core.ApplicationManager',
+        'content.container',
         'content.pluginmanager',
         'component!popin',
         'component!formbuilder',
         'definition.manager',
+        'component!formsubmitter',
+        'jquery',
         'jsclass'
     ],
-    function (PluginManager, Popin, FormBuilder, DefinitionManager) {
+    function (ApplicationManager, ContentContainer, PluginManager, Popin, FormBuilder, DefinitionManager, FormSubmitter, jQuery) {
 
         'use strict';
 
@@ -57,12 +61,7 @@ define(
                     var parameters = content.getParameters(),
                         config = {
                             elements: self.computeParameters(parameters),
-                            onSubmit: function (data) {
-                                if (Object.keys(data).length > 0) {
-                                    content.setParameters(data);
-                                }
-                                self.popin.hide();
-                            }
+                            onSubmit: jQuery.proxy(self.onSubmit, self)
                         };
 
                     FormBuilder.renderForm(config).done(function (html) {
@@ -70,6 +69,48 @@ define(
                         self.popin.display();
                     });
                 });
+            },
+
+            onSubmit: function (data, form) {
+                var self = this,
+                    content = this.getCurrentContent();
+
+                FormSubmitter.process(data, form).done(function (res) {
+
+                    self.computeData(res);
+
+                    if (Object.keys(res).length > 0) {
+                        content.setParameters(res);
+
+                        ApplicationManager.invokeService('content.main.save').done(function (promise) {
+                            promise.done(function () {
+                                content.refresh().done(function () {
+                                    content.refresh();
+
+                                    ContentContainer.clear();
+
+                                    self.popin.hide();
+                                });
+                            });
+                        });
+                    } else {
+                        self.popin.hide();
+                    }
+                });
+            },
+
+            computeData: function (data) {
+                var key;
+
+                for (key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        if (data[key] === null) {
+                            delete data[key];
+                        }
+                    }
+                }
+
+                return data;
             },
 
             /**

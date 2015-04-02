@@ -17,25 +17,32 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('tb.component/formbuilder/form/element/Datetimepicker', function () {
+define(
+    [
+        'jquery',
+        'jsclass'
+    ],
+    function (jQuery) {
 
-    'use strict';
+        'use strict';
 
-    /**
-     * ElementText object
-     */
-    return {
+        var text = {
 
-        initialize: function (key, config, formTag, view, template, error) {
-            this.callSuper(key, config, formTag, error);
-            this.view = view;
-            this.template = template;
+            services: {},
 
-            this.viewObject = new this.view(this.template, this.formTag, this);
-        },
+            compute: function (key, value, form) {
+                var element = jQuery('form#' + form.getId() + ' .element_' + key),
+                    span = element.find('span.updated'),
+                    data = null;
 
-        render: function () {
-            return this.viewObject.render();
-        }
-    };
-});
+                if (span.text() === 'updated') {
+                    data = value;
+                }
+
+                return data;
+            }
+        };
+
+        return text;
+    }
+);
