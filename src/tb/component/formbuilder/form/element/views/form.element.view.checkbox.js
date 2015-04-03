@@ -17,67 +17,75 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['Core', 'Core/Renderer', 'BackBone', 'jquery'], function (Core, Renderer, Backbone, jQuery) {
-    'use strict';
+define(
+    [
+        'Core',
+        'Core/Renderer',
+        'BackBone',
+        'jquery'
+    ],
+    function (Core, Renderer, Backbone, jQuery) {
+        'use strict';
 
-    var CheckboxView = Backbone.View.extend({
+        var CheckboxView = Backbone.View.extend({
 
-        initialize: function (template, formTag, element) {
-            this.el = formTag;
-            this.template = template;
-            this.element = element;
+            initialize: function (template, formTag, element) {
+                this.el = formTag;
+                this.template = template;
+                this.element = element;
 
-            this.bindEvents();
-        },
+                this.bindEvents();
+            },
 
-        bindEvents: function () {
-            var self = this;
+            bindEvents: function () {
+                var self = this;
 
-            Core.Mediator.subscribe('before:form:submit', function (form) {
-                if (form.attr('id') === self.el) {
-                    var element = form.find('.element_' + self.element.getKey()),
-                        input = element.find('input[name="' + self.element.getKey() + '"]:checked'),
-                        span = element.find('span.updated'),
-                        key,
-                        data = [],
-                        oldData = self.element.value,
-                        updated = false;
+                Core.Mediator.subscribe('before:form:submit', function (form) {
+                    if (form.attr('id') === self.el) {
+                        var element = form.find('.element_' + self.element.getKey()),
+                            input = element.find('input[name="' + self.element.getKey() + '"]:checked'),
+                            span = element.find('span.updated'),
+                            key,
+                            data = [],
+                            oldData = self.element.value,
+                            updated = false;
 
-                    input.each(function () {
-                        var target = jQuery(this);
-                        data.push(target.val());
-                    });
+                        input.each(function () {
+                            var target = jQuery(this);
+                            data.push(target.val());
+                        });
 
-                    if (oldData.length !== data.length) {
-                        updated = true;
-                    } else {
-                        for (key in data) {
-                            if (data.hasOwnProperty(key)) {
-                                if (data[key] !== oldData[key]) {
-                                    updated = true;
-                                    break;
+                        if (oldData.length !== data.length) {
+                            updated = true;
+                        } else {
+                            for (key in data) {
+                                if (data.hasOwnProperty(key)) {
+                                    if (data[key] !== oldData[key]) {
+                                        updated = true;
+                                        break;
+                                    }
                                 }
                             }
                         }
+
+                        if (updated === true) {
+                            span.text('updated');
+                        } else {
+                            span.text('');
+                        }
                     }
+                });
+            },
 
-                    if (updated === true) {
-                        span.text('updated');
-                    } else {
-                        span.text('');
-                    }
-                }
-            });
-        },
+            /**
+             * Render the template into the DOM with the Renderer
+             * @returns {String} html
+             */
+            render: function () {
+                return Renderer.render(this.template, {element: this.element});
+            }
+        });
 
-        /**
-         * Render the template into the DOM with the Renderer
-         * @returns {String} html
-         */
-        render: function () {
-            return Renderer.render(this.template, {element: this.element});
-        }
-    });
-
-    return CheckboxView;
-});
+        return CheckboxView;
+    }
+);

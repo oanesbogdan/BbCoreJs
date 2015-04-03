@@ -16,11 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
-define([], function () {
-    'use strict';
-    return {
-        test: function () {
-            return "test";
-        }
-    };
-});
+require([
+    'jquery',
+    'jqueryui',
+    'jsclass',
+    'underscore',
+    'nunjucks',
+    'BackBone',
+    'text',
+    'moment',
+    'URIjs/URI',
+    'datetimepicker',
+    'jquery-layout',
+    'lib.jqtree',
+    'jssimplepagination',
+    'bootstrapjs',
+    'ckeeditor',
+    'dropzone',
+    'cryptojs.core',
+    'cryptojs.md5'
+]);

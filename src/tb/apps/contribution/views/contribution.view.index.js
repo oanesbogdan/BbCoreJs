@@ -1,12 +1,11 @@
 define(
     [
-        'Core/Api',
+        'Core',
         'jquery',
-        'Core/ApplicationManager',
         'Core/Renderer',
         'text!contribution/tpl/index'
     ],
-    function (Core, jQuery, ApplicationManager, Renderer, template) {
+    function (Core, jQuery, Renderer, template) {
 
         'use strict';
 
@@ -49,15 +48,15 @@ define(
                         popin: true
                     };
 
-                ApplicationManager.invokeService('page.main.tree', config);
+                Core.ApplicationManager.invokeService('page.main.tree', config);
             },
 
             showNewPage: function () {
-                return ApplicationManager.invokeService('page.main.newPage', {'parent_uid': Core.get('page.uid'), 'flag': 'redirect'});
+                return Core.ApplicationManager.invokeService('page.main.newPage', {'parent_uid': Core.get('page.uid'), 'flag': 'redirect'});
             },
 
             showMediaLibrary: function (config) {
-                return ApplicationManager.invokeService('contribution.main.showMediaLibrary', config);
+                return Core.ApplicationManager.invokeService('contribution.main.showMediaLibrary', config);
             },
 
             manageMenu: function (event) {
@@ -74,21 +73,21 @@ define(
              * Call service `save` into main application
              */
             manageSave: function () {
-                ApplicationManager.invokeService('main.main.save');
+                Core.ApplicationManager.invokeService('main.main.save');
             },
 
             /**
              * Call service `validate` into main application
              */
             manageValidate: function () {
-                ApplicationManager.invokeService('main.main.validate');
+                Core.ApplicationManager.invokeService('main.main.validate');
             },
 
             /**
              * Call service `cancel` into main application
              */
             manageCancel: function () {
-                ApplicationManager.invokeService('main.main.cancel');
+                Core.ApplicationManager.invokeService('main.main.cancel');
             },
 
             /**
@@ -98,7 +97,7 @@ define(
             render: function () {
                 var self = this;
 
-                ApplicationManager.invokeService('main.main.toolbarManager').done(function (Service) {
+                Core.ApplicationManager.invokeService('main.main.toolbarManager').done(function (Service) {
                     Service.append('contribution-tab', Renderer.render(template, this.contribution));
 
                     if (self.alreadyLoaded !== true) {

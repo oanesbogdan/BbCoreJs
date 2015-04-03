@@ -1,9 +1,9 @@
 require.config({
     paths: {
-        'rteadapter': 'src/tb/apps/content/plugins/rte/adapter/rteadapter' //plugin
+        'rteadapter': 'src/tb/apps/content/plugins/rte/adapter/rteadapter'
     }
 });
-define(['content.pluginmanager', 'component!rtemanager', 'Core/Api', 'jquery', 'jsclass'], function (PluginManager, RteManager, Core, jQuery) {
+define(['content.pluginmanager', 'component!rtemanager', 'Core', 'jquery', 'jsclass'], function (PluginManager, RteManager, Core, jQuery) {
     'use strict';
     PluginManager.registerPlugin("rte", {
         scope: PluginManager.scope.CONTENT,

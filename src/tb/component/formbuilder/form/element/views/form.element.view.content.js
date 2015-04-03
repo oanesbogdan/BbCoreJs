@@ -16,48 +16,56 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
+define(
+    [
+        'Core',
+        'Core/Renderer',
+        'BackBone',
+        'component!popin',
+        'jquery'
+    ],
+    function (Core, Renderer, Backbone, PopinManager, jQuery) {
+        'use strict';
 
-define(['Core', 'Core/Renderer', 'BackBone', 'component!popin', 'jquery'], function (Core, Renderer, Backbone, PopinManager, jQuery) {
-    'use strict';
+        var ContentView = Backbone.View.extend({
 
-    var ContentView = Backbone.View.extend({
+            mainSelector: Core.get('wrapper_toolbar_selector'),
 
-        mainSelector: Core.get('wrapper_toolbar_selector'),
+            initialize: function (template, formTag, element) {
+                this.el = formTag;
+                this.template = template;
+                this.element = element;
 
-        initialize: function (template, formTag, element) {
-            this.el = formTag;
-            this.template = template;
-            this.element = element;
+                this.updateBtnId = '#' + element.getKey() + '_update_btn';
 
-            this.updateBtnId = '#' + element.getKey() + '_update_btn';
+                this.buildPopin();
 
-            this.buildPopin();
+                this.bindEvents();
+            },
 
-            this.bindEvents();
-        },
+            buildPopin: function () {
+                var currentPopin = this.element.popinInstance;
 
-        buildPopin: function () {
-            var currentPopin = this.element.popinInstance;
+                this.popin = (currentPopin !== undefined) ? PopinManager.createSubPopIn(currentPopin) : PopinManager.createPopIn();
+            },
 
-            this.popin = (currentPopin !== undefined) ? PopinManager.createSubPopIn(currentPopin) : PopinManager.createPopIn();
-        },
+            bindEvents: function () {
+                jQuery(this.mainSelector).on('click', this.updateBtnId, jQuery.proxy(this.onUpdateClick, this));
+            },
 
-        bindEvents: function () {
-            jQuery(this.mainSelector).on('click', this.updateBtnId, jQuery.proxy(this.onUpdateClick, this));
-        },
+            onUpdateClick: function () {
+                this.popin.display();
+            },
 
-        onUpdateClick: function () {
-            this.popin.display();
-        },
+            /**
+             * Render the template into the DOM with the Renderer
+             * @returns {String} html
+             */
+            render: function () {
+                return Renderer.render(this.template, {element: this.element});
+            }
+        });
 
-        /**
-         * Render the template into the DOM with the Renderer
-         * @returns {String} html
-         */
-        render: function () {
-            return Renderer.render(this.template, {element: this.element});
-        }
-    });
-
-    return ContentView;
-});
+        return ContentView;
+    }
+);

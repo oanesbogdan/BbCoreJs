@@ -199,11 +199,49 @@ module.exports = function (grunt) {
                     }
                 }
             }
+        },
+
+        requirejs: {
+            compile: {
+                options: {
+                    baseUrl: './',
+                    mainConfigFile: 'src/require.config.build.js',
+                    name: 'src/vendor.js',
+                    out: 'dist/vendor.js',
+                    generateSourceMaps: true,
+                    paths: {
+                        'component': 'src/tb/component/component',
+
+                        'Core': 'bower_components/backbee-core-js/dist/Core',
+                        'jquery': 'bower_components/jquery/dist/jquery',
+                        'jqueryui': 'bower_components/jquery-ui/jquery-ui',
+                        'jsclass' : 'node_modules/jsclass/min/core',
+                        'underscore': 'bower_components/underscore/underscore',
+                        'nunjucks': 'bower_components/nunjucks/browser/nunjucks',
+                        'BackBone': 'bower_components/backbone/backbone',
+                        'text': 'bower_components/requirejs-text/text',
+                        'moment': 'bower_components/moment/moment',
+                        'URIjs/URI': 'bower_components/uri.js/src/URI',
+                        'datetimepicker': 'bower_components/datetimepicker/jquery.datetimepicker',
+                        'jquery-layout' : 'bower_components/jquery.layout/dist/jquery.layout-latest',
+                        'jqLayout': 'bower_components/jquery.layout/dist/jquery.layout-latest',
+                        'lib.jqtree': 'bower_components/jqtree/tree.jquery',
+                        'jssimplepagination': 'bower_components/jssimplepagination/jquery.simplePagination',
+                        'bootstrapjs': 'bower_components/bootstrap/dist/js/bootstrap',
+                        'ckeeditor': 'bower_components/ckeeditor/ckeditor',
+                        'dropzone': 'bower_components/dropzone/dist/dropzone',
+
+                        'cryptojs.core': 'bower_components/cryptojslib/components/core',
+                        'cryptojs.md5': 'bower_components/cryptojslib/components/md5'
+                    }
+                }
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-less');
 
+    grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
 

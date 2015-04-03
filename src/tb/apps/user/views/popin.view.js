@@ -17,7 +17,16 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 define(
-    ['require', 'jquery', 'Core', 'user/controllers/dnd.controller', 'component!dnd', 'component!popin', 'component!translator', 'text!user/templates/popin.twig'],
+    [
+        'require',
+        'jquery',
+        'Core',
+        'user/controllers/dnd.controller',
+        'component!dnd',
+        'component!popin',
+        'component!translator',
+        'text!user/templates/popin.twig'
+    ],
     function (require, jQuery, Core, DnDController, dnd) {
         'use strict';
         var trans = Core.get('trans') || function (value) {return value; },

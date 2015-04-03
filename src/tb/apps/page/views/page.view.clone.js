@@ -20,7 +20,7 @@
 define(
     [
         'require',
-        'Core/Api',
+        'Core',
         'jquery',
         'page.repository',
         'page.form',
