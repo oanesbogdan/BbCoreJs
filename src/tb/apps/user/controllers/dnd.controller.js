@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['tb.core', 'jquery'], function (Core, jQuery) {
+define(['Core', 'jquery'], function (Core, jQuery) {
     'use strict';
 
     return {

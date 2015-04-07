@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 define(
-    ['require', 'tb.core.Renderer', 'tb.core.Utils', 'text!user/templates/group/list.item.twig'],
+    ['require', 'Core/Renderer', 'Core/Utils', 'text!user/templates/group/list.item.twig'],
     function (require, renderer, Utils) {
         'use strict';
 

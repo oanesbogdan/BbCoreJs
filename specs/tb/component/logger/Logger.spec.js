@@ -1,7 +1,7 @@
-define(['require', 'tb.core', 'component!logger'], function (require) {
+define(['require', 'Core', 'component!logger'], function (require) {
     'use strict';
 
-    var api = require('tb.core'),
+    var api = require('Core'),
         logger = require('component!logger');
 
     describe('Logger spec', function () {

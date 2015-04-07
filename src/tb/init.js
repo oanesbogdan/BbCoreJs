@@ -51,7 +51,7 @@ define(['jquery'], function (jQuery) {
             load: function () {
                 var self = this;
 
-                require(['tb.core', 'component!session'], function (Core, session) {
+                require(['Core', 'component!session'], function (Core, session) {
 
                     Core.set('session', session);
                     Core.set('is_connected', session.isAuthenticated());
@@ -60,9 +60,9 @@ define(['jquery'], function (jQuery) {
 
                     require(
                         [
-                            'tb.core.DriverHandler',
-                            'tb.core.RestDriver',
-                            'tb.core.Renderer',
+                            'Core/DriverHandler',
+                            'Core/RestDriver',
+                            'Core/Renderer',
                             'component!translator'
                         ],
                         function (DriverHandler, RestDriver, Renderer, Translator) {

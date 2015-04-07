@@ -19,13 +19,12 @@
 
 define(
     [
-        'tb.core',
+        'Core',
         'require',
-        'tb.core.Renderer',
+        'Core/Renderer',
         'BackBone',
         'jquery',
         'text!tb.component/formbuilder/form/element/templates/contentSet_item.twig',
-        'tb.core.ApplicationManager',
         'component!contentselector'
     ],
     function (Core, require, Renderer, Backbone, jQuery, itemTemplate) {
@@ -120,7 +119,7 @@ define(
                     this.contentSelector.on('close', jQuery.proxy(this.handleContentSelection, this));
                 }
 
-                require('tb.core.ApplicationManager').invokeService('content.main.getDefinitionManager').done(function (DefinitionManager) {
+                Core.ApplicationManager.invokeService('content.main.getDefinitionManager').done(function (DefinitionManager) {
                     var definition = DefinitionManager.find(type),
                         accepts = definition.accept;
 
@@ -135,7 +134,7 @@ define(
                     content;
 
                 if (selections.length > 0) {
-                    require('tb.core.ApplicationManager').invokeService('content.main.getContentManager').done(function (ContentManager) {
+                    Core.ApplicationManager.invokeService('content.main.getContentManager').done(function (ContentManager) {
                         var key;
 
                         for (key in selections) {
@@ -153,11 +152,11 @@ define(
                 var self = this,
                     type = this.element.object_type;
 
-                require('tb.core.ApplicationManager').invokeService('content.main.getDefinitionManager').done(function (DefinitionManager) {
+                Core.ApplicationManager.invokeService('content.main.getDefinitionManager').done(function (DefinitionManager) {
                     var definition = DefinitionManager.find(type),
                         accepts = definition.accept;
 
-                    require('tb.core.ApplicationManager').invokeService('content.main.getDialogContentsListWidget').done(function (DialogContentsList) {
+                    Core.ApplicationManager.invokeService('content.main.getDialogContentsListWidget').done(function (DialogContentsList) {
                         self.DialogContentsList = DialogContentsList;
 
                         if (accepts.length === 1) {
@@ -199,7 +198,7 @@ define(
             buildContents: function (accepts) {
                 var contents = [];
 
-                require('tb.core.ApplicationManager').invokeService('content.main.getDefinitionManager').done(function (DefinitionManager) {
+                Core.ApplicationManager.invokeService('content.main.getDefinitionManager').done(function (DefinitionManager) {
                     var key;
 
                     for (key in accepts) {
@@ -232,7 +231,7 @@ define(
             createElement: function (type) {
                 var self = this;
 
-                require('tb.core.ApplicationManager').invokeService('content.main.getContentManager').done(function (ContentManager) {
+                Core.ApplicationManager.invokeService('content.main.getContentManager').done(function (ContentManager) {
                     ContentManager.createElement(type).done(function (content) {
                         self.addItem(content);
                     });

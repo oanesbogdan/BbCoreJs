@@ -19,9 +19,9 @@
 
 define(
     [
-        'tb.core.DriverHandler',
-        'tb.core.RestDriver',
-        'tb.core',
+        'Core/DriverHandler',
+        'Core/RestDriver',
+        'Core',
         'URIjs/URI',
         'jsclass'
     ],

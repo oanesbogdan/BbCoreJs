@@ -28,52 +28,56 @@ require.config({
 
 define(
     [
-        'tb.core.Utils',
+        'require',
         'jquery',
+        'Core',
+        'Core/Utils',
         'jsclass'
     ],
-    function (Utils, jQuery) {
+    function (require, jQuery) {
 
         'use strict';
 
-        var FormSubmitter = new JS.Class({
+        var Utils = require('Core/Utils'),
 
-            process: function (data, form) {
-                var dfd = jQuery.Deferred();
+            FormSubmitter = new JS.Class({
 
-                this.computeData(data, form).done(function () {
+                process: function (data, form) {
+                    var dfd = jQuery.Deferred();
+
+                    this.computeData(data, form).done(function () {
+                        var key,
+                            element,
+                            submitter,
+                            result = {};
+
+                        for (key in data) {
+                            if (data.hasOwnProperty(key)) {
+                                element = data[key];
+                                submitter = require('CfElementInterpreter!' + form.elements[key].type);
+                                result[key] = submitter.compute(key, element, form);
+                            }
+                        }
+
+                        dfd.resolve(result);
+                    });
+
+                    return dfd.promise();
+                },
+
+                computeData: function (data, form) {
                     var key,
-                        element,
-                        submitter,
-                        result = {};
+                        promises = [];
 
                     for (key in data) {
                         if (data.hasOwnProperty(key)) {
-                            element = data[key];
-                            submitter = require('CfElementInterpreter!' + form.elements[key].type);
-                            result[key] = submitter.compute(key, element, form);
+                            promises.push(Utils.requireWithPromise(['CfElementInterpreter!' + form.elements[key].type]));
                         }
                     }
 
-                    dfd.resolve(result);
-                });
-
-                return dfd.promise();
-            },
-
-            computeData: function (data, form) {
-                var key,
-                    promises = [];
-
-                for (key in data) {
-                    if (data.hasOwnProperty(key)) {
-                        promises.push(Utils.requireWithPromise(['CfElementInterpreter!' + form.elements[key].type]));
-                    }
+                    return jQuery.when.apply(undefined, promises).promise();
                 }
-
-                return jQuery.when.apply(undefined, promises).promise();
-            }
-        });
+            });
 
         return new JS.Singleton(FormSubmitter);
     }

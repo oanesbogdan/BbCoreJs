@@ -19,7 +19,7 @@
 
 define(
     [
-        'tb.core.ApplicationManager',
+        'Core/ApplicationManager',
         'content.container',
         'content.pluginmanager',
         'component!popin',
@@ -151,7 +151,7 @@ define(
             },
 
             /**
-             * 
+             *
              * @returns {Array}
              */
             getActions: function () {

@@ -52,7 +52,7 @@ require.config({
     }
 });
 
-define('app.page', ['tb.core.Api', 'page.widget.InformationPage'], function (Core, InformationPage) {
+define('app.page', ['Core', 'page.widget.InformationPage'], function (Core, InformationPage) {
 
     'use strict';
 

@@ -20,7 +20,7 @@
 define(
     [
         'require',
-        'tb.core.Api',
+        'Core',
         'jquery',
         'page.repository',
         'page.form',

@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 define(
-    ['require', 'tb.core.Renderer', 'jquery', 'text!user/templates/group/delete.twig'],
+    ['require', 'Core/Renderer', 'jquery', 'text!user/templates/group/delete.twig'],
     function (require, Renderer, jQuery) {
         'use strict';
 

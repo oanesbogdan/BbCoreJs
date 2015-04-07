@@ -1,5 +1,5 @@
 define([
-    'tb.core',
+    'Core',
     'content.dnd.manager',
     'content.mouseevent.manager',
     'content.save.manager',

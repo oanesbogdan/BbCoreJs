@@ -17,25 +17,33 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 require.config({
-    baseUrl: 'resources/',
+    baseUrl: 'resources/toolbar/',
     catchError: true,
+    urlArgs: 'cb=' + Math.random(),
     paths: {
-        'tb.core': 'src/tb/main.build',
         'component': 'src/tb/component/component',
 
+        'Core': 'bower_components/backbee-core-js/dist/Core.min',
         'jquery': 'bower_components/jquery/dist/jquery.min',
-        'jqueryui': 'bower_components/jquery-ui/jquery-ui.min',
-        'jsclass' : 'node_modules/jsclass/min/core',
-        'underscore': 'bower_components/underscore/underscore-min',
-        'nunjucks': 'bower_components/nunjucks/browser/nunjucks.min',
-        'BackBone': 'bower_components/backbone/backbone',
-        'text': 'bower_components/requirejs-text/text',
-        'moment': 'bower_components/moment/moment',
+        'jqueryui': 'dist/vendor',
+        'jsclass' : 'dist/vendor',
+        'underscore': 'dist/vendor',
+        'nunjucks': 'dist/vendor',
+        'BackBone': 'dist/vendor',
+        'text': 'dist/vendor',
+        'moment': 'dist/vendor',
         'URIjs': 'bower_components/uri.js/src',
-        'datetimepicker': 'bower_components/datetimepicker/jquery.datetimepicker',
-        'jquery-layout' : 'bower_components/jquery.layout/dist/jquery.layout-latest.min',
-        'lib.jqtree': 'bower_components/jqtree/tree.jquery',
-        'bootstrapjs': 'bower_components/bootstrap/dist/js/bootstrap.min'
+        'datetimepicker': 'dist/vendor',
+        'jquery-layout' : 'dist/vendor',
+        'jqLayout': 'dist/vendor',
+        'lib.jqtree': 'dist/vendor',
+        'jssimplepagination': 'dist/vendor',
+        'bootstrapjs': 'dist/vendor',
+        'ckeeditor': 'dist/vendor',
+        'dropzone': 'dist/vendor',
+
+        'cryptojs.core': 'dist/vendor',
+        'cryptojs.md5': 'dist/vendor'
     },
     'shim': {
         underscore: {
@@ -48,9 +56,23 @@ require.config({
         bootstrapjs: {
             deps: ['jquery']
         },
+        'lib.jqtree': {
+            deps: ['jquery']
+        },
         'jquery-layout': {
             deps: ['jquery']
+        },
+        'cryptojs.core': {
+            exports: "CryptoJS"
+        },
+        'cryptojs.md5': {
+            deps: ['cryptojs.core'],
+            exports: "CryptoJS"
         }
-
+    },
+    deps: ['src/tb/init'],
+    callback: function (init) {
+        'use strict';
+        init.listen();
     }
 });

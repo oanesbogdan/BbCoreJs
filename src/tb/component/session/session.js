@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('tb.component/session/session', ['tb.core', 'tb.core.Utils', 'jsclass'], function (Core, Utils) {
+define('tb.component/session/session', ['Core', 'Core/Utils', 'jsclass'], function (Core, Utils) {
     'use strict';
 
     var Session = new JS.Class({

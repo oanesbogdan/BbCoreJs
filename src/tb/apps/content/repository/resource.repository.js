@@ -19,7 +19,7 @@
 
 define(
     [
-        'tb.core.DriverHandler'
+        'Core/DriverHandler'
     ],
     function (CoreDriverHandler) {
 

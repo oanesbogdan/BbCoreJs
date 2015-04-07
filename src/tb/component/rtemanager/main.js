@@ -1,4 +1,4 @@
-define(['tb.core.Api', 'jquery', 'jsclass'], function (Core, jquery) {
+define(['Core', 'jquery', 'jsclass'], function (Core, jquery) {
     'use strict';
     var adapter = {},
         AbstactRteAdapter = new JS.Class({

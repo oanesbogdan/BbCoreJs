@@ -19,14 +19,14 @@
 
 define(
     [
-        'tb.core',
-        'tb.core.ApplicationManager',
+        'Core',
+        'Core/ApplicationManager',
         'page.view.tree',
         'component!contextmenu',
         'page.repository',
         'jquery',
-        'tb.core.Request',
-        'tb.core.RequestHandler'
+        'Core/Request',
+        'Core/RequestHandler'
     ],
     function (Core, ApplicationManager, TreeView, ContextMenu, PageRepository, jQuery, Request, RequestHandler) {
 

@@ -19,7 +19,7 @@
 
 define(
     [
-        'tb.core.Renderer',
+        'Core/Renderer',
         'jquery',
         'text!main/tpl/tab-wrapper',
         'jsclass'

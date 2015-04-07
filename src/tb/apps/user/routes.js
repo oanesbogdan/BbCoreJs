@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
-define(['tb.core'], function (Core) {
+define(['Core'], function (Core) {
     'use strict';
 
     /**

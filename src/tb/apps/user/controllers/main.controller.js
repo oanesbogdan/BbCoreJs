@@ -18,7 +18,7 @@
  */
 
 define(
-    ['tb.core', 'user/views/popin.view'],
+    ['Core', 'user/views/popin.view'],
     function (Core, PopinView) {
         'use strict';
 

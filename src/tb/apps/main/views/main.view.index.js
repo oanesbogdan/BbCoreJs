@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
-define(['jquery', 'tb.core.Renderer', 'text!main/tpl/toolbar'], function (jQuery, Renderer, template) {
+define(['jquery', 'Core/Renderer', 'text!main/tpl/toolbar'], function (jQuery, Renderer, template) {
 
     'use strict';
 

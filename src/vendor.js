@@ -16,17 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
-(function () {
-    "use strict";
-
-    require(['BackBone', 'jquery'], function () {
-        return;
-        // var Rest = Backbone.Model.extend({
-        //     base_url: 'http://early.backbee.com',
-
-        //     url: function () {
-        //         return this.base_url + this.namespace;
-        //     }
-        // });
-    });
-}());
+require([
+    'jquery',
+    'jqueryui',
+    'jsclass',
+    'underscore',
+    'nunjucks',
+    'BackBone',
+    'text',
+    'moment',
+    'URIjs/URI',
+    'datetimepicker',
+    'jquery-layout',
+    'lib.jqtree',
+    'jssimplepagination',
+    'bootstrapjs',
+    'ckeeditor',
+    'dropzone',
+    'cryptojs.core',
+    'cryptojs.md5'
+]);

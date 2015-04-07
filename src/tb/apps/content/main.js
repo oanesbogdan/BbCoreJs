@@ -67,7 +67,7 @@ require.config({
     }
 });
 
-define("app.content", ["tb.core", 'content.pluginmanager'], function (Core) {
+define("app.content", ['Core', 'content.pluginmanager'], function (Core) {
 
     'use strict';
 

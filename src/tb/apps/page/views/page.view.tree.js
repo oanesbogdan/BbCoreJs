@@ -16,10 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
-
 define(
     [
-        'tb.core.Api',
+        'Core',
         'jquery',
         'page.repository',
         'component!treeview'

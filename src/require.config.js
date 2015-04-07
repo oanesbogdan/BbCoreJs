@@ -21,28 +21,29 @@ require.config({
     catchError: true,
     urlArgs: 'cb=' + Math.random(),
     paths: {
-        'tb.core': 'src/tb/main',
         'component': 'src/tb/component/component',
-        'jquery': 'bower_components/jquery/dist/jquery.min',
-        'jqueryui': 'bower_components/jquery-ui/jquery-ui.min',
+
+        'Core': 'bower_components/backbee-core-js/dist/Core',
+        'jquery': 'bower_components/jquery/dist/jquery',
+        'jqueryui': 'bower_components/jquery-ui/jquery-ui',
         'jsclass' : 'node_modules/jsclass/min/core',
-        'underscore': 'bower_components/underscore/underscore-min',
-        'nunjucks': 'bower_components/nunjucks/browser/nunjucks.min',
+        'underscore': 'bower_components/underscore/underscore',
+        'nunjucks': 'bower_components/nunjucks/browser/nunjucks',
         'BackBone': 'bower_components/backbone/backbone',
         'text': 'bower_components/requirejs-text/text',
         'moment': 'bower_components/moment/moment',
         'URIjs': 'bower_components/uri.js/src',
         'datetimepicker': 'bower_components/datetimepicker/jquery.datetimepicker',
-        'jquery-layout' : 'bower_components/jquery.layout/dist/jquery.layout-latest.min',
-        'jqLayout': 'bower_components/jquery.layout/dist/jquery.layout-latest.min',
+        'jquery-layout' : 'bower_components/jquery.layout/dist/jquery.layout-latest',
+        'jqLayout': 'bower_components/jquery.layout/dist/jquery.layout-latest',
         'lib.jqtree': 'bower_components/jqtree/tree.jquery',
         'jssimplepagination': 'bower_components/jssimplepagination/jquery.simplePagination',
-        'bootstrapjs': 'bower_components/bootstrap/dist/js/bootstrap.min',
+        'bootstrapjs': 'bower_components/bootstrap/dist/js/bootstrap',
         'ckeeditor': 'bower_components/ckeeditor/ckeditor',
         'dropzone': 'bower_components/dropzone/dist/dropzone',
 
-        'cryptojs.core': 'bower_components/cryptojslib/components/core-min',
-        'cryptojs.md5': 'bower_components/cryptojslib/components/md5-min'
+        'cryptojs.core': 'bower_components/cryptojslib/components/core',
+        'cryptojs.md5': 'bower_components/cryptojslib/components/md5'
     },
     'shim': {
         underscore: {

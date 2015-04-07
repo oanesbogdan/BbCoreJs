@@ -19,7 +19,7 @@
 
 define(
     [
-        'tb.core',
+        'Core',
         'main.toolbar.manager'
     ],
     function (Core, ToolbarManager) {

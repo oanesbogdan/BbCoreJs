@@ -18,9 +18,9 @@
  */
 define(
     [
-        'tb.core',
+        'Core',
         'jquery',
-        'tb.core.Renderer',
+        'Core/Renderer',
         'text!bundle/tpl/list',
         'bundle.view.index',
         'jqueryui'

@@ -19,14 +19,14 @@
 
 define(
     [
-        'tb.core.ApplicationManager',
-        'tb.core.Renderer',
+        'Core',
+        'Core/Renderer',
         'text!revisionselector.templates/item-wrapper.twig',
         'moment',
         'jquery',
         'jsclass'
     ],
-    function (ApplicationManager, Renderer, itemWrapperTemplate, Moment, jQuery) {
+    function (Core, Renderer, itemWrapperTemplate, Moment, jQuery) {
 
         'use strict';
 
@@ -38,7 +38,7 @@ define(
             initialize: function () {
                 var self = this;
 
-                ApplicationManager.invokeService('content.main.getDefinitionManager').done(function (DefinitionManager) {
+                Core.ApplicationManager.invokeService('content.main.getDefinitionManager').done(function (DefinitionManager) {
                     self.DefinitionManager = DefinitionManager;
                 });
             },
@@ -88,7 +88,7 @@ define(
             },
 
             /**
-             * Search sub drafts of a draft recursively 
+             * Search sub drafts of a draft recursively
              * @param {Object} draft
              * @param {Boolean} first
              * @param {Number} margin

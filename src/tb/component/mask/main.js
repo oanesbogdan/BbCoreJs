@@ -1,4 +1,4 @@
-define(['tb.core.Api', 'jquery', 'jsclass'], function (Api, jQuery) {
+define(['Core', 'jquery', 'jsclass'], function (Core, jQuery) {
     'use strict';
     var Mask = new JS.Class({
         defaultConfig: {
@@ -32,7 +32,7 @@ define(['tb.core.Api', 'jquery', 'jsclass'], function (Api, jQuery) {
 
         mask: function (content) {
             if (!content) {
-                Api.exception('MaskException', 466241, '[mask] expects one parameter');
+                Core.exception('MaskException', 466241, '[mask] expects one parameter');
             }
             var loader = jQuery(content).find("." + this.config.loaderCls).eq(0);
             if (loader.length) {

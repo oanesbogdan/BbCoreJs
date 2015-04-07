@@ -16,62 +16,69 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
+define(
+    [
+        'Core',
+        'Core/Renderer',
+        'BackBone',
+        'jquery'
+    ],
+    function (Core, Renderer, Backbone, jQuery) {
+        'use strict';
 
-define(['tb.core', 'tb.core.Renderer', 'BackBone', 'jquery'], function (Core, Renderer, Backbone, jQuery) {
-    'use strict';
+        var DatetimepickerView = Backbone.View.extend({
 
-    var DatetimepickerView = Backbone.View.extend({
+            mainSelector: Core.get('wrapper_toolbar_selector'),
 
-        mainSelector: Core.get('wrapper_toolbar_selector'),
+            initialize: function (template, formTag, element) {
+                this.el = formTag;
+                this.template = template;
+                this.element = element;
 
-        initialize: function (template, formTag, element) {
-            this.el = formTag;
-            this.template = template;
-            this.element = element;
+                this.bindEvents();
+            },
 
-            this.bindEvents();
-        },
+            bindEvents: function () {
+                var self = this;
 
-        bindEvents: function () {
-            var self = this;
+                jQuery(this.mainSelector).on('click', 'form#' + this.el + ' input[name=' + this.element.getKey() + ']', this.manageDatetimepicker);
 
-            jQuery(this.mainSelector).on('click', 'form#' + this.el + ' input[name=' + this.element.getKey() + ']', this.manageDatetimepicker);
+                Core.Mediator.subscribe('before:form:submit', function (form) {
+                    if (form.attr('id') === self.el) {
+                        var element = form.find('.element_' + self.element.getKey()),
+                            input = element.find('input[name="' + self.element.getKey() + '"]'),
+                            span = element.find('span.updated'),
+                            oldValue = self.element.value;
 
-            Core.Mediator.subscribe('before:form:submit', function (form) {
-                if (form.attr('id') === self.el) {
-                    var element = form.find('.element_' + self.element.getKey()),
-                        input = element.find('input[name="' + self.element.getKey() + '"]'),
-                        span = element.find('span.updated'),
-                        oldValue = self.element.value;
-
-                    if (input.val() !== oldValue) {
-                        span.text('updated');
-                    } else {
-                        span.text('');
+                        if (input.val() !== oldValue) {
+                            span.text('updated');
+                        } else {
+                            span.text('');
+                        }
                     }
-                }
-            });
-        },
+                });
+            },
 
-        manageDatetimepicker: function () {
-            var self = this,
-                element = jQuery(this);
+            manageDatetimepicker: function () {
+                var self = this,
+                    element = jQuery(this);
 
-            element.datetimepicker({
-                parentID: self.mainSelector
-            });
+                element.datetimepicker({
+                    parentID: self.mainSelector
+                });
 
-            element.datetimepicker('show');
-        },
+                element.datetimepicker('show');
+            },
 
-        /**
-         * Render the template into the DOM with the Renderer
-         * @returns {String} html
-         */
-        render: function () {
-            return Renderer.render(this.template, {element: this.element});
-        }
-    });
+            /**
+             * Render the template into the DOM with the Renderer
+             * @returns {String} html
+             */
+            render: function () {
+                return Renderer.render(this.template, {element: this.element});
+            }
+        });
 
-    return DatetimepickerView;
-});
+        return DatetimepickerView;
+    }
+);

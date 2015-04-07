@@ -16,14 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
-define(["tb.core"], function (bbCore) {
+define(['Core'], function (bbCore) {
     'use strict';
 
     /**
      * Register every routes of content application into bbCore.routeManager
      */
-    bbCore.RouteManager.registerRoute("content", {
-        prefix: "content",
+    bbCore.RouteManager.registerRoute('content', {
+        prefix: 'content',
         routes: {
             'contribution.index': {
                 url: '/contribution/index',

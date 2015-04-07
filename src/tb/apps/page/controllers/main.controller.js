@@ -19,7 +19,7 @@
 
 define(
     [
-        'tb.core',
+        'Core',
         'page.view.contribution.index',
         'page.view.delete',
         'page.view.new',
@@ -29,8 +29,8 @@ define(
         'page.view.tree',
         'page.view.tree.contribution',
         'page.repository',
-        'tb.core.Request',
-        'tb.core.RequestHandler'
+        'Core/Request',
+        'Core/RequestHandler'
     ],
     function (
         Core,

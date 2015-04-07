@@ -19,10 +19,10 @@
 
 define(
     [
-        'tb.core',
+        'Core',
         'jquery',
-        'tb.core.ApplicationManager',
-        'tb.core.Renderer',
+        'Core/ApplicationManager',
+        'Core/Renderer',
         'text!page/tpl/contribution/index',
         'text!page/tpl/contribution/scheduling_publication',
         'page.repository',

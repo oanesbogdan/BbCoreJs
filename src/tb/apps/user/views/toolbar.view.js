@@ -17,7 +17,7 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 define(
-    ['require', 'jquery', 'tb.core.Renderer', 'tb.core', 'text!user/templates/toolbar.twig'],
+    ['require', 'jquery', 'Core/Renderer', 'Core', 'text!user/templates/toolbar.twig'],
     function (require, jQuery, Renderer, Core) {
         'use strict';
 

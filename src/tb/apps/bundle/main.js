@@ -32,7 +32,7 @@ require.config({
     }
 });
 
-define('app.bundle', ['tb.core'], function (Core) {
+define('app.bundle', ['Core'], function (Core) {
     'use strict';
 
     /**

@@ -21,7 +21,7 @@
 
     'use strict';
 
-    define(['tb.core.ApplicationManager', 'jquery'], function (ApplicationManager, jQuery) {
+    define(['Core', 'jquery'], function (Core, jQuery) {
 
         var association = {
                 'Element/Text': 'Text',
@@ -33,7 +33,7 @@
             load: function (name, req, onload) {
                 var self = this;
 
-                ApplicationManager.invokeService('content.main.getDefinitionManager').done(function (DefinitionManager) {
+                Core.ApplicationManager.invokeService('content.main.getDefinitionManager').done(function (DefinitionManager) {
                     var definition = DefinitionManager.find(name),
                         realName = association[name];
 
@@ -79,7 +79,7 @@
                 for (key in services) {
                     if (services.hasOwnProperty(key)) {
 
-                        promises.push(ApplicationManager.invokeService(services[key]));
+                        promises.push(Core.ApplicationManager.invokeService(services[key]));
                     }
                 }
 

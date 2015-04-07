@@ -19,9 +19,9 @@
 define('tb.component/authentication/main',
     [
         'tb.component/session/session',
-        'tb.core',
-        'tb.core.DriverHandler',
-        'tb.core.RestDriver',
+        'Core',
+        'Core/DriverHandler',
+        'Core/RestDriver',
         'jquery',
         'jsclass',
         'component!popin',

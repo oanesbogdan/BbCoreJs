@@ -24,7 +24,7 @@
         }
     });
 
-    define(['tb.core'], function (Core) {
+    define(['Core'], function (Core) {
         return {
             load: function (name, req, onload) {
                 req(['tb.component/' + name + '/main'], function (component) {

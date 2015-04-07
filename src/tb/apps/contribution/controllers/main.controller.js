@@ -1,4 +1,4 @@
-define(['tb.core', 'contribution.view.index'], function (Core, IndexView) {
+define(['Core', 'contribution.view.index'], function (Core, IndexView) {
     'use strict';
     Core.ControllerManager.registerController('MainController', {
         appName: 'contribution',

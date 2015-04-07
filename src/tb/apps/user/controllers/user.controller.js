@@ -17,7 +17,15 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 define(
-    ['tb.core', 'tb.core.Renderer', 'user/entity/user', 'component!notify', 'require', 'tb.core.Utils', 'jquery'],
+    [
+        'Core',
+        'Core/Renderer',
+        'user/entity/user',
+        'component!notify',
+        'require',
+        'Core/Utils',
+        'jquery'
+    ],
     function (Core, renderer, User, Notify, require, Utils, jQuery) {
         'use strict';
         var trans = Core.get('trans') || function (value) {return value; };
@@ -38,7 +46,7 @@ define(
                     showCurrentService: ['user/views/user/toolbar'],
                     editCurrentService:  ['user/views/user/current.form.view', 'user/form/current.user.form'],
                     changePasswordService:  ['user/views/user/current.form.view', 'user/form/password.user.form'],
-                    logoutService: ['component!session', 'tb.core.DriverHandler', 'tb.core.RestDriver']
+                    logoutService: ['component!session', 'Core/DriverHandler', 'Core/RestDriver']
                 }
             },
 
@@ -273,8 +281,8 @@ define(
             },
 
             logoutService: function (req) {
-                var DriverHandler = req('tb.core.DriverHandler');
-                DriverHandler.addDriver('rest', req('tb.core.RestDriver'));
+                var DriverHandler = req('Core/DriverHandler');
+                DriverHandler.addDriver('rest', req('Core/RestDriver'));
                 DriverHandler.delete('security/session').then(
                     function () {
                         req('component!session').destroy();

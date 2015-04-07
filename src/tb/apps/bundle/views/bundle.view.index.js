@@ -18,9 +18,9 @@
  */
 define(
     [
-        'tb.core.ApplicationManager',
+        'Core/ApplicationManager',
         'jquery',
-        'tb.core.Renderer',
+        'Core/Renderer',
         'text!bundle/tpl/index',
         'bundle.repository'
     ],

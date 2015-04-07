@@ -33,73 +33,88 @@ require.config({
     }
 });
 
-define('app.main', ['tb.core', 'tb.core.ApplicationManager', 'main.view.index', 'jquery', 'component!popin', 'bootstrapjs'], function (Core, ApplicationManager, MainViewIndex, jQuery, Popin) {
-    'use strict';
-
-    /**
-     * Main application defining default templates and themes
-     */
-    Core.ApplicationManager.registerApplication('main', {
-
-        /**
-         * occurs on initialization of main application
-         */
-        onInit: function () {
-            this.config = {
-                tbSelector: Core.get('wrapper_toolbar_selector')
-            };
-
-            var toolbar = jQuery(this.config.tbSelector),
-                pageUid = toolbar.attr('data-page-uid'),
-                siteUid = toolbar.attr('data-site-uid'),
-                layoutUid = toolbar.attr('data-layout-uid');
-
-            if (!toolbar.length) {
-                Core.exception('MissingSelectorException', 500, 'Selector "' + this.config.tbSelector + '" does not exists, MainApplication cannot be initialized.');
-            }
-
-            if (null === pageUid || null === siteUid || null === layoutUid) {
-                Core.exception('MissingDataException', 500, 'Page uid, Site uid and Layout uid must be set in toolbar');
-            }
-
-            Core.set('page.uid', pageUid);
-            Core.set('site.uid', siteUid);
-            Core.set('layout.uid', layoutUid);
-
-            Core.set('application.main', this);
-
-            Popin.init(this.config.tbSelector);
-        },
+define(
+    'app.main',
+    [
+        'Core',
+        'main.view.index',
+        'jquery',
+        'component!popin',
+        'bootstrapjs'
+    ],
+    function (
+        Core,
+        MainViewIndex,
+        jQuery,
+        Popin
+    ) {
+        'use strict';
 
         /**
-         * occurs on start of main application
+         * Main application defining default templates and themes
          */
-        onStart: function () {
-            ApplicationManager.invokeService('content.main.findDefinitions', Core.get('page.uid')).done(function (promise) {
-                promise.done(promise).done(function (definitions) {
-                    ApplicationManager.invokeService('content.main.listenDOM', definitions);
+        Core.ApplicationManager.registerApplication('main', {
+
+            /**
+             * occurs on initialization of main application
+             */
+            onInit: function () {
+                this.config = {
+                    tbSelector: Core.get('wrapper_toolbar_selector')
+                };
+
+                var toolbar = jQuery(this.config.tbSelector),
+                    pageUid = toolbar.attr('data-page-uid'),
+                    siteUid = toolbar.attr('data-site-uid'),
+                    layoutUid = toolbar.attr('data-layout-uid');
+
+                if (!toolbar.length) {
+                    Core.exception('MissingSelectorException', 500, 'Selector "' + this.config.tbSelector + '" does not exists, MainApplication cannot be initialized.');
+                }
+
+                if (null === pageUid || null === siteUid || null === layoutUid) {
+                    Core.exception('MissingDataException', 500, 'Page uid, Site uid and Layout uid must be set in toolbar');
+                }
+
+                Core.set('page.uid', pageUid);
+                Core.set('site.uid', siteUid);
+                Core.set('layout.uid', layoutUid);
+
+                Core.set('application.main', this);
+
+                Popin.init(this.config.tbSelector);
+            },
+
+            /**
+             * occurs on start of main application
+             */
+            onStart: function () {
+                Core.ApplicationManager.invokeService('content.main.findDefinitions', Core.get('page.uid')).done(function (promise) {
+                    promise.done(promise).done(function (definitions) {
+                        Core.ApplicationManager.invokeService('content.main.listenDOM', definitions);
+                    });
                 });
-            });
 
-            ApplicationManager.invokeService('content.main.computeImagesInDOM');
+                Core.ApplicationManager.invokeService('content.main.computeImagesInDOM');
 
-            // Listen event save
-            Core.Mediator.subscribe('on:save:click', function () {
-                ApplicationManager.invokeService('content.main.save');
-            });
+                // Listen event save
+                Core.Mediator.subscribe('on:save:click', function () {
+                    Core.ApplicationManager.invokeService('content.main.save');
+                });
 
-            // Listen event validate
-            Core.Mediator.subscribe('on:validate:click', function () {
-                ApplicationManager.invokeService('content.main.validate');
-            });
+                // Listen event validate
+                Core.Mediator.subscribe('on:validate:click', function () {
+                    Core.ApplicationManager.invokeService('content.main.validate');
+                });
 
-            // Listen event cancel
-            Core.Mediator.subscribe('on:cancel:click', function () {
-                ApplicationManager.invokeService('content.main.cancel');
-            });
+                // Listen event cancel
+                Core.Mediator.subscribe('on:cancel:click', function () {
+                    Core.ApplicationManager.invokeService('content.main.cancel');
+                });
 
-            var view = new MainViewIndex(this.config);
-            view.render();
-        }
-    });
-});
+                var view = new MainViewIndex(this.config);
+                view.render();
+            }
+        });
+    }
+);

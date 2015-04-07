@@ -18,7 +18,7 @@
  */
 
 /*global Dropzone */
-define(['tb.core', 'tb.core.Renderer', 'BackBone', 'jquery'], function (Core, Renderer, Backbone, jQuery) {
+define(['Core', 'Core/Renderer', 'BackBone', 'jquery'], function (Core, Renderer, Backbone, jQuery) {
     'use strict';
 
     var FileView = Backbone.View.extend({

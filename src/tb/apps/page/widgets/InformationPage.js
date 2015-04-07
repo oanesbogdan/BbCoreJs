@@ -19,7 +19,7 @@
 
 define(
     [
-        'tb.core.Renderer',
+        'Core/Renderer',
         'component!popin',
         'page.repository',
         'text!page/widgets/tpl/information_page',

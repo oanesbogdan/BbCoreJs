@@ -18,7 +18,7 @@
  */
 
 define(
-    ['tb.core', 'tb.core.Renderer', 'component!notify', 'tb.core.Utils'],
+    ['Core', 'Core/Renderer', 'component!notify', 'Core/Utils'],
     function (Core, renderer, Notify, Utils) {
         'use strict';
         var trans = Core.get('trans') || function (value) {return value; };

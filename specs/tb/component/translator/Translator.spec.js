@@ -3,7 +3,7 @@ define(
         'jquery',
         'component!translator',
         'component!logger',
-        'tb.core.Renderer',
+        'Core/Renderer',
         'es5-shim/es5-shim'
     ],
     function (jQuery, Translator, Logger, Renderer) {

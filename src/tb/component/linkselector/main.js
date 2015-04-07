@@ -25,9 +25,8 @@ require.config({
 
 define(
     [
-        'tb.core',
-        'tb.core.ApplicationManager',
-        'tb.core.Renderer',
+        'Core',
+        'Core/Renderer',
         'jquery',
         'component!popin',
         'component!translator',
@@ -43,7 +42,6 @@ define(
         'jsclass'
     ],
     function (Core,
-            ApplicationManager,
             Renderer,
             jQuery,
             PopinManager,
@@ -191,7 +189,7 @@ define(
                     closable: false
                 });
 
-                ApplicationManager.invokeService('page.main.getPageTreeViewInstance').done(function (PageTreeView) {
+                Core.ApplicationManager.invokeService('page.main.getPageTreeViewInstance').done(function (PageTreeView) {
 
                     var pageTree = new PageTreeView(Selector.treeConfig);
 

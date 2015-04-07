@@ -22,7 +22,7 @@ define(
         'jquery',
         'text!content/tpl/contribution/index',
         'text!content/tpl/carousel_blocks',
-        'tb.core.Renderer',
+        'Core/Renderer',
         'content.widget.DialogContentsList'
     ],
     function (jQuery,

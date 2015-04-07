@@ -20,7 +20,7 @@
 define(
     'app.content/components/dnd/CommonDnD',
     [
-        'tb.core',
+        'Core',
         'jsclass'
     ],
     function (Core) {

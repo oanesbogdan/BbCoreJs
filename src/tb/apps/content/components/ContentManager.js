@@ -19,7 +19,7 @@
 
 define(
     [
-        'tb.core',
+        'Core',
         'jquery',
         'content.models.Content',
         'content.models.ContentSet',

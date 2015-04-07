@@ -17,13 +17,13 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["tb.core"], function (BbCore) {
+define(["Core"], function (Core) {
     'use strict';
 
     /**
-     * Register every routes of page application into BbCore.routeManager
+     * Register every routes of page application into Core.routeManager
      */
-    BbCore.RouteManager.registerRoute('page', {
+    Core.RouteManager.registerRoute('page', {
         prefix: 'page',
         routes: {
             'contribution.index': {

@@ -17,7 +17,7 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('tb.component/popin/main', ['tb.core', 'tb.component/popin/PopIn', 'jquery', 'jqueryui', 'jsclass'], function (Core, PopIn, jQuery) {
+define('tb.component/popin/main', ['Core', 'tb.component/popin/PopIn', 'jquery', 'jqueryui', 'jsclass'], function (Core, PopIn, jQuery) {
     'use strict';
 
     /**
@@ -29,7 +29,7 @@ define('tb.component/popin/main', ['tb.core', 'tb.component/popin/PopIn', 'jquer
     },
 
         /**
-         * PopInManager allow us to handle with ease tb.core.PopIn
+         * PopInManager allow us to handle with ease Core.PopIn
          */
         PopInManager = new JS.Class({
 
@@ -50,7 +50,7 @@ define('tb.component/popin/main', ['tb.core', 'tb.component/popin/PopIn', 'jquer
             containerId: 'bb5-dialog-container',
 
             /**
-             * Create a tb.core.PopIn with basic configuration like its id and options
+             * Create a Core.PopIn with basic configuration like its id and options
              * @param  {Object} config configuration of pop-in
              * @return {PopIn}
              */
@@ -106,7 +106,7 @@ define('tb.component/popin/main', ['tb.core', 'tb.component/popin/PopIn', 'jquer
         },
 
         /**
-         * Create a tb.core.PopIn with basic configuration like its id and options
+         * Create a Core.PopIn with basic configuration like its id and options
          * @param  {Object} options
          * @return {PopIn}
          */
@@ -121,13 +121,13 @@ define('tb.component/popin/main', ['tb.core', 'tb.component/popin/PopIn', 'jquer
             }
 
             /**
-             * Add display() method to tb.core.PopIn to call tb.core.PopInManager::display()
+             * Add display() method to Core.PopIn to call Core.PopInManager::display()
              */
             popIn.display = function () {
                 self.display(popIn);
             };
             /**
-             * Add setContent() method to tb.core.PopIn
+             * Add setContent() method to Core.PopIn
              */
             popIn.setContent = function (content) {
                 popIn.content = content;
@@ -139,14 +139,14 @@ define('tb.component/popin/main', ['tb.core', 'tb.component/popin/PopIn', 'jquer
             };
 
             /**
-             * Add hide() method to tb.core.PopIn to call tb.core.PopInManager::hide()
+             * Add hide() method to Core.PopIn to call Core.PopInManager::hide()
              */
             popIn.hide = function () {
                 self.hide(popIn);
             };
 
             /**
-             * Add mask() method to tb.core.PopIn to display loader overlay on top of dialog
+             * Add mask() method to Core.PopIn to display loader overlay on top of dialog
              */
             popIn.mask = function (message) {
                 var popInId = '#' + popIn.getId(),
@@ -174,7 +174,7 @@ define('tb.component/popin/main', ['tb.core', 'tb.component/popin/PopIn', 'jquer
             };
 
             /**
-             * Add unmask() method to tb.core.PopIn to remove loader overlay from dialog
+             * Add unmask() method to Core.PopIn to remove loader overlay from dialog
              */
             popIn.unmask = function () {
                 jQuery('#' + popIn.getId()).parent().find('div.loader').remove();
