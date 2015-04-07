@@ -25,8 +25,10 @@ define('tb.component/popin/main', ['Core', 'tb.component/popin/PopIn', 'jquery',
      * @type {Object}
      */
     var DEFAULT_POPIN_OPTIONS = {
-        autoOpen: false
-    },
+            autoOpen: false,
+            maxHeight: jQuery(window).height() - 40,
+            maxWidth: jQuery(window).height() - 40
+        },
 
         /**
          * PopInManager allow us to handle with ease Core.PopIn
