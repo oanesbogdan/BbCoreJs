@@ -53,8 +53,8 @@ define(
                     accepts = content.getDefinition('accept');
 
                 if (accepts.length === 1) {
-                    ContentManager.createElement(accepts[0]).done(function (content) {
-                        content.append(content);
+                    ContentManager.createElement(accepts[0]).done(function (newContent) {
+                        content.append(newContent);
                     });
                 } else if (accepts.length === 0) {
                     this.showPopin();
