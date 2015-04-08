@@ -51,6 +51,15 @@ module.exports = function (grunt) {
                 }
             }
         },
+        cssmin: {
+            compress: {
+                files: {
+                    'dist/css/bb-ui.css': ['html/css/bb-ui.css'],
+                    'dist/css/bb-ui-login.css': ['html/css/bb-ui-login.css'],
+                    'dist/css/vendor.css': ['html/css/vendor.css']
+                }
+            }
+        },
 
         concat: {
             options: {
@@ -62,6 +71,14 @@ module.exports = function (grunt) {
             core: {
                 src: ['<%= dir.src %>/core/**/*.js'],
                 dest: '<%= dir.build %>/<%= components.core %>.js'
+            },
+            vendorcss: {
+                src: [
+                    'bower_components/components-font-awesome/css/font-awesome.css',
+                    'bower_components/datetimepicker/jquery.datetimepicker.css',
+                    'bower_components/dropzone/dist/dropzone.css'
+                ],
+                dest: 'html/css/vendor.css'
             }
         },
 
@@ -86,13 +103,6 @@ module.exports = function (grunt) {
             }
         },
 
-        cssmin: {
-            compress: {
-                files: {
-                    'css/style.css': ['src/css/style.css']
-                }
-            }
-        },
 
         /**
          * code style
@@ -200,20 +210,19 @@ module.exports = function (grunt) {
                 }
             }
         },
-
         requirejs: {
-            compile: {
+            vendor: {
                 options: {
                     baseUrl: './',
                     mainConfigFile: 'src/require.config.build.js',
                     name: 'src/vendor.js',
                     out: 'dist/vendor.js',
-                    generateSourceMaps: true,
+                    generateSourceMaps: false,
+                    preserveLicenseComments: false,
                     paths: {
                         'component': 'src/tb/component/component',
-
                         'Core': 'bower_components/backbee-core-js/dist/Core',
-                        'jquery': 'bower_components/jquery/dist/jquery',
+
                         'jqueryui': 'bower_components/jquery-ui/jquery-ui',
                         'jsclass' : 'node_modules/jsclass/min/core',
                         'underscore': 'bower_components/underscore/underscore',
@@ -233,13 +242,19 @@ module.exports = function (grunt) {
 
                         'cryptojs.core': 'bower_components/cryptojslib/components/core',
                         'cryptojs.md5': 'bower_components/cryptojslib/components/md5'
-                    }
+                    },
+                    exclude: [
+                        'jquery'
+                    ]
                 }
             }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-less');
+
+    grunt.loadNpmTasks('grunt-uncss');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
 
     grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-contrib-uglify');
