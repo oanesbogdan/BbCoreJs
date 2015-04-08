@@ -98,7 +98,7 @@ define(
              * @param {Boolean} state
              */
             checkParent: function (parentId, state) {
-                if (parentId !== undefined) {
+                if (parentId !== undefined && parentId !== '') {
                     var current = jQuery(this.selector + ' input[data-id=' + parentId + ']'),
                         children = jQuery(this.selector + ' input[data-parent-id=' + parentId + ']'),
                         flag = true;
@@ -131,7 +131,7 @@ define(
              */
             changeParentState: function (parentId, state) {
 
-                if (parentId !== undefined) {
+                if (parentId !== undefined && parentId !== '') {
 
                     var current = jQuery(this.selector + ' input[data-id=' + parentId + ']');
 

@@ -100,6 +100,7 @@ define(
                     subDraftKeys,
                     keys = Object.keys(draft),
                     subDraft,
+                    haveSubs = false,
                     subDrafts = [],
                     currentParent;
 
@@ -116,7 +117,8 @@ define(
                         currentParent = this.searchDraft(keys[0], subDrafts);
 
                         if (first === true) {
-                            subDrafts.push(this.buildDraft(subDraft, name, margin, keys.length > 1, parent));
+                            haveSubs = (keys.length > 1 || Object.keys(subDraft.elements).length > 0);
+                            subDrafts.push(this.buildDraft(subDraft, name, margin, haveSubs, parent));
                             margin = margin + 30;
                             first = false;
                         } else {
@@ -210,7 +212,7 @@ define(
                             element.name = key;
                             element.isScalar = true;
 
-                            this.buildDraft(element, key, margin, false, parent);
+                            this.buildDraft(element, key, margin, true, parent);
 
                             if (element.isContentSet === false) {
                                 subDrafts.push(this.buildDraft(element, key, margin, false, parent));
