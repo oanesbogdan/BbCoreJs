@@ -95,6 +95,8 @@ define(
                     });
                 });
 
+                Core.ApplicationManager.invokeService('content.main.addDefaultZoneInContentSet');
+
                 Core.ApplicationManager.invokeService('content.main.computeImagesInDOM');
 
                 // Listen event save

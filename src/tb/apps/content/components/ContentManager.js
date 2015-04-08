@@ -20,21 +20,25 @@
 define(
     [
         'Core',
+        'Core/Renderer',
         'jquery',
         'content.models.Content',
         'content.models.ContentSet',
         'definition.manager',
         'content.container',
         'content.repository',
+        'text!content/tpl/dropzone',
         'jsclass'
     ],
     function (Core,
+              Renderer,
               jQuery,
               Content,
               ContentSet,
               DefinitionManager,
               ContentContainer,
-              ContentRepository
+              ContentRepository,
+              dropZoneTemplate
             ) {
 
         'use strict';
@@ -43,6 +47,7 @@ define(
 
             contentClass: 'bb-content',
             identifierDataAttribute: 'bb-identifier',
+            dropZoneClass: 'bb-dropzone',
             idDataAttribute: 'bb-id',
             droppableClass: '.bb-droppable',
             imageClass: 'Element/Image',
@@ -64,6 +69,33 @@ define(
                         ContentContainer.addContent(self.getContentByNode(currentTarget));
                     }
                 });
+            },
+
+            addDefaultZoneInContentSet: function (active) {
+                jQuery('.' + this.dropZoneClass).remove();
+
+                if (active === false) {
+                    return;
+                }
+
+                this.buildContentSet();
+
+                var contentSets = ContentContainer.findContentSetByAccept(),
+                    div = Renderer.render(dropZoneTemplate, {'class': this.dropZoneClass}),
+                    contentSet,
+                    hasChildren,
+                    key;
+
+                for (key in contentSets) {
+                    if (contentSets.hasOwnProperty(key)) {
+                        contentSet = contentSets[key];
+                        hasChildren = contentSet.jQueryObject.children().not('.content-actions').length > 0;
+
+                        if (hasChildren === false) {
+                            contentSet.jQueryObject.append(div);
+                        }
+                    }
+                }
             },
 
             isUsable: function (type) {
@@ -151,6 +183,8 @@ define(
                     ContentContainer.remove(content);
 
                     parent.select();
+
+                    this.addDefaultZoneInContentSet(true);
                 }
             },
 
