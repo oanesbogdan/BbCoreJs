@@ -18,13 +18,11 @@
  */
 require.config({
     baseUrl: 'resources/toolbar/',
-    catchError: true,
-    urlArgs: 'cb=' + Math.random(),
     paths: {
         'component': 'src/tb/component/component',
 
-        'Core': 'bower_components/backbee-core-js/dist/Core.min',
-        'jquery': 'bower_components/jquery/dist/jquery.min',
+        'Core': 'dist/Core.min',
+        'jquery': 'dist/vendor',
         'jqueryui': 'dist/vendor',
         'jsclass' : 'dist/vendor',
         'underscore': 'dist/vendor',

@@ -46,18 +46,43 @@ module.exports = function (grunt) {
             css: {
                 cleancss: true,
                 files: {
-                    'html/css/bb-ui.css': 'less/bb-ui.less',
-                    'html/css/bb-ui-login.css': 'less/bb-ui-login.less'
+                    'dist/css/bb-ui.css': 'less/bb-ui.less',
+                    'dist/css/bb-ui-login.css': 'less/bb-ui-login.less'
                 }
             }
         },
         cssmin: {
             compress: {
                 files: {
-                    'dist/css/bb-ui.css': ['html/css/bb-ui.css'],
-                    'dist/css/bb-ui-login.css': ['html/css/bb-ui-login.css'],
-                    'dist/css/vendor.css': ['html/css/vendor.css']
+                    'dist/css/bb-ui.min.css': ['dist/css/bb-ui.css'],
+                    'dist/css/bb-ui-login.min.css': ['dist/css/bb-ui-login.css'],
+                    'dist/css/vendor.min.css': ['dist/css/vendor.css']
                 }
+            }
+        },
+
+        copy: {
+            font: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'bower_components/components-font-awesome/',
+                        src: 'fonts/*',
+                        dest: 'dist/',
+                        filter: 'isFile'
+                    }
+                ]
+            },
+            core: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'bower_components/backbee-core-js/dist/',
+                        src: '*.js',
+                        dest: 'dist/',
+                        filter: 'isFile'
+                    }
+                ]
             }
         },
 
@@ -78,10 +103,9 @@ module.exports = function (grunt) {
                     'bower_components/datetimepicker/jquery.datetimepicker.css',
                     'bower_components/dropzone/dist/dropzone.css'
                 ],
-                dest: 'html/css/vendor.css'
+                dest: 'dist/css/vendor.css'
             }
         },
-
         uglify: {
             options: {
                 banner: '/*! <%= pkg.name %> <%= pkg.version %> */\n<%= license %>'
@@ -223,6 +247,7 @@ module.exports = function (grunt) {
                         'component': 'src/tb/component/component',
                         'Core': 'bower_components/backbee-core-js/dist/Core',
 
+                        'jquery': 'bower_components/jquery/dist/jquery',
                         'jqueryui': 'bower_components/jquery-ui/jquery-ui',
                         'jsclass' : 'node_modules/jsclass/min/core',
                         'underscore': 'bower_components/underscore/underscore',
@@ -242,10 +267,7 @@ module.exports = function (grunt) {
 
                         'cryptojs.core': 'bower_components/cryptojslib/components/core',
                         'cryptojs.md5': 'bower_components/cryptojslib/components/md5'
-                    },
-                    exclude: [
-                        'jquery'
-                    ]
+                    }
                 }
             }
         }
@@ -253,8 +275,9 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-less');
 
-    grunt.loadNpmTasks('grunt-uncss');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -270,5 +293,5 @@ module.exports = function (grunt) {
     // grunt tasks
     grunt.registerTask('default', ['less:css', 'jshint', 'jslint', 'jasmine:coverage', 'concat', 'uglify']);
     grunt.registerTask('test', ['less:css', 'jshint', 'jslint', 'jasmine:coverage']);
-    grunt.registerTask('build', ['less:css', 'concat', 'uglify']);
+    grunt.registerTask('build', ['less:css', 'requirejs', 'cssmin', 'copy']);
 };
