@@ -115,6 +115,8 @@ define(
                     firstChild,
                     div = Renderer.render(dropZoneTemplate, {'class': this.dropZoneClass});
 
+                ContentManager.addDefaultZoneInContentSet(false);
+
                 for (key in contentSets) {
                     if (contentSets.hasOwnProperty(key)) {
 
@@ -174,6 +176,7 @@ define(
              */
             cleanHTMLZoneForContentset: function () {
                 jQuery('.' + this.dropZoneClass).remove();
+                ContentManager.addDefaultZoneInContentSet(true);
             },
 
             /**

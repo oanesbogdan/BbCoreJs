@@ -61,6 +61,7 @@ define(
                         renderMode = (renderModeParam !== undefined) ? renderModeParam.value : undefined;
 
                     content.getHtml(renderMode).done(function (html) {
+
                         if (position === 'last') {
                             self.jQueryObject.append(html);
                             done = true;
@@ -78,6 +79,8 @@ define(
                         if (done === false) {
                             self.jQueryObject.prepend(html);
                         }
+
+                        require('content.manager').addDefaultZoneInContentSet(true);
 
                         self.setUpdated(true);
 
