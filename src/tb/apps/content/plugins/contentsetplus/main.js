@@ -102,7 +102,11 @@ define(
              * Bind events of popin
              */
             bindEvents: function () {
-                jQuery('#' + this.widget.popin.getId()).on('click', this.blockClass, jQuery.proxy(this.onContentClick, this));
+                if (this.binded !== true) {
+                    jQuery('#' + this.widget.popin.getId()).on('click', this.blockClass, jQuery.proxy(this.onContentClick, this));
+
+                    this.binded = true;
+                }
             },
 
             /**
