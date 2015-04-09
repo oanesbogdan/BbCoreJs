@@ -22,13 +22,12 @@ define(
         'Core/ApplicationManager',
         'jquery',
         'content.manager',
-        'content.container',
         'component!popin',
         'component!contentformbuilder',
         'component!formbuilder',
         'component!formsubmitter'
     ],
-    function (ApplicationManager, jQuery, ContentManager, ContentContainer, PopinManager, ContentFormBuilder, FormBuilder, FormSubmitter) {
+    function (ApplicationManager, jQuery, ContentManager, PopinManager, ContentFormBuilder, FormBuilder, FormSubmitter) {
 
         'use strict';
 
@@ -167,8 +166,6 @@ define(
 
                             self.content.refresh().done(function () {
                                 self.content.refresh();
-
-                                ContentContainer.clear();
 
                                 self.popin.hide();
                             });
