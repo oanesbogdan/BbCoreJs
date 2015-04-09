@@ -136,6 +136,7 @@ define(
                                     id: 'new-user-subpopin',
                                     width: 250,
                                     top: 180,
+                                    dialogClass: "list-display-dropdown",
                                     close: function () {
                                         main_popin.popinManager.destroy(popin);
                                     }
