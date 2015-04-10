@@ -73,16 +73,8 @@ module.exports = function (grunt) {
                     }
                 ]
             },
-            core: {
-                files: [
-                    {
-                        expand: true,
-                        cwd: 'bower_components/backbee-core-js/dist/',
-                        src: '*.js',
-                        dest: 'dist/',
-                        filter: 'isFile'
-                    }
-                ]
+            require: {
+
             }
         },
 
@@ -93,10 +85,6 @@ module.exports = function (grunt) {
                     return '\n/* ' + filepath + ' */\n' + src;
                 }
             },
-            core: {
-                src: ['<%= dir.src %>/core/**/*.js'],
-                dest: '<%= dir.build %>/<%= components.core %>.js'
-            },
             vendorcss: {
                 src: [
                     'bower_components/components-font-awesome/css/font-awesome.css',
@@ -106,27 +94,6 @@ module.exports = function (grunt) {
                 dest: 'dist/css/vendor.css'
             }
         },
-        uglify: {
-            options: {
-                banner: '/*! <%= pkg.name %> <%= pkg.version %> */\n<%= license %>'
-            },
-            core: {
-                files: {
-                    '<%= dir.build %>/<%= components.core %>.min.js': ['<%= concat.core.dest %>']
-                }
-            },
-            main: {
-                files: {
-                    '<%= dir.build %>/main.min.js': ['<%= dir.src %>/main.build.js']
-                }
-            },
-            config: {
-                files: {
-                    '<%= dir.build %>/<%= components.config %>.min.js': ['src/<%= components.config %>.build.js']
-                }
-            }
-        },
-
 
         /**
          * code style
@@ -199,7 +166,6 @@ module.exports = function (grunt) {
          * application testing
          */
         jasmine: {
-
             test: {
                 src: ['<%= dir.src %>/component/**/*.js'],
                 options: {
@@ -238,11 +204,10 @@ module.exports = function (grunt) {
             vendor: {
                 options: {
                     baseUrl: './',
-                    mainConfigFile: 'src/require.config.build.js',
-                    name: 'src/vendor.js',
                     out: 'dist/vendor.js',
+                    optimize: 'none',
                     generateSourceMaps: false,
-                    preserveLicenseComments: false,
+                    preserveLicenseComments: true,
                     paths: {
                         'component': 'src/tb/component/component',
                         'Core': 'bower_components/backbee-core-js/dist/Core',
@@ -255,6 +220,7 @@ module.exports = function (grunt) {
                         'BackBone': 'bower_components/backbone/backbone',
                         'text': 'bower_components/requirejs-text/text',
                         'moment': 'bower_components/moment/moment',
+                        'URIjs': 'bower_components/uri.js/src',
                         'URIjs/URI': 'bower_components/uri.js/src/URI',
                         'datetimepicker': 'bower_components/datetimepicker/jquery.datetimepicker',
                         'jquery-layout' : 'bower_components/jquery.layout/dist/jquery.layout-latest',
@@ -267,16 +233,45 @@ module.exports = function (grunt) {
 
                         'cryptojs.core': 'bower_components/cryptojslib/components/core',
                         'cryptojs.md5': 'bower_components/cryptojslib/components/md5'
-                    }
+                    },
+                    include: [
+                        'Core',
+                        'jquery',
+                        'jqueryui',
+                        'jsclass',
+                        'underscore',
+                        'nunjucks',
+                        'BackBone',
+                        'moment',
+                        'URIjs/URI',
+                        'datetimepicker',
+                        'jquery-layout',
+                        'lib.jqtree',
+                        'jssimplepagination',
+                        'bootstrapjs',
+                        'ckeeditor',
+                        'dropzone',
+                        'cryptojs.core',
+                        'cryptojs.md5'
+                    ]
+                }
+            },
+            vendormin: {
+                options: {
+                    baseUrl: './',
+                    out: 'dist/vendor.min.js',
+                    optimize: 'uglify2',
+                    generateSourceMaps: true,
+                    preserveLicenseComments: false,
+                    paths: '<%= requirejs.vendor.options.paths %>',
+                    include: '<%= requirejs.vendor.options.include %>'
                 }
             }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-less');
-
     grunt.loadNpmTasks('grunt-contrib-cssmin');
-
     grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.loadNpmTasks('grunt-contrib-requirejs');
