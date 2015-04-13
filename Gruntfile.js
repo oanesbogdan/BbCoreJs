@@ -74,24 +74,15 @@ module.exports = function (grunt) {
                 ]
             },
             require: {
-
-            }
-        },
-
-        concat: {
-            options: {
-                separator: '',
-                process: function (src, filepath) {
-                    return '\n/* ' + filepath + ' */\n' + src;
-                }
-            },
-            vendorcss: {
-                src: [
-                    'bower_components/components-font-awesome/css/font-awesome.css',
-                    'bower_components/datetimepicker/jquery.datetimepicker.css',
-                    'bower_components/dropzone/dist/dropzone.css'
-                ],
-                dest: 'dist/css/vendor.css'
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'bower_components/requirejs/',
+                        src: '*.js',
+                        dest: 'dist/',
+                        filter: 'isFile'
+                    }
+                ]
             }
         },
 
@@ -200,6 +191,39 @@ module.exports = function (grunt) {
                 }
             }
         },
+
+        concat: {
+            options: {
+                separator: '',
+                process: function (src, filepath) {
+                    return '\n/* ' + filepath + ' */\n' + src;
+                }
+            },
+            vendorcss: {
+                src: [
+                    'bower_components/components-font-awesome/css/font-awesome.css',
+                    'bower_components/datetimepicker/jquery.datetimepicker.css',
+                    'bower_components/dropzone/dist/dropzone.css'
+                ],
+                dest: 'dist/css/vendor.css'
+            },
+            config: {
+                src: ['src/require.config.js'],
+                dest: 'dist/config.js'
+            }
+        },
+        uglify: {
+            require: {
+                files: {
+                    'dist/require.min.js': ['bower_components/requirejs/require.js']
+                }
+            },
+            config: {
+                files: {
+                    'dist/config.min.js': ['src/require.config.build.js']
+                }
+            }
+        },
         requirejs: {
             vendor: {
                 options: {
@@ -208,6 +232,7 @@ module.exports = function (grunt) {
                     optimize: 'none',
                     generateSourceMaps: false,
                     preserveLicenseComments: true,
+                    mainConfigFile: 'src/require.config.js',
                     paths: {
                         'component': 'src/tb/component/component',
                         'Core': 'bower_components/backbee-core-js/dist/Core',
@@ -243,6 +268,7 @@ module.exports = function (grunt) {
                         'nunjucks',
                         'BackBone',
                         'moment',
+                        'text',
                         'URIjs/URI',
                         'datetimepicker',
                         'jquery-layout',
@@ -260,6 +286,7 @@ module.exports = function (grunt) {
                 options: {
                     baseUrl: './',
                     out: 'dist/vendor.min.js',
+                    mainConfigFile: 'src/require.config.build.js',
                     optimize: 'uglify2',
                     generateSourceMaps: true,
                     preserveLicenseComments: false,
@@ -288,5 +315,5 @@ module.exports = function (grunt) {
     // grunt tasks
     grunt.registerTask('default', ['less:css', 'jshint', 'jslint', 'jasmine:coverage', 'concat', 'uglify']);
     grunt.registerTask('test', ['less:css', 'jshint', 'jslint', 'jasmine:coverage']);
-    grunt.registerTask('build', ['less:css', 'requirejs', 'cssmin', 'copy']);
+    grunt.registerTask('dist', ['less:css', 'copy', 'concat', 'cssmin', 'uglify', 'requirejs']);
 };

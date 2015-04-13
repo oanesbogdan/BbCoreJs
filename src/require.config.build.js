@@ -51,6 +51,9 @@ require.config({
             deps: ['underscore', 'jquery'],
             exports: 'Backbone'
         },
+        Core: {
+            deps: ['BackBone', 'jquery', 'jsclass', 'underscore', 'nunjucks', 'URIjs/URI']
+        },
         bootstrapjs: {
             deps: ['jquery']
         },
