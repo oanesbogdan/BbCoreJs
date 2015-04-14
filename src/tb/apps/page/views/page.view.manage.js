@@ -73,16 +73,15 @@ define([
             self.popin.mask();
 
 
-            PageRepository.search({state: 1}, 0, 50).done(function (pages) {
+            PageRepository.search({}, 0, 50).done(function (pages) {
                 var content = Renderer.render(template, {"pages": pages});
                 self.popin.setContent(content);
+                self.popin.unmask();
 
                 jQuery('#content-library-pane-wrapper').layout({
                     applyDefaultStyles: true,
                     closable: false
                 });
-
-                self.popin.unmask();
             });
 
             return this;

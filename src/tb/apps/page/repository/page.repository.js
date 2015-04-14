@@ -189,7 +189,7 @@ define(
                  * @param {String} uid
                  * @returns {Promise}
                  */
-                "delete": function (uid) {
+                delete: function (uid) {
                     return CoreDriverHandler["delete"](this.TYPE, {'id': uid}, {}, 0, null);
                 },
 
