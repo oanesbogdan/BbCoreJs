@@ -46,51 +46,43 @@ module.exports = function (grunt) {
             css: {
                 cleancss: true,
                 files: {
-                    'html/css/bb-ui.css': 'less/bb-ui.less',
-                    'html/css/bb-ui-login.css': 'less/bb-ui-login.less'
+                    'dist/css/bb-ui.css': 'less/bb-ui.less',
+                    'dist/css/bb-ui-login.css': 'less/bb-ui-login.less'
                 }
             }
         },
-
-        concat: {
-            options: {
-                separator: '',
-                process: function (src, filepath) {
-                    return '\n/* ' + filepath + ' */\n' + src;
-                }
-            },
-            core: {
-                src: ['<%= dir.src %>/core/**/*.js'],
-                dest: '<%= dir.build %>/<%= components.core %>.js'
-            }
-        },
-
-        uglify: {
-            options: {
-                banner: '/*! <%= pkg.name %> <%= pkg.version %> */\n<%= license %>'
-            },
-            core: {
-                files: {
-                    '<%= dir.build %>/<%= components.core %>.min.js': ['<%= concat.core.dest %>']
-                }
-            },
-            main: {
-                files: {
-                    '<%= dir.build %>/main.min.js': ['<%= dir.src %>/main.build.js']
-                }
-            },
-            config: {
-                files: {
-                    '<%= dir.build %>/<%= components.config %>.min.js': ['src/<%= components.config %>.build.js']
-                }
-            }
-        },
-
         cssmin: {
             compress: {
                 files: {
-                    'css/style.css': ['src/css/style.css']
+                    'dist/css/bb-ui.min.css': ['dist/css/bb-ui.css'],
+                    'dist/css/bb-ui-login.min.css': ['dist/css/bb-ui-login.css'],
+                    'dist/css/vendor.min.css': ['dist/css/vendor.css']
                 }
+            }
+        },
+
+        copy: {
+            font: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'bower_components/components-font-awesome/',
+                        src: 'fonts/*',
+                        dest: 'dist/',
+                        filter: 'isFile'
+                    }
+                ]
+            },
+            require: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'bower_components/requirejs/',
+                        src: '*.js',
+                        dest: 'dist/',
+                        filter: 'isFile'
+                    }
+                ]
             }
         },
 
@@ -165,7 +157,6 @@ module.exports = function (grunt) {
          * application testing
          */
         jasmine: {
-
             test: {
                 src: ['<%= dir.src %>/component/**/*.js'],
                 options: {
@@ -201,18 +192,51 @@ module.exports = function (grunt) {
             }
         },
 
+        concat: {
+            options: {
+                separator: '',
+                process: function (src, filepath) {
+                    return '\n/* ' + filepath + ' */\n' + src;
+                }
+            },
+            vendorcss: {
+                src: [
+                    'bower_components/components-font-awesome/css/font-awesome.css',
+                    'bower_components/datetimepicker/jquery.datetimepicker.css',
+                    'bower_components/dropzone/dist/dropzone.css'
+                ],
+                dest: 'dist/css/vendor.css'
+            },
+            config: {
+                src: ['src/require.config.js'],
+                dest: 'dist/config.js'
+            }
+        },
+        uglify: {
+            require: {
+                files: {
+                    'dist/require.min.js': ['bower_components/requirejs/require.js']
+                }
+            },
+            config: {
+                files: {
+                    'dist/config.min.js': ['src/require.config.build.js']
+                }
+            }
+        },
         requirejs: {
-            compile: {
+            vendor: {
                 options: {
                     baseUrl: './',
-                    mainConfigFile: 'src/require.config.build.js',
-                    name: 'src/vendor.js',
                     out: 'dist/vendor.js',
-                    generateSourceMaps: true,
+                    optimize: 'none',
+                    generateSourceMaps: false,
+                    preserveLicenseComments: true,
+                    mainConfigFile: 'src/require.config.js',
                     paths: {
                         'component': 'src/tb/component/component',
-
                         'Core': 'bower_components/backbee-core-js/dist/Core',
+
                         'jquery': 'bower_components/jquery/dist/jquery',
                         'jqueryui': 'bower_components/jquery-ui/jquery-ui',
                         'jsclass' : 'node_modules/jsclass/min/core',
@@ -221,6 +245,7 @@ module.exports = function (grunt) {
                         'BackBone': 'bower_components/backbone/backbone',
                         'text': 'bower_components/requirejs-text/text',
                         'moment': 'bower_components/moment/moment',
+                        'URIjs': 'bower_components/uri.js/src',
                         'URIjs/URI': 'bower_components/uri.js/src/URI',
                         'datetimepicker': 'bower_components/datetimepicker/jquery.datetimepicker',
                         'jquery-layout' : 'bower_components/jquery.layout/dist/jquery.layout-latest',
@@ -233,13 +258,48 @@ module.exports = function (grunt) {
 
                         'cryptojs.core': 'bower_components/cryptojslib/components/core',
                         'cryptojs.md5': 'bower_components/cryptojslib/components/md5'
-                    }
+                    },
+                    include: [
+                        'Core',
+                        'jquery',
+                        'jqueryui',
+                        'jsclass',
+                        'underscore',
+                        'nunjucks',
+                        'BackBone',
+                        'moment',
+                        'text',
+                        'URIjs/URI',
+                        'datetimepicker',
+                        'jquery-layout',
+                        'lib.jqtree',
+                        'jssimplepagination',
+                        'bootstrapjs',
+                        'ckeeditor',
+                        'dropzone',
+                        'cryptojs.core',
+                        'cryptojs.md5'
+                    ]
+                }
+            },
+            vendormin: {
+                options: {
+                    baseUrl: './',
+                    out: 'dist/vendor.min.js',
+                    mainConfigFile: 'src/require.config.build.js',
+                    optimize: 'uglify2',
+                    generateSourceMaps: true,
+                    preserveLicenseComments: false,
+                    paths: '<%= requirejs.vendor.options.paths %>',
+                    include: '<%= requirejs.vendor.options.include %>'
                 }
             }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -255,5 +315,5 @@ module.exports = function (grunt) {
     // grunt tasks
     grunt.registerTask('default', ['less:css', 'jshint', 'jslint', 'jasmine:coverage', 'concat', 'uglify']);
     grunt.registerTask('test', ['less:css', 'jshint', 'jslint', 'jasmine:coverage']);
-    grunt.registerTask('build', ['less:css', 'concat', 'uglify']);
+    grunt.registerTask('dist', ['less:css', 'copy', 'concat', 'cssmin', 'uglify', 'requirejs']);
 };

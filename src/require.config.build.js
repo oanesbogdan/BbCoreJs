@@ -18,32 +18,30 @@
  */
 require.config({
     baseUrl: 'resources/toolbar/',
-    catchError: true,
-    urlArgs: 'cb=' + Math.random(),
     paths: {
         'component': 'src/tb/component/component',
 
-        'Core': 'bower_components/backbee-core-js/dist/Core.min',
-        'jquery': 'bower_components/jquery/dist/jquery.min',
-        'jqueryui': 'dist/vendor',
-        'jsclass' : 'dist/vendor',
-        'underscore': 'dist/vendor',
-        'nunjucks': 'dist/vendor',
-        'BackBone': 'dist/vendor',
-        'text': 'dist/vendor',
-        'moment': 'dist/vendor',
-        'URIjs': 'bower_components/uri.js/src',
-        'datetimepicker': 'dist/vendor',
-        'jquery-layout' : 'dist/vendor',
-        'jqLayout': 'dist/vendor',
-        'lib.jqtree': 'dist/vendor',
-        'jssimplepagination': 'dist/vendor',
-        'bootstrapjs': 'dist/vendor',
-        'ckeeditor': 'dist/vendor',
-        'dropzone': 'dist/vendor',
+        'Core': 'dist/vendor.min',
+        'jquery': 'dist/vendor.min',
+        'jqueryui': 'dist/vendor.min',
+        'jsclass' : 'dist/vendor.min',
+        'underscore': 'dist/vendor.min',
+        'nunjucks': 'dist/vendor.min',
+        'BackBone': 'dist/vendor.min',
+        'text': 'dist/vendor.min',
+        'moment': 'dist/vendor.min',
+        'URIjs/URI': 'dist/vendor.min',
+        'datetimepicker': 'dist/vendor.min',
+        'jquery-layout' : 'dist/vendor.min',
+        'jqLayout': 'dist/vendor.min',
+        'lib.jqtree': 'dist/vendor.min',
+        'jssimplepagination': 'dist/vendor.min',
+        'bootstrapjs': 'dist/vendor.min',
+        'ckeeditor': 'dist/vendor.min',
+        'dropzone': 'dist/vendor.min',
 
-        'cryptojs.core': 'dist/vendor',
-        'cryptojs.md5': 'dist/vendor'
+        'cryptojs.core': 'dist/vendor.min',
+        'cryptojs.md5': 'dist/vendor.min'
     },
     'shim': {
         underscore: {
@@ -52,6 +50,9 @@ require.config({
         BackBone: {
             deps: ['underscore', 'jquery'],
             exports: 'Backbone'
+        },
+        Core: {
+            deps: ['BackBone', 'jquery', 'jsclass', 'underscore', 'nunjucks', 'URIjs/URI']
         },
         bootstrapjs: {
             deps: ['jquery']

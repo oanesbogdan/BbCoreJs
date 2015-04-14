@@ -17,12 +17,11 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jquery'], function (jQuery) {
-
+define(function () {
     'use strict';
 
-    var selector = jQuery('[data-toolbar-selector="true"]'),
-        toolbarSelector = '#' + selector.attr('id'),
+    var selector = document.querySelector('[data-toolbar-selector="true"]'),
+
         init = {
 
             toolBarDisplayed: false,
@@ -30,10 +29,8 @@ define(['jquery'], function (jQuery) {
             configUri: 'toolbar/config',
 
             listen: function () {
-                var autoStart = selector.attr('data-autostart');
-
-                if (autoStart === undefined || autoStart === false) {
-                    jQuery(document).bind('keyup', jQuery.proxy(this.manageAccess, this));
+                if (!selector.hasAttribute('data-autostart')) {
+                    window.addEventListener('keydown', this.manageAccess.bind(this));
                 } else {
                     this.load();
                 }
@@ -41,22 +38,25 @@ define(['jquery'], function (jQuery) {
 
             manageAccess: function (event) {
                 if (!this.toolBarDisplayed) {
-                    if (!event.altKey || !event.ctrlKey || 66 !== event.keyCode) {
-                        return;
+                    if (
+                        (event.code === 'keyB' || event.which === 66) &&
+                            event.ctrlKey &&
+                            event.altKey
+                    ) {
+                        this.load();
                     }
-                    this.load();
                 }
             },
 
             load: function () {
                 var self = this;
 
-                require(['Core', 'component!session'], function (Core, session) {
+                require(['Core', 'component!session', 'jquery'], function (Core, session, jQuery) {
 
                     Core.set('session', session);
                     Core.set('is_connected', session.isAuthenticated());
-                    Core.set('wrapper_toolbar_selector', toolbarSelector);
-                    Core.set('api_base_url', selector.attr('data-api'));
+                    Core.set('wrapper_toolbar_selector', '#' + selector.id);
+                    Core.set('api_base_url', selector.getAttribute('data-api'));
 
                     require(
                         [
