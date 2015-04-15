@@ -12,6 +12,7 @@
     "available_in_menus": "Available in menus",
 
     "block": "Block",
+    "bundle_administration": "Bundle administration",
 
     "cancel": "Cancel",
     "clear_all": "Clear all",
@@ -55,6 +56,7 @@
     "loading": "Loading",
 
     "manage": "Manage",
+    "manage_users_and_groups": "Manage users and groups",
     "media": "Media",
     "media_library": "Media library",
     "modified_date": "Modified date",
@@ -67,6 +69,7 @@
 
     "page": "Page",
     "pages_management": "Pages management",
+    "page_edition": "Page edition",
     "page_seo": "Page SEO",
     "page_status": "Page status",
     "page_tree": "Page tree",

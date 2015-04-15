@@ -20,9 +20,10 @@
 define(
     [
         'Core',
-        'main.toolbar.manager'
+        'main.toolbar.manager',
+        'jquery'
     ],
-    function (Core, ToolbarManager) {
+    function (Core, ToolbarManager, jQuery) {
 
         'use strict';
 
@@ -68,6 +69,10 @@ define(
              */
             cancelService: function () {
                 Core.Mediator.publish('on:cancel:click');
+            },
+
+            setTitlePaneService: function (value) {
+                jQuery('#toolbar-pane-name').text(value);
             }
         });
     }
