@@ -1,5 +1,7 @@
-define(['Core', 'contribution.view.index'], function (Core, IndexView) {
+define(['Core', 'contribution.view.index', 'jquery'], function (Core, IndexView, jQuery) {
+
     'use strict';
+
     Core.ControllerManager.registerController('MainController', {
         appName: 'contribution',
         config: {
@@ -14,21 +16,39 @@ define(['Core', 'contribution.view.index'], function (Core, IndexView) {
             this.mediaLibrary = false;
         },
 
-        /**
-         * Index action
-         * Show the edition toolbar
-         */
-        indexAction: function () {
+        indexService: function () {
             var config = {},
                 view;
+
             Core.Scope.register('contribution');
+
             if (this.viewIsLoaded !== true) {
                 this.viewIsLoaded = true;
             } else {
                 config.alreadyLoaded = true;
             }
+
             view = new IndexView(config);
-            view.render();
+
+            return view.render();
+        },
+
+        manageTabMenuService: function (element) {
+            element = jQuery(element);
+
+            jQuery('ul#edit-tab li.active').removeClass('active');
+            element.addClass('active');
+
+            jQuery('div#contrib-tab-apps div.tab-pane.active').removeClass('active');
+            jQuery('div#' + element.children('a').data('type') + '-contrib-tab').addClass('active');
+        },
+
+        /**
+         * Index action
+         * Show the edition toolbar
+         */
+        indexAction: function () {
+            this.indexService();
         },
 
         showMediaLibraryService: function (config) {

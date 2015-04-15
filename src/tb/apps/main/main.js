@@ -66,7 +66,8 @@ define(
                 var toolbar = jQuery(this.config.tbSelector),
                     pageUid = toolbar.attr('data-page-uid'),
                     siteUid = toolbar.attr('data-site-uid'),
-                    layoutUid = toolbar.attr('data-layout-uid');
+                    layoutUid = toolbar.attr('data-layout-uid'),
+                    current_url = localStorage.getItem('current_url');
 
                 if (!toolbar.length) {
                     Core.exception('MissingSelectorException', 500, 'Selector "' + this.config.tbSelector + '" does not exists, MainApplication cannot be initialized.');
@@ -83,6 +84,11 @@ define(
                 Core.set('application.main', this);
 
                 Popin.init(this.config.tbSelector);
+
+                if (current_url !== null) {
+                    Core.RouteManager.navigateByPath('/');
+                    Core.RouteManager.navigateByPath(current_url);
+                }
             },
 
             /**
@@ -112,6 +118,10 @@ define(
                 // Listen event cancel
                 Core.Mediator.subscribe('on:cancel:click', function () {
                     Core.ApplicationManager.invokeService('content.main.cancel');
+                });
+
+                Core.Mediator.subscribe('on:route:handling', function (url) {
+                    localStorage.setItem('current_url', url);
                 });
 
                 var view = new MainViewIndex(this.config);

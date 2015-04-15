@@ -60,13 +60,7 @@ define(
             },
 
             manageMenu: function (event) {
-                var self = jQuery(event.currentTarget);
-
-                jQuery('ul#edit-tab li.active').removeClass('active');
-                self.addClass('active');
-
-                jQuery('div#contrib-tab-apps div.tab-pane.active').removeClass('active');
-                jQuery('div#' + self.children('a').data('type') + '-contrib-tab').addClass('active');
+                Core.ApplicationManager.invokeService('contribution.main.manageTabMenu', jQuery(event.currentTarget));
             },
 
             /**
@@ -95,7 +89,8 @@ define(
              * @returns {Object} BundleViewIndex
              */
             render: function () {
-                var self = this;
+                var self = this,
+                    dfd = jQuery.Deferred();
 
                 Core.ApplicationManager.invokeService('main.main.toolbarManager').done(function (Service) {
                     Service.append('contribution-tab', Renderer.render(template, this.contribution));
@@ -103,9 +98,11 @@ define(
                     if (self.alreadyLoaded !== true) {
                         self.bindEvents();
                     }
+
+                    dfd.resolve();
                 });
 
-                return this;
+                return dfd.promise();
             }
         });
 

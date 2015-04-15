@@ -70,20 +70,29 @@ define(
              * Show the index in the edit contribution toolbar
              */
             contributionIndexAction: function () {
+
                 var self = this;
 
-                if (this.contribution_loaded !== true) {
-                    this.repository.findCurrentPage().done(function (data) {
-                        if (data.hasOwnProperty(0)) {
-                            data = data[0];
+                Core.ApplicationManager.invokeService('contribution.main.index').done(function (service) {
+                    service.done(function () {
+                        if (self.contribution_loaded !== true) {
+                            self.repository.findCurrentPage().done(function (data) {
+                                if (data.hasOwnProperty(0)) {
+                                    data = data[0];
+                                }
+
+                                var view = new ContributionIndexView({'data': data});
+                                view.render();
+
+                                self.contribution_loaded = true;
+
+                                Core.ApplicationManager.invokeService('contribution.main.manageTabMenu', '#edit-tab-page');
+                            });
+                        } else {
+                            Core.ApplicationManager.invokeService('contribution.main.manageTabMenu', '#edit-tab-page');
                         }
-
-                        var view = new ContributionIndexView({'data': data});
-                        view.render();
-
-                        self.contribution_loaded = true;
                     });
-                }
+                });
             },
 
             /**

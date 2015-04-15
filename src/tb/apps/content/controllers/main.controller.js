@@ -189,23 +189,40 @@ define(
             },
 
             contributionIndexAction: function () {
-                var self = this;
-                Core.Scope.register('contribution', 'block');
-                DndManager.initDnD();
-                if (this.contribution_loaded !== true) {
-                    ContentRepository.findCategories().done(function (categories) {
-                        var view = new ContributionIndexView({
-                            'categories': categories
-                        });
-                        view.render();
 
-                        self.contribution_loaded = true;
+                var self = this;
+
+                Core.ApplicationManager.invokeService('contribution.main.index').done(function (service) {
+                    service.done(function () {
+                        Core.Scope.register('contribution', 'block');
+
+                        if (self.contribution_loaded !== true) {
+                            ContentRepository.findCategories().done(function (categories) {
+                                var view = new ContributionIndexView({
+                                    'categories': categories
+                                });
+                                view.render();
+
+                                self.contribution_loaded = true;
+
+                                DndManager.initDnD();
+
+                                Core.ApplicationManager.invokeService('contribution.main.manageTabMenu', '#edit-tab-block');
+                            });
+                        } else {
+                            Core.ApplicationManager.invokeService('contribution.main.manageTabMenu', '#edit-tab-block');
+                        }
                     });
-                }
+                });
             },
 
             contributionEditAction: function () {
-                Core.Scope.register('contribution', 'content');
+                Core.ApplicationManager.invokeService('contribution.main.index').done(function (service) {
+                    service.done(function () {
+                        Core.Scope.register('contribution', 'content');
+                        Core.ApplicationManager.invokeService('contribution.main.manageTabMenu', '#edit-tab-content');
+                    });
+                });
             },
 
             createView: function (Constructor, config, render) {
@@ -217,7 +234,7 @@ define(
             },
 
             findDefinitionsService: function (page_uid) {
-                return this.repository.findDefinitions(page_uid);
+                return require('content.repository').findDefinitions(page_uid);
             },
 
             listenDOMService: function (definitions) {
