@@ -32,6 +32,7 @@ define(
         var EventManager = new JS.Class({
 
             inputClass: '.revision-input',
+            generalInputClass: '.general-revision-input',
 
             /**
              * Init of event manaager
@@ -51,6 +52,17 @@ define(
              */
             bindEvents: function () {
                 this.tree.on('click', this.inputClass, jQuery.proxy(this.onClick, this));
+                this.tree.on('click', this.generalInputClass, jQuery.proxy(this.onGeneralClick, this));
+            },
+
+            /**
+             * On general click event
+             * @param {Object} event
+             */
+            onGeneralClick: function (event) {
+                var target = jQuery(event.currentTarget);
+
+                this.tree.find(this.inputClass).prop('checked', target.prop('checked'));
             },
 
             /**
