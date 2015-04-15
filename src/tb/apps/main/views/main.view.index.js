@@ -35,38 +35,6 @@ define(['jquery', 'Core/Renderer', 'text!main/tpl/toolbar'], function (jQuery, R
             this.toolbar = {
                 menus: [
                     {
-                        label: 'parameter',
-                        text: 'general_settings',
-                        url: '#',
-                        active: true,
-                        items: [
-                            {
-                                label: 'site',
-                                text: 'website_parameters',
-                                url: '#site',
-                                active: true
-                            },
-                            {
-                                label: 'template',
-                                text: 'gabarit',
-                                url: '#appLayout/home',
-                                active: false
-                            },
-                            {
-                                label: 'theme',
-                                text: 'theme',
-                                url: '#theme',
-                                active: false
-                            },
-                            {
-                                label: 'block',
-                                text: 'block',
-                                url: '#block',
-                                active: false
-                            }
-                        ]
-                    },
-                    {
                         label: 'user',
                         text: 'Users management',
                         url: '#/user/index',
@@ -128,14 +96,6 @@ define(['jquery', 'Core/Renderer', 'text!main/tpl/toolbar'], function (jQuery, R
                                 url: '#library',
                                 active: false
                             }
-                        ]
-                    },
-                    {
-                        label: 'pages',
-                        text: 'pages_management',
-                        url: '#/page/manage',
-                        active: false,
-                        items: [
                         ]
                     },
                     {
