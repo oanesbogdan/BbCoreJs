@@ -8558,6 +8558,13 @@ colpick Color Picker / colpick.com
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dadada', endColorstr='#00000000', GradientType=0);
   /* IE6-9 */
 }
+#bb5-ui .list-display-dropdown .bb5-list-data .bb5-list-data-item {
+  float: none;
+  width: 100%;
+}
+#bb5-ui .list-display-dropdown .bb5-list-data .bb5-list-data-item .bb5-data-toggle-trigger {
+  display: none;
+}
 #bb5-ui .bb5-data-drpdown .bb5-data-drpdown-body {
   padding: 1px 10px;
 }
@@ -9636,6 +9643,9 @@ colpick Color Picker / colpick.com
 }
 #bb5-ui .bb5-content-breadcrumb .bb5-ui-width-setter ul li.selected a {
   color: #e34c26;
+}
+#bb5-ui .ui-dialog-content {
+  overflow: auto;
 }
 /* CONTENT */
 .bb-content {
