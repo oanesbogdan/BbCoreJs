@@ -18,6 +18,7 @@
  */
 require.config({
     paths: {
+        'bundle': 'src/tb/apps/bundle',
         'bundle.routes': 'src/tb/apps/bundle/routes',
         'bundle.main.controller': 'src/tb/apps/bundle/controllers/main.controller',
         'bundle.repository': 'src/tb/apps/bundle/repository/bundle.repository',

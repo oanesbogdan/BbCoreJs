@@ -21,10 +21,9 @@ define(
         'Core/ApplicationManager',
         'jquery',
         'Core/Renderer',
-        'text!bundle/tpl/index',
-        'bundle.repository'
+        'text!bundle/tpl/index'
     ],
-    function (ApplicationManager, jQuery, Renderer, template, BundleRepository) {
+    function (ApplicationManager, jQuery, Renderer, template) {
 
         'use strict';
 
@@ -91,21 +90,9 @@ define(
             doExtensionActivation: function (event) {
                 var self = jQuery(event.currentTarget),
                     bundleId = self.parent().attr('data-bundle-id'),
-                    enableClass,
-                    enable;
-
-                if (self.hasClass('enable')) {
-                    enableClass = "enable";
-                    enable = true;
-                } else if (self.hasClass('disable')) {
-                    enableClass = "disable";
-                    enable = false;
-                }
-
-                if (confirm('Do you want to ' + enableClass + ' this bundle ?')) {
-                    self.siblings('a').removeClass('active');
-                    self.addClass('active');
-                    BundleRepository.active(enable, bundleId);
+                    enable = self.hasClass('enable');
+                if (bundleId) {
+                    ApplicationManager.invokeService('bundle.main.confirm', event.currentTarget, bundleId, enable);
                 }
             },
 
