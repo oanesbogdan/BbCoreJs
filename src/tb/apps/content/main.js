@@ -40,6 +40,7 @@ require.config({
         'content.container': 'src/tb/apps/content/components/ContentContainer',
         'definition.manager': 'src/tb/apps/content/components/DefinitionManager',
         'content.breadcrumb': 'src/tb/apps/content/components/Breadcrumb',
+        'content.pluginmanager': 'src/tb/apps/content/components/PluginManager',
 
         //Widgets
         'content.widget.DialogContentsList': 'src/tb/apps/content/widgets/DialogContentsList',

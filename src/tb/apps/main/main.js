@@ -95,6 +95,8 @@ define(
              * occurs on start of main application
              */
             onStart: function () {
+                var self = this;
+
                 Core.ApplicationManager.invokeService('content.main.findDefinitions', Core.get('page.uid')).done(function (promise) {
                     promise.done(promise).done(function (definitions) {
                         Core.ApplicationManager.invokeService('content.main.listenDOM', definitions);
@@ -124,8 +126,25 @@ define(
                     localStorage.setItem('current_url', url);
                 });
 
-                var view = new MainViewIndex(this.config);
-                view.render();
+                Core.ApplicationManager.invokeService('content.main.getPluginManager').done(function (PluginManager) {
+                    PluginManager.getInstance().init();
+                    Core.Scope.subscribe('block', jQuery.proxy(self.enablePluginManager, PluginManager, "contribution.block"), jQuery.proxy(self.disablePluginManager, PluginManager));
+                    Core.Scope.subscribe('content', jQuery.proxy(self.enablePluginManager, PluginManager, "contribution.content"), jQuery.proxy(self.disablePluginManager, PluginManager));
+                    Core.Scope.subscribe('page', jQuery.proxy(self.enablePluginManager, PluginManager, "contribution.page"), jQuery.proxy(self.disablePluginManager, PluginManager));
+                });
+
+                new MainViewIndex(this.config).render();
+            },
+
+            enablePluginManager: function (scope) {
+                var instance = this.getInstance();
+
+                instance.registerScope(scope);
+                instance.enablePlugins();
+            },
+
+            disablePluginManager: function () {
+                this.getInstance().disablePlugins();
             }
         });
     }
