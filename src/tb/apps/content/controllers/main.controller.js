@@ -56,7 +56,8 @@ define(
             config: {
                 imports: ['content.repository'],
                 define: {
-                    editionService: ['content.widget.Edition', 'content.manager']
+                    editionService: ['content.widget.Edition', 'content.manager'],
+                    getPluginManagerService: ['content.pluginmanager']
                 }
             },
 
@@ -105,6 +106,10 @@ define(
              */
             getContentManagerService: function () {
                 return ContentManager;
+            },
+
+            getPluginManagerService: function (req) {
+                return req('content.pluginmanager');
             },
 
             editionService: function (req) {
