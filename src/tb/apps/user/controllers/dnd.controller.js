@@ -24,8 +24,6 @@ define(['Core', 'jquery'], function (Core, jQuery) {
         dragStart: function (event) {
             var target = jQuery(event.target);
 
-            console.log(this);
-
             if (target.hasClass('open')) {
                 target.removeClass('open');
             }
@@ -35,25 +33,29 @@ define(['Core', 'jquery'], function (Core, jQuery) {
 
             this.user =  target.attr('data-user');
             this.inDropZone = false;
+            this.leave = 0;
+            this.enter = 0;
         },
 
         dragEnter: function (event) {
+            this.enter = this.enter + 1;
             if (undefined !== event &&
                     event.target.getAttribute('dropzone')) {
 
+                event.target.classList.add('ui-state-hover');
                 this.inDropZone = true;
                 this.group = event.target.getAttribute('data-group');
             }
         },
 
         dragLeave: function (event) {
-
-            if (undefined !== event &&
-                    event.target.getAttribute('dropzone') &&
-                    !event.target.hasChildNodes(event.target.toElement)) {
-
+            this.leave = this.leave + 1;
+            if (this.leave === this.enter) {
                 this.inDropZone = false;
                 this.group = 0;
+                this.leave = 0;
+                this.enter = 0;
+                event.target.classList.remove('ui-state-hover');
             }
         },
 
