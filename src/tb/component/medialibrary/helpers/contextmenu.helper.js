@@ -100,7 +100,7 @@ define(['component!contextmenu', 'jquery', 'component!notify'], function (Contex
 
             mediaFolderContextMenu.addMenuItem({
                 btnCls: "bb5-context-menu-add",
-                btnLabel: "Create",
+                btnLabel: "Create a folder",
                 btnCallback: actions.createAction
             });
 

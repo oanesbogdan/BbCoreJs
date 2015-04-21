@@ -99,7 +99,6 @@ define(
                 },
 
                 handleViewModeChange: function (e) {
-
                     this.widget.find(".viewmode-btn").removeClass("active");
                     if (!e) {
                         this.widget.find(".viewmode-btn.bb5-sortas" + this.config.viewmode).addClass("active");
@@ -179,7 +178,7 @@ define(
                         }
                     });
                     this.widgetLayout.resizeAll();
-                    this.widgetLayout.sizePane("west", 210);
+                    this.widgetLayout.sizePane("west", 235);
                 },
 
                 fixDataviewLayout: function (top) {
@@ -350,11 +349,11 @@ define(
                         searchEnginerCtn = jQuery(this.widget).find(".search-engine-ctn").eq(0);
                     this.rangeSelector.render(rangeSelectorCtn, 'replaceWith');
                     this.treeContainer = jQuery(this.widget).find('.bb5-windowpane-tree').eq(0);
-                    this.bindEvents();
                     this.mediaPagination.render(paginationCtn, 'replaceWith');
                     this.mediaListView.render(dataViewCtn);
                     this.mediaFolderTreeView.render(catTreeCtn);
                     this.searchEngine.render(searchEnginerCtn);
+                    this.bindEvents();
                     this.loadMediaFolder();
 
                 },
@@ -461,7 +460,6 @@ define(
                     this.mediaFolderTreeView.on("contextmenu", jQuery.proxy(this.handleContextMenu, this));
                     this.mediaFolderTreeView.nodeEditor.on("editNode", jQuery.proxy(this.handleNodeEdition, this));
                     jQuery(this.widget).find(".viewmode-btn").on("click", jQuery.proxy(this.handleViewModeChange, this));
-                    /* page range events */
                     this.rangeSelector.on("pageRangeSelectorChange", function (val) {
                         self.mediaDataStore.setLimit(val);
                         self.mediaPagination.setItemsOnPage(val); // -->will trigger pageChange
