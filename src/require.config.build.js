@@ -1,3 +1,5 @@
+/*jslint unparam: true*/
+/* src/require.config.js */
 /*
  * Copyright (c) 2011-2013 Lp digital system
  *
@@ -16,37 +18,48 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
+
+require.onResourceLoad = function (context, map) {
+    "use strict";
+    if (map.name === "jquery.noconflict") {
+        require.undef(map.name);
+    }
+};
+
 require.config({
     baseUrl: 'resources/toolbar/',
+    catchError: true,
+    waitSeconds: 15,
+    urlArgs: 'cb=' + Math.random(),
     paths: {
         'component': 'src/tb/component/component',
-
-        'Core': 'dist/vendor.min',
-        'jquery': 'dist/vendor.min',
-        'jqueryui': 'dist/vendor.min',
-        'jsclass' : 'dist/vendor.min',
-        'underscore': 'dist/vendor.min',
-        'nunjucks': 'dist/vendor.min',
-        'BackBone': 'dist/vendor.min',
-        'text': 'dist/vendor.min',
-        'moment': 'dist/vendor.min',
-        'URIjs/URI': 'dist/vendor.min',
-        'datetimepicker': 'dist/vendor.min',
-        'jquery-layout' : 'dist/vendor.min',
-        'jqLayout': 'dist/vendor.min',
-        'lib.jqtree': 'dist/vendor.min',
-        'jssimplepagination': 'dist/vendor.min',
-        'bootstrapjs': 'dist/vendor.min',
-        'ckeeditor': 'dist/vendor.min',
-        'dropzone': 'dist/vendor.min',
-
-        'cryptojs.core': 'dist/vendor.min',
-        'cryptojs.md5': 'dist/vendor.min'
+        'vendor': 'dist/vendor.min'
     },
+    'map': {
+        "*": {
+            'jquery': 'core-jquery'
+        },
+        'core-jquery': {
+            'jquery': 'jquery'
+        }
+    },
+
     'shim': {
+        'lib.jqtree': {
+            deps: ['jquery.noconflict']
+
+        },
+        "core-jquery": {
+            init: function () {
+                "use strict";
+                return window.$.noConflict(true);
+            }
+        },
+
         underscore: {
             exports: '_'
         },
+
         BackBone: {
             deps: ['underscore', 'jquery'],
             exports: 'Backbone'
@@ -57,18 +70,16 @@ require.config({
         bootstrapjs: {
             deps: ['jquery']
         },
-        'lib.jqtree': {
-            deps: ['jquery']
-        },
+
         'jquery-layout': {
             deps: ['jquery']
         },
         'cryptojs.core': {
-            exports: "CryptoJS"
+            exports: 'CryptoJS'
         },
         'cryptojs.md5': {
             deps: ['cryptojs.core'],
-            exports: "CryptoJS"
+            exports: 'CryptoJS'
         }
     },
     deps: ['src/tb/init'],

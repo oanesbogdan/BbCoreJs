@@ -1,5 +1,10 @@
 
 /* src/require.config.js */
+/* global $:false */
+/*globals $*/
+/*jslint unparam: true*/
+
+/* src/require.config.js */
 /*
  * Copyright (c) 2011-2013 Lp digital system
  *
@@ -18,39 +23,48 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
+
+require.onResourceLoad = function (context, map) {
+    "use strict";
+    if (map.name === "jquery.noconflict") {
+        require.undef(map.name);
+    }
+};
+
 require.config({
     baseUrl: 'resources/toolbar/',
     catchError: true,
+    waitSeconds: 15,
     urlArgs: 'cb=' + Math.random(),
     paths: {
         'component': 'src/tb/component/component',
-
-        'BackBone': 'dist/vendor',
-        'Core': 'dist/vendor',
-        'jquery': 'dist/vendor',
-        'jqueryui': 'dist/vendor',
-        'jsclass' : 'dist/vendor',
-        'underscore': 'dist/vendor',
-        'nunjucks': 'dist/vendor',
-        'text': 'dist/vendor',
-        'moment': 'dist/vendor',
-        'URIjs/URI': 'dist/vendor',
-        'datetimepicker': 'dist/vendor',
-        'jquery-layout' : 'dist/vendor',
-        'jqLayout': 'dist/vendor',
-        'lib.jqtree': 'dist/vendor',
-        'jssimplepagination': 'dist/vendor',
-        'bootstrapjs': 'dist/vendor',
-        'ckeeditor': 'dist/vendor',
-        'dropzone': 'dist/vendor',
-
-        'cryptojs.core': 'dist/vendor',
-        'cryptojs.md5': 'dist/vendor'
+        'vendor': 'dist/vendor'
     },
+    'map': {
+        "*": {
+            'jquery': 'core-jquery'
+        },
+        'core-jquery': {
+            'jquery': 'jquery'
+        }
+    },
+
     'shim': {
+        'lib.jqtree': {
+            deps: ['jquery.noconflict']
+
+        },
+        "core-jquery": {
+            init: function () {
+                "use strict";
+                return $.noConflict(true);
+            }
+        },
+
         underscore: {
             exports: '_'
         },
+
         BackBone: {
             deps: ['underscore', 'jquery'],
             exports: 'Backbone'
@@ -61,9 +75,7 @@ require.config({
         bootstrapjs: {
             deps: ['jquery']
         },
-        'lib.jqtree': {
-            deps: ['jquery']
-        },
+
         'jquery-layout': {
             deps: ['jquery']
         },
