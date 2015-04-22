@@ -6,6 +6,7 @@ define(['component!contextmenu', 'jquery', 'component!notify'], function (Contex
         mainWidget = null,
         mediaFolderStore = null,
         cuttedNode = null,
+        trans = require('Core').get('trans') || function (value) { return value; },
         buildContextMenu = function () {
             var mediaFolderContextMenu = new ContextMenu({domTag: "#bb5-ui"}),
                 actions = {
@@ -100,43 +101,43 @@ define(['component!contextmenu', 'jquery', 'component!notify'], function (Contex
 
             mediaFolderContextMenu.addMenuItem({
                 btnCls: "bb5-context-menu-add",
-                btnLabel: "Create",
+                btnLabel: trans("create_a_folder"),
                 btnCallback: actions.createAction
             });
 
             mediaFolderContextMenu.addMenuItem({
                 btnCls: "bb5-context-menu-edit",
-                btnLabel: "Edit",
+                btnLabel: trans("edit"),
                 btnCallback: actions.editAction
             });
 
             mediaFolderContextMenu.addMenuItem({
                 btnCls: "bb5-context-menu-remove",
-                btnLabel: "Remove",
+                btnLabel: trans("remove"),
                 btnCallback: actions.removeAction
             });
 
             mediaFolderContextMenu.addMenuItem({
                 btnCls: "bb5-context-menu-cut",
-                btnLabel: "Cut",
+                btnLabel: trans("cut"),
                 btnCallback: actions.cutAction
             });
 
             mediaFolderContextMenu.addMenuItem({
                 btnCls: "bb5-context-menu-paste-before",
-                btnLabel: "Paste Before",
+                btnLabel: trans("paste_before"),
                 btnCallback: jQuery.proxy(actions.pasteAction, this, "before")
             });
 
             mediaFolderContextMenu.addMenuItem({
                 btnCls: "bb5-context-menu-paste",
-                btnLabel: "Paste",
+                btnLabel: trans("paste"),
                 btnCallback: jQuery.proxy(actions.pasteAction, this, "append")
             });
 
             mediaFolderContextMenu.addMenuItem({
                 btnCls: "bb5-context-menu-paste-after",
-                btnLabel: "Paste After",
+                btnLabel: trans("paste_after"),
                 btnCallback: jQuery.proxy(actions.pasteAction, this, "after")
             });
 

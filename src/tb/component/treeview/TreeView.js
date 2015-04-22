@@ -1,16 +1,8 @@
-/*global $:false */
-define(["jquery", 'tb.component/treeview/NodeEditor', "BackBone", "lib.jqtree", "jsclass"], function (jQuery, NodeEditor) {
+define(['jquery', 'tb.component/treeview/NodeEditor', "BackBone", "lib.jqtree", "jsclass"], function (jQuery, NodeEditor) {
     "use strict";
     /**
      * TreeView's class
      */
-
-    /**
-     * making sure our jQuery instance has the jqtree plugin
-     *  */
-    if (!jQuery.fn.hasOwnProperty("tree")) {
-        jQuery.fn.tree = $.fn.tree;
-    }
 
     var TreeView = new JS.Class({
         defaultOptions: {
@@ -60,6 +52,7 @@ define(["jquery", 'tb.component/treeview/NodeEditor', "BackBone", "lib.jqtree", 
         on: function (eventName, callback, context) {
             context = context || this;
             this.treeEl.bind("tree." + eventName, jQuery.proxy(callback, context));
+
         },
         /**
          * Generic proxy that allows us to invoke every methods on the tree widget
@@ -249,6 +242,7 @@ define(["jquery", 'tb.component/treeview/NodeEditor', "BackBone", "lib.jqtree", 
          */
         render: function (container) {
             jQuery(container).html(this.treeEl);
+            this.treeEl.trigger("tree.onRender", this);
         },
         /**
          * Remove a specific node from the tree
