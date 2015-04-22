@@ -21,6 +21,7 @@
     "grunt-istanbul-coverage": "0.0.5",
     "grunt-jslint": "^1.1.12",
     "grunt-lesslint": "~1.1.13",
+    "grunt-shell": "^1.1.2",
     "grunt-template-jasmine-istanbul": "~0.3.0",
     "grunt-template-jasmine-requirejs": "^0.2.0",
     "has-ansi": "^1.0.3",

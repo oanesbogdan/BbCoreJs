@@ -72,17 +72,6 @@ module.exports = function (grunt) {
                         filter: 'isFile'
                     }
                 ]
-            },
-            require: {
-                files: [
-                    {
-                        expand: true,
-                        cwd: 'bower_components/requirejs/',
-                        src: '*.js',
-                        dest: 'dist/',
-                        filter: 'isFile'
-                    }
-                ]
             }
         },
 
@@ -206,16 +195,20 @@ module.exports = function (grunt) {
                     'bower_components/dropzone/dist/dropzone.css'
                 ],
                 dest: 'dist/css/vendor.css'
+            }
+        },
+        shell: {
+            moveConfig: {
+                command: 'cp src/require.config.js dist/config.js'
             },
-            config: {
-                src: ['src/require.config.js'],
-                dest: 'dist/config.js'
+            moveCKE: {
+                command: 'cp -R bower_components/ckeeditor dist/ckeeditor'
             }
         },
         uglify: {
             require: {
                 files: {
-                    'dist/require.min.js': ['bower_components/requirejs/require.js']
+                    'dist/require.js': ['bower_components/requirejs/require.js']
                 }
             },
             config: {
@@ -228,11 +221,11 @@ module.exports = function (grunt) {
             vendor: {
                 options: {
                     baseUrl: './',
-                    out: 'dist/vendor.js',
-                    optimize: 'none',
-                    generateSourceMaps: false,
-                    preserveLicenseComments: true,
-                    mainConfigFile: 'src/require.config.dev.js',
+                    out: 'dist/vendor.min.js',
+                    optimize: 'uglify2',
+                    generateSourceMaps: true,
+                    preserveLicenseComments: false,
+                    mainConfigFile: 'src/require.config.js',
 
                     include: [
                         'Core',
@@ -245,7 +238,6 @@ module.exports = function (grunt) {
                         'moment',
                         'URIjs/URI',
                         'bootstrapjs',
-                        'ckeeditor',
                         'dropzone',
 
                         'jquery.noconflict',
@@ -260,17 +252,6 @@ module.exports = function (grunt) {
                         'cryptojs.core',
                         'cryptojs.md5'
                     ]
-                }
-            },
-            vendormin: {
-                options: {
-                    baseUrl: './',
-                    out: 'dist/vendor.min.js',
-                    mainConfigFile: 'src/require.config.dev.js',
-                    optimize: 'uglify2',
-                    generateSourceMaps: true,
-                    preserveLicenseComments: false,
-                    include: '<%= requirejs.vendor.options.include %>'
                 }
             }
         }
@@ -290,9 +271,10 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-istanbul-coverage');
+    grunt.loadNpmTasks('grunt-shell');
 
     // grunt tasks
     grunt.registerTask('default', ['less:css', 'jshint', 'jslint', 'jasmine:coverage', 'concat', 'uglify']);
     grunt.registerTask('test', ['less:css', 'jshint', 'jslint', 'jasmine:coverage']);
-    grunt.registerTask('dist', ['less:css', 'copy', 'concat', 'cssmin', 'uglify', 'requirejs']);
+    grunt.registerTask('dist', ['less:css', 'copy', 'concat', 'shell', 'cssmin', 'uglify', 'requirejs']);
 };

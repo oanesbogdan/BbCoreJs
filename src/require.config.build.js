@@ -1,5 +1,4 @@
 /*jslint unparam: true*/
-/* src/require.config.js */
 /*
  * Copyright (c) 2011-2013 Lp digital system
  *
@@ -18,7 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
-
 require.onResourceLoad = function (context, map) {
     "use strict";
     if (map.name === "jquery.noconflict") {
@@ -33,7 +31,8 @@ require.config({
     urlArgs: 'cb=' + Math.random(),
     paths: {
         'component': 'src/tb/component/component',
-        'vendor': 'dist/vendor.min'
+        'vendor': 'dist/vendor.min',
+        'ckeeditor': 'dist/ckeeditor/ckeditor'
     },
     'map': {
         "*": {
