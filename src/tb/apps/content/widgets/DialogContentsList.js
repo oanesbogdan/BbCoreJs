@@ -24,10 +24,11 @@ define(
         'component!popin',
         'text!content/tpl/palette_blocks',
         'jquery',
+        'content.dnd.manager',
         'jqueryui',
         'jsclass'
     ],
-    function (ContentRepository, Renderer, Popin, paletteBlocksTpl, jQuery) {
+    function (ContentRepository, Renderer, Popin, paletteBlocksTpl, jQuery, DndManager) {
 
         'use strict';
 
@@ -136,6 +137,7 @@ define(
                 this.popin.setContent(html);
 
                 this.popin.display();
+                DndManager.attachDnDOnPalette();
 
                 this.bindEvents();
             },
@@ -144,7 +146,11 @@ define(
              * Bind events into popin
              */
             bindEvents: function () {
-                jQuery('#' + this.popin.getId()).on('click', this.toggleClasses, jQuery.proxy(this.toggleHeader, this));
+                jQuery('#' + this.popin.getId()).on(
+                    'click',
+                    this.toggleClasses,
+                    jQuery.proxy(this.toggleHeader, this)
+                );
             },
 
             /**
@@ -155,7 +161,10 @@ define(
             toggleHeader: function (event) {
                 var currentTarget = jQuery(event.currentTarget);
 
-                jQuery('#' + this.popin.getId()).find('.bb5-data-toggle.open').not(currentTarget.parent()).removeClass('open');
+                jQuery('#' + this.popin.getId())
+                    .find('.bb5-data-toggle.open')
+                    .not(currentTarget.parent())
+                    .removeClass('open');
 
                 currentTarget.parent().toggleClass('open');
             },

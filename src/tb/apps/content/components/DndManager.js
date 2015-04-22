@@ -70,6 +70,10 @@ define(
                 jQuery('body').on('dragenter', jQuery.proxy(this.mediaDragEnter, this));
             },
 
+            attachDnDOnPalette: function () {
+                dnd('#backbee-palette-blocks').addListeners('classcontent', '.' + this.dndClass);
+            },
+
             resetDataTransfert: function () {
                 this.dataTransfer = {
                     content: {},
