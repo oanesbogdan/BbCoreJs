@@ -20,10 +20,13 @@
     "contribution": "Contribution",
     "contents": "Contents",
     "create_a_draft": "Create a draft",
+    "create_a_folder": "Create a folder",
     "create_group": "Create group",
     "create_user": "Create user",
     "creation_date": "Creation date",
+    "cut": "Cut",
     "current_directory": "Current directory",
+
 
     "data_base": "Data base",
     "deactivate": "Deactivate",
@@ -73,9 +76,13 @@
     "page_seo": "Page SEO",
     "page_status": "Page status",
     "page_tree": "Page tree",
+    "paste": "Paste",
+    "paste_after": "Paste after",
+    "paste_before": "Paste before",
     "previous": "Previous",
     "publishing_archiving": "Publishing / Archiving",
 
+    "remove": "Remove",
     "remove_content_confirmation_message": "Do you want remove this content ?",
     "remove_group_confirmation_message": "Do you want remove the group",
     "remove_user_confirmation_message": "Do you want remove the user",
