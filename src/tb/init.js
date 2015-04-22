@@ -50,62 +50,63 @@ define(function () {
 
             load: function () {
                 var self = this;
+                require(['vendor'], function () {
+                    require(['Core', 'component!session', 'jquery'], function (Core, session, jQuery) {
 
-                require(['Core', 'component!session', 'jquery'], function (Core, session, jQuery) {
+                        Core.set('session', session);
+                        Core.set('is_connected', session.isAuthenticated());
+                        Core.set('wrapper_toolbar_selector', '#' + selector.id);
+                        Core.set('api_base_url', selector.getAttribute('data-api'));
 
-                    Core.set('session', session);
-                    Core.set('is_connected', session.isAuthenticated());
-                    Core.set('wrapper_toolbar_selector', '#' + selector.id);
-                    Core.set('api_base_url', selector.getAttribute('data-api'));
+                        require(
+                            [
+                                'Core/DriverHandler',
+                                'Core/RestDriver',
+                                'Core/Renderer',
+                                'component!translator'
+                            ],
+                            function (DriverHandler, RestDriver, Renderer, Translator) {
 
-                    require(
-                        [
-                            'Core/DriverHandler',
-                            'Core/RestDriver',
-                            'Core/Renderer',
-                            'component!translator'
-                        ],
-                        function (DriverHandler, RestDriver, Renderer, Translator) {
+                                RestDriver.setBaseUrl(Core.get('api_base_url'));
+                                DriverHandler.addDriver('rest', RestDriver);
 
-                            RestDriver.setBaseUrl(Core.get('api_base_url'));
-                            DriverHandler.addDriver('rest', RestDriver);
+                                var initOnConnect = function () {
+                                        DriverHandler.read(self.configUri).done(function (config) {
+                                            Core.initConfig(config);
 
-                            var initOnConnect = function () {
-                                    DriverHandler.read(self.configUri).done(function (config) {
-                                        Core.initConfig(config);
+                                            Translator.init(Core.config('component:translator'));
 
-                                        Translator.init(Core.config('component:translator'));
+                                            Renderer.addFunction('trans', jQuery.proxy(Translator.translate, Translator));
+                                            Renderer.addFilter('trans', jQuery.proxy(Translator.translate, Translator));
 
-                                        Renderer.addFunction('trans', jQuery.proxy(Translator.translate, Translator));
-                                        Renderer.addFilter('trans', jQuery.proxy(Translator.translate, Translator));
+                                            require(['component!exceptions-viewer'], {});
+                                        });
 
-                                        require(['component!exceptions-viewer'], {});
-                                    });
+                                    },
+                                    router = null;
 
-                                },
-                                router = null;
-
-                            Core.ApplicationManager.on('routesLoaded', function () {
-                                /*cf http://backbonejs.org/#Router for available options */
-                                router = Core.RouteManager.initRouter({silent: true});
-                            });
-
-                            Core.ApplicationManager.on('appIsReady', function (app) {
-                                router.navigate(app.getMainRoute());
-                            });
-
-                            if (session.isAuthenticated()) {
-                                initOnConnect();
-                            } else {
-                                Core.Mediator.subscribe('on:success:login', function () {
-                                    self.toolBarDisplayed = true;
-                                    initOnConnect();
+                                Core.ApplicationManager.on('routesLoaded', function () {
+                                    /*cf http://backbonejs.org/#Router for available options */
+                                    router = Core.RouteManager.initRouter({silent: true});
                                 });
-                            }
-                        },
-                        self.onError
-                    );
-                }, this.onError);
+
+                                Core.ApplicationManager.on('appIsReady', function (app) {
+                                    router.navigate(app.getMainRoute());
+                                });
+
+                                if (session.isAuthenticated()) {
+                                    initOnConnect();
+                                } else {
+                                    Core.Mediator.subscribe('on:success:login', function () {
+                                        self.toolBarDisplayed = true;
+                                        initOnConnect();
+                                    });
+                                }
+                            },
+                            self.onError
+                        );
+                    }, self.onError);
+                });
             },
 
             onError: function (error) {

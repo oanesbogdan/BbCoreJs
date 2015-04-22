@@ -232,51 +232,31 @@ module.exports = function (grunt) {
                     optimize: 'none',
                     generateSourceMaps: false,
                     preserveLicenseComments: true,
-                    mainConfigFile: 'src/require.config.js',
-                    paths: {
-                        'component': 'src/tb/component/component',
-                        'Core': 'bower_components/backbee-core-js/dist/Core',
+                    mainConfigFile: 'src/require.config.dev.js',
 
-                        'jquery': 'bower_components/jquery/dist/jquery',
-                        'jqueryui': 'bower_components/jquery-ui/jquery-ui',
-                        'jsclass' : 'node_modules/jsclass/min/core',
-                        'underscore': 'bower_components/underscore/underscore',
-                        'nunjucks': 'bower_components/nunjucks/browser/nunjucks',
-                        'BackBone': 'bower_components/backbone/backbone',
-                        'text': 'bower_components/requirejs-text/text',
-                        'moment': 'bower_components/moment/moment',
-                        'URIjs': 'bower_components/uri.js/src',
-                        'URIjs/URI': 'bower_components/uri.js/src/URI',
-                        'datetimepicker': 'bower_components/datetimepicker/jquery.datetimepicker',
-                        'jquery-layout' : 'bower_components/jquery.layout/dist/jquery.layout-latest',
-                        'jqLayout': 'bower_components/jquery.layout/dist/jquery.layout-latest',
-                        'lib.jqtree': 'bower_components/jqtree/tree.jquery',
-                        'jssimplepagination': 'bower_components/jssimplepagination/jquery.simplePagination',
-                        'bootstrapjs': 'bower_components/bootstrap/dist/js/bootstrap',
-                        'ckeeditor': 'bower_components/ckeeditor/ckeditor',
-                        'dropzone': 'bower_components/dropzone/dist/dropzone',
-
-                        'cryptojs.core': 'bower_components/cryptojslib/components/core',
-                        'cryptojs.md5': 'bower_components/cryptojslib/components/md5'
-                    },
                     include: [
                         'Core',
-                        'jquery',
-                        'jqueryui',
+
                         'jsclass',
                         'underscore',
                         'nunjucks',
                         'BackBone',
-                        'moment',
                         'text',
+                        'moment',
                         'URIjs/URI',
-                        'datetimepicker',
-                        'jquery-layout',
-                        'lib.jqtree',
-                        'jssimplepagination',
                         'bootstrapjs',
                         'ckeeditor',
                         'dropzone',
+
+                        'jquery.noconflict',
+                        'core-jquery',
+                        'jqueryui',
+                        'jquery-helper',
+                        'jquery-layout',
+                        'lib.jqtree',
+                        'datetimepicker',
+                        'jssimplepagination',
+
                         'cryptojs.core',
                         'cryptojs.md5'
                     ]
@@ -286,11 +266,10 @@ module.exports = function (grunt) {
                 options: {
                     baseUrl: './',
                     out: 'dist/vendor.min.js',
-                    mainConfigFile: 'src/require.config.build.js',
+                    mainConfigFile: 'src/require.config.dev.js',
                     optimize: 'uglify2',
                     generateSourceMaps: true,
                     preserveLicenseComments: false,
-                    paths: '<%= requirejs.vendor.options.paths %>',
                     include: '<%= requirejs.vendor.options.include %>'
                 }
             }
