@@ -3,11 +3,13 @@
     "app_only_default": "Only default",
 
     "activate": "Activate",
+    "activated": "Activated",
     "activate_deactivate": "Activate / Deactivate",
     "add_content": "Add content",
     "add_link": "Add a link",
     "all": "All",
     "apply_to_all_selected_pages": "Apply to all selected pages",
+    "archiving_scheduled_for": "Archiving scheduled for",
     "author": "Author",
     "available_in_menus": "Available in menus",
 
@@ -15,13 +17,16 @@
     "bundle_administration": "Bundle administration",
 
     "cancel": "Cancel",
+    "change_password": "Change password ?",
     "clear_all": "Clear all",
+    "clone_page": "Clone page",
     "content_management": "Content management",
     "contribution": "Contribution",
     "contents": "Contents",
     "create_a_draft": "Create a draft",
     "create_a_folder": "Create a folder",
     "create_group": "Create group",
+    "create_a_page": "Create a page",
     "create_user": "Create user",
     "creation_date": "Creation date",
     "cut": "Cut",
@@ -30,6 +35,7 @@
 
     "data_base": "Data base",
     "deactivate": "Deactivate",
+    "deactivated": "Deactivated",
     "delete": "Delete",
     "display": "Display",
     "display_external_content": "Display external content",
@@ -38,14 +44,19 @@
     "duplicate": "Duplicate",
 
     "edit": "Edit",
+    "edit_page": "Edit page",
     "edition": "Edition",
     "email": "E-mail",
+    "email_is_required": "Email is required.",
+    "email_is_invalid": "Email is invalid",
     "export": "Export",
     "extensions": "Extensions",
     "external_link": "External link",
 
     "filters": "Filters",
+    "first_name": "First name",
     "find_users": "Find users",
+    "from": "From",
 
     "gabarit": "Template",
     "general_settings": "General Settings",
@@ -55,7 +66,10 @@
     "import": "Import",
     "internal_link": "Internal link",
 
+    "last_name": "Nom de famille",
     "link_selector_label": "Link Selector",
+    "login": "Login",
+    "login_is_required": "Login is required",
     "loading": "Loading",
 
     "manage": "Manage",
@@ -64,6 +78,8 @@
     "media_library": "Media library",
     "modified_date": "Modified date",
 
+    "name": "Name",
+    "name_is_required": "Name is required",
     "new_page": "New page",
     "next": "Next",
     "no_one": "No one",
@@ -76,10 +92,15 @@
     "page_seo": "Page SEO",
     "page_status": "Page status",
     "page_tree": "Page tree",
+    "parameters": "Parameters",
     "paste": "Paste",
     "paste_after": "Paste after",
     "paste_before": "Paste before",
+    "password": "Password",
+    "password_is_invalid": "Password is invalid",
+    "password_is_too_short": "Password lenght is too short (at least 6 characters)",
     "previous": "Previous",
+    "publication_scheduled_for": "Publication scheduled for",
     "publishing_archiving": "Publishing / Archiving",
 
     "remove": "Remove",
@@ -100,9 +121,13 @@
     "select_all": "Select all",
     "show_folder": "Show folder",
     "status": "Status",
+    "submit": "Submit",
 
+    "template_is_required": "Template is required",
     "theme": "Theme",
+    "till": "Till",
     "title": "Title",
+    "title_is_required": "Title is required",
     "tree": "Tree",
 
     "updated": "Updated",

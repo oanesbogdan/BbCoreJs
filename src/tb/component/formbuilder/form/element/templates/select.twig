@@ -6,7 +6,7 @@
         >
     {% for key, item in element.getOptions() %}
         <option {% if key in element.getValue() %}selected{% endif %}
-                                                  value="{{ key }}">
+         value="{{ key }}">
             {{ item }}
         </option>
     {% endfor %}

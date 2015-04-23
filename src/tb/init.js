@@ -70,6 +70,11 @@ define(function () {
                                 RestDriver.setBaseUrl(Core.get('api_base_url'));
                                 DriverHandler.addDriver('rest', RestDriver);
 
+                                /* we need the filter to be able to use the login form before load
+                                 * the application configuration
+                                 */
+                                Renderer.addFilter('trans', function (key) { return key; });
+
                                 var initOnConnect = function () {
                                         DriverHandler.read(self.configUri).done(function (config) {
                                             Core.initConfig(config);

@@ -26,9 +26,10 @@ define(
         'definition.manager',
         'component!formsubmitter',
         'jquery',
+        'component!translator',
         'jsclass'
     ],
-    function (ApplicationManager, PluginManager, Popin, FormBuilder, DefinitionManager, FormSubmitter, jQuery) {
+    function (ApplicationManager, PluginManager, Popin, FormBuilder, DefinitionManager, FormSubmitter, jQuery, translator) {
 
         'use strict';
 
@@ -46,7 +47,7 @@ define(
              */
             createPopin: function () {
                 this.popin = Popin.createPopIn();
-                this.popin.setTitle('Parameters');
+                this.popin.setTitle(translator.translate('parameters'));
             },
 
             /**
@@ -158,7 +159,7 @@ define(
                     {
                         name: 'parameters',
                         ico: 'fa fa-cog',
-                        label: 'Parameters',
+                        label: translator.translate('parameters'),
                         cmd: self.createCommand(self.showParameters, self),
                         checkContext: function () {
                             return true;

@@ -5,7 +5,7 @@
         <img class="img-responsive" src="{{ element.image }}" />
     </div>
   <div class="col-md-7">
-      <p><button id="{{ element.getKey() }}_update_btn" class="btn btn-default-grey btn-sm">Modifier</button></p>
+      <p><button id="{{ element.getKey() }}_update_btn" class="btn btn-default-grey btn-sm">{{ 'edit' }}</button></p>
   </div>
 </div>
 <span class="form_error help-block {% if element.getError() == null %}hidden{% endif %}">{{ element.getError() }}</span>

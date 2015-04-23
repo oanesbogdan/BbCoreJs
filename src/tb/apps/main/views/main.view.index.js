@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
-define(['jquery', 'Core/Renderer', 'text!main/tpl/toolbar'], function (jQuery, Renderer, template) {
+define(['jquery', 'Core/Renderer', 'text!main/tpl/toolbar', 'component!translator'], function (jQuery, Renderer, template, translator) {
 
     'use strict';
 
@@ -35,84 +35,84 @@ define(['jquery', 'Core/Renderer', 'text!main/tpl/toolbar'], function (jQuery, R
             this.toolbar = {
                 menus: [
                     {
-                        label: 'user',
-                        text: 'Users management',
+                        label: translator.translate('user'),
+                        text: translator.translate('users_management'),
                         url: '#/user/index',
                         active: false,
                         items: [
                             {
-                                label: 'user',
-                                text: 'users_management',
+                                label: translator.translate('user'),
+                                text: translator.translate('users_management'),
                                 url: '#user',
                                 active: false
                             },
                             {
-                                label: 'role',
-                                text: 'roles_management',
+                                label: translator.translate('role'),
+                                text: translator.translate('roles_management'),
                                 url: '#role',
                                 active: false
                             },
                             {
-                                label: 'right',
-                                text: 'rights_management',
+                                label: translator.translate('right'),
+                                text: translator.translate('rights_management'),
                                 url: '#right',
                                 active: false
                             },
                             {
-                                label: 'workflow',
-                                text: 'workflow_management',
+                                label: translator.translate('workflow'),
+                                text: translator.translate('workflow_management'),
                                 url: '#workflow',
                                 active: false
                             }
                         ]
                     },
                     {
-                        label: 'contribute',
-                        text: 'contribution',
+                        label: translator.translate('contribute'),
+                        text: translator.translate('contribution'),
                         url: '#/contribution/index',
                         active: false,
                         items: [
                             {
-                                label: 'edit',
-                                text: 'edition',
+                                label: translator.translate('edit'),
+                                text: translator.translate('edition'),
                                 url: '#/contribution/index',
                                 active: false
                             },
                             {
-                                label: 'page',
-                                text: 'pages_management',
+                                label: translator.translate('page'),
+                                text: translator.translate('pages_management'),
                                 url: '#pages',
                                 active: false
                             },
                             {
-                                label: 'content',
-                                text: 'content_management',
+                                label: translator.translate('content'),
+                                text: translator.translate('content_management'),
                                 url: '#content',
                                 active: false
                             },
                             {
-                                label: 'library',
-                                text: 'media',
+                                label: translator.translate('library'),
+                                text: translator.translate('media'),
                                 url: '#library',
                                 active: false
                             }
                         ]
                     },
                     {
-                        label: 'bundle',
-                        text: 'extensions',
+                        label: translator.translate('bundle'),
+                        text: translator.translate('extensions'),
                         url: '#/bundle/index',
                         active: false,
                         items: [
                             {
-                                label: 'activate',
-                                text: 'activate_deactivate',
+                                label: translator.translate('activate'),
+                                text: translator.translate('activate_deactivate'),
                                 url: '#',
                                 active: false
                             },
                             {
-                                label: 'admin',
-                                text: 'manage',
+                                label: translator.translate('admin'),
+                                text: translator.translate('manage'),
                                 url: '#',
                                 active: false
                             }

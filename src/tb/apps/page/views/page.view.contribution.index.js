@@ -28,7 +28,8 @@ define(
         'page.repository',
         'component!formbuilder',
         'component!popin',
-        'moment'
+        'moment',
+        'component!translator'
     ],
     function (Core,
               jQuery,
@@ -39,7 +40,8 @@ define(
               PageRepository,
               FormBuilder,
               PopinManager,
-              moment
+              moment,
+              translator
             ) {
 
         'use strict';
@@ -132,14 +134,14 @@ define(
                     config = {
                         elements: {
                             publishing: {
-                                label: 'Publication scheduled for',
+                                label: translator.translate('publication_scheduled_for'),
                                 type: 'datetimepicker',
                                 placeholder: 'dd/mm/aaaa',
                                 template: 'src/tb/apps/page/templates/elements/scheduling-input.twig',
                                 value: this.getStateSchedulingAsString(this.currentPage.publishing)
                             },
                             archiving: {
-                                label: 'Archiving scheduled for',
+                                label: translator.translate('archiving_scheduled_for'),
                                 type: 'datetimepicker',
                                 placeholder: 'dd/mm/aaaa',
                                 template: 'src/tb/apps/page/templates/elements/scheduling-input.twig',
@@ -235,12 +237,12 @@ define(
 
                 if (config.hasOwnProperty('publishing') && config.publishing !== '') {
                     day = moment.unix(config.publishing);
-                    state = 'from ' + day.format('DD/MM/YYYY HH:mm');
+                    state = translator.translate('from') + ' ' + day.format('DD/MM/YYYY HH:mm');
                 }
 
                 if (config.hasOwnProperty('archiving') && config.archiving !== '') {
                     day = moment.unix(config.archiving);
-                    state += ' till ' + day.format('DD/MM/YYYY HH:mm');
+                    state += ' ' + translator.translate('till') + ' ' + day.format('DD/MM/YYYY HH:mm');
                 }
 
                 jQuery(this.schedulingStateTag).html(state);
@@ -253,7 +255,7 @@ define(
                 var self = this,
                     popin = PopinManager.createPopIn();
 
-                popin.setTitle('Page SEO');
+                popin.setTitle(translator.translate('page_seo'));
                 popin.display();
                 popin.mask();
 
