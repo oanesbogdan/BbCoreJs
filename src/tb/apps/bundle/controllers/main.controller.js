@@ -26,7 +26,10 @@ define(['Core', 'bundle.view.list', 'bundle.view.index'], function (Core, ListVi
         appName: 'bundle',
 
         config: {
-            imports: ['bundle.repository']
+            imports: ['bundle.repository'],
+            define: {
+                confirmService: ['bundle/views/confirm.view', 'jquery']
+            }
         },
 
         /**
@@ -101,6 +104,27 @@ define(['Core', 'bundle.view.list', 'bundle.view.index'], function (Core, ListVi
         renderView: function (ConstructorView, config) {
             var view = new ConstructorView(config);
             view.render();
+        },
+
+
+        confirmService: function (req, target, bundleId, action) {
+            var self = this,
+                jQuery = req('jquery'),
+                View = req('bundle/views/confirm.view'),
+                view = new View({action: action ? 'enable' : 'disable'});
+
+            target = jQuery(target);
+
+            view.display().then(
+                function () {
+                    target.siblings('a').removeClass('active');
+                    target.addClass('active');
+                    self.repository.active(action, bundleId);
+                },
+                function () {
+                    view.destruct();
+                }
+            );
         }
     });
 });
