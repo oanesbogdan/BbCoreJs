@@ -45,7 +45,7 @@ define(['Core', 'bundle.view.list', 'bundle.view.index'], function (Core, ListVi
         indexAction: function () {
             var config = {};
 
-            Core.ApplicationManager.invokeService('main.main.setTitlePane', trans('bundle_administration'));
+            Core.ApplicationManager.invokeService('main.main.setTitlePane', trans('manage_bundle'));
 
             if (this.indexShown !== true) {
                 config.force = true;
