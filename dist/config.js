@@ -1,3 +1,4 @@
+/*jslint unparam: true*/
 /*
  * Copyright (c) 2011-2013 Lp digital system
  *
@@ -22,7 +23,10 @@ require.onResourceLoad = function (context, map) {
         require.undef(map.name);
     }
 };
-define('vendor', function () {"use strict"; return; });
+define('vendor', ['jquery-helper'], function (jqHelper) {
+    'use strict';
+    jqHelper.restoreCoreJQuery();
+});
 require.config({
     baseUrl: 'resources/toolbar/',
     catchError: true,
