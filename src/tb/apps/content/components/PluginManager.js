@@ -311,7 +311,10 @@ define(['Core', 'jquery', 'Core/Utils', 'Core/Api', 'actionContainer', 'jsclass'
 
                 var plugins, context = {};
 
-                if (this.currentContent === null || this.currentContent.id !== content.id) {
+                if (this.currentContent === null ||
+                        this.currentContent.id !== content.id ||
+                        this.contentActionWidget.isBuild(content) === false) {
+
                     try {
                         if (!this.isEnabled()) {
                             return;

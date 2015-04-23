@@ -48,6 +48,7 @@ define(
             createPopin: function () {
                 this.popin = Popin.createPopIn();
                 this.popin.setTitle(translator.translate('parameters'));
+                this.popin.addOption('width', '400px');
             },
 
             /**
