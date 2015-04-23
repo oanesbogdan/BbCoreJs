@@ -356,14 +356,18 @@ define(
                     this.mediaFolderTreeView.render(catTreeCtn);
                     this.searchEngine.render(searchEnginerCtn);
                     this.bindEvents();
-                    this.loadMediaFolder();
-
+                    this.loadMediaFolders();
                 },
 
-                loadMediaFolder: function () {
-                    this.mediaFolderDataStore.execute();
+                loadMediaFolders: function () {
+                    var self = this;
+                    this.mediaFolderDataStore.execute().done(function (result) {
+                        self.openedMediaFolder = self.mediaFolderTreeView.getNodeById(result[0].id);
+                        self.mediaFolderDataStore.applyFilter("byMediaFolder", self.openedMediaFolder.uid).execute().done(function () {
+                            self.mediaFolderTreeView.invoke('openNode', self.openedMediaFolder);
+                        });
+                    });
                 },
-
                 populateMediaFolder: function (data, parentNode) {
                     var formattedData = this.formatData(data);
                     if (!parentNode) {

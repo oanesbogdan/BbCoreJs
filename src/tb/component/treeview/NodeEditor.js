@@ -104,7 +104,7 @@ define(['jquery', 'BackBone', 'jsclass'], function (jQuery, BackBone) {
             }
             this.isEditing = false;
             this.formWrapper.remove();
-            if (this.currentNode.element) {
+            if (this.currentNode) {
                 jQuery(this.currentNode.element).show();
             }
         }

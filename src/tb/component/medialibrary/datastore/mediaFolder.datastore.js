@@ -20,7 +20,10 @@ define(['component!datastore', 'jquery', 'jsclass'], function (DataStore, jQuery
             dfd.resolve(data);
             self.trigger('dataUpdate', data);
             self.trigger("doneProcessing");
-        }).fail(dfd.reject);
+        }).fail(function () {
+            self.trigger("doneProcessing");
+            dfd.reject();
+        });
         return dfd.promise();
     });
 
