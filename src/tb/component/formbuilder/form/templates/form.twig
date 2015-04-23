@@ -15,7 +15,7 @@
             <div class="element_{{ element.getKey() }} form-group {% if group|length > 1 %}custom-form-group{% endif %}">
             {% endif %}
                 {{ element.render() }}
-            {% if loop.first %}
+            {% if loop.last %}
             </div>
             {% endif %}
         {% endfor %}
