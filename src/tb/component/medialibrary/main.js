@@ -115,9 +115,7 @@ define(
 
                 onClose: function () {
                     if (this.config.mode === this.EDIT_MODE) {
-                        if (this.triggerEvent) {
-                            this.trigger("close", this.mediaListView.getSelection());
-                        }
+                        this.trigger("close", this.mediaListView.getSelection());
                     }
                     if (this.resetOnClose) {
                         this.reset();
@@ -153,6 +151,7 @@ define(
                 addButtons: function () {
                     var self = this;
                     this.dialog.addButton("Add & Close", function () {
+                        self.triggerEvent = true;
                         self.close();
                     });
                     this.dialog.addButton("Cancel", function () {
