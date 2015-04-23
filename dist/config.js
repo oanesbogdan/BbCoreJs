@@ -1,10 +1,3 @@
-
-/* src/require.config.js */
-/* global $:false */
-/*globals $*/
-/*jslint unparam: true*/
-
-/* src/require.config.js */
 /*
  * Copyright (c) 2011-2013 Lp digital system
  *
@@ -23,14 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
-
 require.onResourceLoad = function (context, map) {
     "use strict";
     if (map.name === "jquery.noconflict") {
         require.undef(map.name);
     }
 };
-
+define('vendor', function () {"use strict"; return; });
 require.config({
     baseUrl: 'resources/toolbar/',
     catchError: true,
@@ -38,7 +30,30 @@ require.config({
     urlArgs: 'cb=' + Math.random(),
     paths: {
         'component': 'src/tb/component/component',
-        'vendor': 'dist/vendor'
+        'Core': 'bower_components/backbee-core-js/dist/Core',
+        'jsclass' : 'node_modules/jsclass/min/core',
+        'underscore': 'bower_components/underscore/underscore',
+        'nunjucks': 'bower_components/nunjucks/browser/nunjucks',
+        'BackBone': 'bower_components/backbone/backbone',
+        'text': 'bower_components/requirejs-text/text',
+        'moment': 'bower_components/moment/moment',
+        'URIjs': 'bower_components/uri.js/src',
+        'URIjs/URI': 'bower_components/uri.js/src/URI',
+        'bootstrapjs': 'bower_components/bootstrap/dist/js/bootstrap',
+        'ckeeditor': 'bower_components/ckeeditor/ckeditor',
+        'dropzone': 'bower_components/dropzone/dist/dropzone',
+
+        'jquery.noconflict': 'src/core-jquery.noconflict',
+        'core-jquery': 'bower_components/jquery/dist/jquery.min',
+        'jqueryui': 'bower_components/jquery-ui/jquery-ui',
+        'jquery-helper': 'src/jquery.helper',
+        'jquery-layout' : 'bower_components/jquery.layout/dist/jquery.layout-latest',
+        'lib.jqtree': 'bower_components/jqtree/tree.jquery',
+        'datetimepicker': 'bower_components/datetimepicker/jquery.datetimepicker',
+        'jssimplepagination': 'bower_components/jssimplepagination/jquery.simplePagination',
+
+        'cryptojs.core': 'bower_components/cryptojslib/components/core',
+        'cryptojs.md5': 'bower_components/cryptojslib/components/md5'
     },
     'map': {
         "*": {
@@ -52,12 +67,11 @@ require.config({
     'shim': {
         'lib.jqtree': {
             deps: ['jquery.noconflict']
-
         },
         "core-jquery": {
             init: function () {
                 "use strict";
-                return $.noConflict(true);
+                return window.$.noConflict(true);
             }
         },
 
