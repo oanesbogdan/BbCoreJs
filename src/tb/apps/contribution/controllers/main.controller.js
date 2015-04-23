@@ -22,7 +22,7 @@ define(['Core', 'contribution.view.index', 'jquery'], function (Core, IndexView,
             var config = {},
                 view;
 
-            Core.ApplicationManager.invokeService('main.main.setTitlePane', trans('page_edition'));
+            Core.ApplicationManager.invokeService('main.main.setTitlePane', trans('edit_page'));
             Core.Scope.register('contribution');
 
             if (this.viewIsLoaded !== true) {
