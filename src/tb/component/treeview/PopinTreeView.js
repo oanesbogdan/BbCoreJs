@@ -38,7 +38,8 @@ define(
                     height: 300,
                     width: 350,
                     title: 'Page tree',
-                    autoDisplay: false
+                    autoDisplay: false,
+                    position: "left"
                 },
 
                 initialize: function (options) {
