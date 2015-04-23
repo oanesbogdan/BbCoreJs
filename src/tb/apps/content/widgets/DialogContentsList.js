@@ -25,10 +25,11 @@ define(
         'text!content/tpl/palette_blocks',
         'jquery',
         'content.dnd.manager',
+        'component!translator',
         'jqueryui',
         'jsclass'
     ],
-    function (ContentRepository, Renderer, Popin, paletteBlocksTpl, jQuery, DndManager) {
+    function (ContentRepository, Renderer, Popin, paletteBlocksTpl, jQuery, DndManager, Translator) {
 
         'use strict';
 
@@ -46,7 +47,7 @@ define(
              */
             createPopin: function () {
                 this.popin = Popin.createPopIn();
-                this.popin.setTitle('Block list');
+                this.popin.setTitle(Translator.translate('categories_of_blocks'));
             },
 
             /**
