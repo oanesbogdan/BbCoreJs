@@ -220,11 +220,14 @@ define(
                     this.maskMng.unmask(container);
                 },
 
-                toggleTreeMask: function () {
-                    if (this.maskMng.hasMask(this.treeContainer)) {
-                        this.maskMng.unmask(this.treeContainer);
-                    } else {
+                handleTreeMask: function (action) {
+                    if (action === "show") {
                         this.maskMng.mask(this.treeContainer);
+                    }
+                    if (action === "remove") {
+                        if (this.maskMng.hasMask(this.treeContainer)) {
+                            this.maskMng.unmask(this.treeContainer);
+                        }
                     }
                 },
 
@@ -449,8 +452,8 @@ define(
                 bindEvents: function () {
                     var self = this;
                     this.mediaFolderDataStore.on("dataStateUpdate", jQuery.proxy(this.populateMediaFolder, this));
-                    this.mediaFolderDataStore.on("processing", jQuery.proxy(this.toggleTreeMask, this));
-                    this.mediaFolderDataStore.on("doneProcessing", jQuery.proxy(this.toggleTreeMask, this));
+                    this.mediaFolderDataStore.on("processing", jQuery.proxy(this.handleTreeMask, this, "show"));
+                    this.mediaFolderDataStore.on("doneProcessing", jQuery.proxy(this.handleTreeMask, this, "remove"));
                     this.mediaDataStore.on("dataStateUpdate", jQuery.proxy(this.onMediaStoreUpdate, this));
                     this.mediaDataStore.on('processing', jQuery.proxy(this.toggleMask, this));
                     this.mediaDataStore.on('doneProcessing', jQuery.proxy(this.toggleMask, this));

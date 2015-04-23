@@ -58,6 +58,7 @@ define(['Core', 'contribution.view.index', 'jquery'], function (Core, IndexView,
             var self = this;
             if (!this.mediaLibraryIsLoaded) {
                 require(['component!medialibrary'], function (MediaLibraryComponent) {
+                    if (self.mediaLibraryIsLoaded) { return; }
                     self.mediaLibrary = MediaLibraryComponent.createMediaLibrary(config);
                     self.mediaLibraryIsLoaded = true;
                     self.mediaLibrary.display();
