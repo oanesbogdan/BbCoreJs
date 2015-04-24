@@ -23,10 +23,11 @@ define(
         'component!popin',
         'page.repository',
         'text!page/widgets/tpl/information_page',
+        'component!translator',
         'jsclass'
     ],
 
-    function (Renderer, PopinManager, PageRepository, template) {
+    function (Renderer, PopinManager, PageRepository, template, translator) {
 
         'use strict';
 
@@ -37,7 +38,7 @@ define(
              */
             initPopin: function () {
                 this.popin = PopinManager.createPopIn();
-                this.popin.setTitle('State of page');
+                this.popin.setTitle(translator.translate('page_status'));
                 this.popin.addOption('width', 160);
             },
 
