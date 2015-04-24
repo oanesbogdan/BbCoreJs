@@ -32,7 +32,7 @@ require.config({
     }
 });
 
-define('app.bundle', ['Core'], function (Core) {
+define('app.bundle', ['Core', 'jquery'], function (Core, jQuery) {
     'use strict';
 
     /**
@@ -46,6 +46,10 @@ define('app.bundle', ['Core'], function (Core) {
 
         onResume: function () {
             Core.Scope.register('bundle');
+        },
+
+        onStop: function () {
+            jQuery('#extensions').dialog('close');
         }
     });
 
