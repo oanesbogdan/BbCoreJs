@@ -24,10 +24,11 @@ define(
         'page.repository',
         'text!page/widgets/tpl/information_page',
         'component!translator',
+        'jquery',
         'jsclass'
     ],
 
-    function (Renderer, PopinManager, PageRepository, template, translator) {
+    function (Renderer, PopinManager, PageRepository, template, translator, jQuery) {
 
         'use strict';
 
@@ -37,9 +38,27 @@ define(
              * Init of popin
              */
             initPopin: function () {
-                this.popin = PopinManager.createPopIn();
+                var parent,
+                    attachToBottomRight = function () {
+                        parent.css({
+                            top: (window.innerHeight - 200),
+                            left: (window.innerWidth - 200)
+                        });
+                    };
+
+                this.popin = PopinManager.createPopIn({
+                    open: function () {
+                        parent = jQuery(this).parent('.ui-dialog:first');
+                        attachToBottomRight();
+                    }
+                });
+
+                jQuery(window).resize(function () {
+                    attachToBottomRight();
+                });
+
                 this.popin.setTitle(translator.translate('page_status'));
-                this.popin.addOption('width', 160);
+                this.popin.addOption('width', 140);
             },
 
             /**
