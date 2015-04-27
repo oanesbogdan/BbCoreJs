@@ -56,7 +56,8 @@ define(
             initializeTree: function () {
                 var config = {
                         dragAndDrop: true,
-                        onCreateLi: this.onCreateLi
+                        onCreateLi: this.onCreateLi,
+                        autoOpen: 0
                     };
 
                 this.formatedData = [];
@@ -104,12 +105,12 @@ define(
              * @param {Object} event
              */
             onClick: function (event) {
+
                 var self = this,
                     parent = event.node.parent;
 
                 if (event.node.is_fake === true && self.config.do_pagination === true) {
-
-                    self.findPages(parent.id, event, parent.range_to + 1).done(function (data) {
+                    self.findPages(parent, parent.range_to + 1).done(function (data) {
                         self.treeView.invoke('removeNode', event.node);
                         self.insertDataInNode(data, parent);
                     });
@@ -127,8 +128,8 @@ define(
                     return;
                 }
 
-                if (event.node.before_load) {
-                    self.findPages(event.node.id, event, 0).done(function (data) {
+                if (event.node.before_load === true) {
+                    self.findPages(event.node, 0).done(function (data) {
                         self.insertDataInNode(data, event.node);
                     });
                 }
@@ -141,13 +142,13 @@ define(
              * @param {Number} start
              * @param {Number} limit
              */
-            findPages: function (parent_uid, event, start) {
+            findPages: function (node, start) {
                 var dfd = jQuery.Deferred(),
                     self = this;
 
-                PageRepository.findChildren(parent_uid, start, this.limit_of_page).done(function (data, response) {
+                PageRepository.findChildren(node.id, start, this.limit_of_page).done(function (data, response) {
 
-                    self.updateLimit(event, response);
+                    self.updateLimit(node, response);
 
                     dfd.resolve(data);
                 }).fail(function (e) {
@@ -162,19 +163,11 @@ define(
              * @param {Object} event
              * @param {Object} response
              */
-            updateLimit: function (event, response) {
-                var target;
-
-                if (event.namespace === 'open') {
-                    target = event.node;
-                } else if (event.namespace === 'click') {
-                    target = event.node.parent;
-                }
-
-                if (target !== undefined) {
-                    target.range_total = response.getRangeTotal();
-                    target.range_to = response.getRangeTo();
-                    target.range_from = response.getRangeFrom();
+            updateLimit: function (node, response) {
+                if (node !== undefined) {
+                    node.range_total = response.getRangeTotal();
+                    node.range_to = response.getRangeTo();
+                    node.range_from = response.getRangeFrom();
                 }
             },
 
@@ -183,19 +176,37 @@ define(
              * @param {Object} page
              * @returns {Object}
              */
-            formatePageToNode: function (page) {
+            formatePageToNode: function (page, children) {
+                var addLoader = true,
+                    key;
+
+                page.children = [];
+                if (undefined !== children) {
+
+                    for (key in children) {
+                        if (children.hasOwnProperty(key)) {
+                            children[key] = this.formatePageToNode(children[key]);
+                        }
+                    }
+
+                    if (page.range_total > children.length  && this.config.do_pagination === true) {
+                        children.push(this.buildNode('next results...', {'is_fake': true}));
+                    }
+
+                    page.children = children;
+                    addLoader = false;
+                }
 
                 page.id = page.uid;
                 page.label = page.title;
-                page.children = [];
                 page.before_load = false;
                 page.hasChildren = function () {
                     return this.children.length !== 0 || this.has_children === true;
                 };
 
                 if (page.has_children) {
-                    page.before_load = true;
-                    if (this.config.do_loading === true) {
+                    if (this.config.do_loading === true && addLoader === true) {
+                        page.before_load = true;
                         page.children.push(this.buildNode('Loading...', {'is_fake': true}));
                     }
                 }
@@ -261,16 +272,23 @@ define(
 
             getTree: function () {
                 var self = this,
-                    dfd = jQuery.Deferred();
+                    dfd = jQuery.Deferred(),
+                    rootNode;
 
                 PageRepository.findRoot().done(function (data) {
                     if (data.hasOwnProperty(0)) {
-                        data = [self.formatePageToNode(data[0])];
+
+                        rootNode = data[0];
+                        rootNode.id = rootNode.uid;
+
+                        self.findPages(rootNode, 0).done(function (pages) {
+                            self.treeView.setData([self.formatePageToNode(rootNode, pages)]);
+
+                            dfd.resolve(self.tree);
+                        });
                     }
-
-                    self.treeView.setData(data);
-
-                    dfd.resolve(self.tree);
+                }).fail(function () {
+                    dfd.reject();
                 });
 
                 return dfd.promise();
