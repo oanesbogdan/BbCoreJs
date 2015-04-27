@@ -85,9 +85,11 @@ define(
 
                 Popin.init(this.config.tbSelector);
 
+                Core.RouteManager.navigateByPath('/');
                 if (current_url !== null) {
-                    Core.RouteManager.navigateByPath('/');
                     Core.RouteManager.navigateByPath(current_url);
+                } else {
+                    Core.RouteManager.navigateByPath(Core.config('default_url'));
                 }
             },
 
