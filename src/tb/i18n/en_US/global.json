@@ -144,5 +144,6 @@
     "validate": "Validate",
 
     "website_parameters": "Website parameters",
-    "workflow_management": "Workflow management"
+    "workflow_management": "Workflow management",
+    "write_and_access": "Write and Access"
 }
