@@ -19,9 +19,12 @@
     "block_display": "Block display",
 
     "cancel": "Cancel",
+    "cancel_changes_content_below": "Cancel changes content below",
+    "cancel_confirmation": "Cancel Confirmation",
     "change_password": "Change password ?",
     "clear_all": "Clear all",
     "clone_page": "Clone page",
+    "confirm_saving_changes_content_below": "Confirm saving changes content below",
     "content_management": "Content management",
     "contribution": "Contribution",
     "contents": "Contents",
@@ -81,6 +84,7 @@
     "manage_users_and_groups": "Manage users and groups",
     "media": "Media",
     "media_library": "Media library",
+    "modified_at": "Modified at",
     "modified_date": "Modified date",
 
     "name": "Name",
@@ -118,6 +122,7 @@
     "roles_management": "Roles management",
 
     "save": "Save",
+    "saving_confirmation": "Saving Confirmation",
     "scheduling": "Scheduling",
     "search": "Search",
     "search_content": "Search content",

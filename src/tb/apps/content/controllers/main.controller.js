@@ -48,6 +48,8 @@ define(
     ) {
         'use strict';
 
+        var trans = Core.get('trans') || function (value) {return value; };
+
         Core.ControllerManager.registerController('MainController', {
             appName: 'content',
 
@@ -135,8 +137,8 @@ define(
              */
             cancelService: function () {
                 var config = {
-                    popinTitle: 'Cancel Confirmation',
-                    title: 'Cancel changes content below :',
+                    popinTitle: trans('cancel_confirmation'),
+                    title: trans('cancel_changes_content_below') + ' :',
                     onSave: function (data, popin) {
                         popin.mask();
                         RevisionRepository.save(data, 'revert').done(function () {
@@ -155,8 +157,8 @@ define(
              */
             validateService: function () {
                 var config = {
-                    popinTitle: 'Saving Confirmation',
-                    title: 'Confirm saving changes content below :',
+                    popinTitle: trans('saving_confirmation'),
+                    title: trans('confirm_saving_changes_content_below') + ' :',
                     onSave: function (data, popin) {
                         popin.mask();
                         RevisionRepository.save(data, 'commit').done(function () {
