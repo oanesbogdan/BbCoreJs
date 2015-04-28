@@ -203,6 +203,8 @@ define(
                                 btnCls: "bb5-context-menu-copy",
                                 btnLabel: "Copy",
                                 btnCallback: function () {
+                                    jQuery('.action-selected').removeClass('action-selected');
+                                    jQuery(self.currentEvent.node.element).addClass('action-selected');
                                     self.copied_node = self.currentEvent.node;
                                     self.cuted_node = undefined;
                                 }
@@ -211,6 +213,7 @@ define(
                                 btnCls: "bb5-context-menu-paste",
                                 btnLabel: "Paste",
                                 btnCallback: function () {
+                                    jQuery('.action-selected').removeClass('action-selected');
                                     self.doPaste('inside');
                                 }
                             },
@@ -218,6 +221,7 @@ define(
                                 btnCls: "bb5-context-menu-paste-before",
                                 btnLabel: "Paste before",
                                 btnCallback: function () {
+                                    jQuery('.action-selected').removeClass('action-selected');
                                     self.doPaste('before');
                                 }
                             },
@@ -225,6 +229,7 @@ define(
                                 btnCls: "bb5-context-menu-paste-after",
                                 btnLabel: "Paste after",
                                 btnCallback: function () {
+                                    jQuery('.action-selected').removeClass('action-selected');
                                     self.doPaste('after');
                                 }
                             },
@@ -232,6 +237,8 @@ define(
                                 btnCls: "bb5-context-menu-cut",
                                 btnLabel: "Cut",
                                 btnCallback: function () {
+                                    jQuery('.action-selected').removeClass('action-selected');
+                                    jQuery(self.currentEvent.node.element).addClass('action-selected');
                                     self.cuted_node = self.currentEvent.node;
                                     self.copied_node = undefined;
                                 }
