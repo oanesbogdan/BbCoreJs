@@ -233,7 +233,7 @@ define(
                 this.dataStore.addFilter("byParent", function (value, restParams) {
 
                     restParams.criterias = {
-                        'state': [1, 3],
+                        'state': [1, 2, 3],
                         'parent_uid': value
                     };
 
