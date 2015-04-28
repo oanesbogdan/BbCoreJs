@@ -22,14 +22,14 @@ define(
         'content.repository',
         'Core/Renderer',
         'component!popin',
-        'text!content/tpl/palette_blocks',
+        'text!content/tpl/block_display',
         'jquery',
         'content.dnd.manager',
         'component!translator',
         'jqueryui',
         'jsclass'
     ],
-    function (ContentRepository, Renderer, Popin, paletteBlocksTpl, jQuery, DndManager, Translator) {
+    function (ContentRepository, Renderer, Popin, blockDisplayTpl, jQuery, DndManager, Translator) {
 
         'use strict';
 
@@ -47,7 +47,7 @@ define(
              */
             createPopin: function () {
                 this.popin = Popin.createPopIn();
-                this.popin.setTitle(Translator.translate('categories_of_blocks'));
+                this.popin.setTitle(Translator.translate('block_display'));
             },
 
             /**
@@ -133,7 +133,7 @@ define(
                     config.categories = this.buildFakeCategories(this.contents);
                 }
 
-                html = Renderer.render(paletteBlocksTpl, config);
+                html = Renderer.render(blockDisplayTpl, config);
 
                 this.popin.setContent(html);
 

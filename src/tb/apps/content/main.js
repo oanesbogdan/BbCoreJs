@@ -58,7 +58,7 @@ require.config({
         'content/tpl/content_breadcrumb': 'src/tb/apps/content/templates/content-breadcrumb.twig',
         'content/tpl/contribution/index': 'src/tb/apps/content/templates/contribution.index.twig',
         'content/tpl/carousel_blocks': 'src/tb/apps/content/templates/carousel-blocks.twig',
-        'content/tpl/palette_blocks': 'src/tb/apps/content/templates/palette-blocks.twig',
+        'content/tpl/block_display': 'src/tb/apps/content/templates/block-display.twig',
         'content/tpl/dropzone': 'src/tb/apps/content/templates/dropzone.twig',
         'content/tpl/content-action': 'src/tb/apps/content/templates/content-action.twig',
         'content/tpl/breadcrumb': 'src/tb/apps/content/templates/breadcrumb.twig',
