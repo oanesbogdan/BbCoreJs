@@ -39,11 +39,11 @@ define(
             config: {
                 imports: ['user/repository/user.repository'],
                 define: {
-                    indexService: ['user/views/user/view.list', 'text!user/templates/user/list.twig'],
+                    indexService: ['user/repository/user.repository', 'user/views/user/view.list', 'text!user/templates/user/list.twig'],
                     newService: ['user/views/user/form.view', 'user/form/new.user.form'],
                     editService:  ['user/views/user/form.view', 'user/form/edit.user.form'],
                     deleteService: ['user/views/user/delete.view'],
-                    showCurrentService: ['user/views/user/toolbar'],
+                    showCurrentService: ['user/repository/user.repository', 'user/views/user/toolbar'],
                     editCurrentService:  ['user/views/user/current.form.view', 'user/form/current.user.form'],
                     changePasswordService:  ['user/views/user/current.form.view', 'user/form/password.user.form'],
                     logoutService: ['component!session', 'Core/DriverHandler', 'Core/RestDriver']
