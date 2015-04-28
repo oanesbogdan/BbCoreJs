@@ -15,9 +15,10 @@
     "available_in_menus": "Available in menus",
 
     "block": "Block",
+    "block_categories": "Block categories",
+    "block_display": "Block display",
 
     "cancel": "Cancel",
-    "categories_of_blocks": "Categories of blocks",
     "change_password": "Change password ?",
     "clear_all": "Clear all",
     "clone_page": "Clone page",
@@ -101,6 +102,7 @@
     "paste_before": "Paste before",
     "password": "Password",
     "password_is_invalid": "Password is invalid",
+    "pick_a_block": "Pick a block",
     "password_is_too_short": "Password lenght is too short (at least 6 characters)",
     "previous": "Previous",
     "publication_scheduled_for": "Publication scheduled for",
