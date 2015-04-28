@@ -30,7 +30,7 @@ define(
             config: {
                 imports: ['user/repository/group.repository'],
                 define: {
-                    indexService: ['user/views/group/view.list', 'text!user/templates/group/list.twig'],
+                    indexService: ['user/repository/group.repository', 'user/views/group/view.list', 'text!user/templates/group/list.twig'],
                     newService: ['user/views/group/form.view'],
                     editService: ['user/views/group/form.view'],
                     duplicateService: ['user/views/group/duplicate.view'],
