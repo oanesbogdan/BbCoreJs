@@ -9669,7 +9669,7 @@ colpick Color Picker / colpick.com
   margin: 0 4px;
 }
 #bb5-site-wrapper {
-  margin-top: 190px;
+  margin-top: 220px;
 }
 #bb5-ui .help-block {
   color: red;
@@ -9698,6 +9698,9 @@ colpick Color Picker / colpick.com
   box-shadow: 0px 0px 1px 3px rgba(227, 78, 38, 0.85);
 }
 /*clicked block -> orange*/
+#bb5-ui .bb5-treeview ul.jqtree-tree li.jqtree_common.action-selected .jqtree-title {
+  color: red;
+}
 /* END CONTENT */
 /* bb notify css start author http://tympanus.net/codrops/2012/06/25/timed-notifications-with-css-animations/ */
 #bb-box-wrapper {
