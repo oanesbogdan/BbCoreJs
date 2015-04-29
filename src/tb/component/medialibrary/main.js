@@ -357,6 +357,7 @@ define(
                     this.searchEngine.render(searchEnginerCtn);
                     this.bindEvents();
                     this.loadMediaFolders();
+                    jQuery("#" + this.dialog.id).parent().find(".ui-dialog-buttonpane .ui-dialog-buttonset").addClass("pull-right");
                 },
 
                 loadMediaFolders: function () {

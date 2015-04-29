@@ -28,6 +28,7 @@
     "content_management": "Content management",
     "contribution": "Contribution",
     "contents": "Contents",
+    "contents_selector": "Contents selector",
     "create_a_draft": "Create a draft",
     "create_a_folder": "Create a folder",
     "create_group": "Create group",
@@ -36,12 +37,14 @@
     "creation_date": "Creation date",
     "cut": "Cut",
     "current_directory": "Current directory",
+    "content_preview": "Content preview",
 
 
     "data_base": "Data base",
     "deactivate": "Deactivate",
     "deactivated": "Deactivated",
     "delete": "Delete",
+    "delete_content": "Delete content",
     "display": "Display",
     "display_external_content": "Display external content",
     "display_links": "Display links",
@@ -91,7 +94,9 @@
     "name_is_required": "Name is required",
     "new_page": "New page",
     "next": "Next",
+    "no": "No",
     "no_one": "No one",
+
 
     "online": "Online",
 
@@ -108,9 +113,12 @@
     "password_is_invalid": "Password is invalid",
     "pick_a_block": "Pick a block",
     "password_is_too_short": "Password lenght is too short (at least 6 characters)",
+    "please_wait_while_the_content_is_being_deleted": "Please wait while the content is being deleted",
     "previous": "Previous",
     "publication_scheduled_for": "Publication scheduled for",
     "publishing_archiving": "Publishing / Archiving",
+    "published_before" : "Published before",
+    "published_after" : "Published after",
 
     "remove": "Remove",
     "remove_content_confirmation_message": "Do you want remove this content ?",
@@ -152,5 +160,6 @@
 
     "website_parameters": "Website parameters",
     "workflow_management": "Workflow management",
-    "write_and_access": "Write and Access"
+    "write_and_access": "Write and Access",
+    "yes": "Yes"
 }
