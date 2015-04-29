@@ -120,9 +120,15 @@ define(
                 },
 
                 unApplyFilter: function (filterName) {
+                    var self = this;
                     this.tasksQueue = underscore.reject(this.tasksQueue, function (task) {
-                        return task.name === "filters:" + filterName;
+                        if (task.name === "filters:" + filterName) {
+                            task.params.unshift("unApplyFilter:" + filterName);
+                            self.trigger.apply(self, task.params);
+                            return true;
+                        }
                     });
+
                     return this;
                 },
                 unApplySorter: function (sorterName) {
@@ -318,6 +324,7 @@ define(
                     this.trigger("processing");
                     var self = this,
                         dfd = new jQuery.Deferred(),
+                        url = this.config.resourceEndpoint,
                         uid = itemData.hasOwnProperty(this.config.idKey) ? itemData[this.config.idKey] : null,
                         /* compute new start */
                         nextTotal = self.total - 1,
@@ -327,13 +334,14 @@ define(
                     if (!uid) {
                         Core.exception('DataStoreException', 75001, '[remove] ' + this.idKey + ' key can\'t be found');
                     }
-                    CoreDriverHandler["delete"](this.config.resourceEndpoint, {
-                        uid: itemData[this.config.idKey]
-                    }).done(function () {
+                    if (typeof this.config.rewriteResourceEndpoint === "function") {
+                        url = this.config.rewriteResourceEndpoint("delete", itemData);
+                    }
+                    CoreDriverHandler["delete"](url, {id: uid}).done(function () {
                         dfd.resolve(itemData);
                         self.setStart(nextStart);
-                        self.trigger("dataDelete", itemData);
                         self.trigger("doneProcessing");
+                        self.trigger("dataDelete", itemData);
                     }).fail(function (reason) {
                         dfd.reject(reason);
                         self.trigger("error", {

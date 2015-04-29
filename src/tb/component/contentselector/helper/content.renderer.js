@@ -38,9 +38,11 @@ define(
         'use strict';
         var nunjucks = require('nunjucks'),
             jQuery = require('jquery'),
+            trans = require('Core').get('trans'),
             Core = require('Core'),
             ContentRenderer = new JS.Class({
-                initialize: function () {
+                initialize: function (selector) {
+
                     this.templates = {
                         viewmodelist: require('text!cs-templates/content.list.view.tpl'),
                         viewmodegrid: require('text!cs-templates/content.list.view.tpl'),
@@ -49,15 +51,27 @@ define(
                         deleteContent: require('text!cs-templates/content.delete.tpl')
                     };
                     this.itemData = null;
+                    this.selector = selector;
                     this.restContentDataStore = require('content.datastore');
                     this.popinManager = require('component!popin');
-                    this.popin = this.popinManager.createPopIn({
+
+                    this.mode = "viewmode";
+                },
+
+                getPopin: function (title) {
+                    title = title || trans("content_preview");
+                    if (this.popin) {
+                        this.popin.destroy();
+                    }
+                    this.popin = this.popinManager.createSubPopIn(this.selector.popIn, {
                         modal: true,
                         minHeight: 200,
                         minWidth: 450,
-                        title: "Content preview"
+                        maxHeight: 500,
+                        maxWidth: 450,
+                        title: title
                     });
-                    this.mode = "viewmode";
+                    return this.popin;
                 },
 
                 setEditMode: function () {
@@ -99,32 +113,42 @@ define(
                     return false;
                 },
 
-                showContentPreview: function (itemData) {
+                clearContent: function (content) {
+                    var bbContents = jQuery(content).removeClass("bb-content").find(".bb-content");
+                    bbContents.map(function (i) {
+                        jQuery(bbContents[i]).removeClass("bb-content");
+                    });
+                    return jQuery(content);
+                },
+
+                showContentPreview: function (itemData, e) {
+                    e.stopPropagation();
                     var self = this;
-                    self.popin.setContent(jQuery("<p></p>"));
-                    self.popin.display();
+                    self.getPopin().setContent("<b>" + trans("loading") + "...</b>");
                     self.popin.mask();
-                    self.addButtons();
+                    self.popin.display();
+
                     jQuery.ajax({
                         url: "/rest/1/classcontent/" + itemData.type + '/' + itemData.uid,
                         dataType: 'html'
                     }).done(function (response) {
-                        self.popin.unmask();
-                        self.popin.setContent(jQuery(response));
+                        response = self.clearContent(jQuery(response));
+                        self.popin.setContent(response);
                         self.popin.display();
+                        jQuery('#' + self.popin.getId()).dialog("option", "maxHeight", 450);
                     }).fail(function (response) {
-                        self.popin.unmask();
                         Core.exception('ContentRendererException', 57567, 'error while showing showContentPreview ' + response);
-                    });
+                    }).always(self.popin.unmask);
                 },
 
-                deleteContent: function (itemData) {
+                deleteContent: function (itemData, e) {
+                    e.stopPropagation();
                     var self = this,
                         content;
                     self.itemData = itemData;
-                    self.popin.setContent(jQuery("<p></p>"));
+                    self.getPopin().setContent("<b>" + trans("loading") + "...</b>");
+                    self.popin.setTitle(trans("delete_content"));
                     self.popin.mask();
-                    self.addButtons();
                     self.popin.display();
                     jQuery.ajax({
                         url: "/rest/1/page",
@@ -134,6 +158,7 @@ define(
                         }
                     }).done(function (data) {
                         data = data || [];
+                        self.addButtons();
                         var templateData = {
                             isOrphaned: (data.length === 0),
                             items: data
@@ -149,13 +174,20 @@ define(
                 },
 
                 addButtons: function () {
-                    var self = this;
+                    var self = this,
+                        contentData = {};
                     this.deleting = true;
-                    self.popin.addButton('Yes', function () {
-                        self.popin.setContent("<p>Please wait while the content is being deleted...</p>");
-                        self.restContentDataStore.remove(self.itemData.type, self.itemData.uid);
+                    self.popin.addButton(trans("yes"), function () {
+                        self.popin.mask();
+                        self.popin.setContent("<p>" + trans("please_wait_while_the_content_is_being_deleted") + "...</p>");
+                        contentData.uid = self.itemData.uid;
+                        contentData.type = self.itemData.type;
+                        self.restContentDataStore.remove(contentData).always(function () {
+                            self.popin.unmask();
+                            self.popin.hide();
+                        });
                     });
-                    self.popin.addButton("No", function () {
+                    self.popin.addButton(trans("No"), function () {
                         self.popin.hide();
                     });
                 }

@@ -20,12 +20,13 @@ define(
     [
         'Core',
         'require',
+        'nunjucks',
         'jquery',
         'jsclass',
         'datetimepicker',
         'text!cs-templates/searchengine.tpl'
     ],
-    function (Core, require, jQuery) {
+    function (Core, require, nunjucks, jQuery) {
         'use strict';
 
         var ContentSearchEngine = new JS.Class({
@@ -44,7 +45,7 @@ define(
             initialize: function (config) {
                 this.config = jQuery.extend({}, this.defaultConfig, config);
                 jQuery.extend(this, {}, Backbone.Events);
-                this.widget = jQuery(require('text!cs-templates/searchengine.tpl')).clone();
+                this.widget = jQuery(nunjucks.renderString(require('text!cs-templates/searchengine.tpl'), {}));
                 this.initDatepicker();
                 this.bindEvents();
             },
@@ -74,9 +75,19 @@ define(
             bindEvents: function () {
                 jQuery(this.widget).on('click', this.config.datepickerClass, jQuery.proxy(this.showOrInitDateTimePicker, this));
                 jQuery(this.widget).on('click', this.config.searchBtnClass, jQuery.proxy(this.handleSearch, this));
+                jQuery(this.widget).on('keyup', ".form-control", jQuery.proxy(this.handleKeyUp, this));
+            },
+
+            handleKeyUp: function (e) {
+                var value = jQuery(e.currentTarget).eq(0).val(),
+                    fieldName = jQuery(e.currentTarget).data("fieldname");
+                if (!value.length) {
+                    this.trigger("onResetField", fieldName);
+                }
             },
 
             render: function (container, positionMethod) {
+
                 positionMethod = (typeof positionMethod === "string") ? positionMethod : 'html';
                 if (container && jQuery(container).length) {
                     jQuery(container)[positionMethod](this.widget);

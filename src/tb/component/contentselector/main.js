@@ -55,14 +55,16 @@ define(
         var formater = require('node.formater'),
             underscore = require('underscore'),
             ContentRenderer = require('content.renderer'),
+            trans = require('Core').get('trans') || function (value) { return value; },
             ContentSelectorWidget = new JS.Class({
                 VIEW_MODE: "view",
                 EDIT_MODE: "edit",
                 mainSelector: Core.get('wrapper_toolbar_selector'),
                 defautConfig: {
+                    viewmode: 'grid',
                     autoDisplay: true,
                     dialogConfig: {
-                        title: "<i class='fa fa-inbox'></i> Contents selector",
+                        title: trans("contents_selector"),
                         draggable: false,
                         resizable: false,
                         autoOpen: false,
@@ -74,15 +76,23 @@ define(
                     pagination: {
                         itemsOnPage: 5
                     },
-                    pageSelector: {
-                        range: [1, 10, 1]
+                    rangeSelector: {
+                        range: [10, 50, 10],
+                        selected: 50
                     },
                     categoryTreeView: {},
-                    contentDataView: {},
+                    contentDataView: {
+                        allowMultiSelection: true,
+                        selectedItemClass: "selected",
+                        css: {
+                            width: "auto",
+                            height: "auto"
+                        }
+                    },
                     searchEngine: {}
                 },
                 initialize: function (userConfig) {
-                    /* The purpose is to setup child components*/
+                    /* The purpose is to setup child components */
                     jQuery.extend(this, {}, Backbone.Events);
                     this.config = jQuery.extend({}, this.defautConfig, userConfig);
                     if (this.config) {
@@ -95,20 +105,34 @@ define(
                     this.widget = jQuery(layout).clone();
                     this.popIn = this.initPopIn();
                     this.popIn.addOption("open", jQuery.proxy(this.onOpen, null, this));
-                    this.options = jQuery({}, this.defautConfig, userConfig);
-                    this.contentRenderer = new ContentRenderer();
+                    this.contentRenderer = new ContentRenderer(this);
+                    this.viewmode = this.config.viewmode || "grid";
                     this.handleMode();
-                    this.contentRenderer.setSelector(this);
+                    this.handleViewModeChange();
                     this.initComponents();
                     this.initControls();
                     this.bindEvents();
-                    this.showCloseAndCancelButtons();
+                    this.addCloseAndCancelButtons();
                 },
 
                 initControls: function () {
-                    this.pageRangeSelector = require("component!rangeselector").createPageRangeSelector(this.config.pageSelector);
+                    this.pageRangeSelector = require("component!rangeselector").createPageRangeSelector(this.config.rangeSelector);
                     this.searchEngine = require("cs-control/searchengine.control").createSearchEngine(this.config.searchEngine);
                     this.contentPagination.setItemsOnPage(this.pageRangeSelector.getValue(), true);
+                },
+
+                handleViewModeChange: function (e) {
+                    this.widget.find(".viewmode-btn").removeClass("active");
+                    if (!e) {
+                        this.widget.find(".viewmode-btn.bb5-sortas" + this.viewmode).addClass("active");
+                    } else {
+                        var viewmode = jQuery(e.currentTarget).data('viewmode');
+                        jQuery(e.currentTarget).addClass("active");
+                        this.showMask();
+                        this.contentDataView.setRenderMode(viewmode);
+                        this.hideMask();
+                        this.viewmode = viewmode;
+                    }
                 },
 
                 handleMode: function () {
@@ -120,7 +144,7 @@ define(
                     }
                 },
 
-                showCloseAndCancelButtons: function () {
+                addCloseAndCancelButtons: function () {
                     var self = this,
                         label = (this.mode === this.EDIT_MODE) ? "Add & Close" : "Close";
                     this.popIn.addButton(label, function () {
@@ -136,7 +160,6 @@ define(
                             self.reset();
                         }
                         self.trigger("cancel");
-
                     });
                 },
 
@@ -152,12 +175,10 @@ define(
 
                 /* in edit mode a few things change */
                 setEditMode: function () {
-                    this.mode = this.EDIT_MODE;
                     this.contentRenderer.setEditMode();
                 },
 
                 setViewMode: function () {
-                    this.mode = this.VIEW_MODE;
                     this.contentRenderer.setViewMode();
                 },
 
@@ -166,15 +187,10 @@ define(
                 },
 
                 createDataView: function () {
-                    var defaultConfig = {
-                        allowMultiSelection: true,
-                        selectedItemCls: "selected",
-                        css: {
-                            width: "auto",
-                            height: "auto"
-                        }
-                    },
-                        dataViewConfig = jQuery.extend({}, defaultConfig, this.contentDataView);
+                    var dataViewConfig = this.config.contentDataView;
+                    if (this.config.hasOwnProperty("viewmode")) {
+                        dataViewConfig.renderMode = this.config.viewmode;
+                    }
                     dataViewConfig.itemRenderer = jQuery.proxy(this.contentRenderer.render, this.contentRenderer);
                     dataViewConfig.dataStore = this.contentRestDataStore;
                     return require('component!dataview').createDataView(dataViewConfig);
@@ -202,19 +218,35 @@ define(
                  * the tree is loaded here to prevent useless rest call
                  **/
                 onReady: function () {
-                    var catTreeCtn = jQuery(this.widget).find('.bb5-windowpane-tree .bb5-treeview').eq(0),
+                    var self = this,
+                        catTreeCtn = jQuery(this.widget).find('.bb5-windowpane-tree .bb5-treeview').eq(0),
                         contentViewCtn = jQuery(this.widget).find('.data-list-ctn').eq(0),
                         pageRangeCtn = jQuery(this.widget).find('.max-per-page-selector').eq(0),
                         paginationCtn = jQuery(this.widget).find('.content-selection-pagination').eq(0),
                         searchEnginerCtn = jQuery(this.widget).find(".bb5-form-wrapper").eq(0);
+
                     this.categoryTreeView.render(catTreeCtn);
                     this.contentDataView.render(contentViewCtn);
+                    this.contentDataView.on("afterRender", function () {
+                        var height = parseInt(self.computeDataViewSize() * 75 / 100, 10);
+                        jQuery(contentViewCtn).css("height", height);
+                    });
+
                     this.contentPagination.render(paginationCtn, 'replaceWith');
                     this.pageRangeSelector.render(pageRangeCtn, 'replaceWith');
                     this.searchEngine.render(searchEnginerCtn, 'html');
                     if (!this.isloaded && this.config.autoload) {
                         this.loadAllCategories();
                     }
+                    jQuery("#" + this.popIn.id).parent().find(".ui-dialog-buttonpane .ui-dialog-buttonset").addClass("pull-right");
+                },
+
+                deleteContent: function (content) {
+                    this.contentRestDataStore.remove(content);
+                },
+
+                computeDataViewSize: function () {
+                    return jQuery("#" + this.popIn.getId()).find(".bb5-windowpane-main").eq(0).height();
                 },
 
                 loadAllCategories: function () {
@@ -267,10 +299,13 @@ define(
                     this.contentRestDataStore.on('doneProcessing', function () {
                         self.hideMask();
                     });
-                    jQuery(this.widget).on('click', '.viewmode-btn', function (e) {
-                        var viewMode = jQuery(e.currentTarget).data('viewmode');
-                        self.setDataViewMode(viewMode);
+
+                    this.contentRestDataStore.on("dataDelete", function () {
+                        self.contentRestDataStore.execute();
                     });
+
+                    jQuery(this.widget).find(".viewmode-btn").on('click', jQuery.proxy(this.handleViewModeChange, this));
+
                     /* When we click on a node */
                     this.categoryTreeView.on('click', function (e) {
                         var selectedNode = e.node;
@@ -306,8 +341,9 @@ define(
                     });
                     /* when render : to handle layout */
                     this.contentPagination.on('afterRender', function (isVisible) {
-                        var position = (isVisible === true) ? 203 : 151;
+                        var position = (isVisible === true) ? 203 : 168;
                         self.fixDataviewLayout(position);
+
                     });
                     /* When we must update the query task */
                     this.searchEngine.on("doSearch", function (criteria) {
@@ -319,6 +355,12 @@ define(
                         });
                         self.contentRestDataStore.execute();
                     });
+
+                    this.searchEngine.on("onResetField", function (fieldName) {
+                        var filterName = 'by' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
+                        self.contentRestDataStore.unApplyFilter(filterName);
+                    });
+
                     /* when we have contents */
                     self.contentRestDataStore.on("dataStateUpdate", jQuery.proxy(this.updateCurrentNodeInfos, this));
                 },
@@ -327,7 +369,7 @@ define(
                     if (!this.widgetLayout) {
                         return;
                     }
-                    top = top || 135;
+                    top = top || 170;
                     var resizerTop = top - 5;
                     jQuery(this.widgetLayout.center.children.layout1.resizers.north).css('top', resizerTop);
                     jQuery(this.widgetLayout.center.children.layout1.center.pane).css('top', top);
