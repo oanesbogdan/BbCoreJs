@@ -28,7 +28,6 @@ require.config({
     baseUrl: 'resources/toolbar/',
     catchError: true,
     waitSeconds: 15,
-    urlArgs: 'cb=' + Math.random(),
     paths: {
         'component': 'src/tb/component/component',
         'vendor': 'dist/vendor.min',
