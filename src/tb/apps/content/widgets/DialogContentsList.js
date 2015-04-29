@@ -46,7 +46,16 @@ define(
              * Create popin for parameters form
              */
             createPopin: function () {
-                this.popin = Popin.createPopIn();
+                this.popin = Popin.createPopIn({
+                    open: function () {
+                        var popin = jQuery(this);
+                        popin.parent('.ui-dialog:first').css({
+                            top: ((window.innerHeight / 2) - (popin.height() / 2)),
+                            left: 20
+                        });
+
+                    }
+                });
                 this.popin.setTitle(Translator.translate('block_display'));
             },
 
