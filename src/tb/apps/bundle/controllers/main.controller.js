@@ -120,6 +120,7 @@ define(['Core', 'bundle.view.list', 'bundle.view.index'], function (Core, ListVi
                     target.siblings('a').removeClass('active');
                     target.addClass('active');
                     self.repository.active(action, bundleId);
+                    view.destruct();
                 },
                 function () {
                     view.destruct();
