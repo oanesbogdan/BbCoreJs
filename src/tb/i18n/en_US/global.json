@@ -80,6 +80,7 @@
     "link_selector_label": "Link Selector",
     "login": "Login",
     "login_is_required": "Login is required",
+    "login_should_contain_6_characters": "Login must be at least 6 characters",
     "loading": "Loading",
 
     "manage": "Manage",

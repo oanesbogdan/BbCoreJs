@@ -66,6 +66,9 @@ define(['component!formbuilder', 'component!translator'], function (formbuilder,
                 if (!data.hasOwnProperty('login') || data.login.trim().length === 0) {
                     form.addError('login', translator.translate('login_is_required'));
                 }
+                if (!data.hasOwnProperty('login') || data.login.trim().length < 6) {
+                    form.addError('login', translator.translate('login_should_contain_6_characters'));
+                }
                 if (!data.hasOwnProperty('email') || data.email.trim().length === 0) {
                     form.addError('email', translator.translate('email_is_required'));
                 } else {
