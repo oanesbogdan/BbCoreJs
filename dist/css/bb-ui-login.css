@@ -51,6 +51,9 @@
   border-radius: 4px;
   background-color: #fff;
   border: 1px solid #cecece;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
 }
 #bb5-ui .ui-dialog .ui-dialog-titlebar {
   padding: .4em 1em;
