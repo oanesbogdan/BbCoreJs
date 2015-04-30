@@ -75,6 +75,7 @@ define(
                 resetOnClose: true,
                 mediaFolderTreeView: {}
             },
+            trans = require("Core").trans || function (value) {return value; },
             MediaLibrary = new JS.Class({
                 VIEW_MODE: 'view',
                 EDIT_MODE: 'edit',
@@ -271,6 +272,12 @@ define(
                     }
                 },
 
+                validationHandler: function (form, data) {
+                    if (!data.hasOwnProperty('title') || data.title.trim().length === 0) {
+                        form.addError('title', trans('the_title_field_is_required'));
+                    }
+                },
+
                 showMediaEditForm: function (type, mediaItem) {
                     try {
                         var self = this,
@@ -288,6 +295,7 @@ define(
                                     folder_uid: self.loadedNode.uid
                                 };
                                 deps.EditionHelper.show(content, {
+                                    onValidate: jQuery.proxy(self.validationHandler, self),
                                     onSave: jQuery.proxy(self.onSaveHandler, self, mediaInfos)
                                 });
                                 /* deal with main dialog getting focus while editing */
@@ -301,7 +309,8 @@ define(
                                         folder_uid: self.loadedNode.uid
                                     };
                                     deps.EditionHelper.show(content, {
-                                        onSave: jQuery.proxy(self.onSaveHandler, self, mediaInfos)
+                                        onSave: jQuery.proxy(self.onSaveHandler, self, mediaInfos),
+                                        onValidate: jQuery.proxy(self.validationHandler, self)
                                     });
                                     /* deal with main dialog getting focus while editing */
                                     self.dialog.addChild(deps.EditionHelper.getDialog());
