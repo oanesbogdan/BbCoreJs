@@ -9,7 +9,7 @@
             <button id="contribution-seo-page" type="button" class="btn btn-default-grey btn-xs">{{ 'page_seo'|trans }}</button>
         </p>
         <p>
-            <label>
+            <label class="checkbox-inline">
                 <input {% if page.is_hidden == false %}checked{% endif %} id="page-visibility-input" type="checkbox" name="menu_visibility" /> {{ 'available_in_menus'|trans }}
             </label>
         </p>

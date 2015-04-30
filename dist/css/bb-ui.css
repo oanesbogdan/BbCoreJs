@@ -8857,6 +8857,9 @@ colpick Color Picker / colpick.com
 #bb5-ui .ui-widget {
   background-color: #fff;
   border: 1px solid #cecece;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
 }
 #bb5-ui .ui-widget .ui-dialog-titlebar {
   padding: .4em 1em;
@@ -8864,12 +8867,88 @@ colpick Color Picker / colpick.com
 #bb5-ui .ui-widget .ui-draggable-handle {
   cursor: move;
 }
+#bb5-ui .ui-widget-content {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
 #bb5-ui .ui-dialog {
   overflow: hidden;
   position: absolute;
   padding: 0.2em;
   outline: 0;
   z-index: 100;
+}
+#bb5-ui .ui-resizable {
+  position: relative;
+}
+#bb5-ui .ui-resizable-handle {
+  position: absolute;
+  font-size: 0.1px;
+  display: block;
+  -ms-touch-action: none;
+  touch-action: none;
+}
+#bb5-ui .ui-resizable-disabled .ui-resizable-handle,
+#bb5-ui .ui-resizable-autohide .ui-resizable-handle {
+  display: none;
+}
+#bb5-ui .ui-resizable-n {
+  cursor: n-resize;
+  height: 7px;
+  width: 100%;
+  top: -5px;
+  left: 0;
+}
+#bb5-ui .ui-resizable-s {
+  cursor: s-resize;
+  height: 7px;
+  width: 100%;
+  bottom: -5px;
+  left: 0;
+}
+#bb5-ui .ui-resizable-e {
+  cursor: e-resize;
+  width: 7px;
+  right: -5px;
+  top: 0;
+  height: 100%;
+}
+#bb5-ui .ui-resizable-w {
+  cursor: w-resize;
+  width: 7px;
+  left: -5px;
+  top: 0;
+  height: 100%;
+}
+#bb5-ui .ui-resizable-se {
+  cursor: se-resize;
+  width: 12px;
+  height: 12px;
+  right: 1px;
+  bottom: 1px;
+  position: absolute!important;
+}
+#bb5-ui .ui-resizable-sw {
+  cursor: sw-resize;
+  width: 9px;
+  height: 9px;
+  left: -5px;
+  bottom: -5px;
+}
+#bb5-ui .ui-resizable-nw {
+  cursor: nw-resize;
+  width: 9px;
+  height: 9px;
+  left: -5px;
+  top: -5px;
+}
+#bb5-ui .ui-resizable-ne {
+  cursor: ne-resize;
+  width: 9px;
+  height: 9px;
+  right: -5px;
+  top: -5px;
 }
 #bb5-ui .ui-widget-header {
   border-width: 0;
@@ -9309,6 +9388,10 @@ colpick Color Picker / colpick.com
   clear: both;
   list-style-type: none;
 }
+#bb5-ui .bb5-treeview ul.jqtree-tree li.jqtree_common.action-selected .jqtree-title {
+  color: #999999;
+  outline: 1px dashed;
+}
 #bb5-ui .bb5-treeview ul.jqtree-tree .jqtree-toggler {
   border-bottom: none;
   color: #333;
@@ -9698,9 +9781,6 @@ colpick Color Picker / colpick.com
   box-shadow: 0px 0px 1px 3px rgba(227, 78, 38, 0.85);
 }
 /*clicked block -> orange*/
-#bb5-ui .bb5-treeview ul.jqtree-tree li.jqtree_common.action-selected .jqtree-title {
-  color: red;
-}
 /* END CONTENT */
 /* bb notify css start author http://tympanus.net/codrops/2012/06/25/timed-notifications-with-css-animations/ */
 #bb-box-wrapper {
