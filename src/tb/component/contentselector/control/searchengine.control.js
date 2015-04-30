@@ -101,9 +101,7 @@ define(
                 criteria.title = jQuery(this.config.titleFieldClass).eq(0).val();
                 criteria.beforeDate = jQuery(this.config.beforeDateClass).eq(0).data('selectedTime') || '';
                 criteria.afterDate = jQuery(this.config.afterDateClass).eq(0).data('selectedTime') || '';
-                if (criteria.title.length || criteria.beforeDate.length || criteria.afterDate.length) {
-                    this.trigger("doSearch", criteria);
-                }
+                this.trigger("doSearch", criteria);
             }
         });
         return {
