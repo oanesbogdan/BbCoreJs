@@ -35,7 +35,10 @@ define(
         var Edition = {
 
             contentSetClass: '.contentset',
-            config: {onSave: null},
+            config: {
+                onSave: null,
+                onValidate: null
+            },
 
             show: function (content, config) {
                 this.config = config || {};
@@ -101,6 +104,10 @@ define(
                         'elements': {},
                         'onSubmit': jQuery.proxy(this.onSubmit, this)
                     };
+
+                if (this.config && this.config.hasOwnProperty("onValidate")) {
+                    config.onValidate = this.config.onValidate;
+                }
 
                 for (key in parameters) {
                     if (parameters.hasOwnProperty(key)) {
@@ -172,6 +179,7 @@ define(
                             });
 
                             self.config.onSave = null;
+                            self.config.onValidate = null;
                         });
                     });
                 });
