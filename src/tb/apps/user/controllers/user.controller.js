@@ -94,9 +94,9 @@ define(
                 );
             },
 
-            initFormView: function (user, popin, View, action, error) {
+            initFormView: function (user, popin, View, action, error, id) {
                 var self = this,
-                    view = new View({popin: popin, user: user, errors: error}, action),
+                    view = new View({popin: popin, user: user, errors: error}, action, id),
                     user_id = user.id();
 
                 view.display().then(function (user) {
@@ -122,17 +122,25 @@ define(
             },
 
             newService: function (req, popin) {
-                this.initFormView(new User(), popin, req('user/views/user/form.view'), 'new');
+                if (document.getElementById('new-user-subpopin') === null) {
+                    this.initFormView(new User(), popin, req('user/views/user/form.view'), 'new', null, 'new-user-subpopin');
+                } else {
+                    jQuery('#new-user-subpopin').dialog('open');
+                }
             },
 
             editService: function (req, popin, user_id) {
-                var user = new User(),
-                    self = this;
+                if (document.getElementById('edit-user-subpopin') === null) {
+                    var user = new User(),
+                        self = this;
 
-                this.repository.find(user_id).done(function (user_values) {
-                    user.populate(user_values);
-                    self.initFormView(user, popin, req('user/views/user/form.view'), 'edit');
-                });
+                    this.repository.find(user_id).done(function (user_values) {
+                        user.populate(user_values);
+                        self.initFormView(user, popin, req('user/views/user/form.view'), 'edit', null, 'edit-user-subpopin');
+                    });
+                } else {
+                    jQuery('#edit-user-subpopin').dialog('open');
+                }
             },
 
             deleteService: function (req, popin, user_id) {

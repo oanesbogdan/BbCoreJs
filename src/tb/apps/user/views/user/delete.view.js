@@ -31,7 +31,7 @@ define(
         return Backbone.View.extend({
 
             popin_config: {
-                id: 'new-user-subpopin',
+                id: 'delete-user-subpopin',
                 width: 250,
                 top: 180,
                 close: function () {
