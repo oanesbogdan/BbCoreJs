@@ -31,7 +31,6 @@ define(
         return Backbone.View.extend({
 
             popin_config: {
-                id: 'new-user-subpopin',
                 width: 250,
                 top: 180,
                 close: function () {
@@ -42,11 +41,14 @@ define(
             /**
              * Initialize of PageViewEdit
              */
-            initialize: function (data, action) {
+            initialize: function (data, action, id) {
                 var self = this,
                     form;
                 mainPopin = data.popin;
                 this.user = data.user;
+                if (id !== null) {
+                    this.popin_config.id = id;
+                }
                 popin = mainPopin.popinManager.createSubPopIn(mainPopin.popin, this.popin_config);
                 this.popin = popin;
 

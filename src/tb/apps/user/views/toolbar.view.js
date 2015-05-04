@@ -41,7 +41,7 @@ define(
             },
 
             newUser: function () {
-                Core.ApplicationManager.invokeService('user.user.new', Core.get('application.user').popin);
+                Core.ApplicationManager.invokeService('user.user.new', Core.get('application.user').popin, 'new-user-subpopin');
             },
 
             searchUsers: function (event) {

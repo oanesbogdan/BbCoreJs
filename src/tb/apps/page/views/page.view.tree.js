@@ -39,7 +39,6 @@ define(
              * Initialize of PageViewClone
              */
             initialize: function (config) {
-
                 this.config = config;
                 if (typeof this.config.site_uid !== 'string') {
                     Api.exception('MissingPropertyException', 500, 'Property "site_uid" must be set to constructor');
