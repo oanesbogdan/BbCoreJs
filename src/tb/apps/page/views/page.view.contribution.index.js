@@ -208,6 +208,22 @@ define(
                         jQuery(this.schedulingTag).dialog('open');
                     }
                 }
+
+                // dispatch click events on datepicker icons
+                jQuery(self.schedulingTag).on('click', '#btn-publishing', jQuery.proxy(
+                    function () {
+                        jQuery('#publishing').trigger('click');
+                    },
+                    self
+                )
+                    );
+                jQuery(self.schedulingTag).on('click', '#btn-archiving', jQuery.proxy(
+                    function () {
+                        jQuery('#archiving').trigger('click');
+                    },
+                    self
+                )
+                    );
             },
 
             /**
@@ -235,12 +251,12 @@ define(
                 var day,
                     state;
 
-                if (config.hasOwnProperty('publishing') && config.publishing !== '') {
+                if (config.hasOwnProperty('publishing') && config.publishing !== '' && config.publishing !== null) {
                     day = moment.unix(config.publishing);
                     state = translator.translate('from') + ' ' + day.format('DD/MM/YYYY HH:mm');
                 }
 
-                if (config.hasOwnProperty('archiving') && config.archiving !== '') {
+                if (config.hasOwnProperty('archiving') && config.archiving !== '' && config.archiving !== null) {
                     day = moment.unix(config.archiving);
                     state += ' ' + translator.translate('till') + ' ' + day.format('DD/MM/YYYY HH:mm');
                 }
