@@ -25,10 +25,11 @@ define(
         'text!page/widgets/tpl/information_page',
         'component!translator',
         'jquery',
+        'moment',
         'jsclass'
     ],
 
-    function (Renderer, PopinManager, PageRepository, template, translator, jQuery) {
+    function (Renderer, PopinManager, PageRepository, template, translator, jQuery, moment) {
 
         'use strict';
 
@@ -80,6 +81,7 @@ define(
                     this.popin.mask();
 
                     PageRepository.findCurrentPage().done(function (page) {
+                        page.modified = moment.unix(parseInt(page.modified, 10)).format('H:m DD/MM/YYYY');
                         self.setContent(Renderer.render(template, {'page': page}));
                         self.popin.unmask();
                     });
