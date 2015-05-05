@@ -274,6 +274,24 @@ define(
                 });
 
                 MouseEventManager.listen();
+            },
+
+            showContentSelectorService: function () {
+                var self = this;
+                if (!this.ContentSelectorIsLoaded) {
+                    require(['component!contentselector'], function (ContentSelector) {
+                        if (self.ContentSelectorIsLoaded) { return; }
+                        self.contentSelector = ContentSelector.createContentSelector({
+                            mode: 'view',
+                            resetOnClose: true
+                        });
+                        self.contentSelectorIsLoaded = true;
+                        self.contentSelector.setContenttypes([]);
+                        self.contentSelector.display();
+                    });
+                } else {
+                    self.contentSelector.display();
+                }
             }
         });
     }

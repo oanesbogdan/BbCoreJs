@@ -35,9 +35,25 @@ define(
                 element.on('click', '#new-page', this.showNewPage);
                 element.on('click', '#global-save', this.manageSave);
                 element.on('click', '#bundle-toolbar-tree', this.showTree);
+                element.on('click', '#bundle-toolbar-contentSelector', this.showContentSelector);
                 element.on('click', '#bundle-toolbar-global-validate', this.manageValidate);
                 element.on('click', '#bundle-toolbar-global-cancel', this.manageCancel);
                 element.on("click", "#btn-show-mediaLibrary", this.showMediaLibrary);
+            },
+
+            showContentSelector: function () {
+                var popinId = 'bb-page-content-selector',
+                    config = {
+                        do_loading: true,
+                        do_pagination: true,
+                        site_uid: Core.get('site.uid'),
+                        popin: true
+                    };
+                if (document.getElementById(popinId) !== null) {
+                    jQuery('#' + popinId).dialog('open');
+                } else {
+                    Core.ApplicationManager.invokeService('content.main.showContentSelector', config);
+                }
             },
 
             showTree: function () {
