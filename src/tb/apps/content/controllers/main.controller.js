@@ -160,7 +160,7 @@ define(
                     onSave: function (data, popin) {
                         popin.mask();
                         RevisionRepository.save(data, 'revert').done(function () {
-                            popin.hide();
+                            location.reload();
                         });
                     }
 
