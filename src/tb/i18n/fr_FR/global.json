@@ -57,6 +57,7 @@
     "loading": "Chargement",
 
     "manage": "Administrer",
+    "manage_rights": "Gérer les droits",
     "media": "Médiathèque",
     "modified_date": "Date de modification",
     "media": "Média",
@@ -109,6 +110,5 @@
     "validate": "Valider",
 
     "website_parameters": "Paramètres du site",
-    "workflow_management": "Gestion du workflow",
-    "write_and_acces": "Droits/accès"
+    "workflow_management": "Gestion du workflow"
 }

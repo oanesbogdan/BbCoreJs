@@ -85,6 +85,7 @@
 
     "manage": "Manage",
     "manage_bundle": "Manage Bundle",
+    "manage_rights": "Manage rights",
     "manage_users_and_groups": "Manage users and groups",
     "media": "Media",
     "media_library": "Media library",
@@ -97,7 +98,6 @@
     "next": "Next",
     "no": "No",
     "no_one": "No one",
-
 
     "online": "Online",
 
@@ -161,6 +161,5 @@
 
     "website_parameters": "Website parameters",
     "workflow_management": "Workflow management",
-    "write_and_access": "Write and Access",
     "yes": "Yes"
 }
