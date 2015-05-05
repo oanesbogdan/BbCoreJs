@@ -2,17 +2,48 @@
 
 #bb5-ui {
 
-    &,
+  &,
+  & * {
+    #bb5-ui .bb5-ui-reset;
+  }
+
+  .help-block {
+    #bb5-ui .help-block;
+  }
+
+  .ui-dialog {
+    #bb5-ui .ui-dialog;
+    .ui-dialog-content {
+      #bb5-ui .ui-dialog .ui-dialog-content;
+      #bb5-ui .ui-dialog-content;
+    }
+  }
+
+  .ui-widget {
+    #bb5-ui .ui-widget;
+    .ui-icon {
+      #bb5-ui .ui-widget .ui-icon;
+    }
+    .ui-icon-closethick:before {
+      &:extend(#bb5-ui .ui-widget .ui-icon-closethick:before);
+    }
+  }
+
+  .ui-widget-header {
+    #bb5-ui .ui-widget-header;
     & * {
-        #bb5-ui .bb5-ui-reset;
+      &:extend(#bb5-ui .ui-widget-header *);
     }
 
-    .ui-dialog {
-        #bb5-ui .ui-widget;
-    }
+    .ui-button {
+      #bb5-ui .ui-widget-header .ui-button;
+      .ui-icon {
+        #bb5-ui .ui-widget-header .ui-button .ui-icon
+      }
 
-    .ui-widget-header {
-        #bb5-ui .ui-widget-header;
-        #bb5-ui .ui-widget-header;
+      &:hover{
+        &:extend(#bb5-ui .ui-widget-header .ui-button:hover);
+      }
     }
+  }
 }
