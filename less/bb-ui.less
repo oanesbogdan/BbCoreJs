@@ -1719,7 +1719,7 @@ Version: 2.10 Dec2014
         position: absolute;
         padding: 0.2em;
         outline: 0;
-        z-index: 100;
+        z-index: 1000;
     }
 
     .ui-resizable {
@@ -1771,6 +1771,16 @@ Version: 2.10 Dec2014
         right: 1px;
         bottom: 1px;
         position:absolute!important;
+        overflow: hidden;
+        &:after {
+            content:"";
+            width:17px;
+            position: absolute;
+            top:50%;
+            border-top:1px solid @bb5-txt-clr;
+            box-shadow:0px 3px 0px @bb5-txt-clr, 0px 6px 0px @bb5-txt-clr;
+            .rotate(-45deg);
+        }
     }
     .ui-resizable-sw {
         cursor: sw-resize;
@@ -2457,6 +2467,17 @@ Version: 2.10 Dec2014
             }
         }
     }
+
+    /*Status*/
+    .page-offline {
+        &:extend(#bb5-ui .ui-dialog .page-status);
+        background-color:mix(@brand-primary, #fff, 75%)
+    }
+    .page-online {
+        &:extend(#bb5-ui .ui-dialog .page-status);
+        background-color:mix(@brand-success, #fff, 75%)
+    }
+    .page-date {display: block;}
 
     /*Loader*/
     .spinner {

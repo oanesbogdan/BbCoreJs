@@ -549,7 +549,9 @@ Version: 2.10 Dec2014
 #bb5-ui .ui-dialog .dialog-title {
   color: #e34c26;
 }
-#bb5-ui .ui-dialog .page-status {
+#bb5-ui .ui-dialog .page-status,
+#bb5-ui .page-offline,
+#bb5-ui .page-online {
   background-color: #e34c26;
 }
 #bb5-ui .ui-datepicker .ui-state-default {
@@ -7545,6 +7547,7 @@ colpick Color Picker / colpick.com
   /*LIST STYLE PREVIEW*/
   /*Context menu*/
   /*Tab dialog*/
+  /*Status*/
   /*Loader*/
 }
 #bb5-ui.bb5-hidden {
@@ -8877,7 +8880,7 @@ colpick Color Picker / colpick.com
   position: absolute;
   padding: 0.2em;
   outline: 0;
-  z-index: 100;
+  z-index: 1000;
 }
 #bb5-ui .ui-resizable {
   position: relative;
@@ -8928,6 +8931,18 @@ colpick Color Picker / colpick.com
   right: 1px;
   bottom: 1px;
   position: absolute!important;
+  overflow: hidden;
+}
+#bb5-ui .ui-resizable-se:after {
+  content: "";
+  width: 17px;
+  position: absolute;
+  top: 50%;
+  border-top: 1px solid #333333;
+  box-shadow: 0px 3px 0px #333333, 0px 6px 0px #333333;
+  -webkit-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
 }
 #bb5-ui .ui-resizable-sw {
   cursor: sw-resize;
@@ -9074,7 +9089,9 @@ colpick Color Picker / colpick.com
 #bb5-ui .ui-dialog-no-title .ui-dialog-titlebar {
   display: none;
 }
-#bb5-ui .ui-dialog .page-status {
+#bb5-ui .ui-dialog .page-status,
+#bb5-ui .page-offline,
+#bb5-ui .page-online {
   font-size: 13px;
   color: #fff;
   padding: 6px 15px;
@@ -9534,6 +9551,15 @@ colpick Color Picker / colpick.com
 }
 #bb5-ui .tabs-dialog .tab-content .tab-pane .bb5-windowpane-wrapper {
   margin-top: -1px;
+}
+#bb5-ui .page-offline {
+  background-color: #ea795c;
+}
+#bb5-ui .page-online {
+  background-color: #b3d940;
+}
+#bb5-ui .page-date {
+  display: block;
 }
 #bb5-ui .spinner {
   margin: 0 auto;
