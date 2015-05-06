@@ -128,25 +128,35 @@ define(
             /**
              * Call method save into SaveManager
              */
-            saveService: function (req) {
+            saveService: function (req, confirm) {
                 var popin = req('component!popin').createPopIn(),
                     translator = req('component!translator'),
-                    nbContents = SaveManager.getContentsToSave().length;
+                    nbContents = SaveManager.getContentsToSave().length,
+                    dfd = new jQuery.Deferred();
 
-                popin.setTitle(translator.translate('save_draft'));
-                popin.addButton('Ok', popin.hide);
-
-                if (nbContents > 0) {
-                    popin.mask();
+                if (confirm !== true) {
                     SaveManager.save().done(function () {
-                        popin.setContent(nbContents + ' ' + translator.translate('content_saved_sentence' + ((nbContents > 1) ? '_plural' : '')));
-                        popin.unmask();
+                        dfd.resolve();
                     });
                 } else {
-                    popin.setContent(translator.translate('no_content_save'));
+                    popin.setTitle(translator.translate('save_draft'));
+                    popin.addButton('Ok', popin.hide);
+
+                    if (nbContents > 0) {
+                        popin.mask();
+                        SaveManager.save().done(function () {
+                            popin.setContent(nbContents + ' ' + translator.translate('content_saved_sentence' + ((nbContents > 1) ? '_plural' : '')));
+                            popin.unmask();
+                            dfd.resolve();
+                        });
+                    } else {
+                        popin.setContent(translator.translate('no_content_save'));
+                    }
+
+                    popin.display();
                 }
 
-                popin.display();
+                return dfd.promise();
             },
 
             /**
