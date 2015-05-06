@@ -4,11 +4,12 @@
         <div class="input-group input-group-xs">
             <input type="text"
                 name="{{ element.getKey() }}"
+                id="{{ element.getKey() }}"
                 {% if element.isDisabled() %}disabled{% endif %}
                 value="{{ element.getValue() }}"
                 class="form-control input-xs bb5-datepicker"
              >
-            <span class="input-group-btn">
+            <span class="input-group-btn" id="btn-{{ element.getKey() }}">
                 <button type="button" class="btn btn-default-grey">
                     <i class="fa fa-calendar"></i>
                 </button>
