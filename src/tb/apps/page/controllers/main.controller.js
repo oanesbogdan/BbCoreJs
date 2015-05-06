@@ -130,6 +130,8 @@ define(
             },
 
             clonePageService: function (config) {
+
+                config.callbackAfterSubmit = this.newPageRedirect;
                 var view = new CloneView(config);
                 view.render();
             },
