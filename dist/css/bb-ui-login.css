@@ -1,9 +1,39 @@
+#bb5-site-wrapper .content-actions button,
+#bb5-site-wrapper .content-actions a {
+  -webkit-transition-duration: 250ms;
+  transition-duration: 250ms;
+  -webkit-transition-timing-function: ease;
+  transition-timing-function: ease;
+  -webkit-transition-property: background border;
+  transition-property: background border;
+}
 #bb5-ui .ui-widget-header .ui-button:hover {
   background-color: #4d4d4d;
 }
 #bb5-ui .page-offline,
 #bb5-ui .page-online {
   background-color: #e34c26;
+}
+#bb5-site-wrapper .content-actions button,
+#bb5-site-wrapper .content-actions a {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 11px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 #bb5-ui #bb5-ui .container:before,
 #bb5-ui #bb5-ui .container:after,
@@ -43,6 +73,27 @@
 #bb5-ui #bb5-ui .pager:after {
   clear: both;
 }
+#bb5-site-wrapper .content-actions button,
+#bb5-site-wrapper .content-actions a {
+  text-align: left;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+#bb5-site-wrapper .content-actions button,
+#bb5-site-wrapper .content-actions a {
+  border: 1px solid #CDCDCD;
+}
+#bb5-site-wrapper .content-actions button,
+#bb5-site-wrapper .content-actions a {
+  background-color: #F3F3F3;
+}
+#bb5-site-wrapper .content-actions button:hover,
+#bb5-site-wrapper .content-actions a:hover {
+  background-color: #E34C26;
+  border-color: #E34C26;
+  color: #fff;
+  text-shadow: none;
+}
 #bb5-ui .ui-widget-header * {
   font-weight: normal;
   color: #fff;
@@ -78,7 +129,7 @@
   position: absolute;
   padding: 0.2em;
   outline: 0;
-  z-index: 1000;
+  z-index: 490002;
 }
 #bb5-ui .ui-dialog .input-group-btn .fa {
   vertical-align: middle;
@@ -184,6 +235,16 @@
   width: 17px;
   height: 17px;
   text-align: center;
+}
+#bb5-ui .ui-widget-header .ui-button .ui-button-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
 #bb5-ui .ui-widget-header .ui-button .ui-icon {
   line-height: 17px;

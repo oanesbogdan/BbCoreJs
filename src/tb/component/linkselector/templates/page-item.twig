@@ -4,9 +4,9 @@
     <span class="bb5-toolbar-order-col col-bb5-22">Unknown</span>
     <span class="bb5-toolbar-order-col col-bb5-6">
         {% if item.state in [1, 3] %}
-            <button class="btn btn-simple btn-xs select-btn"></i> {{ trans('select') }}</button>
+            <button class="btn btn-online btn-xs select-btn"></i> {{ trans('select') }}</button>
         {% else %}
-            <button class="btn btn-simple btn-xs disabled"></i> {{ trans('offline') }}</button>
+            <button class="btn btn-offline btn-xs disabled"></i> {{ trans('offline') }}</button>
         {% endif %}
     </span>
 </li>
