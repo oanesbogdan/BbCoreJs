@@ -280,7 +280,12 @@ define(
                     dfd = jQuery.Deferred();
 
                 ContentRepository.getHtml(this.type, this.uid).done(function (html) {
+
                     html = jQuery(html);
+
+                    if (html.get(0).tagName === 'IMG') {
+                        html.attr('src', html.attr('src') + '?' + new Date().getTime());
+                    }
 
                     self.jQueryObject.replaceWith(html);
                     self.jQueryObject = html;

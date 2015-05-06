@@ -254,9 +254,17 @@ define(
             },
 
             contributionEditAction: function () {
+                var self = this;
+
                 Core.ApplicationManager.invokeService('contribution.main.index').done(function (service) {
                     service.done(function () {
                         Core.Scope.register('contribution', 'content');
+
+                        if (self.contribution_edit_loaded !== true) {
+                            DndManager.initDnD();
+                            self.contribution_edit_loaded = true;
+                        }
+
                         Core.ApplicationManager.invokeService('contribution.main.manageTabMenu', '#edit-tab-content');
                     });
                 });
