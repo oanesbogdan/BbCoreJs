@@ -56,7 +56,6 @@ define(
                 var config = {
                         dragAndDrop: true,
                         onCreateLi: this.onCreateLi,
-                        autoOpen: 0,
                         id: 'bb-page-tree'
                     };
 
@@ -176,26 +175,8 @@ define(
              * @param {Object} page
              * @returns {Object}
              */
-            formatePageToNode: function (page, children) {
-                var addLoader = true,
-                    key;
-
+            formatePageToNode: function (page) {
                 page.children = [];
-                if (undefined !== children) {
-
-                    for (key in children) {
-                        if (children.hasOwnProperty(key)) {
-                            children[key] = this.formatePageToNode(children[key]);
-                        }
-                    }
-
-                    if (page.range_total > children.length  && this.config.do_pagination === true) {
-                        children.push(this.buildNode('next results...', {'is_fake': true}));
-                    }
-
-                    page.children = children;
-                    addLoader = false;
-                }
 
                 page.id = page.uid;
                 page.label = page.title;
@@ -205,7 +186,7 @@ define(
                 };
 
                 if (page.has_children) {
-                    if (this.config.do_loading === true && addLoader === true) {
+                    if (this.config.do_loading === true) {
                         page.before_load = true;
                         page.children.push(this.buildNode('Loading...', {'is_fake': true}));
                     }
@@ -281,11 +262,9 @@ define(
                         rootNode = data[0];
                         rootNode.id = rootNode.uid;
 
-                        self.findPages(rootNode, 0).done(function (pages) {
-                            self.treeView.setData([self.formatePageToNode(rootNode, pages)]);
+                        self.treeView.setData([self.formatePageToNode(rootNode)]);
 
-                            dfd.resolve(self.tree);
-                        });
+                        dfd.resolve(self.tree);
                     }
                 }).fail(function () {
                     dfd.reject();
