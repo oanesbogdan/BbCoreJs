@@ -14,6 +14,7 @@ define(
     [
         'require',
         'Core',
+        'Core/Renderer',
         'component!popin',
         'component!treeview',
         'component!dataview',
@@ -36,6 +37,7 @@ define(
     function (
         require,
         Core,
+        CoreRenderer,
         PopInMng,
         TreeView,
         DataViewMng,
@@ -88,7 +90,7 @@ define(
                     this.dialog.addOption("open", jQuery.proxy(this.onOpen, null, this));
                     this.dialog.addOption("close", jQuery.proxy(this.onClose, this, this));
                     this.dialog.addOption("focus", jQuery.proxy(this.onFocus, this));
-                    this.widget = jQuery(layout).clone();
+                    this.widget = jQuery(CoreRenderer.render(layout, {})).clone();
                     this.handleViewModeChange();
                     this.loadingMap = {};
                     this.openedMediaFolder = null;
