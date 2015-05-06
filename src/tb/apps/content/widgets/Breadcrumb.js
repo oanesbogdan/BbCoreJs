@@ -65,7 +65,7 @@ define(
 
             computeElement: function (content) {
                 return {
-                    'name': content.getDefinition('properties').name,
+                    'name': content.getDefinition('properties').name || content.type,
                     'id': content.id
                 };
             },
