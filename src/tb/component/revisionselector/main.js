@@ -110,7 +110,13 @@ define(
                     this.popin.display();
 
                     this.repository.getDrafts().done(function (drafts) {
-                        self.popin.setContent(Renderer.render(treeTemplate, {items: DraftManager.computeDraft(drafts), title: self.config.title}));
+                        var config = {
+                            items: DraftManager.computeDraft(drafts),
+                            title: self.config.title,
+                            noContentMsg: self.config.noContentMsg
+                        };
+
+                        self.popin.setContent(Renderer.render(treeTemplate, config));
                         EventManager.init(self.selector);
                     });
                 }

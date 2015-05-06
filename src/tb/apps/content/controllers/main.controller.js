@@ -156,6 +156,7 @@ define(
             cancelService: function () {
                 var config = {
                     popinTitle: trans('cancel_confirmation'),
+                    noContentMsg: trans('no_content_cancel'),
                     title: trans('cancel_changes_content_below') + ' :',
                     onSave: function (data, popin) {
                         popin.mask();
@@ -176,6 +177,7 @@ define(
             validateService: function () {
                 var config = {
                     popinTitle: trans('saving_confirmation'),
+                    noContentMsg: trans('no_content_validate'),
                     title: trans('confirm_saving_changes_content_below') + ' :',
                     onSave: function (data, popin) {
                         popin.mask();

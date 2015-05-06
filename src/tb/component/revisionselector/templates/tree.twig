@@ -1,3 +1,4 @@
+{% if items|length > 0 %}
 <p class="dialog-title">{{ title }}</p>
 <div class="bb5-list-data-toolbar bb5-toolbar-order">
     <div class="row">
@@ -11,3 +12,6 @@
     <input type="checkbox" name="test" checked style="margin-left:15px;" class="general-revision-input"/> {{ trans('select_all') }}
     {{ items }}
 </ul>
+{% else %}
+<p>{{ noContentMsg }}</p>
+{% endif %}
