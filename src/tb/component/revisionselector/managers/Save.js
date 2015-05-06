@@ -51,12 +51,12 @@ define(
 
             /**
              * Build an object for the save
-             * 
+             *
              * Param -> Search parent and set in parameters array
              * Scalar -> Search parent and set in elements array
-             * ContentSet -> Check if element input is checked for save all of elements 
+             * ContentSet -> Check if element input is checked for save all of elements
              * Other: Minimum attributes are uid and type
-             * 
+             *
              * @param {Object} element
              */
             buildObject: function (element) {
@@ -94,7 +94,7 @@ define(
 
             /**
              * Search element into the dom and build
-             * 
+             *
              * @param {String} uid
              * @returns {undefined|Object}
              */
@@ -111,7 +111,7 @@ define(
 
             /**
              * Search object from dataToSave list and/or DOM
-             * 
+             *
              * @param {String} uid
              * @param {Boolean} build
              * @returns {undefined|Object}
@@ -142,7 +142,7 @@ define(
             },
 
             /**
-             * Verify if object isn't in dataToSave list and 
+             * Verify if object isn't in dataToSave list and
              * Push into dataToSave list
              * @param {Object} object
              */
