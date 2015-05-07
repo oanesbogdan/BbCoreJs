@@ -157,7 +157,6 @@ define(
                 var category = this.getCategoryById(categoryId),
                     key,
                     html = '',
-                    flag = 0,
                     data = {},
                     contents;
 
@@ -174,13 +173,6 @@ define(
                     if (contents.hasOwnProperty(key)) {
                         if (contents[key].visible) {
                             data.blocks.push(contents[key]);
-                            flag = flag + 1;
-                            if (flag === 3) {
-                                html = html + Renderer.render(carouselBlocksTpl, data);
-                                flag = 0;
-                                data.blocks = [];
-                                data.active = false;
-                            }
                         }
                     }
                 }
