@@ -72,9 +72,13 @@ define(
                     this.initPopin();
                 }
 
-                var self = this;
-
                 this.popin.display();
+
+                this.updateContent();
+            },
+
+            updateContent: function () {
+                var self = this;
 
                 if (this.defaultContent === undefined) {
 

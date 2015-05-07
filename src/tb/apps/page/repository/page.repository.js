@@ -180,6 +180,9 @@ define(
                     } else {
                         result = CoreDriverHandler.create(this.TYPE, data);
                     }
+                    result.done(function () {
+                        Core.ApplicationManager.invokeService('page.main.updatePageInfo');
+                    });
 
                     return result;
                 },
