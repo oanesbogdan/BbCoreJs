@@ -59,6 +59,7 @@ define(
 
                 this.resetDataTransfert();
                 this.cleanHTMLZoneForContentset();
+                this.removeScrollZones();
 
                 return false;
             }

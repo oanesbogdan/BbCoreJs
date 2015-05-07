@@ -62,6 +62,7 @@ require.config({
         'content/tpl/dropzone': 'src/tb/apps/content/templates/dropzone.twig',
         'content/tpl/content-action': 'src/tb/apps/content/templates/content-action.twig',
         'content/tpl/breadcrumb': 'src/tb/apps/content/templates/breadcrumb.twig',
+        'content/tpl/scrollzone': 'src/tb/apps/content/templates/scrollzone.twig',
 
         //Views
         'content.view.contribution.index': 'src/tb/apps/content/views/content.view.contribution.index'

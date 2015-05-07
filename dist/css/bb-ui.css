@@ -9929,22 +9929,27 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   box-shadow: 0px 0px 1px 3px rgba(227, 78, 38, 0.85);
 }
 /*clicked block -> orange*/
-#bb5-ui .scroll,
-.scroll {
+#bb5-ui .scroll {
   background: #99cc00;
-  height: 30px;
+  height: 50px;
   width: 100%;
   text-align: center;
-  opacity: 0.5;
+  opacity: 0.2;
   z-index: 999999;
 }
-#bb5-ui .scroll .fa,
-.scroll .fa {
+#bb5-ui .scroll .fa {
+  opacity: 0.6;
   color: #f9f9f9;
-  font-size: 30px;
+  font-size: 50px;
 }
-#bb5-ui .scroll.scroll-down,
-.scroll.scroll-down {
+#bb5-ui .scroll.over {
+  opacity: 0.6;
+}
+#bb5-ui .scroll.scroll-up {
+  position: fixed;
+  top: 190px;
+}
+#bb5-ui .scroll.scroll-down {
   position: fixed;
   bottom: 0;
 }

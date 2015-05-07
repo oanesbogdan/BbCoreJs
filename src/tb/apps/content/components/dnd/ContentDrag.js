@@ -87,6 +87,10 @@ define(
                     this.dataTransfer.contentSetDroppable,
                     this.dataTransfer.content.id
                 );
+                setTimeout(
+                    this.showScrollZones.bind(this),
+                    100
+                );
             }
         });
     }

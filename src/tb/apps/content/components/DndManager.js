@@ -27,6 +27,7 @@ define(
         'app.content/components/dnd/CommonDnD',
         'app.content/components/dnd/ContentDrag',
         'app.content/components/dnd/ContentDrop',
+        'text!content/tpl/scrollzone',
         'jsclass'
     ],
     function (Renderer,
@@ -36,7 +37,8 @@ define(
               ContentManager,
               CommonDnD,
               ContentDrag,
-              ContentDrop
+              ContentDrop,
+              scrollzone
             ) {
 
         'use strict';
@@ -56,6 +58,8 @@ define(
             dropZoneClass: 'bb-dropzone',
 
             dndClass: 'bb-dnd',
+
+            intervalId: 0,
 
             initialize: function () {
                 this.resetDataTransfert();
@@ -106,6 +110,79 @@ define(
                 if (!img.parent().hasClass('img-wrap-dnd')) {
                     img.wrap('<div class="img-wrap-dnd">');
                 }
+            },
+
+            scrollFnc: function () {
+                if (this.size) {
+                    window.scrollBy(0, this.size);
+                }
+            },
+
+            attachScrollDragEnter: function (element) {
+                var scrollFnc = this;
+
+                element.addEventListener('dragenter', function (event) {
+                    var direction,
+                        target;
+
+                    if (event.target.classList.contains('scroll-ico')) {
+                        target = event.target.parentNode;
+                    } else {
+                        target = event.target;
+                    }
+
+                    direction = target.getAttribute('data-direction');
+
+                    if (direction === 'up') {
+                        scrollFnc.size = -7;
+                    } else {
+                        scrollFnc.size = 7;
+                    }
+                    target.classList.add('over');
+                }, true);
+            },
+
+            attachScrollDragLeave: function (element) {
+                var scrollFnc = this;
+
+                element.addEventListener('dragleave', function (event) {
+                    var target;
+
+                    scrollFnc.size = false;
+
+                    if (event.target.classList.contains('scroll-ico')) {
+                        target = event.target.parentNode;
+                    } else {
+                        target = event.target;
+                    }
+
+                    target.classList.remove('over');
+                }, true);
+            },
+
+            showScrollZones: function () {
+                var scrollUp = Renderer.render(scrollzone, {direction: 'up'}),
+                    scrollDown = Renderer.render(scrollzone, {direction: 'down'}),
+                    scrolls,
+                    i;
+
+                this.scrollFnc.size = false;
+
+                this.intervalId = setInterval(this.scrollFnc.bind(this.scrollFnc), 10);
+
+                document.querySelector('#bb5-ui').insertAdjacentHTML('beforeend', scrollUp + scrollDown);
+
+                scrolls = document.querySelectorAll('.scroll');
+
+                for (i = scrolls.length - 1; i >= 0; i = i - 1) {
+                    this.attachScrollDragEnter.call(this.scrollFnc, scrolls[i]);
+                    this.attachScrollDragLeave.call(this.scrollFnc, scrolls[i]);
+                }
+            },
+
+            removeScrollZones: function () {
+                clearInterval(this.intervalId);
+                jQuery('.scroll').remove();
             },
 
             /**

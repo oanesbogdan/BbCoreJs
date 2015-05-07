@@ -97,18 +97,27 @@
 .bb-content.bb-content-selected {-webkit-box-shadow:0px 0px 1px 3px rgba(227,78,38,0.85); box-shadow:0px 0px 1px 3px rgba(227,78,38,0.85);} /*clicked block -> orange*/
 
 
-#bb5-ui .scroll,
-.scroll {
+#bb5-ui .scroll{
     background: @brand-success;
-    height: 30px;
+    height: 50px;
     width: 100%;
     text-align: center;
-    opacity: 0.5;
+    opacity: 0.2;
     z-index: 999999;
 
     .fa {
+        opacity: 0.6;
         color: @bb5-ui-bg;
-        font-size: 30px;
+        font-size: 50px;
+    }
+
+    &.over {
+        opacity: 0.6;
+    }
+
+    &.scroll-up {
+        position: fixed;
+        top: 190px;
     }
 
     &.scroll-down {
