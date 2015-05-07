@@ -41,7 +41,11 @@ define('tb.component/authentication/main',
              */
             initialize: function () {
                 this.popinManager = require('component!popin');
-                this.popin = this.popinManager.createPopIn();
+                this.popin = this.popinManager.createPopIn({
+                    'close': function reloadWebsite() {
+                        window.location.reload();
+                    }
+                });
                 this.formBuilder = require('component!formbuilder');
             },
 
@@ -147,7 +151,7 @@ define('tb.component/authentication/main',
                         onValidate: jQuery.proxy(this.onValidateForm, this)
                     };
 
-                this.popin.setTitle(this.title);
+                this.popin.setTitle('Log in');
                 this.formBuilder.renderForm(configForm).done(function (html) {
                     self.popin.setContent(html);
                     self.popin.display();
