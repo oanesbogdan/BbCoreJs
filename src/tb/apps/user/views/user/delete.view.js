@@ -70,7 +70,7 @@ define(
             },
 
             destruct: function () {
-                mainPopin.popinManager.destroy(this.popin);
+                mainPopin.popinManager.destroy(popin);
             }
         });
     }
