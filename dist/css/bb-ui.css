@@ -333,7 +333,9 @@ Version: 2.10 Dec2014
 #bb5-ui .txt-hightligth * {
   color: #e34c26;
 }
-#bb5-ui .btn {
+#bb5-ui .btn,
+#bb5-site-wrapper .content-actions button,
+#bb5-site-wrapper .content-actions a {
   -webkit-transition-duration: 250ms;
   transition-duration: 250ms;
   -webkit-transition-timing-function: ease;
@@ -2605,7 +2607,9 @@ select[multiple]#bb5-ui .input-lg {
   top: 0;
   right: 8px;
 }
-#bb5-ui .btn {
+#bb5-ui .btn,
+#bb5-site-wrapper .content-actions button,
+#bb5-site-wrapper .content-actions a {
   display: inline-block;
   margin-bottom: 0;
   font-weight: normal;
@@ -7483,6 +7487,7 @@ colpick Color Picker / colpick.com
   /*upload*/
   /*BTN*/
   /* -> btn-default*/
+  /*btn-clr*/
   /* -> btn-simple*/
   /* -> btn + ico */
   /* -> bb5-blocks-choice*/
@@ -7682,7 +7687,9 @@ colpick Color Picker / colpick.com
 #bb5-ui .bb5-upload-ico .bb5-form-upload input[type="file"] {
   display: none;
 }
-#bb5-ui .btn {
+#bb5-ui .btn,
+#bb5-site-wrapper .content-actions button,
+#bb5-site-wrapper .content-actions a {
   text-align: left;
   padding-left: 10px;
   padding-right: 10px;
@@ -7737,17 +7744,23 @@ colpick Color Picker / colpick.com
   display: inline-block;
 }
 #bb5-ui .btn-default,
-#bb5-ui .btn-default-grey {
+#bb5-ui .btn-default-grey,
+#bb5-site-wrapper .content-actions button,
+#bb5-site-wrapper .content-actions a {
   border: 1px solid #CDCDCD;
 }
-#bb5-ui .btn-default-grey {
+#bb5-ui .btn-default-grey,
+#bb5-site-wrapper .content-actions button,
+#bb5-site-wrapper .content-actions a {
   background-color: #F3F3F3;
 }
 #bb5-ui .btn-default-grey:hover,
 #bb5-ui .btn-default-grey:focus,
 #bb5-ui .btn-default-grey:active,
 #bb5-ui .btn-default-grey.active,
-#bb5-ui .open .dropdown-toggle#bb5-ui .btn-default-grey {
+#bb5-ui .open .dropdown-toggle#bb5-ui .btn-default-grey,
+#bb5-site-wrapper .content-actions button:hover,
+#bb5-site-wrapper .content-actions a:hover {
   background-color: #E34C26;
   border-color: #E34C26;
   color: #fff;
@@ -7760,6 +7773,88 @@ colpick Color Picker / colpick.com
 #bb5-ui .open .dropdown-toggle .btn-default-grey .fa {
   color: #fff;
   text-shadow: none;
+}
+#bb5-ui .btn-offline {
+  color: #333333;
+  background-color: #ea795c;
+  border-color: #e65f3d;
+}
+#bb5-ui .btn-offline:hover,
+#bb5-ui .btn-offline:focus,
+#bb5-ui .btn-offline:active,
+#bb5-ui .btn-offline.active,
+.open .dropdown-toggle#bb5-ui .btn-offline {
+  color: #333333;
+  background-color: #e55b38;
+  border-color: #cb3e1a;
+}
+#bb5-ui .btn-offline:active,
+#bb5-ui .btn-offline.active,
+.open .dropdown-toggle#bb5-ui .btn-offline {
+  background-image: none;
+}
+#bb5-ui .btn-offline.disabled,
+#bb5-ui .btn-offline[disabled],
+fieldset[disabled] #bb5-ui .btn-offline,
+#bb5-ui .btn-offline.disabled:hover,
+#bb5-ui .btn-offline[disabled]:hover,
+fieldset[disabled] #bb5-ui .btn-offline:hover,
+#bb5-ui .btn-offline.disabled:focus,
+#bb5-ui .btn-offline[disabled]:focus,
+fieldset[disabled] #bb5-ui .btn-offline:focus,
+#bb5-ui .btn-offline.disabled:active,
+#bb5-ui .btn-offline[disabled]:active,
+fieldset[disabled] #bb5-ui .btn-offline:active,
+#bb5-ui .btn-offline.disabled.active,
+#bb5-ui .btn-offline[disabled].active,
+fieldset[disabled] #bb5-ui .btn-offline.active {
+  background-color: #ea795c;
+  border-color: #e65f3d;
+}
+#bb5-ui .btn-offline .badge {
+  color: #ea795c;
+  background-color: #333333;
+}
+#bb5-ui .btn-online {
+  color: #333333;
+  background-color: #b3d940;
+  border-color: #a3cc29;
+}
+#bb5-ui .btn-online:hover,
+#bb5-ui .btn-online:focus,
+#bb5-ui .btn-online:active,
+#bb5-ui .btn-online.active,
+.open .dropdown-toggle#bb5-ui .btn-online {
+  color: #333333;
+  background-color: #a0c828;
+  border-color: #7a991f;
+}
+#bb5-ui .btn-online:active,
+#bb5-ui .btn-online.active,
+.open .dropdown-toggle#bb5-ui .btn-online {
+  background-image: none;
+}
+#bb5-ui .btn-online.disabled,
+#bb5-ui .btn-online[disabled],
+fieldset[disabled] #bb5-ui .btn-online,
+#bb5-ui .btn-online.disabled:hover,
+#bb5-ui .btn-online[disabled]:hover,
+fieldset[disabled] #bb5-ui .btn-online:hover,
+#bb5-ui .btn-online.disabled:focus,
+#bb5-ui .btn-online[disabled]:focus,
+fieldset[disabled] #bb5-ui .btn-online:focus,
+#bb5-ui .btn-online.disabled:active,
+#bb5-ui .btn-online[disabled]:active,
+fieldset[disabled] #bb5-ui .btn-online:active,
+#bb5-ui .btn-online.disabled.active,
+#bb5-ui .btn-online[disabled].active,
+fieldset[disabled] #bb5-ui .btn-online.active {
+  background-color: #b3d940;
+  border-color: #a3cc29;
+}
+#bb5-ui .btn-online .badge {
+  color: #b3d940;
+  background-color: #333333;
 }
 #bb5-ui .btn-simple {
   background: none;
@@ -7832,6 +7927,8 @@ colpick Color Picker / colpick.com
   background-color: #f5f5f5;
   width: 51px;
   height: 51px;
+  display: table-cell;
+  vertical-align: middle;
 }
 #bb5-ui .bb5-blocks-choice-x i {
   display: inline-block;
@@ -8880,7 +8977,7 @@ colpick Color Picker / colpick.com
   position: absolute;
   padding: 0.2em;
   outline: 0;
-  z-index: 1000;
+  z-index: 490002;
 }
 #bb5-ui .ui-resizable {
   position: relative;
@@ -8984,6 +9081,16 @@ colpick Color Picker / colpick.com
   right: 4px;
   background: transparent;
   border-width: 0;
+}
+#bb5-ui .ui-widget-header .ui-button .ui-button-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
 #bb5-ui .ui-widget-header .ui-button,
 #bb5-ui .ui-widget-header .ui-datepicker-next,
@@ -9561,6 +9668,15 @@ colpick Color Picker / colpick.com
 #bb5-ui .page-date {
   display: block;
 }
+#bb5-ui .bb-block {
+  padding-left: 5px!important;
+  padding-right: 5px!important;
+  border: 1px solid transparent;
+}
+#bb5-ui .bb-block:hover {
+  border-color: #e34c26;
+  cursor: pointer;
+}
 #bb5-ui .spinner {
   margin: 0 auto;
   text-align: center;
@@ -9708,6 +9824,22 @@ colpick Color Picker / colpick.com
   -webkit-box-shadow: 0px 0px 1px 3px rgba(227, 76, 38, 0.8);
   box-shadow: 0px 0px 1px 3px rgba(227, 76, 38, 0.8);
 }
+#bb5-site-wrapper .content-actions {
+  position: absolute;
+  top: -38px;
+  right: 0px;
+}
+#bb5-site-wrapper .content-actions {
+  z-index: 489999;
+}
+#bb5-site-wrapper .content-actions button,
+#bb5-site-wrapper .content-actions a {
+  color: #333333;
+  width: 30px;
+  height: 30px;
+  margin: 0 4px;
+  text-decoration: none;
+}
 /** Add Fixes */
 #bb5-ui .xdsoft_datetimepicker {
   box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.506);
@@ -9767,16 +9899,6 @@ colpick Color Picker / colpick.com
   margin-top: 15px;
 }
 /*min-height*/
-#bb5-site-wrapper .content-actions {
-  position: absolute;
-  top: -38px;
-  right: 0px;
-}
-#bb5-site-wrapper .content-actions button {
-  width: 30px;
-  height: 30px;
-  margin: 0 4px;
-}
 #bb5-site-wrapper {
   margin-top: 220px;
 }
@@ -9807,6 +9929,25 @@ colpick Color Picker / colpick.com
   box-shadow: 0px 0px 1px 3px rgba(227, 78, 38, 0.85);
 }
 /*clicked block -> orange*/
+#bb5-ui .scroll,
+.scroll {
+  background: #99cc00;
+  height: 30px;
+  width: 100%;
+  text-align: center;
+  opacity: 0.5;
+  z-index: 999999;
+}
+#bb5-ui .scroll .fa,
+.scroll .fa {
+  color: #f9f9f9;
+  font-size: 30px;
+}
+#bb5-ui .scroll.scroll-down,
+.scroll.scroll-down {
+  position: fixed;
+  bottom: 0;
+}
 /* END CONTENT */
 /* bb notify css start author http://tympanus.net/codrops/2012/06/25/timed-notifications-with-css-animations/ */
 #bb-box-wrapper {

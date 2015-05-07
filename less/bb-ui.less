@@ -80,7 +80,7 @@ Version: 2.10 Dec2014
 
 #bb5-ui {
     position:fixed;
-    z-index:490000;
+    z-index:@bb5-z-index;
     top:0;
     left:0;
     right:0;
@@ -353,6 +353,14 @@ Version: 2.10 Dec2014
         color:#fff;
         text-shadow: none;
     }
+    /*btn-clr*/
+    .btn-offline {
+        .button-variant(@bb5-clr-offline-txt; @bb5-clr-offline; darken(@bb5-clr-offline, 7%));
+    }
+
+    .btn-online {
+        .button-variant(@bb5-clr-online-txt; @bb5-clr-online; darken(@bb5-clr-online, 7%));
+    }
 
     /* -> btn-simple*/
     .btn-simple {
@@ -441,6 +449,8 @@ Version: 2.10 Dec2014
         background-color: #f5f5f5;
         width:51px;
         height:51px;
+        display: table-cell;
+        vertical-align: middle;
     }
 
     .bb5-blocks-choice-x i {
@@ -1719,7 +1729,7 @@ Version: 2.10 Dec2014
         position: absolute;
         padding: 0.2em;
         outline: 0;
-        z-index: 1000;
+        z-index: @bb5-z-index+2;
     }
 
     .ui-resizable {
@@ -1825,6 +1835,7 @@ Version: 2.10 Dec2014
         right:4px;
         background:transparent;
         border-width:0;
+        .ui-button-text {#bb5-ui .sr-only;}
     }
 
     .ui-widget-header .ui-button,
@@ -2471,13 +2482,23 @@ Version: 2.10 Dec2014
     /*Status*/
     .page-offline {
         &:extend(#bb5-ui .ui-dialog .page-status);
-        background-color:mix(@brand-primary, #fff, 75%)
+        background-color:@bb5-clr-offline;
     }
     .page-online {
         &:extend(#bb5-ui .ui-dialog .page-status);
-        background-color:mix(@brand-success, #fff, 75%)
+        background-color:@bb5-clr-online;
     }
     .page-date {display: block;}
+
+    .bb-block {
+        padding-left: 5px!important;
+        padding-right: 5px!important;
+        border:1px solid transparent;
+        &:hover {
+            border-color:@brand-primary;
+            cursor: pointer;
+        }
+    }
 
     /*Loader*/
     .spinner {
@@ -2612,6 +2633,30 @@ Version: 2.10 Dec2014
 
 .bb5-content-selected {
     .box-shadow(0px 0px 1px 3px rgba(red(@brand-primary), green(@brand-primary), blue(@brand-primary), 0.8))
+}
+
+
+#bb5-site-wrapper {
+    .content-actions {
+        position: absolute;
+        top: -38px;
+        right: 0px;
+    }
+
+    .content-actions {
+        z-index: (@bb5-z-index)-1;
+        button, a {
+            &:extend(#bb5-ui .btn, #bb5-ui .btn-default-grey);
+            color:  @bb5-txt-clr;
+            width: 30px;
+            height: 30px;
+            margin: 0 4px;
+            text-decoration: none;
+            &:hover {
+                &:extend(#bb5-ui .btn-default-grey:hover);
+            }
+        }
+    }
 }
 
 
