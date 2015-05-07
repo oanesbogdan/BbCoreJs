@@ -32,11 +32,15 @@ define(
             bindEvents: function (Manager) {
                 Core.Mediator.subscribe('on:classcontent:dragover', this.onDragOver, Manager);
                 Core.Mediator.subscribe('on:classcontent:dragend', this.endDragAction, Manager);
+                Core.Mediator.subscribe('on:classcontent:dragenter', this.onDragEnter, Manager);
+                Core.Mediator.subscribe('on:classcontent:dragleave', this.onDragLeave, Manager);
             },
 
             unbindEvents: function () {
                 Core.Mediator.unsubscribe('on:classcontent:dragover', this.onDragOver);
                 Core.Mediator.unsubscribe('on:classcontent:dragend', this.endDragAction);
+                Core.Mediator.unsubscribe('on:classcontent:dragenter', this.onDragEnter);
+                Core.Mediator.unsubscribe('on:classcontent:dragleave', this.onDragLeave);
             },
 
             /**
@@ -46,6 +50,18 @@ define(
             onDragOver: function (event) {
                 if (event.target.getAttribute('dropzone')) {
                     event.preventDefault();
+                }
+            },
+
+            onDragEnter: function (event) {
+                if (event.target.getAttribute('dropzone')) {
+                    event.target.classList.add('over');
+                }
+            },
+
+            onDragLeave: function (event) {
+                if (event.target.getAttribute('dropzone')) {
+                    event.target.classList.remove('over');
                 }
             },
 
