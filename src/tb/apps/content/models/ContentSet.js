@@ -30,7 +30,6 @@ define(
 
         var ContentSet = new JS.Class(AbstractContent, {
 
-            contentClass: 'bb-content',
             identifierDataAttribute: 'bb-identifier',
 
             /**
@@ -122,7 +121,7 @@ define(
              * @returns {Object}
              */
             getNodeChildren: function () {
-                return this.jQueryObject.children('.' + this.contentClass);
+                return this.jQueryObject.children(this.contentClass);
             },
 
             /**
