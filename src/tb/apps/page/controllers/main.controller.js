@@ -54,7 +54,10 @@ define(
             appName: 'page',
 
             config: {
-                imports: ['page.repository']
+                imports: ['page.repository'],
+                define: {
+                    updatePageInfoService: ['page.widget.InformationPage']
+                }
             },
 
             /**
@@ -170,6 +173,12 @@ define(
                     );
                 }
                 return data;
+            },
+
+            updatePageInfoService: function (req) {
+                var widget = req('page.widget.InformationPage');
+
+                widget.updateContent();
             }
         });
     }
