@@ -65,7 +65,9 @@ define(
             },
 
             beforeShow: function () {
-                var filters = [];
+
+                var filters = [],
+                    page = this.currentEvent.node;
 
                 if (this.copied_node === undefined && this.cuted_node === undefined) {
                     filters.push('bb5-context-menu-paste');
@@ -79,6 +81,12 @@ define(
                     filters.push('bb5-context-menu-paste');
                     filters.push('bb5-context-menu-paste-before');
                     filters.push('bb5-context-menu-paste-after');
+                }
+
+                if (page.is_root === true) {
+                    filters.push('bb5-context-menu-copy');
+                    filters.push('bb5-context-menu-cut');
+                    filters.push('bb5-context-menu-remove');
                 }
 
                 this.contextMenu.setFilters(filters);
