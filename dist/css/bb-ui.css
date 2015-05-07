@@ -9462,6 +9462,7 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   background-clip: padding-box;
   display: block;
+  z-index: 999999;
 }
 #bb5-ui .bb5-context-menu ul.pull-right {
   right: 0;
@@ -9869,7 +9870,7 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   margin: 10px 0;
 }
 #bb5-ui .bb5-context-menu {
-  z-index: 1000;
+  z-index: 999999;
 }
 #bb5-ui .jq-tree-editor .fa {
   cursor: pointer;

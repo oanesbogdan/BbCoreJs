@@ -1,4 +1,4 @@
-    <div class="row search-engine">
+<div class="row search-engine">
       <div class="col-bb5-x">
         <div class="row form-group"><span class="col-sm-6"><label for="form10" class="sr-only">{{ "title" | trans }}</label><input type="text" data-fieldName="title" class="form-control input-xs content-title" placeholder='{{ "title" | trans }}' id="form10"></span></div>
         <div class="row form-group">

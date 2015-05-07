@@ -1,3 +1,4 @@
+/*jslint unparam: true*/
 define(['component!datastore', 'jsclass'], function (DataStore) {
     'use strict';
     var restDataStore = new DataStore.RestDataStore({
@@ -24,5 +25,18 @@ define(['component!datastore', 'jsclass'], function (DataStore) {
         restParams.criterias.afterPubdateField = value;
         return restParams;
     });
+
+    restDataStore.on("unApplyFilter:byTitle", function (lastValue, restParams) {
+        delete restParams.criterias.mediaTitle;
+    });
+
+    restDataStore.on("unApplyFilter:byBeforeDate", function (lastValue, restParams) {
+        delete restParams.criterias.beforePubdateField;
+    });
+
+    restDataStore.on("unApplyFilter:byAfterDate", function (lastValue, restParams) {
+        delete restParams.criterias.afterPubdateField;
+    });
+
     return restDataStore;
 });

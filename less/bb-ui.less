@@ -46,7 +46,7 @@ Version: 2.10 Dec2014
 
     // Utility classes
     @import "@{bootstrap-path}utilities.less";
-   
+
     @import "@{font-awesome-path}less/mixins.less";
     @import "@{font-awesome-path}less/path.less";
     @import "@{font-awesome-path}less/core.less";
@@ -161,7 +161,7 @@ Version: 2.10 Dec2014
     h4, .h4 { font-size: @font-size-h4; }
     h5, .h5 { font-size: @font-size-h5; }
     h6, .h6 { font-size: @font-size-h6; }
-    
+
     /*navbar*/
     #bb5-navbar-primary {
         //&:after, &:before {display: none;}
@@ -909,7 +909,7 @@ Version: 2.10 Dec2014
     .form-group {
         margin-bottom:6px;
     }
-    
+
     .ui-dialog .label {
         display: block;
         font-size:1em;
@@ -923,7 +923,7 @@ Version: 2.10 Dec2014
         }
     }
 
-    
+
     .tab-pane {
         .radio-inline, .checkbox-inline {
             padding-left: 15px;
@@ -934,7 +934,7 @@ Version: 2.10 Dec2014
             }
         }
     }
-    
+
 
     /*PREVIEW*/
     .bb5-content-preview {
@@ -1731,7 +1731,7 @@ Version: 2.10 Dec2014
     .ui-widget-content {
         .box-sizing(content-box);
     }
-    
+
     .ui-dialog {
         overflow: hidden;
         position: absolute;
@@ -2289,8 +2289,8 @@ Version: 2.10 Dec2014
 
     /*Context menu*/
     .bb5-context-menu {
-        
-        ul {#bb5-ui .dropdown-menu; display: block;
+
+        ul {#bb5-ui .dropdown-menu; display: block; z-index: 999999;
             li {padding: 3px 20px;
                 button {border-width: 0; background-color: transparent; padding: 0; width: 100%; text-align: left;}
             }
@@ -2521,7 +2521,7 @@ Version: 2.10 Dec2014
 
         > thead {
             > tr {
-                border:1px solid @bb-toolbar-border; 
+                border:1px solid @bb-toolbar-border;
                 background-color: @bb-toolbar-bg;
                 > th {
                     border-bottom: 1px solid @bb-toolbar-border; vertical-align: middle;

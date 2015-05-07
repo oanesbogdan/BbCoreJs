@@ -77,7 +77,7 @@ define(
                 resetOnClose: true,
                 mediaFolderTreeView: {}
             },
-            trans = require("Core").trans || function (value) {return value; },
+            trans = require('Core').get('trans') || function (value) {return value; },
             MediaLibrary = new JS.Class({
                 VIEW_MODE: 'view',
                 EDIT_MODE: 'edit',
@@ -286,15 +286,10 @@ define(
                             content = null,
                             mediaInfos;
                         require("Core").ApplicationManager.invokeService('content.main.edition').done(function (deps) {
-
                             if (mediaItem) {
                                 content = deps.ContentHelper.buildElement(mediaItem.content);
                                 mediaInfos = {
-                                    id: mediaItem.id,
-                                    uid: mediaItem.id,
-                                    content_uid: mediaItem.content.uid,
-                                    type: mediaItem.content.type,
-                                    folder_uid: self.loadedNode.uid
+                                    id: mediaItem.id
                                 };
                                 deps.EditionHelper.show(content, {
                                     onValidate: jQuery.proxy(self.validationHandler, self),
@@ -307,7 +302,7 @@ define(
                                 deps.ContentHelper.createElement(type).done(function (content) {
                                     mediaInfos = {
                                         content_uid: content.uid,
-                                        type: content.type,
+                                        content_type: content.type,
                                         folder_uid: self.loadedNode.uid
                                     };
                                     deps.EditionHelper.show(content, {
@@ -393,6 +388,7 @@ define(
 
                 handleMediaSelection: function (e) {
                     this.loadedNode = e.node;
+                    this.mediaFolderTreeView.invoke("selectNode", e.node);
                     this.mediaDataStore.unApplyFilter("byTitle").unApplyFilter("byBeforeDate").unApplyFilter("byAfterDate").applyFilter("byMediaFolder", e.node.uid).execute();
                 },
 
@@ -403,7 +399,7 @@ define(
                         mediaFolderItem = data[i];
                         if (mediaFolderItem.rel === "folder") {
                             mediaFolderItem.children = [{
-                                label: 'Loading ...',
+                                label: trans('loading') + ' ...',
                                 is_fake: true
                             }];
                         }
@@ -491,6 +487,7 @@ define(
                         var position = (isVisible === true) ? 203 : 178;
                         self.fixDataviewLayout(position);
                     });
+
                     /* searchEngine */
                     this.searchEngine.on("doSearch", function (criteria) {
                         jQuery.each(criteria, function (key, val) {
@@ -506,6 +503,12 @@ define(
                             require("component!notify").error(error);
                         };
                     });
+
+                    this.searchEngine.on("resetField", function (fieldName) {
+                        var filterName = 'by' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
+                        self.mediaDataStore.unApplyFilter(filterName);
+                    });
+
                 },
 
                 display: function () {
