@@ -179,6 +179,22 @@ define(
                 var widget = req('page.widget.InformationPage');
 
                 widget.updateContent();
+            },
+
+            getContentPopins: function () {
+                return Core.get('application.page').getPopins();
+            },
+
+            registerPopinService: function (id, popin) {
+                this.getContentPopins()[id] = popin;
+            },
+
+            removePopinService: function (id) {
+                delete this.getContentPopins()[id];
+            },
+
+            getPopinService: function (id) {
+                return this.getContentPopins()[id];
             }
         });
     }

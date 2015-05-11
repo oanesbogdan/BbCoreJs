@@ -99,6 +99,7 @@ define(
                     this.loadedNode = null;
                     this.initComponents();
                     this.setMode(this.config.mode);
+                    Core.ApplicationManager.invokeService('content.main.registerPopin', 'mediaLibrary', this.dialog);
                 },
 
                 handleViewModeChange: function (e) {
@@ -123,6 +124,7 @@ define(
                     if (this.resetOnClose) {
                         this.reset();
                     }
+                    Core.ApplicationManager.invokeService('content.main.registerPopin', 'mediaLibrary');
                     this.triggerEvent = true;
                 },
 

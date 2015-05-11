@@ -23,7 +23,7 @@ define(
         'page.repository',
         'component!treeview'
     ],
-    function (Api, jQuery, PageRepository, Tree) {
+    function (Core, jQuery, PageRepository, Tree) {
 
         'use strict';
 
@@ -41,7 +41,7 @@ define(
             initialize: function (config) {
                 this.config = config;
                 if (typeof this.config.site_uid !== 'string') {
-                    Api.exception('MissingPropertyException', 500, 'Property "site_uid" must be set to constructor');
+                    Core.exception('MissingPropertyException', 500, 'Property "site_uid" must be set to constructor');
                 }
 
                 this.site_uid = this.config.site_uid;
@@ -64,6 +64,7 @@ define(
                 if (this.config.popin === true) {
                     this.tree = Tree.createPopinTreeView(config);
                     this.treeView = this.tree.treeView;
+                    Core.ApplicationManager.invokeService('content.main.registerPopin', 'treeView', this.tree);
                 } else {
                     this.treeView = this.tree = Tree.createTreeView(config);
                 }

@@ -198,6 +198,12 @@ define(
                             dialogClass: "ui-dialog-no-title ui-dialog-pinned-to-banner"
                         });
 
+                        Core.Scope.subscribe('page', function () {
+                            return;
+                        }, function () {
+                            jQuery(self.schedulingTag).dialog('close');
+                        });
+
                         jQuery(self.schedulingTag).dialog('open');
                     });
 
@@ -215,15 +221,13 @@ define(
                         jQuery('#publishing').trigger('click');
                     },
                     self
-                )
-                    );
+                ));
                 jQuery(self.schedulingTag).on('click', '#btn-archiving', jQuery.proxy(
                     function () {
                         jQuery('#archiving').trigger('click');
                     },
                     self
-                )
-                    );
+                ));
             },
 
             /**
@@ -274,6 +278,13 @@ define(
                 popin.setTitle(translator.translate('page_seo'));
                 popin.display();
                 popin.mask();
+
+                Core.Scope.subscribe('page', function () {
+                    return;
+                }, function () {
+                    popin.hide();
+                });
+
 
                 PageRepository.getMetadata(this.currentPage.uid).done(function (metadata) {
                     FormBuilder.renderForm(self.buildConfigSeoForm(metadata, popin)).done(function (html) {

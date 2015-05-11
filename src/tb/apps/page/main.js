@@ -56,21 +56,37 @@ define('app.page', ['Core', 'page.widget.InformationPage'], function (Core, Info
 
     'use strict';
 
+    var popins = {};
+
     /**
      * page application declaration
      */
     Core.ApplicationManager.registerApplication('page', {
 
-        onStart: function () {
-            InformationPage.show();
+        getPopins: function () {
+            return popins;
         },
 
-        onResume: function () {
-            InformationPage.show();
-        },
+        onInit: function () {
+            Core.set('application.page', this);
 
-        onStop: function () {
-            InformationPage.hide();
+            Core.Scope.subscribe('page', function () {
+                if (Core.Scope.isOpen('contribution')) {
+                    Core.ApplicationManager.launchApplication('contribution');
+                    InformationPage.show();
+                }
+            }, function () {
+                if (Core.Scope.isOpen('contribution')) {
+                    var popin;
+                    InformationPage.hide();
+
+                    for (popin in popins) {
+                        if (popins.hasOwnProperty(popin)) {
+                            popins[popin].hide();
+                        }
+                    }
+                }
+            });
         }
     });
 

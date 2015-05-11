@@ -104,6 +104,7 @@ define(
                     this.resetOnClose = this.config.resetOnClose || false;
                     this.widget = jQuery(layout).clone();
                     this.popIn = this.initPopIn();
+                    Core.ApplicationManager.invokeService('content.main.registerPopin', 'contentSelector', this.popIn);
                     this.popIn.addOption("open", jQuery.proxy(this.onOpen, null, this));
                     this.contentRenderer = new ContentRenderer(this);
                     this.viewmode = this.config.viewmode || "grid";
