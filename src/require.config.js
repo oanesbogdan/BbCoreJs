@@ -72,15 +72,6 @@ require.config({
         'lib.jqtree': {
             deps: ['jquery.noconflict']
         },
-
-        "jssimplepagination": {
-            deps: ['jquery.noconflict']
-        },
-
-        "datetimepicker": {
-            deps: ['jquery.noconflict']
-        },
-
         "core-jquery": {
             init: function () {
                 "use strict";
