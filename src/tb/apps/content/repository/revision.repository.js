@@ -35,6 +35,8 @@ define(
 
             TYPE: 'classcontent-draft',
 
+            limit: 3,
+
             /**
              * Initialize of Page repository
              */
@@ -55,7 +57,7 @@ define(
                         }
                     }
 
-                    CoreDriverHandler.update(this.TYPE, data).done(function () {
+                    this.doSave(data).done(function () {
                         dfd.resolve();
                     });
                 } else {
@@ -63,6 +65,32 @@ define(
                 }
 
                 return dfd.promise();
+            },
+
+            doSave: function (data) {
+                var promises = [],
+                    contents = [],
+                    key;
+
+                if (data.length > this.limit) {
+                    for (key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            contents.push(data[key]);
+                            if (contents.length === this.limit) {
+                                promises.push(CoreDriverHandler.update(this.TYPE, contents));
+                                contents = [];
+                            }
+                        }
+                    }
+
+                    if (contents.length > 0) {
+                        promises.push(CoreDriverHandler.update(this.TYPE, contents));
+                    }
+                } else {
+                    promises.push(CoreDriverHandler.update(this.TYPE, data));
+                }
+
+                return jQuery.when.apply(undefined, promises).promise();
             }
         });
 
