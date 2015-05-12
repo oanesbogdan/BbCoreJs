@@ -37,7 +37,7 @@ define(
 
 
             doDnd: function () {
-                console.log('dnd');
+                return;
             },
 
             /**
@@ -49,7 +49,7 @@ define(
             },
 
             /**
-             * 
+             *
              * @returns {Array}
              */
             getActions: function () {

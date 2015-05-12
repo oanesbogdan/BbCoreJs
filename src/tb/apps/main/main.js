@@ -147,6 +147,7 @@ define(
 
                 instance.registerScope(scope);
                 instance.enablePlugins();
+                instance.reApplyPlugins();
             },
 
             disablePluginManager: function () {
