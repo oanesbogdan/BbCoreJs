@@ -345,6 +345,14 @@ define(['Core', 'jquery', 'Core/Utils', 'Core/Api', 'actionContainer', 'jsclass'
                 this.enabled = true;
             },
 
+            reApplyPlugins: function () {
+                var element = jQuery('.bb-content-selected');
+
+                if (1 === element.length) {
+                    element.click();
+                }
+            },
+
             disablePlugins: function () {
                 try {
                     var pluginInstance, self = this;
@@ -453,7 +461,7 @@ define(['Core', 'jquery', 'Core/Utils', 'Core/Api', 'actionContainer', 'jsclass'
             }(pluginName));
 
             if (!def.hasOwnProperty("scope")) {
-                def.scope = [this.scope.BLOCK];
+                def.scope = [this.scope.BLOCK, this.scope.CONTENT];
             }
 
             var pluginScope = (jQuery.isArray(def.scope)) ? def.scope : [def.scope];
