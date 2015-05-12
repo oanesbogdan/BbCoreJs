@@ -4,7 +4,7 @@ require.config({
         'actionContainer': 'src/tb/apps/content/components/ContentActionWidget'
     }
 });
-define(['Core', 'jquery', 'Core/Utils', 'Core/Api', 'actionContainer', 'jsclass'], function (Core, jQuery, Utils, Api, ContentActionWidget) {
+define(['Core', 'jquery', 'Core/Utils', 'Core/Api', 'actionContainer', 'underscore', 'jsclass'], function (Core, jQuery, Utils, Api, ContentActionWidget, underscore) {
 
     'use strict';
 
@@ -195,6 +195,7 @@ define(['Core', 'jquery', 'Core/Utils', 'Core/Api', 'actionContainer', 'jsclass'
                 this.contentActionWidget = new ContentActionWidget();
                 this.contentPlugins = {};
                 this.pluginActions = [];
+                this.actionsPosition = {};
                 this.currentScope = null; // block //
                 this.pluginInfos = {}; //plugin : config --> plugin is unique
                 this.bindEvents();
@@ -283,7 +284,7 @@ define(['Core', 'jquery', 'Core/Utils', 'Core/Api', 'actionContainer', 'jsclass'
 
                     if (this.isScopeValid(pluginInstance) && pluginInstance.canApplyOnContext()) {
                         pluginInstance.onEnable();
-                        this.handlePluginActions(pluginInstance.getActions());
+                        this.handlePluginActions(pluginInstance.getActions(), pluginInfos.completeName);
                     }
 
                 } catch (e) {
@@ -325,7 +326,7 @@ define(['Core', 'jquery', 'Core/Utils', 'Core/Api', 'actionContainer', 'jsclass'
                         context.events = ['on:classcontent:click'];
                         this.context = context;
                         plugins = this.getContentPlugins(content.type);
-
+                        this.clearContentActions();
                         this.contentActionWidget.hide();
 
                         if (!plugins.length) {
@@ -390,8 +391,7 @@ define(['Core', 'jquery', 'Core/Utils', 'Core/Api', 'actionContainer', 'jsclass'
                         pluginInstance.setContext(self.context);
                         if (self.isScopeValid(pluginInstance) && pluginInstance.canApplyOnContext()) {
                             pluginInstance.onEnable();
-
-                            self.handlePluginActions(pluginInstance.getActions());
+                            self.handlePluginActions(pluginInstance.getActions(), pluginName);
                         }
 
                     } else {
@@ -409,13 +409,41 @@ define(['Core', 'jquery', 'Core/Utils', 'Core/Api', 'actionContainer', 'jsclass'
                 });
             },
 
-            handlePluginActions: function (pluginActions) {
+            registerActionPosition: function (pluginName, actions) {
+                var actionPosition = this.getContentPlugins(this.context.content.type).indexOf(pluginName),
+                    actionInfos;
+                if (!this.actionsPosition.hasOwnProperty(this.context.content.type)) {
+                    this.actionsPosition[this.context.content.type] = [];
+                }
+                actionInfos = this.actionsPosition[this.context.content.type];
+                actionInfos.push({ position: actionPosition, buttons: actions });
+            },
+
+            getContentActions: function () {
+                var sortedActions = [],
+                    sorted = [],
+                    availableActions = this.actionsPosition[this.context.content.type];
+                if (availableActions.length) {
+                    sorted = underscore.sortBy(availableActions, function (actionInfos) {
+                        return actionInfos.position;
+                    });
+                    underscore(sorted).each(function (item) {
+                        jQuery.merge(sortedActions, item.buttons);
+                    });
+                }
+                return sortedActions;
+            },
+
+            clearContentActions: function () {
+                this.actionsPosition[this.context.content.type] = [];
+            },
+
+            handlePluginActions: function (pluginActions, pluginName) {
                 if (!this.isEnabled()) {
                     return false;
                 }
 
                 var actions = [];
-
                 jQuery.each(pluginActions, function (i) {
                     var action = pluginActions[i];
 
@@ -423,9 +451,11 @@ define(['Core', 'jquery', 'Core/Utils', 'Core/Api', 'actionContainer', 'jsclass'
                         actions.push(action);
                     }
                 });
-
+                if (actions.length) {
+                    this.registerActionPosition(pluginName, actions);
+                }
                 this.contentActionWidget.setContent(this.context.content.jQueryObject);
-                this.contentActionWidget.appendActions(actions);
+                this.contentActionWidget.appendActions(this.getContentActions(), true);
                 this.contentActionWidget.show();
             },
 

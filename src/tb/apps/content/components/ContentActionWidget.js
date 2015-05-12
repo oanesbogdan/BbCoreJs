@@ -20,6 +20,7 @@ define(['jquery', 'text!content/tpl/content-action', 'jsclass'], function (jQuer
             this.widget.append(buttonNode);
         },
 
+
         isBuild: function (content) {
             return content.jQueryObject.find('.content-actions').length > 0;
         },

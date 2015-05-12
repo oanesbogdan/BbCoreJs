@@ -27,7 +27,7 @@ define('tb.component/exceptions-viewer/viewer', ['Core'], function (Core) {
             });
         };
 
-    return function () {
+    return function (config) {
         document.getElementsByTagName('body')[0].insertAdjacentHTML('beforeend', template);
         var element = document.getElementById('toolbar-count-errors');
         element.style.position = 'fixed';
@@ -46,6 +46,9 @@ define('tb.component/exceptions-viewer/viewer', ['Core'], function (Core) {
         Core.Mediator.subscribe('api:set:lastError', function () {
             element.innerHTML = parseInt(element.innerHTML, 10) + 1;
             element.style.display = 'block';
+            if (config.showInConsole) {
+                showExceptions();
+            }
         });
     };
 });
