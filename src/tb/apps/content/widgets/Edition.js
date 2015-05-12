@@ -205,7 +205,7 @@ define(
                         element = ContentManager.buildElement(item);
 
                         if (element.type === 'Element/Text') {
-                            if (element.get('value') !== value) {
+                            if (element.get('value') !== value && value !== null) {
                                 element.set('value', value);
                             }
                         } else {
