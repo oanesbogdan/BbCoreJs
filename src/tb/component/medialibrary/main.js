@@ -155,11 +155,11 @@ define(
 
                 addButtons: function () {
                     var self = this;
-                    this.dialog.addButton("Add & Close", function () {
+                    this.dialog.addButton(trans("add_and_close"), function () {
                         self.triggerEvent = true;
                         self.close();
                     });
-                    this.dialog.addButton("Cancel", function () {
+                    this.dialog.addButton(trans("cancel"), function () {
                         self.triggerEvent = false;
                         self.close();
                     });
@@ -196,8 +196,8 @@ define(
                 },
 
                 initComponents: function () {
-                    this.mediaFolderDataStore = require("mediaFolder.datastore");
-                    this.mediaDataStore = require('media.datastore');
+                    this.mediaFolderDataStore = require("mediaFolder.datastore").getDataStore();
+                    this.mediaDataStore = require('media.datastore').getDataStore();
                     this.maskMng = require('component!mask').createMask({});
                     this.mediaFolderTreeView = this.createMediaFolderView();
                     this.mediaListView = this.createMediaListView();
@@ -390,8 +390,8 @@ define(
 
                 handleMediaSelection: function (e) {
                     this.loadedNode = e.node;
-                    this.mediaFolderTreeView.invoke("selectNode", e.node);
                     this.mediaDataStore.unApplyFilter("byTitle").unApplyFilter("byBeforeDate").unApplyFilter("byAfterDate").applyFilter("byMediaFolder", e.node.uid).execute();
+                    this.mediaFolderTreeView.invoke("selectNode", e.node);
                 },
 
                 formatData: function (data) {
@@ -529,7 +529,8 @@ define(
             },
             createMediaLibrary: function (userConfig) {
                 userConfig = userConfig || {};
-                var config = jQuery.extend(true, defaultConfig, userConfig),
+                var defConfig = jQuery.extend(true, {}, defaultConfig),
+                    config = jQuery.extend(true, defConfig, userConfig),
                     mediaLibrary = new MediaLibrary(config);
                 return mediaLibrary;
             },

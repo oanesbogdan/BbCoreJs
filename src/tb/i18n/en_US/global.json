@@ -7,6 +7,7 @@
     "activate_deactivate": "Activate / Deactivate",
     "add_content": "Add content",
     "add_link": "Add a link",
+    "add_and_close": "Add and Close",
     "add_media": "Add media",
     "all": "All",
     "apply_to_all_selected_pages": "Apply to all selected pages",
@@ -74,7 +75,7 @@
     "general_settings": "General Settings",
     "group": "Group",
     "groups": "Groups",
-
+    "media_height": "H",
     "import": "Import",
     "internal_link": "Internal link",
 
@@ -91,6 +92,7 @@
     "manage_rights": "Manage rights",
     "manage_users_and_groups": "Manage users and groups",
     "media": "Media",
+    "media_width": "W",
     "media_library": "Media library",
     "modified_at": "Modified at",
     "modified_date": "Modified date",
@@ -147,6 +149,7 @@
     "select": "Select",
     "select_all": "Select all",
     "select_a_mediafolder": "Select a media folder",
+    "select_and_close": "Select and close",
     "show_folder": "Show folder",
     "status": "Status",
     "submit": "Submit",
@@ -168,7 +171,6 @@
     "users_management": "Users management",
 
     "validate": "Validate",
-
     "website_parameters": "Website parameters",
     "workflow_management": "Workflow management",
     "yes": "Yes"
