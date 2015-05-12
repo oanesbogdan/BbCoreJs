@@ -28,7 +28,7 @@ define('vendor', ['jquery-helper'], function (jqHelper) {
     jqHelper.restoreCoreJQuery();
 });
 require.config({
-    baseUrl: 'resources/toolbar/',
+    baseUrl: '/resources/toolbar/',
     catchError: true,
     waitSeconds: 15,
     urlArgs: 'cb=' + Math.random(),

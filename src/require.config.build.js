@@ -25,7 +25,7 @@ require.onResourceLoad = function (context, map) {
 };
 
 require.config({
-    baseUrl: 'resources/toolbar/',
+    baseUrl: '/resources/toolbar/',
     catchError: true,
     waitSeconds: 15,
     paths: {
