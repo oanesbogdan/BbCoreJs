@@ -283,8 +283,17 @@ define(
 
                     html = jQuery(html);
 
+                    var images = html.find('img'),
+                        refreshPicture = function (img) {
+                            img.attr('src', img.attr('src') + '?' + new Date().getTime());
+                        };
+
+                    if (images.length > 0) {
+                        refreshPicture(images);
+                    }
+
                     if (html.get(0).tagName === 'IMG') {
-                        html.attr('src', html.attr('src') + '?' + new Date().getTime());
+                        refreshPicture(html);
                     }
 
                     self.jQueryObject.replaceWith(html);
