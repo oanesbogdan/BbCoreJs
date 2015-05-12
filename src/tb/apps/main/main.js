@@ -102,10 +102,9 @@ define(
                 Core.ApplicationManager.invokeService('content.main.findDefinitions', Core.get('page.uid')).done(function (promise) {
                     promise.done(promise).done(function (definitions) {
                         Core.ApplicationManager.invokeService('content.main.listenDOM', definitions);
+                        Core.ApplicationManager.invokeService('content.main.addDefaultZoneInContentSet');
                     });
                 });
-
-                Core.ApplicationManager.invokeService('content.main.addDefaultZoneInContentSet');
 
                 Core.ApplicationManager.invokeService('content.main.computeImagesInDOM');
 
