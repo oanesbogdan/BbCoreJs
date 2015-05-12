@@ -239,7 +239,7 @@ define(
                 var timestamp,
                     day = '';
 
-                if (value !== undefined) {
+                if (value !== undefined && value !== null) {
                     timestamp = moment.unix(value);
                     day = timestamp.format('YYYY/MM/DD HH:mm');
                 }
