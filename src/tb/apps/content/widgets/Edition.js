@@ -174,9 +174,10 @@ define(
                     Core.ApplicationManager.invokeService('content.main.save').done(function (promise) {
                         promise.done(function () {
                             self.content.refresh().done(function () {
-                                self.content.refresh();
+
                                 self.popin.unmask();
                                 self.popin.hide();
+
                                 if (typeof self.config.onSave === "function") {
                                     self.config.onSave(data);
                                 }

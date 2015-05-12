@@ -18,7 +18,7 @@
  */
 
 /*global Dropzone */
-define(['Core', 'Core/Renderer', 'BackBone', 'jquery'], function (Core, Renderer, Backbone, jQuery) {
+define(['Core', 'Core/Renderer', 'BackBone', 'jquery', 'tb.component/mask/main'], function (Core, Renderer, Backbone, jQuery) {
     'use strict';
 
     var FileView = Backbone.View.extend({
@@ -38,6 +38,7 @@ define(['Core', 'Core/Renderer', 'BackBone', 'jquery'], function (Core, Renderer
             this.form = formTag;
             this.template = template;
             this.element = element;
+            this.maskManager = require('tb.component/mask/main').createMask({'message': 'Uploading...'});
 
             this.uploadEvent();
         },
@@ -49,33 +50,49 @@ define(['Core', 'Core/Renderer', 'BackBone', 'jquery'], function (Core, Renderer
             jQuery.extend(config, this.defaultDropzoneConfig, this.element.config.dropzone);
 
             Core.Mediator.subscribeOnce('on:form:render', function (form) {
-                var dropzone = new Dropzone(form.find(self.dropzoneSelector).eq(0).get(0), config),
-                    element = form.find('input[name=' + self.element.getKey() + ']'),
-                    elementPath = form.find('span.' + self.element.getKey() + '_path'),
-                    elementSrc = form.find('span.' + self.element.getKey() + '_src'),
-                    elementOriginalName = form.find('span.' + self.element.getKey() + '_originalname');
 
-                self.buildValue(dropzone, self.element.value, element);
+                var element = form.find('.element_' + self.element.getKey()),
+                    dropzoneElement = element.find(self.dropzoneSelector),
+                    dropzone = new Dropzone(dropzoneElement.eq(0).get(0), config),
+                    input = form.find('input[name=' + self.element.getKey() + ']'),
+                    inputPath = form.find('span.' + self.element.getKey() + '_path'),
+                    inputSrc = form.find('span.' + self.element.getKey() + '_src'),
+                    inputOriginalName = form.find('span.' + self.element.getKey() + '_originalname');
+
+                self.buildValue(dropzone, self.element.value, input);
+
+                dropzone.on('sending', function () {
+                    self.maskManager.mask(form);
+                    var oldItem = dropzoneElement.find('.dz-preview:first');
+
+                    if (oldItem.length > 0) {
+                        oldItem.remove();
+                    }
+                });
+
+                dropzone.on('complete', function () {
+                    self.maskManager.unmask(form);
+                });
 
                 dropzone.on('success', function (file, response) {
-                    elementPath.text(response.path);
-                    elementOriginalName.text(response.originalname);
+                    inputPath.text(response.path);
+                    inputOriginalName.text(response.originalname);
 
                     if (response.src !== undefined) {
-                        elementSrc.text(response.src);
+                        inputSrc.text(response.src);
                     }
 
-                    element.val('updated');
+                    input.val('updated');
 
                     return file;
                 });
 
                 dropzone.on('removedfile', function () {
                     if (this.files.length === 0) {
-                        elementPath.text('');
-                        elementSrc.text('');
-                        elementOriginalName.text('');
-                        element.val('');
+                        inputPath.text('');
+                        inputSrc.text('');
+                        inputOriginalName.text('');
+                        input.val('');
                     }
                 });
 
@@ -91,7 +108,7 @@ define(['Core', 'Core/Renderer', 'BackBone', 'jquery'], function (Core, Renderer
                 var file = {'name': value.name};
 
                 dropzone.options.addedfile.call(dropzone, file);
-                dropzone.createThumbnailFromUrl(file, value.thumbnail);
+                dropzone.createThumbnailFromUrl(file, value.thumbnail + '?' + new Date().getTime());
 
                 element.val(value.path);
             }
