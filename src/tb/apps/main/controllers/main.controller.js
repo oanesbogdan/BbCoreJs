@@ -54,12 +54,11 @@ define(
              * Dispatch event `on:save:click``for all interested
              */
             saveService: function () {
-                var scopes = Core.Scope.scopes,
-                    eventName;
+                var eventName;
 
-                if (-1 !== scopes.indexOf('block')) {
+                if (true === Core.Scope.isOpen('block') || true === Core.Scope.isOpen('content')) {
                     eventName = 'on:content:save:click';
-                } else if (-1 !== scopes.indexOf('page')) {
+                } else if (true === Core.Scope.isOpen('page')) {
                     eventName = 'on:page:save:click';
                 }
 
