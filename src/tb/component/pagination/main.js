@@ -1,17 +1,17 @@
 /*global jQuery:false, $:false, Backbone:false */
 /*jshint -W004 */
-define(['jquery', 'jssimplepagination'], function (CorejQuery) {
+define(['jquery', 'jssimplepagination'], function (corejQuery) {
     'use strict';
     /*make sure our jQuery instance has the extension*/
-    if (!CorejQuery.fn.hasOwnProperty("pagination")) {
+    if (!corejQuery.fn.hasOwnProperty("pagination")) {
         if ($) {
-            CorejQuery.fn.pagination = $.fn.pagination;
+            corejQuery.fn.pagination = $.fn.pagination;
         }
         if (jQuery) {
-            CorejQuery.fn.pagination = jQuery.fn.pagination;
+            corejQuery.fn.pagination = jQuery.fn.pagination;
         }
     }
-    var $ = CorejQuery,
+    var $ = corejQuery,
         Pagination = new JS.Class({
 
             defaultConfig: {
@@ -152,8 +152,8 @@ define(['jquery', 'jssimplepagination'], function (CorejQuery) {
                     this.widget = this.beforeRender(this.widget);
                 }
                 positionMethod = (typeof positionMethod === "string") ? positionMethod : 'html';
-                if (container && jQuery(container).length) {
-                    jQuery(container)[positionMethod](this.widget);
+                if (container && corejQuery(container).length) {
+                    corejQuery(container)[positionMethod](this.widget);
                 } else {
                     return this.widget;
                 }

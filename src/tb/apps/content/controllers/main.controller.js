@@ -312,6 +312,22 @@ define(
                 } else {
                     self.contentSelector.display();
                 }
+            },
+
+            getContentPopins: function () {
+                return Core.get('application.contribution').getPopins();
+            },
+
+            registerPopinService: function (id, popin) {
+                this.getContentPopins()[id] = popin;
+            },
+
+            removePopinService: function (id) {
+                delete this.getContentPopins()[id];
+            },
+
+            getPopinService: function (id) {
+                return this.getContentPopins()[id];
             }
         });
     }

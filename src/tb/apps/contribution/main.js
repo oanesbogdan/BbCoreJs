@@ -14,8 +14,30 @@ require.config({
 define('app.contribution', ['Core'], function (Core) {
     'use strict';
 
+    var popins = {};
+
     /**
      * Contribution application declaration
      */
-    Core.ApplicationManager.registerApplication('contribution', {});
+    Core.ApplicationManager.registerApplication('contribution', {
+
+        getPopins: function () {
+            return popins;
+        },
+
+        onInit: function () {
+            Core.set('application.contribution', this);
+
+            Core.Scope.subscribe('contribution', function () {
+                return;
+            }, function () {
+                var popin;
+                for (popin in popins) {
+                    if (popins.hasOwnProperty(popin)) {
+                        popins[popin].hide();
+                    }
+                }
+            });
+        }
+    });
 });

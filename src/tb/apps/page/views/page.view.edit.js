@@ -20,7 +20,7 @@
 define(
     [
         'require',
-        'Core/Api',
+        'Core',
         'jquery',
         'page.repository',
         'page.form',
@@ -28,7 +28,7 @@ define(
         'component!popin',
         'component!formbuilder'
     ],
-    function (require, Api, jQuery, PageRepository, PageForm, translator) {
+    function (require, Core, jQuery, PageRepository, PageForm, translator) {
 
         'use strict';
 
@@ -43,7 +43,7 @@ define(
              */
             initialize: function (config) {
                 if (typeof config.page_uid !== 'string') {
-                    Api.exception('MissingPropertyException', 500, 'Property "page_uid" must be set to constructor');
+                    Core.exception('MissingPropertyException', 500, 'Property "page_uid" must be set to constructor');
                 }
 
                 this.config = config;
@@ -53,6 +53,8 @@ define(
 
                 this.popin = require('component!popin').createPopIn();
                 this.formBuilder = require('component!formbuilder');
+
+                Core.ApplicationManager.invokeService('page.main.registerPopin', 'pageEdit', this.popin);
             },
 
             onSubmit: function (data) {

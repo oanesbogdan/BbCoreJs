@@ -20,11 +20,12 @@
 define(
     [
         'require',
+        'Core',
         'jquery',
         'page.repository',
         'component!popin'
     ],
-    function (require, jQuery, PageRepository) {
+    function (require, Core, jQuery, PageRepository) {
 
         'use strict';
 
@@ -41,6 +42,7 @@ define(
                 this.config = config;
 
                 this.popin = require('component!popin').createPopIn();
+                Core.ApplicationManager.invokeService('page.main.registerPopin', 'pageDelete', this.popin);
 
                 this.uid = config.uid;
 

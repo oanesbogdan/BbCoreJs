@@ -19,6 +19,7 @@
 
 define(
     [
+        'Core',
         'content.repository',
         'Core/Renderer',
         'component!popin',
@@ -29,7 +30,7 @@ define(
         'jqueryui',
         'jsclass'
     ],
-    function (ContentRepository, Renderer, Popin, blockDisplayTpl, jQuery, DndManager, Translator) {
+    function (Core, ContentRepository, Renderer, Popin, blockDisplayTpl, jQuery, DndManager, Translator) {
 
         'use strict';
 
@@ -56,6 +57,8 @@ define(
 
                     }
                 });
+
+                Core.ApplicationManager.invokeService('content.main.registerPopin', 'blockDisplay', this.popin);
                 this.popin.setTitle(Translator.translate('block_display'));
             },
 

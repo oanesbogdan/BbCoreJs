@@ -73,7 +73,10 @@ define("app.content", ['Core', 'content.pluginmanager'], function (Core) {
 
     'use strict';
 
-    Core.ApplicationManager.registerApplication('content', {});
-
+    Core.ApplicationManager.registerApplication('content', {
+        onInit: function () {
+            Core.ApplicationManager.launchApplication('contribution');
+        }
+    });
 });
 

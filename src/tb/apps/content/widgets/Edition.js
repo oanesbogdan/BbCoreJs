@@ -19,7 +19,7 @@
 
 define(
     [
-        'Core/ApplicationManager',
+        'Core',
         'jquery',
         'content.manager',
         'component!popin',
@@ -28,7 +28,7 @@ define(
         'component!formsubmitter',
         'component!translator'
     ],
-    function (ApplicationManager, jQuery, ContentManager, PopinManager, ContentFormBuilder, FormBuilder, FormSubmitter, translator) {
+    function (Core, jQuery, ContentManager, PopinManager, ContentFormBuilder, FormBuilder, FormSubmitter, translator) {
 
         'use strict';
 
@@ -53,9 +53,15 @@ define(
                 if (this.popin) {
                     this.popin.destroy();
                 }
-                this.popin = PopinManager.createPopIn();
+                this.popin = PopinManager.createPopIn({
+                    close: function () {
+                        Core.ApplicationManager.invokeService('content.main.removePopin', 'contentEdit');
+                    }
+                });
                 this.popin.setTitle(translator.translate('edit'));
                 this.popin.addOption('width', '500px');
+
+                Core.ApplicationManager.invokeService('content.main.registerPopin', 'contentEdit', this.popin);
             },
 
             getDialog: function () {
@@ -165,7 +171,7 @@ define(
 
                     self.computeData(res);
 
-                    ApplicationManager.invokeService('content.main.save').done(function (promise) {
+                    Core.ApplicationManager.invokeService('content.main.save').done(function (promise) {
                         promise.done(function () {
 
                             if (typeof self.config.onSave === "function") {

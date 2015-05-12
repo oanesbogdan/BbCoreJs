@@ -19,7 +19,7 @@
 
 define(
     [
-        'Core/ApplicationManager',
+        'Core',
         'content.pluginmanager',
         'component!popin',
         'component!formbuilder',
@@ -29,7 +29,7 @@ define(
         'component!translator',
         'jsclass'
     ],
-    function (ApplicationManager, PluginManager, Popin, FormBuilder, DefinitionManager, FormSubmitter, jQuery, translator) {
+    function (Core, PluginManager, Popin, FormBuilder, DefinitionManager, FormSubmitter, jQuery, translator) {
 
         'use strict';
 
@@ -46,9 +46,15 @@ define(
              * Create popin for parameters form
              */
             createPopin: function () {
-                this.popin = Popin.createPopIn();
+                this.popin = Popin.createPopIn({
+                    close: function () {
+                        Core.ApplicationManager.invokeService('content.main.removePopin', 'contentParameters');
+                    }
+                });
                 this.popin.setTitle(translator.translate('parameters'));
                 this.popin.addOption('width', '400px');
+
+                Core.ApplicationManager.invokeService('content.main.registerPopin', 'contentParameters', this.popin);
             },
 
             /**
@@ -83,7 +89,7 @@ define(
                     if (Object.keys(res).length > 0) {
                         content.setParameters(res);
 
-                        ApplicationManager.invokeService('content.main.save').done(function (promise) {
+                        Core.ApplicationManager.invokeService('content.main.save').done(function (promise) {
                             promise.done(function () {
                                 content.refresh().done(function () {
                                     content.refresh();
