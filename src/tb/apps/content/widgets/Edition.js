@@ -166,26 +166,25 @@ define(
 
             onSubmit: function (data, form) {
                 var self = this;
-
+                self.popin.mask();
                 FormSubmitter.process(data, form).done(function (res) {
 
                     self.computeData(res);
 
                     Core.ApplicationManager.invokeService('content.main.save').done(function (promise) {
                         promise.done(function () {
-
-                            if (typeof self.config.onSave === "function") {
-                                self.config.onSave(data);
-                            }
-
                             self.content.refresh().done(function () {
                                 self.content.refresh();
-
+                                self.popin.unmask();
                                 self.popin.hide();
+                                if (typeof self.config.onSave === "function") {
+                                    self.config.onSave(data);
+                                }
+                                self.config.onSave = null;
+                                self.config.onValidate = null;
                             });
 
-                            self.config.onSave = null;
-                            self.config.onValidate = null;
+
                         });
                     });
                 });

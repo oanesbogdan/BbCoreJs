@@ -1,14 +1,5 @@
-/*global $:false, jQuery:false */
-define(['Core', 'require', 'jquery', 'jsclass', 'datetimepicker', 'text!../searchengine/templates/layout.tpl'], function (Core, require, corejQuery) {
+define(['Core', 'jquery', 'Core/Renderer', 'text!../searchengine/templates/layout.tpl', 'jsclass', 'datetimepicker'], function (Core, jQuery, Renderer, layout) {
     'use strict';
-    if (!corejQuery.fn.hasOwnProperty("datetimepicker")) {
-        if (jQuery) {
-            corejQuery.fn.datetimepicker = jQuery.fn.datetimepicker;
-        }
-        if ($) {
-            corejQuery.fn.datetimepicker = $.fn.datetimepicker;
-        }
-    }
 
     var SimpleSearchEngine = new JS.Class({
         mainSelector: Core.get('wrapper_toolbar_selector'),
@@ -22,9 +13,9 @@ define(['Core', 'require', 'jquery', 'jsclass', 'datetimepicker', 'text!../searc
         },
 
         initialize: function (config) {
-            this.config = corejQuery.extend({}, this.defaultConfig, config);
-            corejQuery.extend(this, {}, Backbone.Events);
-            this.widget = corejQuery(require('text!../searchengine/templates/layout.tpl')).clone();
+            this.config = jQuery.extend({}, this.defaultConfig, config);
+            jQuery.extend(this, {}, Backbone.Events);
+            this.widget = jQuery(Renderer.render(layout)).clone();
             this.initDatepicker();
             this.bindEvents();
         },
@@ -51,8 +42,9 @@ define(['Core', 'require', 'jquery', 'jsclass', 'datetimepicker', 'text!../searc
         },
 
         bindEvents: function () {
-            corejQuery(this.widget).on('click', this.config.datepickerClass, corejQuery.proxy(this.showOrInitDateTimePicker, this));
-            corejQuery(this.widget).on('click', this.config.searchBtnClass, corejQuery.proxy(this.handleSearch, this));
+            jQuery(this.widget).on('click', this.config.datepickerClass, jQuery.proxy(this.showOrInitDateTimePicker, this));
+            jQuery(this.widget).on('click', this.config.searchBtnClass, jQuery.proxy(this.handleSearch, this));
+            jQuery(this.widget).on('keyup', ".form-control", jQuery.proxy(this.handleKeyUp, this));
         },
 
         render: function (container, positionMethod) {
@@ -64,14 +56,20 @@ define(['Core', 'require', 'jquery', 'jsclass', 'datetimepicker', 'text!../searc
             }
         },
 
+        handleKeyUp: function (e) {
+            var value = jQuery(e.currentTarget).eq(0).val(),
+                fieldName = jQuery(e.currentTarget).data("fieldname");
+            if (!value.length) {
+                this.trigger("resetField", fieldName);
+            }
+        },
+
         handleSearch: function () {
             var criteria = {};
             criteria.title = jQuery(this.config.titleFieldClass).eq(0).val();
             criteria.beforeDate = jQuery(this.config.beforeDateClass).eq(0).data('selectedTime') || '';
             criteria.afterDate = jQuery(this.config.afterDateClass).eq(0).data('selectedTime') || '';
-            if (criteria.title.length || criteria.beforeDate.length || criteria.afterDate.length) {
-                this.trigger("doSearch", criteria);
-            }
+            this.trigger("doSearch", criteria);
         }
     });
     return {

@@ -71,6 +71,7 @@ require.config({
     'shim': {
         'lib.jqtree': {
             deps: ['jquery.noconflict']
+            
         },
         "core-jquery": {
             init: function () {
