@@ -30,7 +30,8 @@ define(
         'revision.repository',
         'component!revisionselector',
         'jquery',
-        'content.widget.DialogContentsList'
+        'content.widget.DialogContentsList',
+        'component!notify'
     ],
     function (
         Core,
@@ -44,7 +45,8 @@ define(
         RevisionRepository,
         RevisionSelector,
         jQuery,
-        DialogContentsList
+        DialogContentsList,
+        notify
     ) {
         'use strict';
 
@@ -129,8 +131,7 @@ define(
              * Call method save into SaveManager
              */
             saveService: function (req, confirm) {
-                var popin = req('component!popin').createPopIn(),
-                    translator = req('component!translator'),
+                var translator = req('component!translator'),
                     nbContents = SaveManager.getContentsToSave().length,
                     dfd = new jQuery.Deferred();
 
@@ -139,21 +140,17 @@ define(
                         dfd.resolve();
                     });
                 } else {
-                    popin.setTitle(translator.translate('save_draft'));
-                    popin.addButton('Ok', popin.hide);
 
                     if (nbContents > 0) {
-                        popin.mask();
                         SaveManager.save().done(function () {
-                            popin.setContent(nbContents + ' ' + translator.translate('content_saved_sentence' + ((nbContents > 1) ? '_plural' : '')));
-                            popin.unmask();
+                            notify.success(nbContents + ' ' + translator.translate('content_saved_sentence' + ((nbContents > 1) ? '_plural' : '')));
                             dfd.resolve();
                         });
                     } else {
-                        popin.setContent(translator.translate('no_content_save'));
+                        notify.warning(translator.translate('no_content_save'));
+                        dfd.resolve();
                     }
 
-                    popin.display();
                 }
 
                 return dfd.promise();
@@ -192,6 +189,8 @@ define(
                     onSave: function (data, popin) {
                         popin.mask();
                         RevisionRepository.save(data, 'commit').done(function () {
+
+                            notify.success(trans('contents_validated'));
                             popin.hide();
                         });
                     }
