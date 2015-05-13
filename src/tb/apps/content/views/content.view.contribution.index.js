@@ -19,17 +19,25 @@
 
 define(
     [
+        'Core',
         'jquery',
         'text!content/tpl/contribution/index',
         'text!content/tpl/carousel_blocks',
+        'text!content/tpl/block_description',
         'Core/Renderer',
-        'content.widget.DialogContentsList'
+        'content.widget.DialogContentsList',
+        'component!popin',
+        'definition.manager'
     ],
-    function (jQuery,
+    function (Core,
+              jQuery,
               template,
               carouselBlocksTpl,
+              blockDescriptionTpl,
               Renderer,
-              DialogContentsList
+              DialogContentsList,
+              PopinManager,
+              DefinitionManager
             ) {
 
         'use strict';
@@ -48,6 +56,7 @@ define(
             carouselId: '#carousel-blocks',
             selectCategoriesId: '#select-categories-blocks-contrib',
             paletteBlocksId: '#palette-contrib-blocks',
+            carouselBlockClass: '.carousel-block',
 
             /**
              * Initialize of ContentViewContributionIndex
@@ -155,6 +164,7 @@ define(
 
             showBlocksByCategory: function (categoryId) {
                 var category = this.getCategoryById(categoryId),
+                    carousel = jQuery(this.carouselBlocksId),
                     key,
                     html = '',
                     flag = 0,
@@ -189,7 +199,32 @@ define(
                     html = html + Renderer.render(carouselBlocksTpl, data);
                 }
 
-                jQuery(this.carouselBlocksId).html(html);
+                carousel.html(html);
+
+                carousel.find(this.carouselBlockClass).on('click', this.onBlockClick);
+            },
+
+            onBlockClick: function (event) {
+
+                if (this.descriptionPopin === undefined) {
+                    this.descriptionPopin = PopinManager.createPopIn();
+                    Core.ApplicationManager.invokeService('content.main.registerPopin', 'blockDescription', this.descriptionPopin);
+                }
+
+                var target = jQuery(event.currentTarget),
+                    type = target.data('bb-type'),
+                    definition = DefinitionManager.find(type),
+                    block = {
+                        category: definition.properties.name,
+                        description: definition.properties.description,
+                        thumbnail: definition.image
+                    };
+
+                this.descriptionPopin.setTitle('Block description');
+
+                this.descriptionPopin.setContent(Renderer.render(blockDescriptionTpl, {'block': block}));
+
+                this.descriptionPopin.display();
             },
 
             /**
