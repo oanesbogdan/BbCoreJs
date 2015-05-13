@@ -62,11 +62,15 @@ define(['Core', 'Core/Renderer', 'BackBone', 'jquery', 'tb.component/mask/main']
                 self.buildValue(dropzone, self.element.value, input);
 
                 dropzone.on('sending', function () {
+
                     self.maskManager.mask(form);
+
                     var oldItem = dropzoneElement.find('.dz-preview:first');
 
                     if (oldItem.length > 0) {
-                        oldItem.remove();
+                        if (typeof self.element.value === 'object') {
+                            oldItem.remove();
+                        }
                     }
                 });
 
