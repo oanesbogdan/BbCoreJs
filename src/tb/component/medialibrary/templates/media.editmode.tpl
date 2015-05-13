@@ -13,6 +13,7 @@
           {% if content.extra %}
              {% if content.extra.image_width %}
                 <span>{{'media_width'|trans}} : {{content.extra.image_width}}px, {{'media_height'|trans}} : {{content.extra.image_height}}px, {{content.extra.file_size | bytesToSize}} </span>
+
             {% else %}
                 <span> {{content.extra.filesize}} </span>
             {% endif %}

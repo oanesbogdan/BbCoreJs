@@ -23,7 +23,7 @@ define('tb.component/exceptions-viewer/main', function () {
         init: function (config) {
             if (config.show === true) {
                 require(['tb.component/exceptions-viewer/viewer'], function (exceptions) {
-                    exceptions();
+                    exceptions(config);
                 });
             }
         }
