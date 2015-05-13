@@ -1,4 +1,4 @@
-<li data-uid={{uid}} class="bb5-selector-item">
+<li data-uid={{id}} class="bb5-selector-item">
     <p><a title="{{title}}" href="javascript:;"><img alt="{{title}}" src="{{image}}"></a></p>
     <p><a title="{{title}}" href="javascript:;">{{title}}</a></p>
     <p>
