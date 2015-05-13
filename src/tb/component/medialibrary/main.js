@@ -254,6 +254,7 @@ define(
                     }
                     mediaViewConfig.itemRenderer = jQuery.proxy(this.mediaItemRenderer.render, this.mediaItemRenderer);
                     mediaViewConfig.dataStore = this.mediaDataStore;
+                    mediaViewConfig.itemKey = 'id';
                     return DataViewMng.createDataView(mediaViewConfig);
                 },
 

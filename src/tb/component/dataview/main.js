@@ -197,6 +197,7 @@ define(
                         jQuery(itemRender).data("view-item", self.genId("item"));
                         jQuery(itemRender).data("item-data", item);
                         jQuery(itemRender).data("item-no", i);
+                        jQuery(itemRender).attr("data-uid", item[self.itemKey]);
                         jQuery(itemRender).addClass(self.config.itemCls);
                         if (!itemRender || itemRender.length === 0) {
                             Core.exception('BaseDataViewException', 50002, '[renderItems] InvalidAppConfig [appPath] key is missing');
