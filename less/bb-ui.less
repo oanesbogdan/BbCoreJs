@@ -58,6 +58,9 @@ Version: 2.10 Dec2014
     @import "@{font-awesome-path}less/rotated-flipped.less";
     @import "@{font-awesome-path}less/stacked.less";
     @import "@{font-awesome-path}less/icons.less";
+
+    // Import Datetimepicker from bower components
+    @import (less) "@{bower-path}datetimepicker/jquery.datetimepicker.css";
 }
 
 /*COLOR PICKER*/
@@ -2196,7 +2199,7 @@ Version: 2.10 Dec2014
 
     /*COLOR PICKER*/
     .colpick {
-        z-index: 490001;
+        z-index: @bb5-z-index;
         background-color: #fff;
         border: 1px solid #CECECE;
     }
@@ -2531,6 +2534,11 @@ Version: 2.10 Dec2014
         > tbody > tr {
             > td,> th {padding-bottom: 5px; padding-top:5px;}
         }
+    }
+
+    /*datetimepicker*/
+    .xdsoft_datetimepicker {
+        z-index: @bb5-z-index + 10;
     }
 
     /*Loader*/
