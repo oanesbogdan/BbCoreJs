@@ -63,6 +63,7 @@ require.config({
         'content/tpl/content-action': 'src/tb/apps/content/templates/content-action.twig',
         'content/tpl/breadcrumb': 'src/tb/apps/content/templates/breadcrumb.twig',
         'content/tpl/scrollzone': 'src/tb/apps/content/templates/scrollzone.twig',
+        'content/tpl/block_description': 'src/tb/apps/content/templates/block-description.twig',
 
         //Views
         'content.view.contribution.index': 'src/tb/apps/content/views/content.view.contribution.index'
