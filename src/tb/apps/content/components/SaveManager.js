@@ -101,9 +101,16 @@ define(
             mergeElements: function (content) {
                 var revision = content.revision,
                     elements = revision.elements,
+                    isMergeable = false,
                     key;
 
-                if (undefined !== elements) {
+                if (content.data !== undefined) {
+                    if (content.data.elements !== undefined) {
+                        isMergeable = true;
+                    }
+                }
+
+                if (undefined !== elements && isMergeable === true) {
                     if (content.isAContentSet()) {
                         content.data.elements = elements;
                     } else {
