@@ -183,7 +183,7 @@ define(
              */
             validateService: function () {
                 var config = {
-                    popinTitle: trans('saving_confirmation'),
+                    popinTitle: trans('validation_confirmation'),
                     noContentMsg: trans('no_content_validate'),
                     title: trans('confirm_saving_changes_content_below') + ' :',
                     onSave: function (data, popin) {
