@@ -94,6 +94,9 @@ define(
                 var self = this,
                     editable;
                 this.getEditableContents(content).done(function (editableContents) {
+                    if (!editableContents.length) {
+                        return;
+                    }
                     jQuery.each(editableContents, function (i) {
                         editable = editableContents[i];
                         self.applyToElement(editable.jQueryObject);
@@ -121,11 +124,15 @@ define(
             },
 
             applyToElement: function (element) {
-                if (jQuery(element).hasClass('cke_editable_inline')) {
+                element = jQuery(element);
+                if (!element.length) {
+                    return;
+                }
+                if (element.hasClass('cke_editable_inline')) {
                     return true;
                 }
-                jQuery(element).attr('contenteditable', true);
-                var conf = jQuery(element).data('rteConfig') || 'basic',
+                element.attr('contenteditable', true);
+                var conf = element.data('rteConfig') || 'basic',
                     rteConfig = this.editableConfig[conf];
                 this.editor.inline(jQuery(element).get(0), rteConfig);
             },
