@@ -39,6 +39,7 @@ define(
         'revisionselector.managers/Event',
         'revisionselector.managers/Save',
         'jquery',
+        'component!translator',
         'jsclass'
     ],
     function (
@@ -49,7 +50,8 @@ define(
         DraftManager,
         EventManager,
         SaveManager,
-        jQuery
+        jQuery,
+        translator
     ) {
 
         'use strict';
@@ -89,7 +91,6 @@ define(
                     this.popin = PopinManager.createPopIn();
                     this.popin.setTitle(title);
                     this.popin.addOptions(popinConfig);
-                    this.popin.addButton('Save', jQuery.proxy(this.save, this));
                 },
 
                 /**
@@ -111,10 +112,17 @@ define(
 
                     this.repository.getDrafts().done(function (drafts) {
                         var config = {
-                            items: DraftManager.computeDraft(drafts),
-                            title: self.config.title,
-                            noContentMsg: self.config.noContentMsg
-                        };
+                                items: DraftManager.computeDraft(drafts),
+                                title: self.config.title,
+                                noContentMsg: self.config.noContentMsg
+                            },
+                            buttonName = 'Ok';
+
+                        if (config.items.length > 0) {
+                            buttonName = translator.translate('save');
+                        }
+
+                        self.popin.addButton(buttonName, jQuery.proxy(self.save, self));
 
                         self.popin.setContent(Renderer.render(treeTemplate, config));
                         EventManager.init(self.selector);
