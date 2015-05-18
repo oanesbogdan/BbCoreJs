@@ -189,6 +189,12 @@ define(
                     closable: false
                 });
 
+                 /* fixing layout size */
+                setTimeout(function () {
+                    Selector.layout.resizeAll();
+                    Selector.layout.sizePane("west", 201);
+                }, 0);
+
                 Core.ApplicationManager.invokeService('page.main.getPageTreeViewInstance').done(function (PageTreeView) {
 
                     var pageTree = new PageTreeView(Selector.treeConfig);
@@ -204,6 +210,7 @@ define(
                         Selector.bindTreeEvents();
                     });
                 });
+
 
             },
 
