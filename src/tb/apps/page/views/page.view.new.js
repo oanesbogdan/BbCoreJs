@@ -23,7 +23,10 @@ define(
              * Initialize of PageViewNew
              */
             initialize: function (config) {
-                this.popin = require('component!popin').createPopIn();
+                this.popin = require('component!popin').createPopIn({
+                    position: { my: "center top", at: "center top+" + jQuery('#' + Core.get('menu.id')).height()}
+                });
+
                 this.formBuilder = require('component!formbuilder');
 
                 this.config = config;

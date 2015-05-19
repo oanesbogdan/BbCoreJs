@@ -273,7 +273,9 @@ define(
              */
             manageSeo: function () {
                 var self = this,
-                    popin = PopinManager.createPopIn();
+                    popin = PopinManager.createPopIn({
+                        position: { my: "center top", at: "center top+" + jQuery('#' + Core.get('menu.id')).height()}
+                    });
 
                 popin.setTitle(translator.translate('page_seo'));
                 popin.display();
