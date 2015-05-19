@@ -42,6 +42,8 @@
     "create_group": "Create group",
     "create_a_page": "Create a page",
     "create_user": "Create user",
+    "created_before": "Created before",
+    "created_after": "Created after",
     "creation_date": "Creation date",
     "cut": "Cut",
     "current_directory": "Current directory",

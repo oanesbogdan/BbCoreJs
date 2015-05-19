@@ -3,6 +3,7 @@
     <p><a title="{{title}}" href="javascript:;">{{title}}</a></p>
     <p>
         <button class="btn btn-simple btn-xs show-media-btn"><i class="fa fa-eye"></i>{{ "see" | trans }}</button>
+        <button class="btn btn-simple btn-xs edit-media-btn"><i class="fa fa-pencil"></i>{{ "edit" | trans }}</button>
         <button class="btn btn-simple btn-xs del-media-btn"><i class="fa fa-trash-o"></i>{{"delete" | trans}}</button>
     </p>
     <p>
