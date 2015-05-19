@@ -251,12 +251,16 @@ define(
                 },
 
                 loadAllCategories: function () {
-                    var self = this;
+                    var self = this,
+                        tree;
                     jQuery.ajax({
                         url: '/rest/1/classcontent-category'
                     }).done(function (data) {
                         var formattedData = formater.format('category', data);
                         self.categoryTreeView.setData(formattedData);
+                        /* open root Node */
+                        tree = self.categoryTreeView.getRootNode();
+                        self.categoryTreeView.invoke("openNode", tree.children[0]);
                     });
                 },
 
