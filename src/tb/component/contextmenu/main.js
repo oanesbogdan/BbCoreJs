@@ -26,28 +26,26 @@ define(['jquery', 'jsclass'], function (jQuery) {
     var ContextMenu = new JS.Class({
 
         /**
-         * Defaults settings
-         */
-        settings: {
-            contentSelector : null,
-            menuActions : [],
-            menuCls : "bb5-context-menu",
-            actionBuilder : null,
-            domTag: 'body'
-        },
-
-        /**
          * Initialize of contextmenu
          * @param {Object} userConfig
          */
         initialize: function (userConfig) {
+
+            var defaultSettings = {
+                contentSelector : null,
+                menuActions : [],
+                menuCls : "bb5-context-menu",
+                actionBuilder : null,
+                domTag: 'body'
+            };
+
             this.isEnabled = false;
             this.template = jQuery("<div><ul></ul></div>").clone();
             this.contextMenu = null;
             this.contextMenuTarget = null;
             this.beforeShow = null;
 
-            this.settings = jQuery.extend(true, this.settings, userConfig);
+            this.settings = jQuery.extend(true, defaultSettings, userConfig);
             if (this.settings.hasOwnProperty('defaultItemBuilder') && typeof this.settings.defaultItemBuilder === 'function') {
                 this.defaultItemBuilder = this.settings.defaultItemBuilder;
             }
