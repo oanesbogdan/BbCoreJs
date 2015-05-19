@@ -96,7 +96,7 @@ define(
                     this.openedMediaFolder = null;
                     this.mediaItemRenderer = new ItemRenderer();
                     this.mediaItemRenderer.setSelector(this);
-                    this.loadedNode = null;
+                    this.selectedNode = null;
                     this.initComponents();
                     this.setMode(this.config.mode);
                     Core.ApplicationManager.invokeService('content.main.registerPopin', 'mediaLibrary', this.dialog);
@@ -306,7 +306,7 @@ define(
                                     mediaInfos = {
                                         content_uid: content.uid,
                                         content_type: content.type,
-                                        folder_uid: self.loadedNode.uid
+                                        folder_uid: self.selectedNode.uid
                                     };
                                     deps.EditionHelper.show(content, {
                                         onSave: jQuery.proxy(self.onSaveHandler, self, mediaInfos),
@@ -375,9 +375,11 @@ define(
                         self.openedMediaFolder = self.mediaFolderTreeView.getNodeById(result[0].id);
                         self.mediaFolderDataStore.applyFilter("byMediaFolder", self.openedMediaFolder.uid).execute().done(function () {
                             self.mediaFolderTreeView.invoke('openNode', self.openedMediaFolder);
+                            self.handleMediaSelection({node: self.openedMediaFolder});
                         });
                     });
                 },
+
                 populateMediaFolder: function (data, parentNode) {
                     var formattedData = this.formatData(data);
                     if (!parentNode) {
@@ -390,8 +392,10 @@ define(
                 },
 
                 handleMediaSelection: function (e) {
-                    this.loadedNode = e.node;
-                    this.mediaDataStore.unApplyFilter("byTitle").unApplyFilter("byBeforeDate").unApplyFilter("byAfterDate").applyFilter("byMediaFolder", e.node.uid).execute();
+                    this.selectedNode = e.node;
+                    this.mediaDataStore.clear();
+                    this.mediaDataStore.setLimit(this.rangeSelector.getValue());
+                    this.mediaDataStore.applyFilter("byMediaFolder", e.node.uid).execute();
                     this.mediaFolderTreeView.invoke("selectNode", e.node);
                 },
 
@@ -431,7 +435,7 @@ define(
 
                 handleContextMenu: function (e) {
                     this.contextMenuHelper.setSelectedNode(e.node);
-                    this.loadedNode = e.node;
+                    this.selectedNode = e.node;
                     this.mediaFolderTreeView.invoke("selectNode", e.node);
                     this.contextMenuHelper.getContextMenu().show(e.click_event);
                 },
@@ -450,16 +454,25 @@ define(
                 onMediaStoreUpdate: function () {
                     this.fixDataviewLayout();
                     var resultTotal, rootNode;
-                    if (!this.loadedNode) {
+                    if (!this.selectedNode) {
                         rootNode = this.mediaFolderTreeView.getRootNode();
-                        this.loadedNode = rootNode.children[0];
+                        this.selectedNode = rootNode.children[0];
                     }
                     resultTotal = this.mediaDataStore.getTotal();
-                    jQuery(this.widget).find(".result-infos").html(this.loadedNode.name + ' - ' + resultTotal + ' item(s)');
+                    jQuery(this.widget).find(".result-infos").html(this.selectedNode.name + ' - ' + resultTotal + ' item(s)');
                     this.mediaPagination.setItems(resultTotal);
                 },
 
                 handleChanges: function () {
+                    if (this.openedMediaFolder.uid === this.selectedNode.uid) {
+                        this.mediaDataStore.applyFilter("byMediaFolder", this.openedMediaFolder.uid);
+                    } else {
+                        if (this.selectedNode.uid) {
+                            this.mediaDataStore.clear();
+                            this.mediaDataStore.setLimit(this.rangeSelector.getValue());
+                            this.mediaDataStore.applyFilter("byMediaFolder", this.selectedNode.uid);
+                        }
+                    }
                     this.mediaDataStore.execute();
                 },
 
