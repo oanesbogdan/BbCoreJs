@@ -18,6 +18,7 @@
     "block": "Block",
     "block_categories": "Block categories",
     "block_display": "Block display",
+    "browse_to": "Browse to",
 
     "cancel": "Cancel",
     "cancel_changes_content_below": "Cancel changes content below",
@@ -34,6 +35,8 @@
     "contents_selector": "Contents selector",
     "contents_validated": "Contents validated",
     "contents_canceled": "Contents canceled",
+    "copy": "Copy",
+    "create": "Create",
     "create_a_draft": "Create a draft",
     "create_a_folder": "Create a folder",
     "create_group": "Create group",

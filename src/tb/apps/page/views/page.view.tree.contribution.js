@@ -26,9 +26,10 @@ define(
         'page.repository',
         'jquery',
         'Core/Request',
-        'Core/RequestHandler'
+        'Core/RequestHandler',
+        'component!translator'
     ],
-    function (Core, ApplicationManager, TreeView, ContextMenu, PageRepository, jQuery, Request, RequestHandler) {
+    function (Core, ApplicationManager, TreeView, ContextMenu, PageRepository, jQuery, Request, RequestHandler, Translator) {
 
         'use strict';
 
@@ -154,7 +155,7 @@ define(
                         menuActions : [
                             {
                                 btnCls: "bb5-context-menu-add",
-                                btnLabel: "Create",
+                                btnLabel: Translator.translate('create'),
                                 btnCallback: function () {
                                     var callback = function (data, response) {
                                         RequestHandler.send(self.buildRequest(response.getHeader('Location'))).done(function (page) {
@@ -175,7 +176,7 @@ define(
 
                             {
                                 btnCls: "bb5-context-menu-edit",
-                                btnLabel: "Edit",
+                                btnLabel: Translator.translate('edit'),
                                 btnCallback: function () {
                                     var callback = function () {
                                         PageRepository.find(self.currentEvent.node.uid).done(function (page) {
@@ -194,7 +195,7 @@ define(
                             },
                             {
                                 btnCls: "bb5-context-menu-remove",
-                                btnLabel: "Remove",
+                                btnLabel: Translator.translate('delete'),
                                 btnCallback: function () {
                                     var callback = function () {
                                             self.treeView.invoke('removeNode', self.currentEvent.node);
@@ -209,7 +210,7 @@ define(
                             },
                             {
                                 btnCls: "bb5-context-menu-copy",
-                                btnLabel: "Copy",
+                                btnLabel: Translator.translate('copy'),
                                 btnCallback: function () {
                                     jQuery('.action-selected').removeClass('action-selected');
                                     jQuery(self.currentEvent.node.element).addClass('action-selected');
@@ -219,7 +220,7 @@ define(
                             },
                             {
                                 btnCls: "bb5-context-menu-paste",
-                                btnLabel: "Paste",
+                                btnLabel: Translator.translate('paste'),
                                 btnCallback: function () {
                                     jQuery('.action-selected').removeClass('action-selected');
                                     self.doPaste('inside');
@@ -227,7 +228,7 @@ define(
                             },
                             {
                                 btnCls: "bb5-context-menu-paste-before",
-                                btnLabel: "Paste before",
+                                btnLabel: Translator.translate('paste_before'),
                                 btnCallback: function () {
                                     jQuery('.action-selected').removeClass('action-selected');
                                     self.doPaste('before');
@@ -235,7 +236,7 @@ define(
                             },
                             {
                                 btnCls: "bb5-context-menu-paste-after",
-                                btnLabel: "Paste after",
+                                btnLabel: Translator.translate('paste_after'),
                                 btnCallback: function () {
                                     jQuery('.action-selected').removeClass('action-selected');
                                     self.doPaste('after');
@@ -243,7 +244,7 @@ define(
                             },
                             {
                                 btnCls: "bb5-context-menu-cut",
-                                btnLabel: "Cut",
+                                btnLabel: Translator.translate('cut'),
                                 btnCallback: function () {
                                     jQuery('.action-selected').removeClass('action-selected');
                                     jQuery(self.currentEvent.node.element).addClass('action-selected');
@@ -253,7 +254,7 @@ define(
                             },
                             {
                                 btnCls: "bb5-context-menu-flyto",
-                                btnLabel: "Browse to",
+                                btnLabel: Translator.translate('browse_to'),
                                 btnCallback: function () {
                                     jQuery(location).attr('href', self.currentEvent.node.uri);
                                 }
