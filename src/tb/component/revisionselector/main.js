@@ -80,6 +80,10 @@ define(
                     Core.ApplicationManager.invokeService('content.main.getRepository').done(function (repository) {
                         self.repository = repository;
                     });
+
+                    Core.ApplicationManager.invokeService('content.main.getSaveManager').done(function (ContentSaveManager) {
+                        self.ContentSaveManager = ContentSaveManager;
+                    });
                 },
 
                 /**
@@ -110,22 +114,24 @@ define(
 
                     this.popin.display();
 
-                    this.repository.getDrafts().done(function (drafts) {
-                        var config = {
-                                items: DraftManager.computeDraft(drafts),
-                                title: self.config.title,
-                                noContentMsg: self.config.noContentMsg
-                            },
-                            buttonName = 'Ok';
+                    self.ContentSaveManager.save().done(function () {
+                        self.repository.getDrafts().done(function (drafts) {
+                            var config = {
+                                    items: DraftManager.computeDraft(drafts),
+                                    title: self.config.title,
+                                    noContentMsg: self.config.noContentMsg
+                                },
+                                buttonName = 'Ok';
 
-                        if (config.items.length > 0) {
-                            buttonName = translator.translate('save');
-                        }
+                            if (config.items.length > 0) {
+                                buttonName = translator.translate('save');
+                            }
 
-                        self.popin.addButton(buttonName, jQuery.proxy(self.save, self));
+                            self.popin.addButton(buttonName, jQuery.proxy(self.save, self));
 
-                        self.popin.setContent(Renderer.render(treeTemplate, config));
-                        EventManager.init(self.selector);
+                            self.popin.setContent(Renderer.render(treeTemplate, config));
+                            EventManager.init(self.selector);
+                        });
                     });
                 }
             });
