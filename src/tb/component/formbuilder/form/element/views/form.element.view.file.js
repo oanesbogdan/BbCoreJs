@@ -18,7 +18,7 @@
  */
 
 /*global Dropzone */
-define(['Core', 'Core/Renderer', 'BackBone', 'jquery', 'tb.component/mask/main'], function (Core, Renderer, Backbone, jQuery) {
+define(['Core', 'Core/Renderer', 'BackBone', 'jquery', 'tb.component/mask/main', 'tb.component/session/main'], function (Core, Renderer, Backbone, jQuery) {
     'use strict';
 
     var FileView = Backbone.View.extend({
@@ -45,7 +45,8 @@ define(['Core', 'Core/Renderer', 'BackBone', 'jquery', 'tb.component/mask/main']
 
         uploadEvent: function () {
             var self = this,
-                config = {};
+                config = {},
+                session = require('tb.component/session/main');
 
             jQuery.extend(config, this.defaultDropzoneConfig, this.element.config.dropzone);
 
@@ -61,7 +62,10 @@ define(['Core', 'Core/Renderer', 'BackBone', 'jquery', 'tb.component/mask/main']
 
                 self.buildValue(dropzone, self.element.value, input);
 
-                dropzone.on('sending', function () {
+                dropzone.on('sending', function (file, xhr) {
+
+                    xhr.setRequestHeader(session.HEADER_API_KEY, session.key);
+                    xhr.setRequestHeader(session.HEADER_API_SIGNATURE, session.signature);
 
                     self.maskManager.mask(form);
 
