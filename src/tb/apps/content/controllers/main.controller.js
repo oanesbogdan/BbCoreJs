@@ -50,8 +50,6 @@ define(
     ) {
         'use strict';
 
-        var trans = Core.get('trans') || function (value) {return value; };
-
         Core.ControllerManager.registerController('MainController', {
             appName: 'content',
 
@@ -62,7 +60,9 @@ define(
                 define: {
                     editionService: ['content.widget.Edition', 'content.manager'],
                     getPluginManagerService: ['content.pluginmanager'],
-                    saveService: ['component!popin', 'component!translator']
+                    saveService: ['component!popin', 'component!translator'],
+                    cancelService: ['component!translator'],
+                    validateService: ['component!translator']
                 }
             },
 
@@ -160,19 +160,28 @@ define(
              * Show the revision selector
              * @returns {undefined}
              */
-            cancelService: function () {
-                var config = {
-                    popinTitle: trans('cancel_confirmation'),
-                    noContentMsg: trans('no_content_cancel'),
-                    title: trans('cancel_changes_content_below') + ' :',
-                    onSave: function (data, popin) {
-                        popin.mask();
-                        RevisionRepository.save(data, 'revert').done(function () {
-                            location.reload();
-                        });
-                    }
+            cancelService: function (req) {
+                var translator = req('component!translator'),
+                    config = {
+                        popinTitle: translator.translate('cancel_confirmation'),
+                        noContentMsg: translator.translate('no_content_cancel'),
+                        title: translator.translate('cancel_changes_content_below') + ' :',
+                        onSave: function (data, popin) {
+                            popin.mask();
+                            RevisionRepository.save(data, 'revert').done(function () {
+                                if (data.length === 0) {
+                                    notify.warning(translator.translate('no_content_cancel'));
+                                } else {
+                                    notify.success(translator.translate('contents_canceled'));
+                                    location.reload();
+                                }
 
-                };
+                                popin.unmask();
+                                popin.hide();
+                            });
+                        }
+
+                    };
 
                 new RevisionSelector(config).show();
             },
@@ -181,20 +190,26 @@ define(
              * Show the revision selector
              * @returns {undefined}
              */
-            validateService: function () {
-                var config = {
-                    popinTitle: trans('validation_confirmation'),
-                    noContentMsg: trans('no_content_validate'),
-                    title: trans('confirm_saving_changes_content_below') + ' :',
-                    onSave: function (data, popin) {
-                        popin.mask();
-                        RevisionRepository.save(data, 'commit').done(function () {
+            validateService: function (req) {
+                var translator = req('component!translator'),
+                    config = {
+                        popinTitle: translator.translate('validation_confirmation'),
+                        noContentMsg: translator.translate('no_content_validate'),
+                        title: translator.translate('confirm_saving_changes_content_below') + ' :',
+                        onSave: function (data, popin) {
+                            popin.mask();
+                            RevisionRepository.save(data, 'commit').done(function () {
+                                if (data.length === 0) {
+                                    notify.warning(translator.translate('no_content_validate'));
+                                } else {
+                                    notify.success(translator.translate('contents_validated'));
+                                }
 
-                            notify.success(trans('contents_validated'));
-                            popin.hide();
-                        });
-                    }
-                };
+                                popin.unmask();
+                                popin.hide();
+                            });
+                        }
+                    };
 
                 new RevisionSelector(config).show();
             },
