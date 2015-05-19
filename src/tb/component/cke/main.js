@@ -32,6 +32,7 @@ define(
                 this.editors = [];
                 this.editableConfig = {};
                 this.conciseInfos = {};
+                this.lastInstance = null;
                 this.editorContainer = '#content-contrib-tab';
                 var lib = [],
                     self = this;
@@ -41,6 +42,7 @@ define(
                 if (this.config.hasOwnProperty('editableConfig')) {
                     this.editableConfig = this.config.editableConfig;
                 }
+                this.handleSaveEvents();
                 Utils.requireWithPromise(lib).done(function () {
                     self.editor = CKEDITOR;
                     self.editor.disableAutoInline = true;
@@ -53,8 +55,20 @@ define(
                         self.stickEditor({
                             editor: CKEDITOR.currentInstance
                         });
+                        self.lastInstance = CKEDITOR.currentInstance;
                     });
+
                     self.triggerOnReady(self);
+                });
+            },
+
+            handleSaveEvents : function () {
+                /* Force the last editor to blur */
+                var self = this;
+                Core.Mediator.subscribe("on:content:save:click", function () {
+                    if (self.lastInstance) {
+                        self.lastInstance.fire("blur", { editor: self.lastInstance });
+                    }
                 });
             },
 
@@ -105,23 +119,26 @@ define(
             },
 
             handleInstance: function (event) {
-                var self = this,
-                    editor = event.editor;
+                var editor = event.editor;
                 this.editors.push(editor);
-                editor.on("blur", function (evt) {
-                    if (evt.editor.checkDirty()) {
-                        self.triggerOnEdit({
-                            node: evt.editor.container.$,
-                            data: evt.editor.getData()
-                        });
-                        /* save value here */
-                        Core.ApplicationManager.invokeService('content.main.getContentManager').done(function (ContentManager) {
-                            var content = ContentManager.getContentByNode(jQuery(evt.editor.container.$));
-                            content.set('value', evt.editor.getData());
-                        });
-                    }
-                });
+                editor.on("blur", jQuery.proxy(this.handleContentEdition, this));
             },
+
+            handleContentEdition: function (evt) {
+
+                if (evt.editor.checkDirty()) {
+                    this.triggerOnEdit({
+                        node: evt.editor.container.$,
+                        data: evt.editor.getData()
+                    });
+                    /* save value here */
+                    Core.ApplicationManager.invokeService('content.main.getContentManager').done(function (ContentManager) {
+                        var content = ContentManager.getContentByNode(jQuery(evt.editor.container.$));
+                        content.set('value', evt.editor.getData());
+                    });
+                }
+            },
+
 
             applyToElement: function (element) {
                 element = jQuery(element);
