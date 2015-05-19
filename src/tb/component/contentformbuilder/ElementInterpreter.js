@@ -25,7 +25,8 @@
 
         var association = {
                 'Element/Text': 'Text',
-                'Element/Image': 'Image'
+                'Element/Image': 'Image',
+                'scalar': 'Scalar'
             };
 
         return {
@@ -37,15 +38,13 @@
                     var definition = DefinitionManager.find(name),
                         realName = association[name];
 
-                    if (null !== definition) {
+                    if (null !== definition || name === 'scalar') {
 
-                        if (definition.properties.is_container === true) {
+                        if (name !== 'scalar' && definition.properties.is_container === true) {
                             realName = 'ContentSet';
-                        } else if (realName === undefined) {
-                            realName = 'All';
                         }
 
-                        if (null !== definition) {
+                        if (realName !== undefined) {
                             req(['cf.edition.elements/' + realName], function (elementObject) {
                                 self.getServices(elementObject.services).done(function () {
 
@@ -64,7 +63,10 @@
                             }, function () {
                                 onload(null);
                             });
+                        } else {
+                            onload(null);
                         }
+
                     } else {
                         onload(null);
                     }

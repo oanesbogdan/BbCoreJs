@@ -75,7 +75,6 @@ define(
                     dfd = new jQuery.Deferred();
 
                 this.content.getData('elements').done(function (elements) {
-
                     var key,
                         object,
                         element,
@@ -85,11 +84,16 @@ define(
                         if (elements.hasOwnProperty(key)) {
 
                             element = elements[key];
+
                             object = {
-                                'type': element.type,
+                                'type': (element.type === undefined) ? 'scalar' : element.type,
                                 'uid': element.uid,
                                 'name': key
                             };
+
+                            if (object.type === 'scalar') {
+                                object.parent = self.content;
+                            }
 
                             elementArray.push(object);
                         }
@@ -197,19 +201,26 @@ define(
                     value;
 
                 for (key in data) {
+
                     if (data.hasOwnProperty(key)) {
                         value = data[key];
                         item = contentElements[key];
 
-                        element = ContentManager.buildElement(item);
+                        if (value !== null) {
+                            if (typeof item === 'string') {
+                                if (item !== value) {
+                                    this.content.addElement(key, value);
+                                }
+                            } else {
+                                element = ContentManager.buildElement(item);
 
-                        if (element.type === 'Element/Text') {
-                            if (element.get('value') !== value && value !== null) {
-                                element.set('value', value);
-                            }
-                        } else {
-                            if (value !== null) {
-                                element.setElements(value);
+                                if (element.type === 'Element/Text') {
+                                    if (element.get('value') !== value) {
+                                        element.set('value', value);
+                                    }
+                                } else {
+                                    element.setElements(value);
+                                }
                             }
                         }
                     }
