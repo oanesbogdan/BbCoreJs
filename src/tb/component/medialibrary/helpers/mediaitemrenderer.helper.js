@@ -36,166 +36,165 @@ define(
     function (Api, Renderer, jQuery, PopInManager, MaskManager) {
         'use strict';
 
-        var MediaItemRenderer = new JS.Class({
-            initialize: function () {
-                this.mode = "editmode";
-                this.templates = {
-                    'view': require('text!item.templates/media.viewmode.tpl'),
-                    'edit': require('text!item.templates/media.editmode.tpl'),
-                    'deleteContent': require('text!item.templates/media.deletemode.tpl')
-                };
-                this.mask = MaskManager.createMask({});
-                Renderer.addFilter("bytesToSize", this.bytetoSize);
-            },
-
-            bytetoSize: function (bytes) {
-                var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'],
-                    i;
-                if (bytes === 0) { return '0 Byte'; }
-                i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
-                return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
-            },
-
-            initPopin: function () {
-                if (this.popin) {
-                    this.popin.destroy();
-                }
-                this.popin = PopInManager.createSubPopIn(this.selector.dialog, {
-                    modal: true,
-                    minHeight: 200,
-                    minWidth: 450,
-                    maxHeight: 500,
-                    maxWidth: 450
-                });
-                return this.popin;
-            },
-
-            setSelector: function (selector) {
-                this.selector = selector;
-            },
-
-            getSelector: function () {
-                return this.selector;
-            },
-
-            setMode: function (mode) {
-                this.mode = mode;
-            },
-
-            hidePopin: function () {
-                if (this.popin) {
-                    this.popin.destroy();
-                }
-            },
-
-            bindItemEvents: function (item, itemData) {
-                item = jQuery(item);
-                item.on('click',
-                    '.show-media-btn', jQuery.proxy(this.handleMediaPreview, this, itemData));
-                item.on('click', '.del-media-btn', jQuery.proxy(this.deleteMedia, this, itemData));
-                item.on('click', '.edit-media-btn', jQuery.proxy(this.showMediaEditForm, this, itemData));
-                item.on('click', '.addandclose-btn', jQuery.proxy(this.addAndClose, this, itemData));
-                return item;
-            },
-
-            handleMediaPreview: function (media, e) {
-                this.selector.hideEditForm();
-                e.stopPropagation();
-                var self = this;
-                this.initPopin().setTitle("Media Preview");
-                this.popin.setContent(jQuery("<p>Loading...</p>"));
-                this.popin.display();
-                this.popin.moveToTop();
-                this.popin.mask();
-                this.loadMediaPreview(media.content).done(function (content) {
-                    content = jQuery(content);
-                    content.removeClass();
-                    self.popin.setContent(content);
-                    self.popin.unmask();
-                });
-            },
-
-            addAndClose: function (media, e) {
-                e.stopPropagation();
-                e.preventDefault();
-                this.getSelector().selectItems(media);
-                this.getSelector().close();
-                return false;
-            },
-
-            loadMediaPreview: function (content) {
-                return jQuery.ajax({
-                    dataType: 'html',
-                    url: "/rest/1/classcontent/" + content.type + "/" + content.uid
-                });
-            },
-
-            showMediaEditForm: function (media, e) {
-                this.hidePopin();
-                e.stopPropagation();
-                this.selector.showMediaEditForm(media.type, media);
-            },
-
-            checkOrphanedContents: function (content) {
-                var self = this;
-                jQuery.ajax({
-                    url: "/rest/1/page",
-                    data: {
-                        content_uid: content.uid,
-                        content_type: content.type
-                    }
-                }).done(function (data) {
-                    data = data || [];
-                    var templateData = {
-                        isOrphaned: (data.length === 0),
-                        items: data
+        var trans = require('Core').get('trans') || function (value) { return value; },
+            MediaItemRenderer = new JS.Class({
+                initialize: function () {
+                    this.mode = "editmode";
+                    this.templates = {
+                        'view': require('text!item.templates/media.viewmode.tpl'),
+                        'edit': require('text!item.templates/media.editmode.tpl'),
+                        'deleteContent': require('text!item.templates/media.deletemode.tpl')
                     };
-                    content = Renderer.render(self.templates.deleteContent, templateData);
-                    self.popin.setContent(jQuery(content));
-                    self.addButtons();
-                    self.popin.display();
-                    self.popin.moveToTop();
-                }).fail(function (response) {
-                    self.popin.unmask();
-                    Api.exception('MediaItemException', 57567, '[deleteMedia] MediaItemException error while deleting media ' + response);
-                });
-            },
+                    this.mask = MaskManager.createMask({});
+                    Renderer.addFilter("bytesToSize", this.bytetoSize);
+                },
 
-            deleteMedia: function (media, e) {
-                this.selector.hideEditForm();
-                e.stopPropagation();
-                this.media = media;
-                this.initPopin();
-                this.popin.setTitle('Delete media');
-                this.popin.setContent("Loading...");
-                this.popin.display();
-                this.popin.moveToTop();
-                this.checkOrphanedContents(media.content);
-            },
+                bytetoSize: function (bytes) {
+                    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'],
+                        i;
+                    if (bytes === 0) { return '0 Byte'; }
+                    i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
+                    return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+                },
 
-            render: function (mode, item) {
-                if (mode === 'list' || mode === 'grid') {
-                    mode = this.mode;
+                initPopin: function () {
+                    if (this.popin) {
+                        this.popin.destroy();
+                    }
+                    this.popin = PopInManager.createSubPopIn(this.selector.dialog, {
+                        modal: true,
+                        minHeight: 200,
+                        minWidth: 450,
+                        maxHeight: 500,
+                        maxWidth: 450
+                    });
+                    return this.popin;
+                },
+
+                setSelector: function (selector) {
+                    this.selector = selector;
+                },
+
+                getSelector: function () {
+                    return this.selector;
+                },
+
+                setMode: function (mode) {
+                    this.mode = mode;
+                },
+
+                hidePopin: function () {
+                    if (this.popin) {
+                        this.popin.destroy();
+                    }
+                },
+
+                bindItemEvents: function (item, itemData) {
+                    item = jQuery(item);
+                    item.on('click',
+                        '.show-media-btn', jQuery.proxy(this.handleMediaPreview, this, itemData));
+                    item.on('click', '.del-media-btn', jQuery.proxy(this.deleteMedia, this, itemData));
+                    item.on('click', '.edit-media-btn', jQuery.proxy(this.showMediaEditForm, this, itemData));
+                    item.on('click', '.addandclose-btn', jQuery.proxy(this.addAndClose, this, itemData));
+                    return item;
+                },
+
+                handleMediaPreview: function (media, e) {
+                    this.selector.hideEditForm();
+                    e.stopPropagation();
+                    var self = this;
+                    this.initPopin().setTitle(trans("media_preview"));
+                    this.popin.setContent(jQuery("<p>" + trans("loading") + "...</p>"));
+                    this.popin.display();
+                    this.popin.moveToTop();
+                    this.popin.mask();
+                    this.loadMediaPreview(media.content).done(function (content) {
+                        content = jQuery(content);
+                        content.removeClass();
+                        self.popin.setContent(content);
+                        self.popin.unmask();
+                    });
+                },
+
+                addAndClose: function (media, e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    this.getSelector().selectItems(media);
+                    this.getSelector().close();
+                    return false;
+                },
+
+                loadMediaPreview: function (content) {
+                    var dfd = new jQuery.Deferred();
+                    Api.ApplicationManager.invokeService("content.main.getRepository").done(function (contentRepository) {
+                        contentRepository.getHtml(content.type, content.uid).done(dfd.resolve);
+                    });
+                    return dfd.promise();
+                },
+
+
+                showMediaEditForm: function (media, e) {
+                    this.hidePopin();
+                    e.stopPropagation();
+                    this.selector.showMediaEditForm(media.type, media);
+                },
+
+                checkOrphanedContents: function (content) {
+                    var self = this;
+                    Api.ApplicationManager.invokeService("page.main.getPageRepository").done(function (pageRepository) {
+                        pageRepository.findContents(content.type, content.uid).done(function (data) {
+                            data = data || [];
+                            var templateData = {
+                                isOrphaned: (data.length === 0),
+                                items: data
+                            };
+                            content = Renderer.render(self.templates.deleteContent, templateData);
+                            self.popin.setContent(jQuery(content));
+                            self.addButtons();
+                            self.popin.display();
+                            self.popin.moveToTop();
+                        }).fail(function (response) {
+                            self.popin.unmask();
+                            Api.exception('MediaItemException', 57567, '[deleteMedia] MediaItemException error while deleting media ' + response);
+                        });
+                    });
+                },
+
+                deleteMedia: function (media, e) {
+                    this.selector.hideEditForm();
+                    e.stopPropagation();
+                    this.media = media;
+                    this.initPopin();
+                    this.popin.setTitle(trans('delete_media'));
+                    this.popin.setContent(jQuery("<p>" + trans("loading") + "...</p>"));
+                    this.popin.display();
+                    this.popin.moveToTop();
+                    this.checkOrphanedContents(media.content);
+                },
+
+                render: function (mode, item) {
+                    if (mode === 'list' || mode === 'grid') {
+                        mode = this.mode;
+                    }
+                    var template = this.templates[mode],
+                        data =  Renderer.render(template, item); //mode is unused
+                    return this.bindItemEvents(data, item);
+                },
+
+                addButtons: function () {
+                    var self = this;
+
+                    this.popin.addButton(trans('yes'), function () {
+                        self.popin.mask();
+                        self.popin.setContent("<p>" + trans("please_wait_while_the_media_is_being_deleted") + "...</p>");
+                        self.selector.deleteMedia(self.media);
+                        self.popin.destroy();
+                    });
+                    this.popin.addButton(trans('no'), function () {
+                        self.popin.destroy();
+                    });
                 }
-                var template = this.templates[mode],
-                    data =  Renderer.render(template, item); //mode is unused
-                return this.bindItemEvents(data, item);
-            },
-
-            addButtons: function () {
-                var self = this;
-
-                this.popin.addButton('Yes', function () {
-                    self.popin.mask();
-                    self.popin.setContent("<p>Please wait while the media is being deleted...</p>");
-                    self.selector.deleteMedia(self.media);
-                    self.popin.destroy();
-                });
-                this.popin.addButton("No", function () {
-                    self.popin.destroy();
-                });
-            }
-        });
+            });
         return MediaItemRenderer;
     }
 );
