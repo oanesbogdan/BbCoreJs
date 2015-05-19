@@ -250,6 +250,17 @@ define(
                 this.setUpdated(true);
             },
 
+            addElement: function (name, element) {
+                if (name !== undefined && element !== undefined) {
+                    if (this.revision.elements === undefined) {
+                        this.revision.elements = {};
+                    }
+
+                    this.revision.elements[name] = element;
+                    this.setUpdated(true);
+                }
+            },
+
             updateRevision: function () {
                 return this.revision;
             },
