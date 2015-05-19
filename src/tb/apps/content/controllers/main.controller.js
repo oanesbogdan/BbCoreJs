@@ -117,6 +117,10 @@ define(
                 return req('content.pluginmanager');
             },
 
+            getSaveManagerService: function () {
+                return SaveManager;
+            },
+
             editionService: function (req) {
                 var EditionHelper = req('content.widget.Edition'),
                     ContentHelper = req('content.manager');
