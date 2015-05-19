@@ -41,7 +41,10 @@ define(
             initialize: function (config) {
                 this.config = config;
 
-                this.popin = require('component!popin').createPopIn();
+                this.popin = require('component!popin').createPopIn({
+                    position: { my: "center top", at: "center top+" + jQuery('#' + Core.get('menu.id')).height()}
+                });
+
                 Core.ApplicationManager.invokeService('page.main.registerPopin', 'pageDelete', this.popin);
 
                 this.uid = config.uid;

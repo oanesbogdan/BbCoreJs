@@ -80,6 +80,7 @@ define(
                 Core.set('page.uid', pageUid);
                 Core.set('site.uid', siteUid);
                 Core.set('layout.uid', layoutUid);
+                Core.set('menu.id', 'bb5-navbar-primary');
 
                 Core.set('application.main', this);
 

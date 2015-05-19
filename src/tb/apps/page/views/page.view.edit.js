@@ -51,7 +51,10 @@ define(
                 this.page_uid = this.config.page_uid;
                 this.callbackAfterSubmit = this.config.callbackAfterSubmit;
 
-                this.popin = require('component!popin').createPopIn();
+                this.popin = require('component!popin').createPopIn({
+                    position: { my: "center top", at: "center top+" + jQuery('#' + Core.get('menu.id')).height()}
+                });
+
                 this.formBuilder = require('component!formbuilder');
 
                 Core.ApplicationManager.invokeService('page.main.registerPopin', 'pageEdit', this.popin);
