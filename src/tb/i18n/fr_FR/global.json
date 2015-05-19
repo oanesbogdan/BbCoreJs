@@ -13,6 +13,7 @@
     "available_in_menus": "Disponible dans les menus",
 
     "block": "Bloc",
+    "browse_to": "Naviguer vers",
 
     "cancel": "Annuler",
     "categories_of_blocks": "Catégories des blocs",
@@ -25,9 +26,12 @@
     "contents": "Contenus",
     "contents_validated": "Contenus validés",
     "contents_canceled": "Contenus annulés",
+    "Copy": "Copier",
+    "create": "Créer",
     "create_a_draft": "Créer un brouillon",
     "create_group": "Créer un groupe",
     "create_user": "Créer un utilisateur",
+    "cut": "Couper",
 
     "data_base": "Base de données",
     "deactivate": "Désactiver",
@@ -83,6 +87,9 @@
     "page_status": "Status de la page",
     "page_tree": "Arborescence de page",
     "password": "Mot de passe",
+    "paste": "Coller",
+    "paste_after": "Coller après",
+    "paste_before": "Coller avant",
     "previous": "Précédent",
     "publishing_archiving": "Publication / Archivage",
 
