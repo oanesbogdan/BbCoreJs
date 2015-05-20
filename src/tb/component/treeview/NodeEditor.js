@@ -36,6 +36,7 @@ define(['jquery', 'BackBone', 'jsclass'], function (jQuery, BackBone) {
                 node.isLoaded = true;
                 this.tree.addNode(node, 'before', editedNode);
                 this.tree.removeNode(editedNode);
+                this.isEditing = false;
             }
         },
 

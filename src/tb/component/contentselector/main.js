@@ -101,7 +101,7 @@ define(
                     this.previousContentTypes = null;
                     this.state = {};
                     this.mode = this.config.mode || this.VIEW_MODE;
-                    this.resetOnClose = this.config.resetOnClose || false;
+                    this.resetOnClose = this.config.resetOnClose;
                     this.widget = jQuery(layout).clone();
                     this.popIn = this.initPopIn();
                     Core.ApplicationManager.invokeService('content.main.registerPopin', 'contentSelector', this.popIn);
@@ -256,8 +256,15 @@ define(
                         pageRepository.findCategories().done(function (data) {
                             var formattedData = formater.format('category', data);
                             self.categoryTreeView.setData(formattedData);
+                            self.loadRootNode();
                         });
                     });
+                },
+
+                loadRootNode: function () {
+                    var tree = this.categoryTreeView.getRootNode();
+                    this.categoryTreeView.invoke("openNode", tree.children[0]);
+
                 },
 
                 initLayout: function () {
@@ -404,6 +411,7 @@ define(
                         var data = formater.format("contenttype", contentypeArr);
                         this.categoryTreeView.setData(data);
                         this.previousContentTypes = contentypeArr;
+                        this.loadRootNode();
                     } else {
                         this.loadAllCategories();
                     }
@@ -420,12 +428,13 @@ define(
                     selector.onReady = jQuery.noop;
                     if (!selector.isLoaded) {
                         jQuery(this).html(selector.widget);
+                        var widgetLayout = selector.initLayout();
+                        widgetLayout.resizeAll();
+                        widgetLayout.sizePane("west", 201); //useful to fix layout size
+                        selector.fixDataviewLayout();
+                    } else {
+                        selector.loadRootNode();
                     }
-                    var widgetLayout = selector.initLayout();
-                    widgetLayout.resizeAll();
-                    widgetLayout.sizePane("west", 201); //useful to fix layout size
-                    /* center layout */
-                    selector.fixDataviewLayout();
                     selector.isLoaded = true;
                     selector.trigger("open");
                 },

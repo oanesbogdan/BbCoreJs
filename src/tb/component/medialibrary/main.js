@@ -74,7 +74,7 @@ define(
                         height: "auto"
                     }
                 },
-                resetOnClose: true,
+                resetOnClose: false,
                 mediaFolderTreeView: {}
             },
             trans = require('Core').get('trans') || function (value) {return value; },
@@ -84,8 +84,7 @@ define(
                 initialize: function (config) {
                     jQuery.extend(this, {}, BackBone.Events);
                     this.config = config || {};
-
-                    this.resetOnClose = this.config.resetOnClose || false;
+                    this.resetOnClose = this.config.resetOnClose;
                     this.dialog = this.initPopin();
                     this.dialog.addOption("open", jQuery.proxy(this.onOpen, null, this));
                     this.dialog.addOption("close", jQuery.proxy(this.onClose, this, this));
@@ -97,6 +96,7 @@ define(
                     this.mediaItemRenderer = new ItemRenderer();
                     this.mediaItemRenderer.setSelector(this);
                     this.selectedNode = null;
+                    this.triggerCloseEvent = true;
                     this.initComponents();
                     this.setMode(this.config.mode);
                     Core.ApplicationManager.invokeService('content.main.registerPopin', 'mediaLibrary', this.dialog);
@@ -119,13 +119,15 @@ define(
 
                 onClose: function () {
                     if (this.config.mode === this.EDIT_MODE) {
-                        this.trigger("close", this.mediaListView.getSelection());
+                        if (this.triggerCloseEvent) {
+                            this.trigger("close", this.mediaListView.getSelection());
+                        }
                     }
                     if (this.resetOnClose) {
                         this.reset();
                     }
                     Core.ApplicationManager.invokeService('content.main.registerPopin', 'mediaLibrary');
-                    this.triggerEvent = true;
+                    this.triggerCloseEvent = true;
                 },
 
                 reset: function () {
@@ -139,7 +141,6 @@ define(
                 setMode: function (mode) {
                     if (this.config.mode === this.EDIT_MODE) {
                         this.addButtons();
-                        this.resetOnClose = true; //force reset
                     }
                     this.mediaItemRenderer.setMode(mode);
                     /* edit mode */
@@ -156,11 +157,11 @@ define(
                 addButtons: function () {
                     var self = this;
                     this.dialog.addButton(trans("add_and_close"), function () {
-                        self.triggerEvent = true;
+                        self.triggerCloseEvent = true;
                         self.close();
                     });
                     this.dialog.addButton(trans("cancel"), function () {
-                        self.triggerEvent = false;
+                        self.triggerCloseEvent = false;
                         self.close();
                     });
 
@@ -364,6 +365,7 @@ define(
                     this.mediaListView.render(dataViewCtn);
                     this.mediaFolderTreeView.render(catTreeCtn);
                     this.searchEngine.render(searchEnginerCtn);
+                    this.loadMediaFolders();
                     this.bindEvents();
                     jQuery("#" + this.dialog.id).parent().find(".ui-dialog-buttonpane .ui-dialog-buttonset").addClass("pull-right");
                 },
@@ -374,9 +376,14 @@ define(
                         self.openedMediaFolder = self.mediaFolderTreeView.getNodeById(result[0].id);
                         self.mediaFolderDataStore.applyFilter("byMediaFolder", self.openedMediaFolder.uid).execute().done(function () {
                             self.mediaFolderTreeView.invoke('openNode', self.openedMediaFolder);
-                            self.handleMediaSelection({node: self.openedMediaFolder});
+                            self.loadRootData();
                         });
                     });
+                },
+
+                loadRootData : function () {
+                    var root = this.mediaFolderTreeView.getRootNode();
+                    this.handleMediaSelection({node: root.children[0]});
                 },
 
                 populateMediaFolder: function (data, parentNode) {
@@ -423,13 +430,16 @@ define(
                 onOpen: function (library) {
                     library.onReady();
                     library.onReady = jQuery.noop;
-                    library.loadMediaFolders();
 
                     if (!library.isLoaded) {
                         jQuery(this).html(library.widget);
+                        library.initLayouts();
+                        library.fixDataviewLayout();
+                    } else {
+                        if (this.resetOnClose) {
+                            library.loadRootData();
+                        }
                     }
-                    library.initLayouts();
-                    library.fixDataviewLayout();
                     library.isLoaded = true;
                     library.trigger("open");
                 },

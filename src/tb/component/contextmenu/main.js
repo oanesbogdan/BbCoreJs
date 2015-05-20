@@ -148,8 +148,8 @@ define(['jquery', 'jsclass'], function (jQuery) {
             e.preventDefault();
             e.stopPropagation();
             var position = {
-                left: e.pageX,
-                top: e.pageY
+                left: e.clientX,
+                top: e.clientY
             };
             jQuery(this.contextMenu).css({
                 position: "absolute",
