@@ -43,7 +43,8 @@ require.config({
         'moment': 'bower_components/moment/moment',
         'URIjs': 'bower_components/uri.js/src',
         'URIjs/URI': 'bower_components/uri.js/src/URI',
-        'bootstrapjs': 'bower_components/bootstrap/dist/js/bootstrap',
+        'bootstrap-carousel': 'bower_components/bootstrap/js/carousel',
+        'bootstrap-dropdown': 'bower_components/bootstrap/js/dropdown',
         'ckeeditor': 'bower_components/ckeeditor/ckeditor',
         'dropzone': 'bower_components/dropzone/dist/dropzone',
 
@@ -71,7 +72,6 @@ require.config({
     'shim': {
         'lib.jqtree': {
             deps: ['jquery.noconflict']
-            
         },
         "core-jquery": {
             init: function () {
@@ -85,18 +85,20 @@ require.config({
         },
 
         BackBone: {
-            deps: ['underscore', 'jquery'],
+            deps: ['underscore', 'jquery.noconflict'],
             exports: 'Backbone'
         },
         Core: {
-            deps: ['BackBone', 'jquery', 'jsclass', 'underscore', 'nunjucks', 'URIjs/URI']
+            deps: ['BackBone', 'jquery.noconflict', 'jsclass', 'underscore', 'nunjucks', 'URIjs/URI']
         },
-        bootstrapjs: {
-            deps: ['jquery']
+        'bootstrap-carousel': {
+            deps: ['jquery.noconflict']
         },
-
+        'bootstrap-dropdown': {
+            deps: ['jquery.noconflict']
+        },
         'jquery-layout': {
-            deps: ['jquery']
+            deps: ['jquery.noconflict']
         },
         'cryptojs.core': {
             exports: 'CryptoJS'

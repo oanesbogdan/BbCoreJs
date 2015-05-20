@@ -196,15 +196,14 @@ define(
                     groupBlocks = [],
                     groupNumbers;
 
-                groupNumbers = Math.floor(data.blocks.length / 3);
+                groupNumbers = Math.ceil(data.blocks.length / 3);
                 if (groupNumbers < 2) {
-                    groupBlocks.push(data.blocks)
+                    groupBlocks.push(data.blocks);
                 } else {
-                    for (var key = 0; key < groupNumbers; key = key + 1) {
+                    for (key = 0; key < groupNumbers; key = key + 1) {
                         groupBlocks.push(data.blocks.slice((key * 3), (key * 3) + 3));
                     }
                 }
-                console.log(data.blocks.length, groupNumbers);
 
                 if (data.blocks.length > 0) {
                     delete data.blocks;
