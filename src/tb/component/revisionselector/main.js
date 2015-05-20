@@ -124,7 +124,7 @@ define(
                                 buttonName = 'Ok';
 
                             if (config.items.length > 0) {
-                                buttonName = translator.translate('save');
+                                buttonName = translator.translate('confirm');
                             }
 
                             self.popin.addButton(buttonName, jQuery.proxy(self.save, self));
