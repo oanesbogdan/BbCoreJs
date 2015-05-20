@@ -202,7 +202,8 @@ define(
                                         },
                                         serviceConfig = {
                                             'uid': self.currentEvent.node.id,
-                                            'callbackAfterSubmit': callback
+                                            'callbackAfterSubmit': callback,
+                                            'doRedirect': true
                                         };
 
                                     ApplicationManager.invokeService('page.main.deletePage', serviceConfig);
