@@ -92,7 +92,9 @@ define(
                 buildPopin: function () {
                     var title = (this.config.popinTitle !== undefined) ? this.config.popinTitle : '';
 
-                    this.popin = PopinManager.createPopIn();
+                    this.popin = PopinManager.createPopIn({
+                        position: { my: "center top", at: "center top+" + jQuery('#' + Core.get('menu.id')).height()}
+                    });
                     this.popin.setTitle(title);
                     this.popin.addOptions(popinConfig);
                 },
