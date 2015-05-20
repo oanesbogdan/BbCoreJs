@@ -30,7 +30,7 @@ define(
     function (require, jQuery, Core, DnDController, dnd) {
         'use strict';
         var trans = Core.get('trans') || function (value) {return value; },
-            popin;
+            parent;
 
         /**
          * View of new page
@@ -46,7 +46,7 @@ define(
                 closeOnEscape: false,
                 draggable: false,
                 open: function () {
-                    var parent = jQuery(this).parent('.ui-dialog:first');
+                    parent = jQuery(this).parent('.ui-dialog:first');
                     parent.css({
                         top: 192
                     });
@@ -66,11 +66,10 @@ define(
                 this.popin = this.popinManager.createPopIn(this.popin_config);
                 this.popin.setContent(require('text!user/templates/popin.twig'));
                 this.popin.display();
-                popin = this.popin;
                 dnd('#toolbar-user-group-popin').addListeners('user');
 
                 jQuery(window).resize(function () {
-                    popin.getDialog().css({
+                    parent.css({
                         width: window.innerWidth,
                         height: window.innerHeight - 192
                     });
