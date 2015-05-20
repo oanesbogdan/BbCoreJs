@@ -85,7 +85,7 @@ define('tb.component/session/session', ['Core', 'Core/Utils', 'jsclass'], functi
                 Utils.requireWithPromise(['component!authentication']).then(
                     function (authenticate) {
                         authenticate.popin.unmask();
-                        authenticate.showForm('Bad credentials');
+                        authenticate.showForm('login or password incorrect');
                     }
                 );
             }
