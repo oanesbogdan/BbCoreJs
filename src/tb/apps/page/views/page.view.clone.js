@@ -85,6 +85,10 @@ define(
                 if (!data.hasOwnProperty('title') || data.title.trim().length === 0) {
                     form.addError('title', translator.translate('title_is_required'));
                 }
+
+                if (data.hasOwnProperty('title') && data.title === form.elements.title.value) {
+                    form.addError('title', translator.translate('title_must_be_different'));
+                }
             },
 
             /**
