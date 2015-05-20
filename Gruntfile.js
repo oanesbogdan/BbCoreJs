@@ -237,10 +237,10 @@ module.exports = function (grunt) {
                         'text',
                         'moment',
                         'URIjs/URI',
-                        'bootstrapjs',
+                        'bootstrap-carousel',
+                        'bootstrap-dropdown',
                         'dropzone',
 
-                        'jquery.noconflict',
                         'core-jquery',
                         'jqueryui',
                         'jquery-helper',

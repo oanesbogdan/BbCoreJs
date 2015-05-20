@@ -31,6 +31,7 @@ require.config({
     paths: {
         'component': 'src/tb/component/component',
         'vendor': 'dist/vendor.min',
+        'jquery.noconflict': 'src/core-jquery.noconflict',
         'ckeeditor': 'dist/ckeeditor/ckeditor'
     },
     'map': {
@@ -59,18 +60,20 @@ require.config({
         },
 
         BackBone: {
-            deps: ['underscore', 'jquery'],
+            deps: ['underscore', 'jquery.noconflict'],
             exports: 'Backbone'
         },
         Core: {
-            deps: ['BackBone', 'jquery', 'jsclass', 'underscore', 'nunjucks', 'URIjs/URI']
+            deps: ['BackBone', 'jquery.noconflict', 'jsclass', 'underscore', 'nunjucks', 'URIjs/URI']
         },
-        bootstrapjs: {
-            deps: ['jquery']
+        'bootstrap-carousel': {
+            deps: ['jquery.noconflict']
         },
-
+        'bootstrap-dropdown': {
+            deps: ['jquery.noconflict']
+        },
         'jquery-layout': {
-            deps: ['jquery']
+            deps: ['jquery.noconflict']
         },
         'cryptojs.core': {
             exports: 'CryptoJS'

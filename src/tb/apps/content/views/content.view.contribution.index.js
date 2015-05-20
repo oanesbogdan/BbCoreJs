@@ -27,7 +27,8 @@ define(
         'Core/Renderer',
         'content.widget.DialogContentsList',
         'component!popin',
-        'definition.manager'
+        'definition.manager',
+        'bootstrap-carousel'
     ],
     function (Core,
               jQuery,
@@ -53,7 +54,7 @@ define(
              */
             el: '#block-contrib-tab',
             carouselBlocksId: '#carousel-contrib-blocks',
-            carouselId: '#carousel-blocks',
+            carouselId: '#carousel-blocks-choice',
             selectCategoriesId: '#select-categories-blocks-contrib',
             paletteBlocksId: '#palette-contrib-blocks',
             carouselBlockClass: '.carousel-block',
@@ -164,9 +165,7 @@ define(
 
             showBlocksByCategory: function (categoryId) {
                 var category = this.getCategoryById(categoryId),
-                    carousel = jQuery(this.carouselBlocksId),
                     key,
-                    html = '',
                     data = {},
                     contents;
 
@@ -187,7 +186,28 @@ define(
                     }
                 }
 
+                this.updateCarousel(data);
+            },
+
+            updateCarousel: function (data) {
+                var carousel = jQuery(this.carouselBlocksId),
+                    key,
+                    html = '',
+                    groupBlocks = [],
+                    groupNumbers;
+
+                groupNumbers = Math.ceil(data.blocks.length / 3);
+                if (groupNumbers < 2) {
+                    groupBlocks.push(data.blocks);
+                } else {
+                    for (key = 0; key < groupNumbers; key = key + 1) {
+                        groupBlocks.push(data.blocks.slice((key * 3), (key * 3) + 3));
+                    }
+                }
+
                 if (data.blocks.length > 0) {
+                    delete data.blocks;
+                    data.groupBlocks = groupBlocks;
                     html = html + Renderer.render(carouselBlocksTpl, data);
                 }
 

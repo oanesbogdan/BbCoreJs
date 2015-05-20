@@ -39,8 +39,7 @@ define(
         'Core',
         'main.view.index',
         'jquery',
-        'component!popin',
-        'bootstrapjs'
+        'component!popin'
     ],
     function (
         Core,
