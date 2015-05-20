@@ -55,6 +55,7 @@
     "deactivated": "Deactivated",
     "delete": "Delete",
     "delete_content": "Delete content",
+    "delete_media": "Delete media",
     "display": "Display",
     "display_external_content": "Display external content",
     "display_links": "Display links",
@@ -101,6 +102,7 @@
     "media": "Media",
     "media_width": "W",
     "media_library": "Media library",
+    "media_preview": "Media preview",
     "modified_at": "Modified at",
     "modified_date": "Modified date",
 
@@ -131,6 +133,7 @@
     "pick_a_block": "Pick a block",
     "password_is_too_short": "Password lenght is too short (at least 6 characters)",
     "please_wait_while_the_content_is_being_deleted": "Please wait while the content is being deleted",
+    "please_wait_while_the_media_is_being_deleted": "Please wait while the media is being deleted",
     "previous": "Previous",
     "publication_scheduled_for": "Publication scheduled for",
     "publishing_archiving": "Publishing / Archiving",

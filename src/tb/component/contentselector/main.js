@@ -251,16 +251,12 @@ define(
                 },
 
                 loadAllCategories: function () {
-                    var self = this,
-                        tree;
-                    jQuery.ajax({
-                        url: '/rest/1/classcontent-category'
-                    }).done(function (data) {
-                        var formattedData = formater.format('category', data);
-                        self.categoryTreeView.setData(formattedData);
-                        /* open root Node */
-                        tree = self.categoryTreeView.getRootNode();
-                        self.categoryTreeView.invoke("openNode", tree.children[0]);
+                    var self = this;
+                    Core.ApplicationManager.invokeService("content.main.getRepository").done(function (pageRepository) {
+                        pageRepository.findCategories().done(function (data) {
+                            var formattedData = formater.format('category', data);
+                            self.categoryTreeView.setData(formattedData);
+                        });
                     });
                 },
 

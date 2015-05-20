@@ -365,7 +365,6 @@ define(
                     this.mediaFolderTreeView.render(catTreeCtn);
                     this.searchEngine.render(searchEnginerCtn);
                     this.bindEvents();
-                    this.loadMediaFolders();
                     jQuery("#" + this.dialog.id).parent().find(".ui-dialog-buttonpane .ui-dialog-buttonset").addClass("pull-right");
                 },
 
@@ -424,6 +423,8 @@ define(
                 onOpen: function (library) {
                     library.onReady();
                     library.onReady = jQuery.noop;
+                    library.loadMediaFolders();
+
                     if (!library.isLoaded) {
                         jQuery(this).html(library.widget);
                     }

@@ -132,6 +132,11 @@ define(
                     return CoreDriverHandler.read(this.TYPE, criterias, {'leftnode': 'asc'}, start, limit);
                 },
 
+                findContents: function (contentType, contentUid) {
+                    var criteria = {content_type: contentType, content_uid: contentUid};
+                    return CoreDriverHandler.read(this.TYPE, criteria);
+                },
+
                 findRoot: function () {
                     return CoreDriverHandler.read(this.TYPE);
                 },

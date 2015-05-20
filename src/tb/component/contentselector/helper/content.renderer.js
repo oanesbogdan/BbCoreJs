@@ -26,7 +26,7 @@ define(
         'require',
         'content.datastore',
         'jsclass',
-        'nunjucks',
+        'Core/Renderer',
         'jquery',
         'Core',
         'text!cs-templates/content.list.edit.view.tpl',
@@ -36,7 +36,7 @@ define(
     ],
     function (require) {
         'use strict';
-        var nunjucks = require('nunjucks'),
+        var Renderer = require('Core/Renderer'),
             jQuery = require('jquery'),
             trans = require('Core').get('trans'),
             Core = require('Core'),
@@ -102,7 +102,7 @@ define(
                 render: function (renderMode, item) {
                     var itemData = item;
                     renderMode = this.mode + renderMode;
-                    item = nunjucks.renderString(this.templates[renderMode], item);
+                    item = Renderer.render(this.templates[renderMode], item);
                     return this.bindContentEvents(item, itemData);
                 },
 
@@ -128,17 +128,15 @@ define(
                     self.popin.mask();
                     self.popin.display();
 
-                    jQuery.ajax({
-                        url: "/rest/1/classcontent/" + itemData.type + '/' + itemData.uid,
-                        dataType: 'html'
-                    }).done(function (response) {
-                        response = self.clearContent(jQuery(response));
-                        self.popin.setContent(response);
-                        self.popin.display();
-                        jQuery('#' + self.popin.getId()).dialog("option", "maxHeight", 450);
-                    }).fail(function (response) {
-                        Core.exception('ContentRendererException', 57567, 'error while showing showContentPreview ' + response);
-                    }).always(self.popin.unmask);
+                    Core.ApplicationManager.invokeService("content.main.getRepository").done(function (contentRepository) {
+                        contentRepository.getHtml(itemData.type, itemData.uid).done(function (response) {
+                            response = self.clearContent(jQuery(response));
+                            self.popin.setContent(response);
+                            jQuery('#' + self.popin.getId()).dialog("option", "maxHeight", 450);
+                        }).fail(function (response) {
+                            Core.exception('ContentRendererException', 57567, 'error while showing showContentPreview ' + response);
+                        }).always(self.popin.unmask);
+                    });
                 },
 
                 deleteContent: function (itemData, e) {
@@ -150,26 +148,21 @@ define(
                     self.popin.setTitle(trans("delete_content"));
                     self.popin.mask();
                     self.popin.display();
-                    jQuery.ajax({
-                        url: "/rest/1/page",
-                        data: {
-                            content_uid: itemData.uid,
-                            content_type: itemData.type
-                        }
-                    }).done(function (data) {
-                        data = data || [];
-                        self.addButtons();
-                        var templateData = {
-                            isOrphaned: (data.length === 0),
-                            items: data
-                        };
-                        content = nunjucks.renderString(self.templates.deleteContent, templateData);
-                        self.popin.unmask();
-                        self.popin.setContent(jQuery(content));
-                        self.popin.display();
-                    }).fail(function (response) {
-                        self.popin.unmask();
-                        Core.exception('ContentRendererException', 57567, '[deleteContent] ContentRendererException error while deleting content ' + response);
+                    Core.ApplicationManager.invokeService("page.main.getPageRepository").done(function (pageRepository) {
+                        pageRepository.findContents(itemData.type, itemData.uid).done(function (data) {
+                            data = data || [];
+                            self.addButtons();
+                            var templateData = {
+                                isOrphaned: (data.length === 0),
+                                items: data
+                            };
+                            content = Renderer.render(self.templates.deleteContent, templateData);
+                            self.popin.unmask();
+                            self.popin.setContent(jQuery(content));
+                        }).fail(function (response) {
+                            self.popin.unmask();
+                            Core.exception('ContentRendererException', 57567, '[deleteContent] ContentRendererException error while deleting content ' + response);
+                        });
                     });
                 },
 
