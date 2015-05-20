@@ -16,9 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
-/*jslint unparam: true*/
+
 /*global Dropzone */
-define(['Core', 'Core/Renderer', 'BackBone', 'jquery', 'tb.component/mask/main', 'tb.component/session/main'], function (Core, Renderer, Backbone, jQuery) {
+define(['Core', 'Core/Renderer', 'BackBone', 'jquery', 'tb.component/mask/main', 'component!session'], function (Core, Renderer, Backbone, jQuery) {
     'use strict';
 
     var FileView = Backbone.View.extend({
@@ -46,7 +46,7 @@ define(['Core', 'Core/Renderer', 'BackBone', 'jquery', 'tb.component/mask/main',
         uploadEvent: function () {
             var self = this,
                 config = {},
-                session = require('tb.component/session/main');
+                session = require('component!session');
 
             jQuery.extend(config, this.defaultDropzoneConfig, this.element.config.dropzone);
 
@@ -76,6 +76,7 @@ define(['Core', 'Core/Renderer', 'BackBone', 'jquery', 'tb.component/mask/main',
                             items.first().remove();
                         }
                     }
+                    return file;
                 });
 
                 dropzone.on('complete', function () {
