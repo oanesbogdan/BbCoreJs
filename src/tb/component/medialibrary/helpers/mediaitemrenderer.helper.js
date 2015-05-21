@@ -166,7 +166,7 @@ define(
                     this.media = media;
                     this.initPopin();
                     this.popin.setTitle(trans('delete_media'));
-                    this.popin.setContent(jQuery("<p>" + trans("loading") + "...</p>"));
+                    this.popin.setContent(jQuery("<p><strong>" + trans("loading") + "...</strong></p>"));
                     this.popin.display();
                     this.popin.moveToTop();
                     this.checkOrphanedContents(media.content);

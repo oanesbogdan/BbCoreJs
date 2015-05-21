@@ -452,14 +452,16 @@ define(
                 },
 
                 handleNodeEdition: function (onEditCallBack, node, title, parentNode) {
-                    this.onEditCallBack = onEditCallBack;
-                    var parentNodeUid = parentNode ? parentNode.uid : null,
+                    var self = this,
+                        parentNodeUid = parentNode ? parentNode.uid : null,
                         jsonNode = {
                             uid: node.uid,
                             title: title,
                             parent_uid: parentNodeUid
                         };
-                    this.mediaFolderDataStore.save(jsonNode).done(this.onEditCallBack);
+                    this.mediaFolderDataStore.save(jsonNode).done(function () {
+                        self.mediaFolderDataStore.findNode(jsonNode.uid).done(onEditCallBack);
+                    });
                 },
 
                 onMediaStoreUpdate: function () {

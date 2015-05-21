@@ -330,7 +330,7 @@ define(
                         nextTotal = self.total - 1,
                         nbPage = Math.ceil(nextTotal / self.limit),
                         nextStart = (nbPage >= this.start + 1) ? this.start : this.start - 1;
-                    nextStart = (nextStart < 0) ? nextStart : 0;
+                    nextStart = (nextStart < 0) ? 0 : nextStart;
                     if (!uid) {
                         Core.exception('DataStoreException', 75001, '[remove] ' + this.idKey + ' key can\'t be found');
                     }
