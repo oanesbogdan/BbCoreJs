@@ -175,6 +175,7 @@ define(
                         function () {
                             self.repository.delete(user_id).done(function () {
                                 self.indexService(require, popin);
+                                Core.ApplicationManager.invokeService('user.group.index', popin);
                                 Notify.success(trans('User') + ' ' + user.login() + ' ' + trans('has been deleted.'));
                             });
                             view.destruct();
