@@ -32,6 +32,9 @@ require.config({
         //Widgets
         'page.widget.InformationPage': 'src/tb/apps/page/widgets/InformationPage',
 
+        //Components
+        'page.save.manager': 'src/tb/apps/page/components/SaveManager',
+
         //Views
         'page.view.contribution.index': 'src/tb/apps/page/views/page.view.contribution.index',
         'page.view.delete': 'src/tb/apps/page/views/page.view.delete',

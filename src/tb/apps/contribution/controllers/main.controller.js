@@ -39,11 +39,19 @@ define(['Core', 'contribution.view.index', 'jquery'], function (Core, IndexView,
         manageTabMenuService: function (element) {
             element = jQuery(element);
 
+            var type = element.children('a').data('type'),
+                saveBtn = jQuery('#global-save');
+
             jQuery('ul#edit-tab li.active').removeClass('active');
             element.addClass('active');
 
             jQuery('div#contrib-tab-apps div.tab-pane.active').removeClass('active');
-            jQuery('div#' + element.children('a').data('type') + '-contrib-tab').addClass('active');
+            jQuery('div#' + type + '-contrib-tab').addClass('active');
+
+            saveBtn.addClass('hidden');
+            if (type !== 'page') {
+                saveBtn.removeClass('hidden');
+            }
         },
 
         /**
