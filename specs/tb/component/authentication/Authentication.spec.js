@@ -12,7 +12,7 @@ define(['Core', 'component!session', 'component!authentication', 'Core/Request',
             }
         };
 
-    sessionStorage.clear();
+    localStorage.clear();
     session.destroy();
 
     describe('Authentication test', function () {
@@ -22,7 +22,7 @@ define(['Core', 'component!session', 'component!authentication', 'Core/Request',
             expect(request.getHeader('X-API-KEY')).toBe(null);
             expect(request.getHeader('X-API-SIGNATURE')).toBe(null);
 
-            sessionStorage.setItem('bb-session-auth', JSON.stringify({key: apiKey, signature: apiSignature}));
+            localStorage.setItem('bb-session-auth', JSON.stringify({key: apiKey, signature: apiSignature}));
             session.load();
 
             session.onBeforeSend(request);
@@ -58,10 +58,10 @@ define(['Core', 'component!session', 'component!authentication', 'Core/Request',
             session.setKey(apiKey);
             session.setSignature(apiSignature);
 
-            sessionStorage.clear();
+            localStorage.clear();
             session.persist();
 
-            expect(sessionStorage.getItem('bb-session-auth')).toEqual(JSON.stringify({key: apiKey, signature: apiSignature}));
+            expect(localStorage.getItem('bb-session-auth')).toEqual(JSON.stringify({key: apiKey, signature: apiSignature}));
         });
 
         it('Testing onRequestDone event', function () {
@@ -70,10 +70,10 @@ define(['Core', 'component!session', 'component!authentication', 'Core/Request',
             response.addHeader('X-API-KEY', apiKey);
             response.addHeader('X-API-SIGNATURE', apiSignature);
 
-            sessionStorage.clear();
+            localStorage.clear();
 
             authentication.onRequestDone(response);
-            expect(sessionStorage.getItem('bb-session-auth')).toEqual(JSON.stringify({key: apiKey, signature: apiSignature}));
+            expect(localStorage.getItem('bb-session-auth')).toEqual(JSON.stringify({key: apiKey, signature: apiSignature}));
         });
 
         it('Testing onRequestFail event', function () {
@@ -88,25 +88,25 @@ define(['Core', 'component!session', 'component!authentication', 'Core/Request',
         });
 
         it('Testing logOut function', function () {
-            sessionStorage.setItem('bb-session-auth', JSON.stringify({key: apiKey, signature: apiSignature}));
+            localStorage.setItem('bb-session-auth', JSON.stringify({key: apiKey, signature: apiSignature}));
 
             window.onbeforeunload = function () {
                 return false;
             };
 
             session.destroy();
-            expect(sessionStorage.getItem('bb-session-auth')).toEqual(null);
+            expect(localStorage.getItem('bb-session-auth')).toEqual(null);
         });
 
         it('Testing onLogOut event', function () {
-            sessionStorage.setItem('bb5=-session-auth', JSON.stringify({key: apiKey, signature: apiSignature}));
+            localStorage.setItem('bb5=-session-auth', JSON.stringify({key: apiKey, signature: apiSignature}));
 
             window.onbeforeunload = function () {
                 return false;
             };
 
             session.destroy();
-            expect(sessionStorage.getItem('bb-session-auth')).toEqual(null);
+            expect(localStorage.getItem('bb-session-auth')).toEqual(null);
         });
     });
 });
