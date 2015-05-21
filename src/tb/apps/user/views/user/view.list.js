@@ -31,6 +31,7 @@ define(
              * Initialize of UserViewList
              */
             initialize: function (data) {
+                this.current = data.current;
                 this.user = new User();
                 this.user.populate(data.user);
                 this.user.groups().forEach(function (group, key) {
@@ -43,7 +44,7 @@ define(
              * @returns {Object} PageViewEdit
              */
             render: function () {
-                return renderer.render(require('text!user/templates/user/list.item.twig'), {user: this.user});
+                return renderer.render(require('text!user/templates/user/list.item.twig'), {user: this.user, current: this.current});
             }
         });
     }

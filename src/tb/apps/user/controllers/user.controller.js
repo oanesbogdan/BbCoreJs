@@ -59,13 +59,28 @@ define(
                 return error.errors || undefined;
             },
 
+            updateIndexView: function (req, popin, users, current) {
+                var View = req('user/views/user/view.list'),
+                    template = req('text!user/templates/user/list.twig'),
+                    i;
+
+                users = Utils.castAsArray(users);
+
+                for (i = users.length - 1; i >= 0; i = i - 1) {
+                    users[i] = new View({user: users[i], current: current});
+                }
+
+                popin.addUsers(renderer.render(template, {users: users}));
+            },
+
             /**
              * Index action
              * Show the index in the edit contribution toolbar
              */
             indexService: function (req, popin, params) {
-                var View = req('user/views/user/view.list'),
-                    template = req('text!user/templates/user/list.twig');
+                var current = Core.get('current_user'),
+                    self = this;
+
 
                 if (params !== undefined) {
                     if (params.reset === true) {
@@ -77,15 +92,18 @@ define(
 
                 this.repository.paginate(this.pagination_params).then(
                     function (users) {
-                        var i;
+                        if (current === undefined) {
+                            self.repository.find('current').then(
+                                function (user_values) {
+                                    current = new User();
+                                    current.populate(user_values);
 
-                        users = Utils.castAsArray(users);
-
-                        for (i = users.length - 1; i >= 0; i = i - 1) {
-                            users[i] = new View({user: users[i]});
+                                    self.updateIndexView(req, popin, users, current);
+                                }
+                            );
+                        } else {
+                            self.updateIndexView(users, current);
                         }
-
-                        popin.addUsers(renderer.render(template, {users: users}));
                     },
                     function () {
                         popin.addUsers('');
@@ -216,6 +234,10 @@ define(
                     view;
                 this.repository.find('current').then(
                     function (user_values) {
+                        var user = new User();
+                        user.populate(user_values);
+                        Core.set('current_user', user);
+
                         view = new View({el: jQuery('#bb5-navbar-secondary > div'), user: user_values});
                         view.render();
                     },
