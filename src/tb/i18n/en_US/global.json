@@ -116,7 +116,6 @@
     "no_content_cancel": "No content to cancel",
     "no_content_validate": "No content to validate",
     "no_one": "No one",
-    "some_actions_are_not_allowed_for_root_page": "Some actions are not allowed for root page.",
 
     "online": "Online",
 
@@ -163,6 +162,7 @@
     "select_a_mediafolder": "Select a media folder",
     "select_and_close": "Select and close",
     "show_folder": "Show folder",
+    "some_actions_are_not_allowed_for_root_page": "Some actions are not allowed for root page.",
     "status": "Status",
     "submit": "Submit",
 
@@ -172,6 +172,7 @@
     "till": "Till",
     "title": "Title",
     "title_is_required": "Title is required",
+    "title_must_be_different": "Title must be different",
     "tree": "Tree",
 
     "updated": "Updated",
@@ -184,7 +185,9 @@
 
     "validate": "Validate",
     "validation_confirmation": "Validation confirmation",
+
     "website_parameters": "Website parameters",
     "workflow_management": "Workflow management",
+
     "yes": "Yes"
 }
