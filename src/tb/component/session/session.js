@@ -38,7 +38,7 @@ define('tb.component/session/session', ['Core', 'Core/Utils', 'jsclass'], functi
         initialize: function () {
             this.key = null;
             this.signature = null;
-            this.storage = window.sessionStorage;
+            this.storage = window.localStorage;
 
             Core.Mediator.subscribe('request:send:before', this.onBeforeSend, this);
             Core.Mediator.subscribe('request:send:fail', this.onRequestFail, this);
@@ -71,11 +71,9 @@ define('tb.component/session/session', ['Core', 'Core/Utils', 'jsclass'], functi
          */
         onRequestFail: function (response) {
             if (response.getStatus() === 403) {
-                Utils.requireWithPromise(['component!authentication']).then(
-                    function (authenticate) {
-                        authenticate.setTitle('Connexion');
-                        authenticate.setContent('Permission denied');
-                        authenticate.display();
+                Utils.requireWithPromise(['component!notify']).then(
+                    function (notify) {
+                        notify.error(response.errorText);
                     }
                 );
 

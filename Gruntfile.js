@@ -110,7 +110,7 @@ module.exports = function (grunt) {
                         'xdescribe',
                         'spyOn',
                         'jasmine',
-                        'sessionStorage',
+                        'localStorage',
                         'window',
                         'before',
                         'beforeEach',
