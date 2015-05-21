@@ -47,29 +47,53 @@ define(
                 jQuery.extend(this, {}, Backbone.Events);
                 this.widget = jQuery(nunjucks.renderString(require('text!cs-templates/searchengine.tpl'), {}));
                 this.initDatepicker();
+                this.topPosition = null;
                 this.bindEvents();
             },
 
             initDatepicker: function () {
-                var self = this;
+                var self = this,
+                    field,
+                    fields = jQuery(this.config.datepickerFieldClass);
+                jQuery.each(fields, function (i) {
+                    field = jQuery(fields[i]);
+                    field.data("field-no", i);
+                    self.attachDatePicker(field);
+                });
+            },
 
-                this.widget.find(this.config.datepickerFieldClass).datetimepicker({
+            attachDatePicker: function (field) {
+                var self = this;
+                field.datetimepicker({
                     timepicker: false,
                     closeOnDateSelect: true,
                     format: "d/m/Y",
-                    parentID: self.mainSelector,
+                    parentID: this.mainSelector,
                     onSelectDate: function (ct, field) {
                         jQuery(field).data('selectedTime', Math.ceil(ct.getTime() / 1000));
+                    },
+
+                    onShow: function (date, field) {
+                        var datePicker = jQuery(field).data("xdsoft_datetimepicker");
+                        jQuery(datePicker).hide();
+                        return date;
+                    },
+
+                    onGenerate: function (date, field) {
+                        var datePicker = jQuery(field).data("xdsoft_datetimepicker");
+                        jQuery(datePicker).css("top", self.topPosition + "px");
+                        return date;
                     }
                 });
             },
 
             showOrInitDateTimePicker: function (e) {
-                var dateField = jQuery(e.currentTarget).parents(".col-bb5-22").find(this.defaultConfig.datepickerFieldClass).eq(0);
+                var dateField = jQuery(e.currentTarget).parent().siblings(this.defaultConfig.datepickerFieldClass).eq(0);
                 if (!jQuery(dateField).data('datetimepicker')) {
                     this.initDatepicker();
                 }
                 jQuery(dateField).datetimepicker('show');
+                this.topPosition = e.clientY + 15;
             },
 
             bindEvents: function () {
