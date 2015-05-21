@@ -272,9 +272,11 @@ define(
              * Get the metadata of page, build form and show in popin
              */
             manageSeo: function () {
+
                 var self = this,
+                    popinTopPosition = jQuery('#' + Core.get('menu.id')).height(),
                     popin = PopinManager.createPopIn({
-                        position: { my: "center top", at: "center top+" + jQuery('#' + Core.get('menu.id')).height()}
+                        position: { my: "center top", at: "center top+" + popinTopPosition}
                     });
 
                 popin.setTitle(translator.translate('page_seo'));
