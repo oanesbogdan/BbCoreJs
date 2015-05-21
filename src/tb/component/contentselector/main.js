@@ -31,6 +31,7 @@ define(
     [
         'Core',
         'require',
+        'Core/Renderer',
         'jquery',
         'text!cs-templates/layout.tpl',
         'component!popin',
@@ -39,7 +40,6 @@ define(
         'component!rangeselector',
         'component!dataview',
         'component!mask',
-        'text!cs-templates/layout.tpl',
         'content.renderer',
         'cs-control/searchengine.control',
         'component!jquery-layout',
@@ -50,7 +50,7 @@ define(
         'nunjucks',
         'content.datastore'
     ],
-    function (Core, require, jQuery, layout, PopInMng) {
+    function (Core, require, CoreRenderer, jQuery, layout, PopInMng) {
         'use strict';
         var formater = require('node.formater'),
             underscore = require('underscore'),
@@ -102,7 +102,7 @@ define(
                     this.state = {};
                     this.mode = this.config.mode || this.VIEW_MODE;
                     this.resetOnClose = this.config.resetOnClose;
-                    this.widget = jQuery(layout).clone();
+                    this.widget = jQuery(CoreRenderer.render(layout, {})).clone();
                     this.popIn = this.initPopIn();
                     Core.ApplicationManager.invokeService('content.main.registerPopin', 'contentSelector', this.popIn);
                     this.popIn.addOption("open", jQuery.proxy(this.onOpen, null, this));
@@ -147,7 +147,7 @@ define(
 
                 addCloseAndCancelButtons: function () {
                     var self = this,
-                        label = (this.mode === this.EDIT_MODE) ? "Add & Close" : "Close";
+                        label = (this.mode === this.EDIT_MODE) ? trans("add_and_close") : trans("close");
                     this.popIn.addButton(label, function () {
                         self.close();
                         if (self.resetOnClose) {
@@ -155,7 +155,7 @@ define(
                         }
                     });
 
-                    self.popIn.addButton("Cancel", function () {
+                    self.popIn.addButton(trans("cancel"), function () {
                         self.popIn.hide();
                         if (self.resetOnClose) {
                             self.reset();

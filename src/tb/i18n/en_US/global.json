@@ -12,6 +12,7 @@
     "all": "All",
     "apply_to_all_selected_pages": "Apply to all selected pages",
     "archiving_scheduled_for": "Archiving scheduled for",
+    "are_you_sure_you_want_to delete_this_media" : "Are you sure you want to delete this media",
     "author": "Author",
     "available_in_menus": "Available in menus",
 
@@ -122,6 +123,7 @@
     "no_one": "No one",
 
     "online": "Online",
+    "orphaned_media_delete_this_media" : "Orphaned media. Delete this media",
 
     "page": "Page",
     "pages_management": "Pages management",
@@ -166,6 +168,7 @@
     "select": "Select",
     "select_all": "Select all",
     "select_a_mediafolder": "Select a media folder",
+    "select_a_category": "Select a category",
     "select_and_close": "Select and close",
     "show_folder": "Show folder",
     "some_actions_are_not_allowed_for_root_page": "Some actions are not allowed for root page.",
@@ -175,6 +178,7 @@
     "template_is_required": "Template is required",
     "theme": "Theme",
     "the_title_field_is_required": "The title field is required",
+    "this_media_is_being_used_on_the_following_pages": "This media is being used on the following pages",
     "till": "Till",
     "title": "Title",
     "title_is_required": "Title is required",
@@ -191,9 +195,9 @@
 
     "validate": "Validate",
     "validation_confirmation": "Validation confirmation",
-
+    
+    "warning" : "Warning",
     "website_parameters": "Website parameters",
     "workflow_management": "Workflow management",
-
     "yes": "Yes"
 }

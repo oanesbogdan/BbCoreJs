@@ -28,6 +28,19 @@ define(['component!datastore', 'jquery', 'jsclass'], function (DataStore, jQuery
                 return dfd.promise();
             });
 
+
+            DataStore.RestDataStore.define('findNode', function (uid) {
+                var dfd = new jQuery.Deferred(),
+                    self = this;
+                this.trigger("processing");
+                this.restHandler.read(this.config.resourceEndpoint, {id: uid}).done(function (node) {
+                    dfd.resolve(node);
+                }).fail(dfd.reject).always(function () {
+                    self.trigger("doneProcessing");
+                });
+                return dfd.promise();
+            });
+
             return restDataStore;
         };
 
