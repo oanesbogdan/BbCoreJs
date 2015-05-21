@@ -96,7 +96,7 @@ define('tb.component/authentication/main',
 
                 if (session.isAuthenticated()) {
                     session.persist();
-                    Core.Mediator.publish('on:success:login');
+
                     window.location.reload();
                 }
 

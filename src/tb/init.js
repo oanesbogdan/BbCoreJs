@@ -101,12 +101,6 @@ define(function () {
 
                                 if (session.isAuthenticated()) {
                                     initOnConnect();
-                                } else {
-                                    Core.Mediator.subscribe('on:success:login', function () {
-                                        self.toolBarDisplayed = true;
-                                        Core.set('redirect_default_url', false);
-                                        initOnConnect();
-                                    });
                                 }
                             },
                             self.onError

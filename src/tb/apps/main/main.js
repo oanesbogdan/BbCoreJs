@@ -89,9 +89,7 @@ define(
                 if (current_url !== null) {
                     Core.RouteManager.navigateByPath(current_url);
                 } else {
-                    if (Core.get('redirect_default_url') !== false) {
-                        Core.RouteManager.navigateByPath(Core.config('default_url'));
-                    }
+                    Core.RouteManager.navigateByPath(Core.config('default_url'));
                 }
             },
 
