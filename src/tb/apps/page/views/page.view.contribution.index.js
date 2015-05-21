@@ -29,7 +29,8 @@ define(
         'component!formbuilder',
         'component!popin',
         'moment',
-        'component!translator'
+        'component!translator',
+        'page.save.manager'
     ],
     function (Core,
               jQuery,
@@ -41,7 +42,8 @@ define(
               FormBuilder,
               PopinManager,
               moment,
-              translator
+              translator,
+              SaveManager
             ) {
 
         'use strict';
@@ -88,7 +90,7 @@ define(
             },
 
             manageVisibilityPage: function (event) {
-                PageRepository.save({uid: this.currentPage.uid, is_visible: event.currentTarget.checked});
+                SaveManager.addToSave('is_hidden', !event.currentTarget.checked);
             },
 
             /**
@@ -99,7 +101,7 @@ define(
                 var self = jQuery(event.currentTarget),
                     optionSelected = self.children('option:selected');
 
-                PageRepository.save({uid: this.currentPage.uid, state: optionSelected.val()});
+                SaveManager.addToSave('state', optionSelected.val());
             },
 
             /**
@@ -165,6 +167,8 @@ define(
                                         data[key] = date.getTime() / 1000;
                                         if (data[key] === parseInt(self.currentPage[key], 10)) {
                                             delete data[key];
+                                        } else {
+                                            SaveManager.addToSave(key, data[key]);
                                         }
                                     }
                                 }
@@ -172,9 +176,6 @@ define(
 
                             if (!jQuery.isEmptyObject(data)) {
                                 self.setStateScheduling(data);
-
-                                data.uid = self.currentPage.uid;
-                                PageRepository.save(data);
                             }
 
                             jQuery(self.schedulingTag).dialog('close');

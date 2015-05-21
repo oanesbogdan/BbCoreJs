@@ -115,18 +115,20 @@ define(
                     Core.ApplicationManager.invokeService('content.main.save', true);
                 });
 
-                Core.Mediator.subscribe('on:page:save:click', function () {
-                    Core.ApplicationManager.invokeService('content.main.save', true);
-                });
-
-                // Listen event validate
-                Core.Mediator.subscribe('on:validate:click', function () {
+                Core.Mediator.subscribe('on:content:validate:click', function () {
                     Core.ApplicationManager.invokeService('content.main.validate');
                 });
 
-                // Listen event cancel
-                Core.Mediator.subscribe('on:cancel:click', function () {
+                Core.Mediator.subscribe('on:content:cancel:click', function () {
                     Core.ApplicationManager.invokeService('content.main.cancel');
+                });
+
+                Core.Mediator.subscribe('on:page:validate:click', function () {
+                    Core.ApplicationManager.invokeService('page.main.validate');
+                });
+
+                Core.Mediator.subscribe('on:page:cancel:click', function () {
+                    Core.ApplicationManager.invokeService('page.main.cancel');
                 });
 
                 Core.Mediator.subscribe('on:route:handling', function (url) {

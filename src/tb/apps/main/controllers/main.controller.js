@@ -69,14 +69,30 @@ define(
              * Dispatch event `on:validate:click``for all interested
              */
             validateService: function () {
-                Core.Mediator.publish('on:validate:click');
+                var eventName;
+
+                if (true === Core.Scope.isOpen('block') || true === Core.Scope.isOpen('content')) {
+                    eventName = 'on:content:validate:click';
+                } else if (true === Core.Scope.isOpen('page')) {
+                    eventName = 'on:page:validate:click';
+                }
+
+                Core.Mediator.publish(eventName);
             },
 
             /**
              * Dispatch event `on:cancel:click``for all interested
              */
             cancelService: function () {
-                Core.Mediator.publish('on:cancel:click');
+                var eventName;
+
+                if (true === Core.Scope.isOpen('block') || true === Core.Scope.isOpen('content')) {
+                    eventName = 'on:content:cancel:click';
+                } else if (true === Core.Scope.isOpen('page')) {
+                    eventName = 'on:page:cancel:click';
+                }
+
+                Core.Mediator.publish(eventName);
             },
 
             setTitlePaneService: function (value) {

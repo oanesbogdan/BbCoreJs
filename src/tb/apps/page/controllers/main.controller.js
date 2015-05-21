@@ -29,8 +29,10 @@ define(
         'page.view.tree',
         'page.view.tree.contribution',
         'page.repository',
+        'page.save.manager',
         'Core/Request',
-        'Core/RequestHandler'
+        'Core/RequestHandler',
+        'component!notify'
     ],
     function (
         Core,
@@ -43,8 +45,10 @@ define(
         PageTreeView,
         PageTreeViewContribution,
         PageRepository,
+        SaveManager,
         Request,
-        RequestHandler
+        RequestHandler,
+        notify
     ) {
 
         'use strict';
@@ -56,7 +60,9 @@ define(
             config: {
                 imports: ['page.repository'],
                 define: {
-                    updatePageInfoService: ['page.widget.InformationPage']
+                    updatePageInfoService: ['page.widget.InformationPage'],
+                    validateService: ['component!translator', 'component!revisionpageselector'],
+                    cancelService: ['component!translator', 'component!revisionpageselector']
                 }
             },
 
@@ -118,6 +124,10 @@ define(
                 return PageRepository;
             },
 
+            getSaveManagerService: function () {
+                return SaveManager;
+            },
+
             /**
              * Delete action
              * Delete page with uid
@@ -173,6 +183,60 @@ define(
                     );
                 }
                 return data;
+            },
+
+            validateService: function (req) {
+                this.repository.findCurrentPage().done(function (page) {
+                    var translator = req('component!translator'),
+                        config = {
+                            popinTitle: translator.translate('validation_confirmation'),
+                            noContentMsg: translator.translate('no_page_modification_validate'),
+                            title: translator.translate('confirm_saving_changes_page_below') + ' :',
+                            currentPage: page,
+                            onSave: function (data, popin) {
+                                if (data.length > 0) {
+                                    SaveManager.save(data, page.uid).done(function () {
+                                        notify.success(translator.translate('page_modification_validated'));
+                                        popin.unmask();
+                                        popin.hide();
+                                    });
+                                } else {
+                                    notify.warning(translator.translate('no_page_modification_validate'));
+                                    popin.unmask();
+                                    popin.hide();
+                                }
+                            }
+                        };
+
+                    req('component!revisionpageselector').create(config).show();
+                });
+            },
+
+            cancelService: function (req) {
+                this.repository.findCurrentPage().done(function (page) {
+                    var translator = req('component!translator'),
+                        config = {
+                            popinTitle: translator.translate('cancel_confirmation'),
+                            noContentMsg: translator.translate('no_page_modification_cancel'),
+                            title: translator.translate('cancel_changes_page_below') + ' :',
+                            currentPage: page,
+                            onSave: function (data, popin) {
+                                if (data.length > 0) {
+                                    notify.success(translator.translate('page_modification_canceled'));
+                                    location.reload();
+                                } else {
+                                    notify.warning(translator.translate('no_page_modification_cancel'));
+                                }
+
+                                popin.unmask();
+                                popin.hide();
+
+                                SaveManager.clear();
+                            }
+                        };
+
+                    req('component!revisionpageselector').create(config).show();
+                });
             },
 
             updatePageInfoService: function (req) {

@@ -87,6 +87,10 @@ define(['Core/Utils', 'cryptojs.md5', 'jsclass'], function (Utils, CryptoJS) {
             return this.data.lastname === undefined ? this.ude : this.data.lastname;
         },
 
+        fullName: function () {
+            return this.firstname() + ' ' + this.lastname();
+        },
+
         groups: function () {
             return Utils.castAsArray(this.data.groups || []);
         },
