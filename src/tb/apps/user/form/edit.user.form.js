@@ -41,7 +41,7 @@ define(['component!formbuilder', 'component!translator'], function (formbuilder,
                 activated: {
                     type: 'checkbox',
                     options: {
-                        activated: translator.translate('activated')
+                        activated: translator.translate('account_activated')
                     },
                     checked: (view.user.getObject().activated === true) ? 'activated' : ''
                 },

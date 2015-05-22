@@ -35,19 +35,20 @@ define(['component!formbuilder', 'component!translator'], function (formbuilder,
                 },
                 email: {
                     type: 'text',
-                    label: 'email',
+                    label: translator.translate('email'),
                     value: view.user.getObject().email
                 },
                 login: {
                     type: 'text',
-                    label: 'login',
+                    label: translator.translate('login'),
                     value: view.user.getObject().login
                 },
                 activated: {
                     type: 'checkbox',
                     options: {
-                        activated: 'activated'
-                    }
+                        activated: translator.translate('account_activated')
+                    },
+                    checked: 'activated'
                 }
             },
 
