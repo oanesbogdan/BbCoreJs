@@ -65,6 +65,7 @@ define(
             attachDatePicker: function (field) {
                 var self = this;
                 field.datetimepicker({
+                    minDate: new Date(),
                     timepicker: false,
                     closeOnDateSelect: true,
                     format: "d/m/Y",
