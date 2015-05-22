@@ -78,12 +78,13 @@ define('tb.component/session/session', ['Core', 'Core/Utils', 'jsclass'], functi
                 );
 
             } else if (response.getStatus() === 401) {
+
                 this.destroy();
                 Core.set('is_connected', false);
                 Utils.requireWithPromise(['component!authentication']).then(
                     function (authenticate) {
                         authenticate.popin.unmask();
-                        authenticate.showForm('login or password incorrect');
+                        authenticate.showForm(response.errorText);
                     }
                 );
             }
