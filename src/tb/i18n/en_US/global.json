@@ -121,6 +121,7 @@
     "no_page_modification_cancel": "No page modification to cancel",
     "no_page_modification_validate": "No page modification to validate",
     "no_one": "No one",
+    "no_user_found": "No user found",
 
     "online": "Online",
     "orphaned_media_delete_this_media" : "Orphaned media. Delete this media",
@@ -195,7 +196,7 @@
 
     "validate": "Validate",
     "validation_confirmation": "Validation confirmation",
-    
+
     "warning" : "Warning",
     "website_parameters": "Website parameters",
     "workflow_management": "Workflow management",
