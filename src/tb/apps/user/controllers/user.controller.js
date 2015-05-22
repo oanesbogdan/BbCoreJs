@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011-2013 Lp digital system
  *
- * This file is part of BackBuilder5.
+ * This file is part of BackBee.
  *
  * BackBuilder5 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -102,7 +102,7 @@ define(
                                 }
                             );
                         } else {
-                            self.updateIndexView(users, current);
+                            self.updateIndexView(req, popin, users, current);
                         }
                     },
                     function () {
@@ -133,7 +133,7 @@ define(
                             }
 
                             popin.popinManager.destroy(view.popin);
-                            self.initFormView(user, popin, View, action, self.parseRestError(error));
+                            self.initFormView(user, popin, View, action, self.parseRestError(error), id);
                         }
                     );
                 });
