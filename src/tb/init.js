@@ -43,15 +43,19 @@ define(function () {
                             event.ctrlKey &&
                             event.altKey
                     ) {
-                        this.load();
+                        this.load(true);
                     }
                 }
             },
 
-            load: function () {
+            load: function (removeSession) {
                 var self = this;
                 require(['vendor'], function () {
                     require(['Core', 'component!session', 'jquery'], function (Core, session, jQuery) {
+
+                        if (removeSession === true) {
+                            session.destroy();
+                        }
 
                         Core.set('session', session);
                         Core.set('is_connected', session.isAuthenticated());
