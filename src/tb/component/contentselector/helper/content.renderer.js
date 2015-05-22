@@ -31,7 +31,6 @@ define(
         'Core',
         'text!cs-templates/content.list.edit.view.tpl',
         'text!cs-templates/content.delete.tpl',
-        'text!cs-templates/content.grid.view.tpl',
         'text!cs-templates/content.list.view.tpl'
     ],
     function (require) {
