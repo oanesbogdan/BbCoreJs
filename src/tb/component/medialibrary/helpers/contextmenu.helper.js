@@ -80,7 +80,8 @@ define(['component!contextmenu', 'jquery', 'component!notify'], function (Contex
                     }
                 };
             mediaFolderContextMenu.beforeShow = function () {
-                if (!selectedNode.isleaf && !treeView.isNodeOpened(selectedNode) && !selectedNode.isLoaded) {
+
+                if (selectedNode.children.length > 0 && !treeView.isNodeOpened(selectedNode) && !selectedNode.isLoaded) {
                     this.addFilter("bb5-context-menu-add");
                 }
                 if (!cuttedNode || (cuttedNode.uid === selectedNode.uid)) {
