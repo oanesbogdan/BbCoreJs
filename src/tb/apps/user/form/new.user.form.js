@@ -26,32 +26,29 @@ define(['component!formbuilder', 'component!translator'], function (formbuilder,
                 firstname: {
                     type: 'text',
                     label: translator.translate('first_name'),
-                    placeholder: 'John',
                     value: view.user.getObject().firstname
                 },
                 lastname: {
                     type: 'text',
                     label: translator.translate('last_name'),
-                    placeholder: 'Doe',
                     value: view.user.getObject().lastname
                 },
                 email: {
                     type: 'text',
-                    label: 'email',
-                    placeholder: 'john.doe@unknown.com',
+                    label: translator.translate('email'),
                     value: view.user.getObject().email
                 },
                 login: {
                     type: 'text',
-                    label: 'login',
-                    placeholder: 'john.doe',
+                    label: translator.translate('login'),
                     value: view.user.getObject().login
                 },
                 activated: {
                     type: 'checkbox',
                     options: {
-                        activated: 'activated'
-                    }
+                        activated: translator.translate('account_activated')
+                    },
+                    checked: 'activated'
                 }
             },
 

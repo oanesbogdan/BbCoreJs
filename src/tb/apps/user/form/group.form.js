@@ -26,7 +26,6 @@ define(['component!formbuilder', 'component!translator'], function (formbuilder,
                 name: {
                     type: 'text',
                     label: translator.translate('name'),
-                    placeholder: 'name',
                     value: view.group.name
                 }
             },
@@ -45,8 +44,20 @@ define(['component!formbuilder', 'component!translator'], function (formbuilder,
     };
 
     return {
-        construct: function (view) {
-            return formbuilder.renderForm(configure(view));
+        construct: function (view, errors) {
+            var config = configure(view),
+                key;
+
+            if (undefined !== errors) {
+                for (key in errors) {
+                    if (errors.hasOwnProperty(key) &&
+                            config.elements.hasOwnProperty(key)) {
+                        config.elements[key].error = errors[key];
+                    }
+                }
+            }
+
+            return formbuilder.renderForm(config);
         }
     };
 });

@@ -2,6 +2,7 @@
     "app_validate": "Validate",
     "app_only_default": "Only default",
 
+    "account_activated": "Account activated",
     "activate": "Activate",
     "activated": "Activated",
     "activate_deactivate": "Activate / Deactivate",
@@ -91,7 +92,7 @@
     "import": "Import",
     "internal_link": "Internal link",
 
-    "last_name": "Nom de famille",
+    "last_name": "Last name",
     "link_selector_label": "Link Selector",
     "login": "Login",
     "log_in": "Log in",
