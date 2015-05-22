@@ -72,7 +72,18 @@ define(
             },
 
             showNewPage: function () {
-                return Core.ApplicationManager.invokeService('page.main.newPage', {'parent_uid': Core.get('page.uid'), 'flag': 'redirect'});
+                var popinId = 'bb-new-page',
+                    config = {
+                        'parent_uid': Core.get('page.uid'),
+                        'flag': 'redirect',
+                        'popinId': popinId
+                    };
+                if (document.getElementById(popinId) !== null) {
+                    jQuery('#' + popinId).dialog('open');
+                } else {
+                    Core.ApplicationManager.invokeService('page.main.newPage', config);
+                }
+
             },
 
             showMediaLibrary: function (config) {

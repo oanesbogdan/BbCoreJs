@@ -27,6 +27,8 @@ define(
                     position: { my: "center top", at: "center top+" + jQuery('#' + Core.get('menu.id')).height()}
                 });
 
+                this.popin.setId(config.popinId);
+
                 this.formBuilder = require('component!formbuilder');
 
                 this.config = config;
@@ -88,7 +90,7 @@ define(
             render: function () {
                 var self = this;
 
-                this.popin.setTitle(translator.translate('create_page'));
+                this.popin.setTitle(translator.translate('create_a_page'));
                 this.popin.display();
                 this.popin.mask();
 
