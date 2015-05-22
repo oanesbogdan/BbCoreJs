@@ -45,7 +45,9 @@ define(
              * @returns {Boolean}
              */
             canApplyOnContext: function () {
-                return true;
+                var parent = this.getCurrentContent().getParent();
+
+                return (parent === null) ? false : parent.isAContentSet();
             },
 
             /**

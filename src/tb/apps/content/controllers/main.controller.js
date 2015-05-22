@@ -83,6 +83,12 @@ define(
                 }, function () {
                     ContentManager.addDefaultZoneInContentSet(false);
                 });
+
+                Core.Scope.subscribe('content', function () {
+                    ContentManager.addDefaultZoneInContentSet(true);
+                }, function () {
+                    ContentManager.addDefaultZoneInContentSet(false);
+                });
             },
 
             /**

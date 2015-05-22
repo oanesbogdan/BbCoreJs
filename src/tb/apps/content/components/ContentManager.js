@@ -86,7 +86,7 @@ define(
                 this.buildContentSet();
 
                 var contentSets = ContentContainer.findContentSetByAccept(),
-                    div = Renderer.render(dropZoneTemplate, {'class': this.dropZoneClass}),
+                    div,
                     contentSet,
                     hasChildren,
                     key;
@@ -97,6 +97,7 @@ define(
                         hasChildren = contentSet.jQueryObject.children().not('.content-actions').length > 0;
 
                         if (hasChildren === false) {
+                            div = Renderer.render(dropZoneTemplate, {'class': this.dropZoneClass, 'type': contentSet.getLabel()});
                             contentSet.jQueryObject.append(div);
                         }
                     }
