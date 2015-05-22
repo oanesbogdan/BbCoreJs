@@ -39,7 +39,7 @@ define(
                 }
                 this.group = data.group;
 
-                require('user/form/group.form').construct(this).then(
+                require('user/form/group.form').construct(this, data.error).then(
                     function (tpl) {
                         self.print(tpl);
                     }

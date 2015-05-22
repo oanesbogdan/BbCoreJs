@@ -73,9 +73,15 @@ define(
                 );
             },
 
-            initFormView: function (group, popin, View) {
+            parseRestError: function (error) {
+                error = JSON.parse(error);
+                return error.errors || undefined;
+            },
+
+            initFormView: function (group, popin, View, action, error) {
                 var self = this,
-                    view = new View({group: group});
+                    view = new View({group: group, error: error}),
+                    group_id = group.id;
 
                 view.display().then(function (group) {
                     self.repository.save(group).then(
@@ -83,22 +89,26 @@ define(
                             self.indexService(require, popin);
                             Notify.success(trans('Group save success.'));
                         },
-                        function () {
+                        function (error) {
                             Notify.error(trans('Group save fail.'));
+                            if (undefined !== group_id) {
+                                group.id = group_id;
+                            }
+                            self.initFormView(group, popin, View, action, self.parseRestError(error));
                         }
                     );
                 });
             },
 
             newService: function (req, popin) {
-                this.initFormView({}, popin, req('user/views/group/form.view'));
+                this.initFormView({}, popin, req('user/views/group/form.view'), 'new');
             },
 
             editService: function (req, popin, group_id) {
                 var self = this;
 
                 this.repository.find(group_id).done(function (group) {
-                    self.initFormView(group, popin, req('user/views/group/form.view'));
+                    self.initFormView(group, popin, req('user/views/group/form.view'), 'edit');
                 });
             },
 
