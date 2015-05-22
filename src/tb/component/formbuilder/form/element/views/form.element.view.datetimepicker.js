@@ -64,7 +64,8 @@ define(
                     element = jQuery(this);
 
                 element.datetimepicker({
-                    parentID: self.mainSelector
+                    parentID: self.mainSelector,
+                    minDate: new Date()
                 });
 
                 element.datetimepicker('show');
