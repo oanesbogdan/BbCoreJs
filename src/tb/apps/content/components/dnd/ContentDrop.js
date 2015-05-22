@@ -113,10 +113,12 @@ define(
                 config.parent = ContentManager.buildElement(parentObjectIdentifier);
                 config.type = this.manager.dataTransfer.content.type;
 
-                if (this.manager.dataTransfer.isNew === true) {
-                    this.addContent(config);
-                } else {
-                    this.updateContent(config);
+                if (config.parent.accept(config.type)) {
+                    if (this.manager.dataTransfer.isNew === true) {
+                        this.addContent(config);
+                    } else {
+                        this.updateContent(config);
+                    }
                 }
             },
 
@@ -127,18 +129,14 @@ define(
              * @param {Object} config
              */
             addContent: function (config) {
-
-                if (ContentContainer.isInArray(this.manager.dataTransfer.contentSetDroppable, 'type', config.parent.type)) {
-
-                    ContentManager.createElement(config.type).then(
-                        function (content) {
-                            config.parent.append(content, config.position);
-                        },
-                        function () {
-                            Notify.error('An error occured when drop a new content');
-                        }
-                    );
-                }
+                ContentManager.createElement(config.type).then(
+                    function (content) {
+                        config.parent.append(content, config.position);
+                    },
+                    function () {
+                        Notify.error('An error occured when drop a new content');
+                    }
+                );
             },
 
             /**
@@ -154,9 +152,6 @@ define(
                     oldParentAsContent;
 
                 oldParentAsContent = ContentManager.getContentByNode(oldParent);
-
-                content.jQueryObject.remove();
-                content.jQueryObject.length = 0;
 
                 config.parent.append(content, config.position);
 

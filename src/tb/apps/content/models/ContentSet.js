@@ -65,23 +65,28 @@ define(
 
                     content.getHtml(renderMode).done(function (html) {
 
-                        if (position === 'last') {
-                            self.jQueryObject.append(html);
-                            done = true;
-                        } else {
-                            children.each(function (key) {
-                                if (key === position) {
-                                    jQuery(this).before(html);
-                                    done = true;
+                        if (position !== 'last') {
+                            if (position > 0) {
+                                children.each(function (key) {
+                                    if (key === position) {
+                                        jQuery(this).before(html);
+                                        done = true;
 
-                                    return false;
-                                }
-                            });
+                                        return false;
+                                    }
+                                });
+                            } else {
+                                self.jQueryObject.prepend(html);
+                                done = true;
+                            }
                         }
 
                         if (done === false) {
-                            self.jQueryObject.prepend(html);
+                            self.jQueryObject.append(html);
                         }
+
+                        content.jQueryObject.remove();
+                        content.jQueryObject.length = 0;
 
                         require('content.manager').addDefaultZoneInContentSet(true);
 

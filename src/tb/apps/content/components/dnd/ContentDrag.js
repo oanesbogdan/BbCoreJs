@@ -79,13 +79,14 @@ define(
 
                 ContentManager.buildContentSet();
 
-                this.dataTransfer.contentSetDroppable = ContentContainer.findContentSetByAccept(content.type);
+                this.dataTransfer.contentSetDroppable = ContentContainer.findContentSetByAccept();
 
                 setTimeout(
                     this.showHTMLZoneForContentSet.bind(this),
                     10,
                     this.dataTransfer.contentSetDroppable,
-                    this.dataTransfer.content.id
+                    this.dataTransfer.content.id,
+                    this.dataTransfer.content.type
                 );
                 setTimeout(
                     this.showScrollZones.bind(this),

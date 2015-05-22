@@ -10406,6 +10406,17 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   -webkit-animation: dropzone-over 4s infinite;
   animation: dropzone-over 4s infinite;
 }
+.bb-dropzone.bb-dropzone-forbidden {
+  border-color: #c9302c;
+}
+.bb-dropzone.bb-dropzone-forbidden.over {
+  background-color: rgba(217, 83, 79, 0.1);
+  cursor: no-drop;
+}
+.bb-dropzone.bb-dropzone-forbidden.over:before {
+  -webkit-animation: none;
+  animation: none;
+}
 @-webkit-keyframes dropzone-over {
   0%,
   50%,

@@ -2676,6 +2676,18 @@ Version: 2.10 Dec2014
                 animation: dropzone-over 4s infinite;
         }
     }
+
+    &.bb-dropzone-forbidden {
+        border-color: darken(@brand-danger,10%);
+        &.over {
+            background-color:fade(@brand-danger,10%);
+            cursor: no-drop;
+            &:before {
+                -webkit-animation: none;
+                    animation: none;
+            }
+        }
+    }
 }
 @-webkit-keyframes dropzone-over {
     0%, 50%, 100%{

@@ -368,6 +368,10 @@ define(
                 this.id = Math.random().toString(36).substr(2);
             },
 
+            getLabel: function () {
+                return this.definition.properties.name || this.type;
+            },
+
             /**
              * Return the property of definition or all definition if key is not informed
              * @param {String} key

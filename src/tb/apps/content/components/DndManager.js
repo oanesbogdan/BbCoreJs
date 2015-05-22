@@ -56,6 +56,8 @@ define(
             droppableClass: '.bb-droppable',
 
             dropZoneClass: 'bb-dropzone',
+            validDropZoneClass: 'bb-dropzone-valid',
+            forbiddenDropZoneClass: 'bb-dropzone-forbidden',
 
             dndClass: 'bb-dnd',
 
@@ -189,12 +191,13 @@ define(
              * Show the dropzone after and before each children
              * @param {Object} contentSets
              */
-            showHTMLZoneForContentSet: function (contentSets, currentContentId) {
+            showHTMLZoneForContentSet: function (contentSets, currentContentId, type) {
                 var key,
                     contentSet,
                     children,
                     firstChild,
-                    div = Renderer.render(dropZoneTemplate, {'class': this.dropZoneClass});
+                    config,
+                    div;
 
                 ContentManager.addDefaultZoneInContentSet(false);
 
@@ -208,6 +211,18 @@ define(
 
                             children = contentSet.getNodeChildren();
                             firstChild = children.first();
+
+                            config = {
+                                'type': contentSet.getLabel()
+                            };
+
+                            if (contentSet.accept(type)) {
+                                config.class = this.dropZoneClass + ' ' + this.validDropZoneClass;
+                                div = Renderer.render(dropZoneTemplate, config);
+                            } else {
+                                config.class = this.dropZoneClass + ' ' + this.forbiddenDropZoneClass;
+                                div = Renderer.render(dropZoneTemplate, config);
+                            }
 
                             if (firstChild.length > 0) {
                                 if (undefined !== currentContentId) {
@@ -266,15 +281,19 @@ define(
              * @returns {Number}
              */
             getPosition: function (zone, parent) {
-                var prev = zone.prev('.' + this.contentClass),
+                var prevContent = ContentManager.getContentByNode(zone.prev('.' + this.contentClass)),
                     contentSet = ContentManager.getContentByNode(parent),
+                    content,
                     pos = 0;
 
-                if (prev.length > 0) {
-                    contentSet.getNodeChildren().each(function (key) {
-                        if (this === prev.get(0)) {
-                            pos = key + 1;
-                            return;
+                if (prevContent !== null) {
+                    contentSet.getNodeChildren().each(function () {
+                        content = ContentManager.getContentByNode(jQuery(this));
+
+                        pos = pos + 1;
+
+                        if (content.uid === prevContent.uid) {
+                            return false;
                         }
                     });
                 }
