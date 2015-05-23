@@ -3,6 +3,7 @@
     "app_only_default": "Only default",
 
     "account_activated": "Account activated",
+    "api_key_enabled": "Remote access activated",
     "activate": "Activate",
     "activated": "Activated",
     "activate_deactivate": "Activate / Deactivate",

@@ -45,6 +45,13 @@ define(['component!formbuilder', 'component!translator'], function (formbuilder,
                     },
                     checked: (view.user.getObject().activated === true) ? 'activated' : ''
                 },
+                api_key_enabled: {
+                    type: 'checkbox',
+                    options: {
+                        api_key_enabled: translator.translate('api_key_enabled')
+                    },
+                    checked: (view.user.getObject().api_key_enabled === true) ? 'api_key_enabled' : ''
+                },
                 changepwd: {
                     type: 'checkbox',
                     options: {
@@ -59,6 +66,7 @@ define(['component!formbuilder', 'component!translator'], function (formbuilder,
 
             onSubmit: function (data) {
                 data.activated = (data.activated === 'activated');
+                data.api_key_enabled = (data.api_key_enabled === 'api_key_enabled');
 
                 if (data.changepwd === 'yes') {
                     data.password = data.passwd;

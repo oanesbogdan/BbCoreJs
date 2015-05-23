@@ -1,6 +1,8 @@
 {
     "app_validate": "Valider",
 
+    "account_activated": "Compte activé",
+    "api_key_enabled": "Accès distant activé",
     "activate": "Activer",
     "activated": "Activé",
     "activate_deactivate": "Activer / Désactiver",

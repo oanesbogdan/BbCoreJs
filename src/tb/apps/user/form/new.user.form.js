@@ -49,11 +49,19 @@ define(['component!formbuilder', 'component!translator'], function (formbuilder,
                         activated: translator.translate('account_activated')
                     },
                     checked: 'activated'
+                },
+                api_key_enabled: {
+                    type: 'checkbox',
+                    options: {
+                        api_key_enabled: translator.translate('api_key_enabled')
+                    },
+                    checked: 'api_key_enabled'
                 }
             },
 
             onSubmit: function (data) {
                 data.activated = (data.activated === 'activated');
+                data.api_key_enabled = (data.api_key_enabled === 'api_key_enabled');
                 view.user.populate(data);
                 view.user.getObject().generate_password = true;
                 view.dfd.resolve(view.user);
