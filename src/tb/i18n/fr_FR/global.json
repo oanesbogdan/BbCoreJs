@@ -112,6 +112,10 @@
     "search_content": "Rechercher un contenu",
     "see_my_extensions": "Voir mes extensions",
     "select_all": "Tout sélectionner",
+    "state-0": "Hors ligne",
+    "state-1": "En ligne",
+    "state-2": "Non disponible dans le menu",
+    "state-4": "Supprimée",
     "status": "Statut",
 
     "theme": "Thème",
