@@ -27,25 +27,13 @@ define(['component!datastore', 'jsclass'], function (DataStore) {
     });
 
     restDataStore.addFilter("byBeforeDate", function (value, restParams) {
-        restParams.criterias.beforeDate = value;
+        restParams.criterias.beforePubdateField = value;
         return restParams;
     });
 
     restDataStore.addFilter("byAfterDate", function (value, restParams) {
-        restParams.criterias.afterDate = value;
+        restParams.criterias.afterPubdateField = value;
         return restParams;
-    });
-
-    restDataStore.on("unApplyFilter:byTitle", function (lastValue, restParams) {
-        delete restParams.criterias.searchField;
-    });
-
-    restDataStore.on("unApplyFilter:byBeforeDate", function (lastValue, restParams) {
-        delete restParams.criterias.beforeDate;
-    });
-
-    restDataStore.on("unApplyFilter:byAfterDate", function (lastValue, restParams) {
-        delete restParams.criterias.afterDate;
     });
 
     return restDataStore;

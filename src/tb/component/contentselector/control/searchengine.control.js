@@ -36,6 +36,7 @@ define(
             defaultConfig: {
                 datepickerClass: '.show-calendar',
                 datepickerFieldClass: '.bb5-datepicker',
+                datepickerFieldCls: 'bb5-datepicker',
                 beforeDateClass: '.before-date',
                 afterDateClass: '.after-date',
                 titleFieldClass: '.content-title',
@@ -65,7 +66,6 @@ define(
             attachDatePicker: function (field) {
                 var self = this;
                 field.datetimepicker({
-                    minDate: new Date(),
                     timepicker: false,
                     closeOnDateSelect: true,
                     format: "d/m/Y",
@@ -104,8 +104,13 @@ define(
             },
 
             handleKeyUp: function (e) {
-                var value = jQuery(e.currentTarget).eq(0).val(),
-                    fieldName = jQuery(e.currentTarget).data("fieldname");
+                var field = jQuery(e.currentTarget),
+                    value = field.eq(0).val(),
+                    fieldName = field.data("fieldname");
+                    /* reset datetime */
+                if (field.hasClass(this.config.datepickerFieldCls)) {
+                    field.data("selectedTime", "");
+                }
                 if (!value.length) {
                     this.trigger("onResetField", fieldName);
                 }
@@ -119,6 +124,12 @@ define(
                 } else {
                     return this.widget;
                 }
+            },
+
+            reset: function () {
+                jQuery(this.widget).find("input").val("");
+                jQuery(this.widget).find(this.config.beforeDateClass).eq(0).data("selectedTime", "");
+                jQuery(this.widget).find(this.config.afterDateClass).eq(0).data("selectedTime", "");
             },
 
             handleSearch: function () {
