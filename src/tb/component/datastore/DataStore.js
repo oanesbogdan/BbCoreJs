@@ -99,6 +99,10 @@ define(
                         params = jQuery.merge([], arguments);
                     params.shift();
                     task.params = params;
+                    task.paramsCount = params.length;
+
+                    /* clear previous filter tasks */
+                    this.tasksQueue = underscore.reject(this.tasksQueue, function (task) { return task.name === 'filters:' + name; });
                     this.tasksQueue.push(task);
                     return this;
                 },
@@ -111,6 +115,8 @@ define(
                         params = jQuery.merge([], arguments);
                     params.shift();
                     orderTask.params = params;
+                    /* clear previous filter tasks */
+                    this.tasksQueue = underscore.reject(this.tasksQueue, function (task) { return task.name === 'sorters:' + name; });
                     this.tasksQueue.push(orderTask);
                     return this;
                 },
@@ -123,14 +129,13 @@ define(
                     var self = this;
                     this.tasksQueue = underscore.reject(this.tasksQueue, function (task) {
                         if (task.name === "filters:" + filterName) {
-                            task.params.unshift("unApplyFilter:" + filterName);
-                            self.trigger.apply(self, task.params);
+                            self.trigger("unApplyFilter:" + filterName, task.params[1]);
                             return true;
                         }
                     });
-
                     return this;
                 },
+
                 unApplySorter: function (sorterName) {
                     this.tasksQueue = underscore.reject(this.tasksQueue, function (task) {
                         return task.name === "sorters:" + sorterName;
@@ -261,10 +266,12 @@ define(
                         },
                         resultPromise = new jQuery.Deferred();
                     restParams.limit = this.limit;
+
                     jQuery.each(this.tasksQueue, function (i, task) {
                         try {
-                            var taskAction = self.getActionInfos(task.name);
-                            task.params.push(restParams);
+                            var taskAction = self.getActionInfos(task.name),
+                                paramLength = task.paramsCount;
+                            task.params[paramLength] = restParams;
                             restParams = taskAction.apply({}, task.params, i);
                         } catch (e) {
                             self.trigger('dataStoreError', e);

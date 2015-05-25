@@ -53,7 +53,6 @@ define(
                 autoDisplay: true,
                 viewmode: 'grid',
                 dialogConfig: {
-                    title: "Media library",
                     draggable: false,
                     resizable: false,
                     autoOpen: false,
@@ -74,7 +73,7 @@ define(
                         height: "auto"
                     }
                 },
-                resetOnClose: false,
+                resetOnClose: true,
                 mediaFolderTreeView: {}
             },
             trans = require('Core').get('trans') || function (value) {return value; },
@@ -132,6 +131,7 @@ define(
 
                 reset: function () {
                     this.mediaListView.reset();
+                    this.searchEngine.reset();
                     this.mediaPagination.setItems(0);
                     this.rangeSelector.reset();
                     jQuery(this.widget).find(".result-infos").html("");
@@ -376,14 +376,20 @@ define(
                         self.openedMediaFolder = self.mediaFolderTreeView.getNodeById(result[0].id);
                         self.mediaFolderDataStore.applyFilter("byMediaFolder", self.openedMediaFolder.uid).execute().done(function () {
                             self.mediaFolderTreeView.invoke('openNode', self.openedMediaFolder);
-                            self.loadRootData();
+                            self.autoLoadMedia();
                         });
                     });
                 },
 
-                loadRootData : function () {
-                    var root = this.mediaFolderTreeView.getRootNode();
-                    this.handleMediaSelection({node: root.children[0]});
+                autoLoadMedia : function () {
+                    /* select the previous selected folder or the root one*/
+                    var mediaFolderToLoad = this.selectedNode,
+                        root;
+                    if (!mediaFolderToLoad) {
+                        root = this.mediaFolderTreeView.getRootNode();
+                        mediaFolderToLoad = root.children[0];
+                    }
+                    this.handleMediaSelection({node: mediaFolderToLoad});
                 },
 
                 populateMediaFolder: function (data, parentNode) {
@@ -407,16 +413,18 @@ define(
 
                 formatData: function (data) {
                     var result = [],
-                        mediaFolderItem;
-                    jQuery.each(data, function (i, mediaFolder) {
-                        mediaFolderItem = data[i];
-                        if (mediaFolderItem.rel === "folder") {
+                        mediaFolderItem,
+                        dataToFormat = jQuery.isArray(data) ? data : [data];
+                    jQuery.each(dataToFormat, function (i, mediaFolder) {
+                        mediaFolderItem = dataToFormat[i];
+                        if (mediaFolderItem.has_children) {
                             mediaFolderItem.children = [{
                                 label: trans('loading') + ' ...',
                                 is_fake: true
                             }];
                         }
                         mediaFolderItem.label = mediaFolder.title;
+                        mediaFolderItem.id = 'node_' + mediaFolder.uid;
                         result.push(mediaFolderItem);
                     });
                     return result;
@@ -424,6 +432,7 @@ define(
 
                 initPopin: function () {
                     PopInMng.init("#bb5-ui");
+                    this.config.dialogConfig.title = trans("media_library");
                     return PopInMng.createPopIn(this.config.dialogConfig);
                 },
 
@@ -436,9 +445,7 @@ define(
                         library.initLayouts();
                         library.fixDataviewLayout();
                     } else {
-                        if (this.resetOnClose) {
-                            library.loadRootData();
-                        }
+                        library.autoLoadMedia();
                     }
                     library.isLoaded = true;
                     library.trigger("open");
@@ -453,6 +460,7 @@ define(
 
                 handleNodeEdition: function (onEditCallBack, node, title, parentNode) {
                     var self = this,
+                        currentNodeInfos,
                         parentNodeUid = parentNode ? parentNode.uid : null,
                         jsonNode = {
                             uid: node.uid,
@@ -460,7 +468,10 @@ define(
                             parent_uid: parentNodeUid
                         };
                     this.mediaFolderDataStore.save(jsonNode).done(function () {
-                        self.mediaFolderDataStore.findNode(jsonNode.uid).done(onEditCallBack);
+                        self.mediaFolderDataStore.findNode(jsonNode.uid).done(function (node) {
+                            currentNodeInfos = self.formatData(node);
+                            onEditCallBack(currentNodeInfos[0]);
+                        });
                     });
                 },
 
@@ -522,7 +533,12 @@ define(
                         jQuery.each(criteria, function (key, val) {
                             if (criteria[key] !== undefined) {
                                 var filterName = 'by' + key.charAt(0).toUpperCase() + key.slice(1);
-                                self.mediaDataStore.applyFilter(filterName, val);
+
+                                if (jQuery.trim(val).length === 0) {
+                                    self.mediaDataStore.unApplyFilter(filterName);
+                                } else {
+                                    self.mediaDataStore.applyFilter(filterName, val);
+                                }
                             }
                         });
                         self.mediaDataStore.execute();
@@ -531,11 +547,6 @@ define(
                             self.unmask(self.treeContainer);
                             require("component!notify").error(error);
                         };
-                    });
-
-                    this.searchEngine.on("resetField", function (fieldName) {
-                        var filterName = 'by' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
-                        self.mediaDataStore.unApplyFilter(filterName);
                     });
 
                 },
@@ -547,6 +558,7 @@ define(
 
                 close: function () {
                     this.dialog.hide();
+                    this.onClose();
                 }
             });
         return {

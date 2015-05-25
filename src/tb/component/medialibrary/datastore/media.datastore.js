@@ -29,18 +29,6 @@ define(['component!datastore', 'jsclass'], function (DataStore) {
             return restParams;
         });
 
-        restDataStore.on("unApplyFilter:byTitle", function (lastValue, restParams) {
-            delete restParams.criterias.mediaTitle;
-        });
-
-        restDataStore.on("unApplyFilter:byBeforeDate", function (lastValue, restParams) {
-            delete restParams.criterias.beforePubdateField;
-        });
-
-        restDataStore.on("unApplyFilter:byAfterDate", function (lastValue, restParams) {
-            delete restParams.criterias.afterPubdateField;
-        });
-
         return restDataStore;
     };
 

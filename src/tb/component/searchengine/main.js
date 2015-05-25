@@ -6,6 +6,7 @@ define(['Core', 'jquery', 'Core/Renderer', 'text!../searchengine/templates/layou
         defaultConfig: {
             datepickerClass: '.show-calendar',
             datepickerFieldClass: '.bb5-datepicker',
+            datepickerFieldCls: 'bb5-datepicker',
             beforeDateClass: '.before-date',
             afterDateClass: '.after-date',
             titleFieldClass: '.content-title',
@@ -58,11 +59,21 @@ define(['Core', 'jquery', 'Core/Renderer', 'text!../searchengine/templates/layou
         },
 
         handleKeyUp: function (e) {
-            var value = jQuery(e.currentTarget).eq(0).val(),
-                fieldName = jQuery(e.currentTarget).data("fieldname");
+            var field = jQuery(e.currentTarget),
+                value = field.val(),
+                fieldName = field.data("fieldname");
             if (!value.length) {
+                if (field.hasClass(this.config.datepickerFieldCls)) {
+                    field.data('selectedTime', '');
+                }
                 this.trigger("resetField", fieldName);
             }
+        },
+
+        reset: function () {
+            jQuery(this.widget).find("input").val("");
+            jQuery(this.widget).find(this.config.beforeDateClass).eq(0).data("selectedTime", "");
+            jQuery(this.widget).find(this.config.afterDateClass).eq(0).data("selectedTime", "");
         },
 
         handleSearch: function () {
