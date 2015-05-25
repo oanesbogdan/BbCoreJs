@@ -38,6 +38,7 @@ define(['Core/Utils', 'cryptojs.md5', 'jsclass'], function (Utils, CryptoJS) {
                 'status',
                 'password',
                 'activated',
+                'api_key_enabled',
                 'groups',
                 'api_key'
             ];
@@ -71,6 +72,10 @@ define(['Core/Utils', 'cryptojs.md5', 'jsclass'], function (Utils, CryptoJS) {
 
         activated: function () {
             return (this.data.activated !== undefined && this.data.activated !== false) ? true : false;
+        },
+
+        api_key_enabled: function () {
+            return (this.data.api_key_enabled !== undefined && this.data.api_key_enabled !== false) ? true : false;
         },
 
         picture: function () {
