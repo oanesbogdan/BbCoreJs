@@ -19,6 +19,7 @@
     "available_in_menus": "Available in menus",
 
     "block": "Block",
+    "blocks": "Blocks",
     "block_categories": "Block categories",
     "block_display": "Block display",
     "browse_to": "Browse to",
@@ -45,8 +46,9 @@
     "create": "Create",
     "create_a_draft": "Create a draft",
     "create_a_folder": "Create a folder",
-    "create_group": "Create group",
+    "create_a_new": "Create a new",
     "create_a_page": "Create a page",
+    "create_group": "Create group",
     "create_user": "Create user",
     "created_before": "Created before",
     "created_after": "Created after",
