@@ -149,7 +149,8 @@ define(
                     self.popin.display();
                     Core.ApplicationManager.invokeService("page.main.getPageRepository").done(function (pageRepository) {
                         pageRepository.findContents(itemData.type, itemData.uid).done(function (data) {
-                            data = data || [];
+
+                            data = jQuery.isArray(data) ? data : [data];
                             self.addButtons();
                             var templateData = {
                                 isOrphaned: (data.length === 0),
