@@ -23,10 +23,13 @@
                     </button>
                 </div>
                 <div class="col-sm-6" data-group="{{ group.id }}">
-                    <button type="button" class="btn btn-simple btn-xs btn-action" data-action="edit">
+                    <button type="button" class="btn btn-simple btn-xs btn-action" data-action="showDescription">
+                        <i class="fa fa-key"></i> {{ 'rights_description'|trans }}
+                    </button>
+                    <button type="button" class="hidden btn btn-simple btn-xs btn-action" data-action="edit">
                         <i class="fa fa-pencil"></i> {{ 'rename'|trans }}
                     </button>
-                    <button type="button" class="btn btn-simple btn-xs btn-action" data-action="delete">
+                    <button type="button" class="hidden btn btn-simple btn-xs btn-action" data-action="delete">
                         <i class="fa fa-trash-o"></i> {{ 'delete'|trans }}
                     </button>
                 </div>

@@ -18,8 +18,8 @@
  */
 
 define(
-    ['Core', 'Core/Renderer', 'component!notify', 'Core/Utils'],
-    function (Core, renderer, Notify, Utils) {
+    ['Core', 'Core/Renderer', 'component!notify', 'Core/Utils', 'jquery'],
+    function (Core, renderer, Notify, Utils, jQuery) {
         'use strict';
         var trans = Core.get('trans') || function (value) {return value; };
 
@@ -86,11 +86,12 @@ define(
                 view.display().then(function (group) {
                     self.repository.save(group).then(
                         function () {
+                            Core.ApplicationManager.invokeService('user.user.index', popin);
                             self.indexService(require, popin);
-                            Notify.success(trans('Group save success.'));
+                            Notify.success(trans('group_save_success'));
                         },
                         function (error) {
-                            Notify.error(trans('Group save fail.'));
+                            Notify.error(trans('group_save_fail'));
                             if (undefined !== group_id) {
                                 group.id = group_id;
                             }
@@ -124,7 +125,7 @@ define(
                         function () {
                             self.repository.delete(group_id).done(function () {
                                 self.indexService(require, popin);
-                                Notify.success(trans('group') + ' ' + group.name + ' ' + trans('has been deleted.'));
+                                Notify.success(trans('group') + ' ' + group.name + ' ' + trans('has_been_deleted'));
                             });
                             view.destruct();
                         },
@@ -133,6 +134,32 @@ define(
                         }
                     );
                 });
+            },
+
+            showDescriptionService: function (main_popin, group_id) {
+                this.repository.find(group_id).then(
+                    function (group) {
+                        var popin = main_popin.popinManager.createSubPopIn(
+                                main_popin.popin,
+                                {
+                                    id: 'new-user-subpopin',
+                                    width: 250,
+                                    top: 180,
+                                    close: function () {
+                                        main_popin.popinManager.destroy(popin);
+                                    }
+                                }
+                            );
+
+                        popin.setTitle(group.name);
+                        popin.setContent(group.description);
+
+                        popin.display();
+                    },
+                    function () {
+                        Notify.success(trans('group_request_fail'));
+                    }
+                );
             },
 
             showUsersService: function (req, main_popin, group_id) {
@@ -157,15 +184,20 @@ define(
                         users = Utils.castAsArray(users);
 
                         for (i = users.length - 1; i >= 0; i = i - 1) {
-                            users[i] = new View({user: users[i]});
+                            users[i] = new View({user: users[i], group_listing: true});
                         }
 
                         popin.setContent(renderer.render(tpl, {users: users}));
-
                         popin.display();
+
+                        jQuery('.btn-group').click(function () {
+                            var user_id = jQuery(this).parents('.bb5-manage-user:first').attr('data-user');
+                            Core.ApplicationManager.invokeService('user.user.removeGroup', main_popin, user_id, group_id);
+                            jQuery(this).parents('li:first').remove();
+                        });
                     },
                     function () {
-                        Notify.success(trans('group request fail'));
+                        Notify.success(trans('group_request_fail'));
                     }
                 );
             }

@@ -6,6 +6,11 @@
             </div>
             <p class="col-bb5-28 user-firstname">{{ user.lastname() }}</p>
             <p class="col-bb5-25 user-name">{{ user.firstname() }}</p>
+            {% if group_listing %}
+                <button type="button" class="btn-group btn-default btn-sm btn-remove">
+                    <i class="fa fa-cross"></i> {{ 'remove'|trans }}
+                </button>
+            {% endif %}
             <a class="bb5-data-toggle-trigger" href="#"><i class="fa fa-angle-down"></i></a>
         </div>
         <div class="bb5-data-drpdown">

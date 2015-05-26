@@ -123,10 +123,10 @@ define(
                         function () {
                             popin.popinManager.destroy(view.popin);
                             self.indexService(require, popin);
-                            Notify.success(trans('User save success.'));
+                            Notify.success(trans('user_save_success'));
                         },
                         function (error) {
-                            Notify.error(trans('User save fail.'));
+                            Notify.error(trans('user_save_fail'));
 
                             if (undefined !== user_id) {
                                 user.populate({id: user_id});
@@ -176,7 +176,7 @@ define(
                             self.repository.delete(user_id).done(function () {
                                 self.indexService(require, popin);
                                 Core.ApplicationManager.invokeService('user.group.index', popin);
-                                Notify.success(trans('User') + ' ' + user.login() + ' ' + trans('has been deleted.'));
+                                Notify.success(trans('User') + ' ' + user.login() + ' ' + trans('has_been_deleted'));
                             });
                             view.destruct();
                         },
@@ -213,19 +213,62 @@ define(
                                 function () {
                                     Core.ApplicationManager.invokeService('user.group.index', popin);
                                     Core.ApplicationManager.invokeService('user.user.index', popin);
-                                    Notify.success(trans('User update success.'));
+                                    Notify.success(trans('user_update_success'));
                                 },
                                 function () {
-                                    Notify.error(trans('User update fail.'));
+                                    Notify.error(trans('user_update_fail'));
                                 }
                             );
                         } else {
-                            Notify.warning(trans('User is already in this group.'));
+                            Notify.warning(trans('user_is_already_in_this_group'));
                         }
                     },
                     function () {
                         self.indexService(require, popin);
-                        Notify.error(trans('User not found.'));
+                        Notify.error(trans('user_not_found'));
+                    }
+                );
+            },
+
+            removeGroupService: function (popin, user_id, group_id) {
+                var user = new User(),
+                    self = this;
+
+                self.repository.find(user_id).then(
+                    function (user_values) {
+                        var already_grouped = false;
+
+                        user_values.groups.forEach(function (group) {
+                            if (parseInt(group_id, 10) === group.id) {
+                                already_grouped = true;
+                            }
+                        });
+
+                        if (already_grouped) {
+                            user_values.groups[group_id] = 'removed';
+
+                            user.populate({
+                                id: user_id,
+                                groups: user_values.groups
+                            });
+
+                            self.repository.save(user.getObject()).then(
+                                function () {
+                                    Core.ApplicationManager.invokeService('user.group.index', popin);
+                                    Core.ApplicationManager.invokeService('user.user.index', popin);
+                                    Notify.success(trans('user_update_success'));
+                                },
+                                function () {
+                                    Notify.error(trans('user_update_fail'));
+                                }
+                            );
+                        } else {
+                            Notify.warning(trans('user_is_not_in_this_group'));
+                        }
+                    },
+                    function () {
+                        self.indexService(require, popin);
+                        Notify.error(trans('user_not_found'));
                     }
                 );
             },
@@ -243,7 +286,7 @@ define(
                         view.render();
                     },
                     function () {
-                        Notify.error('Error.');
+                        Notify.error('error_retry_later');
                     }
                 );
             },
@@ -259,7 +302,7 @@ define(
                     self.repository.save(patch).then(
                         function () {
                             view.destroy();
-                            Notify.success('Password updated.');
+                            Notify.success('password_updated');
                         },
                         function (error) {
                             view.destroy();
@@ -285,10 +328,10 @@ define(
                     self.repository.save(patch).then(
                         function () {
                             view.destroy();
-                            Notify.success('Account updated.');
+                            Notify.success('account_updated');
                         },
                         function (error) {
-                            Notify.error('Error, retry later.');
+                            Notify.error('error_retry_later');
 
                             view.destroy();
                             self.editCurrentService(user, self.parseRestError(error));
@@ -302,10 +345,10 @@ define(
 
                 self.repository.save(user).then(
                     function () {
-                        Notify.success(trans('User update success.'));
+                        Notify.success(trans('user_update_success'));
                     },
                     function () {
-                        Notify.error(trans('User update fail.'));
+                        Notify.error(trans('user_update_fail'));
                         self.indexService(require, popin);
                     }
                 );
