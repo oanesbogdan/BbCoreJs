@@ -19,12 +19,15 @@
 
 define(
     [
+        'Core',
         'content.pluginmanager',
         'content.manager',
         'component!translator',
+        'component!popin',
+        'jquery',
         'jsclass'
     ],
-    function (PluginManager, ContentManager, Translator) {
+    function (Core, PluginManager, ContentManager, Translator, PopinManager, jQuery) {
 
         'use strict';
 
@@ -34,16 +37,25 @@ define(
              * Initialization of plugin
              */
             onInit: function () {
-                return;
+                var self = this;
+
+                this.popin = PopinManager.createPopIn({
+                    position: { my: "center top", at: "center top+" + jQuery('#' + Core.get('menu.id')).height()}
+                });
+
+                this.popin.setTitle(Translator.translate('remove_content'));
+                this.popin.setContent(Translator.translate('remove_content_confirmation_message'));
+                this.popin.addButton('Ok', function () {
+                    ContentManager.remove(self.getCurrentContent());
+                    self.popin.hide();
+                });
             },
 
             /**
              * Remove the content
              */
             remove: function () {
-                if (confirm(Translator.translate('remove_content_confirmation_message'))) {
-                    ContentManager.remove(this.getCurrentContent());
-                }
+                this.popin.display();
             },
 
             /**
@@ -67,7 +79,7 @@ define(
                     {
                         name: 'Remove',
                         ico: 'fa fa-times',
-                        label: 'Remove content',
+                        label: Translator.translate('remove_content'),
                         cmd: self.createCommand(self.remove, self),
                         checkContext: function () {
                             return true;
