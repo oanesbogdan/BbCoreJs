@@ -28,7 +28,6 @@ define(['Core', 'jquery', 'Core/Renderer', 'text!../searchengine/templates/layou
                 closeOnDateSelect: true,
                 format: "d/m/Y",
                 parentID: self.mainSelector,
-                minDate: new Date(),
                 onSelectDate: function (ct, field) {
                     jQuery(field).data('selectedTime', Math.ceil(ct.getTime() / 1000));
                 }

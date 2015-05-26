@@ -209,6 +209,7 @@ define(
                     this.contentDataView.reset();
                     this.contentPagination.setItems(0);
                     this.pageRangeSelector.reset();
+                    this.searchEngine.reset();
                     /* Reset the category label */
                     jQuery(this.widget).find(".result-infos").html("");
                     this.categoryTreeView.unselectNode();
@@ -356,9 +357,13 @@ define(
                     /* When we must update the query task */
                     this.searchEngine.on("doSearch", function (criteria) {
                         jQuery.each(criteria, function (key, val) {
+                            var filterName = 'by' + key.charAt(0).toUpperCase() + key.slice(1);
                             if (criteria[key] !== undefined) {
-                                var filterName = 'by' + key.charAt(0).toUpperCase() + key.slice(1);
-                                self.contentRestDataStore.applyFilter(filterName, val);
+                                if (jQuery.trim(val).length === 0) {
+                                    self.contentRestDataStore.unApplyFilter(filterName);
+                                } else {
+                                    self.contentRestDataStore.applyFilter(filterName, val);
+                                }
                             }
                         });
                         self.contentRestDataStore.execute();
