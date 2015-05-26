@@ -103,15 +103,19 @@ define(
             },
 
             mediaDragEnter: function () {
-                var img = jQuery('[data-bb-identifier^="Element/Image"]');
+                var img = jQuery('[data-bb-identifier^="Element/Image"]'),
+                    current;
 
                 img.addClass('bb-dnd');
                 img.attr('dropzone', true);
                 img.css('opacity', '0.6');
 
-                if (!img.parent().hasClass('img-wrap-dnd')) {
-                    img.wrap('<div class="img-wrap-dnd">');
-                }
+                img.each(function (index) {
+                    current = jQuery(img.get(index));
+                    if (!current.parent().hasClass('img-wrap-dnd')) {
+                        current.wrap('<div class="img-wrap-dnd">');
+                    }
+                });
             },
 
             scrollFnc: function () {

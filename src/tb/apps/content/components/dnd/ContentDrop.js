@@ -55,13 +55,30 @@ define(
                 Core.Mediator.unsubscribe('on:classcontent:drop', this.onDrop);
             },
 
+            removeImgWrap: function () {
+                var img = jQuery('[data-bb-identifier^="Element/Image"]'),
+                    current;
+
+                img.removeClass('bb-dnd');
+                img.attr('dropzone', false);
+                img.css('opacity', '1');
+
+                img.each(function (index) {
+                    current = jQuery(img.get(index));
+                    if (!current.parent().hasClass('img-wrap-dnd')) {
+                        current.unwrap('<div class="img-wrap-dnd">');
+                    }
+                });
+            },
+
             doDropMedia: function (event) {
                 var target = jQuery(event.target),
                     file = event.dataTransfer.files[0],
                     reader = new window.FileReader(),
                     content = ContentManager.getContentByNode(target),
                     mask = Mask.createMask(),
-                    parent = content.jQueryObject.parent();
+                    parent = content.jQueryObject.parent(),
+                    self = this;
 
                 reader.onload = function (e) {
 
@@ -78,6 +95,7 @@ define(
                         elements.path = response.path;
                         elements.originalname = response.originalname;
                         content.setElements(elements);
+                        self.removeImgWrap();
 
                         ApplicationManager.invokeService('content.main.save', true).done(function (promise) {
                             promise.done(function () {
