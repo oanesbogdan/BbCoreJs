@@ -2291,8 +2291,10 @@ Version: 2.10 Dec2014
     .bb5-context-menu {
 
         ul {#bb5-ui .dropdown-menu; display: block; z-index: 999999;
-            li {padding: 3px 20px;
-                button {border-width: 0; background-color: transparent; padding: 0; width: 100%; text-align: left;}
+            li {
+                button {border-width: 0; background-color: transparent; padding: 0; width: 100%; text-align: left; padding: 3px 20px;
+                    &:hover {background-color: #F3F3F3;}
+                }
             }
         }
 

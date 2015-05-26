@@ -9935,15 +9935,16 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   color: #333333;
   white-space: nowrap;
 }
-#bb5-ui .bb5-context-menu ul li {
-  padding: 3px 20px;
-}
 #bb5-ui .bb5-context-menu ul li button {
   border-width: 0;
   background-color: transparent;
   padding: 0;
   width: 100%;
   text-align: left;
+  padding: 3px 20px;
+}
+#bb5-ui .bb5-context-menu ul li button:hover {
+  background-color: #F3F3F3;
 }
 #bb5-ui .bb5-context-menu .dropdown-menu {
   display: block;
