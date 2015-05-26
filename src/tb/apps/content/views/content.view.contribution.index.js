@@ -220,6 +220,7 @@ define(
 
                 if (this.descriptionPopin === undefined) {
                     this.descriptionPopin = PopinManager.createPopIn();
+                    this.descriptionPopin.setId('bb-block-description');
                     Core.ApplicationManager.invokeService('content.main.registerPopin', 'blockDescription', this.descriptionPopin);
                 }
 
