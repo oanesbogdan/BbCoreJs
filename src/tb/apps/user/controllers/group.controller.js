@@ -152,7 +152,7 @@ define(
                             );
 
                         popin.setTitle(group.name);
-                        popin.setContent(group.description);
+                        popin.setContent(group.description || trans('no_description_provided'));
 
                         popin.display();
                     },
