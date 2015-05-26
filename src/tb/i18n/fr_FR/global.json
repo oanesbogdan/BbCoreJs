@@ -15,6 +15,7 @@
     "available_in_menus": "Disponible dans les menus",
 
     "block": "Bloc",
+    "blocks": "Blocs",
     "browse_to": "Naviguer vers",
 
     "cancel": "Annuler",
@@ -32,6 +33,7 @@
     "copy": "Copier",
     "create": "Créer",
     "create_a_draft": "Créer un brouillon",
+    "create_a_new": "Créer un nouveau",
     "create_group": "Créer un groupe",
     "create_user": "Créer un utilisateur",
     "cut": "Couper",
