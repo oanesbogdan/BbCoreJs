@@ -164,7 +164,7 @@
 
     "remove": "Remove",
     "remove_content": "Remove content",
-    "remove_content_confirmation_message": "Do you want remove this content ?",
+    "remove_content_confirmation_message": "Do you want to remove this content?",
     "remove_group_confirmation_message": "Do you want remove the group",
     "remove_user_confirmation_message": "Do you want remove the user",
     "rename": "Rename",
