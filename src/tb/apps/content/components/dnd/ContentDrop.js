@@ -79,7 +79,7 @@ define(
                         elements.originalname = response.originalname;
                         content.setElements(elements);
 
-                        ApplicationManager.invokeService('content.main.save').done(function (promise) {
+                        ApplicationManager.invokeService('content.main.save', true).done(function (promise) {
                             promise.done(function () {
                                 content.refresh();
                                 mask.unmask(parent);
