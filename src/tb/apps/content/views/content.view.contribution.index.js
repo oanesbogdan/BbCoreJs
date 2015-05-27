@@ -28,6 +28,7 @@ define(
         'content.widget.DialogContentsList',
         'component!popin',
         'definition.manager',
+        'component!translator',
         'bootstrap-carousel'
     ],
     function (Core,
@@ -38,7 +39,8 @@ define(
               Renderer,
               DialogContentsList,
               PopinManager,
-              DefinitionManager
+              DefinitionManager,
+              translator
             ) {
 
         'use strict';
@@ -213,13 +215,14 @@ define(
 
                 carousel.html(html);
 
-                carousel.find(this.carouselBlockClass).on('click', this.onBlockClick);
+                carousel.find(this.carouselBlockClass).on('click', jQuery.proxy(this.onBlockClick, this));
             },
 
             onBlockClick: function (event) {
-
                 if (this.descriptionPopin === undefined) {
                     this.descriptionPopin = PopinManager.createPopIn();
+
+                    this.descriptionPopin.setTitle(translator.translate('block_description'));
                     this.descriptionPopin.setId('bb-block-description');
                     Core.ApplicationManager.invokeService('content.main.registerPopin', 'blockDescription', this.descriptionPopin);
                 }
@@ -233,11 +236,9 @@ define(
                         thumbnail: definition.image
                     };
 
-                this.descriptionPopin.setTitle('Block description');
+                this.descriptionPopin.display();
 
                 this.descriptionPopin.setContent(Renderer.render(blockDescriptionTpl, {'block': block}));
-
-                this.descriptionPopin.display();
             },
 
             /**

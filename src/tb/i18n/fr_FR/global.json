@@ -16,6 +16,7 @@
 
     "block": "Bloc",
     "blocks": "Blocs",
+    "block_description": "Description du bloc",
     "browse_to": "Naviguer vers",
 
     "cancel": "Annuler",
