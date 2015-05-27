@@ -36,87 +36,21 @@ define(['jquery', 'Core/Renderer', 'text!main/tpl/toolbar', 'component!translato
                 menus: [
                     {
                         label: translator.translate('user'),
-                        text: translator.translate('users_management'),
+                        text: translator.translate('user_management'),
                         url: '#/user/index',
-                        active: false,
-                        items: [
-                            {
-                                label: translator.translate('user'),
-                                text: translator.translate('users_management'),
-                                url: '#user',
-                                active: false
-                            },
-                            {
-                                label: translator.translate('role'),
-                                text: translator.translate('roles_management'),
-                                url: '#role',
-                                active: false
-                            },
-                            {
-                                label: translator.translate('right'),
-                                text: translator.translate('rights_management'),
-                                url: '#right',
-                                active: false
-                            },
-                            {
-                                label: translator.translate('workflow'),
-                                text: translator.translate('workflow_management'),
-                                url: '#workflow',
-                                active: false
-                            }
-                        ]
+                        active: false
                     },
                     {
                         label: translator.translate('contribute'),
-                        text: translator.translate('contribution'),
+                        text: translator.translate('edition'),
                         url: '#/contribution/index',
-                        active: false,
-                        items: [
-                            {
-                                label: translator.translate('edit'),
-                                text: translator.translate('edition'),
-                                url: '#/contribution/index',
-                                active: false
-                            },
-                            {
-                                label: translator.translate('page'),
-                                text: translator.translate('pages_management'),
-                                url: '#pages',
-                                active: false
-                            },
-                            {
-                                label: translator.translate('content'),
-                                text: translator.translate('content_management'),
-                                url: '#content',
-                                active: false
-                            },
-                            {
-                                label: translator.translate('library'),
-                                text: translator.translate('media'),
-                                url: '#library',
-                                active: false
-                            }
-                        ]
+                        active: false
                     },
                     {
                         label: translator.translate('bundle'),
-                        text: translator.translate('extensions'),
+                        text: translator.translate('plugins'),
                         url: '#/bundle/index',
-                        active: false,
-                        items: [
-                            {
-                                label: translator.translate('activate'),
-                                text: translator.translate('activate_deactivate'),
-                                url: '#',
-                                active: false
-                            },
-                            {
-                                label: translator.translate('admin'),
-                                text: translator.translate('manage'),
-                                url: '#',
-                                active: false
-                            }
-                        ]
+                        active: false
                     }
                 ]
             };
