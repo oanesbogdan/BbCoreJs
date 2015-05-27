@@ -19,8 +19,7 @@ define(
         PluginManager.registerPlugin('contentselector', {
             onInit: function () {
                 this.contentSelector = ContentSelector.createContentSelector({
-                    mode: 'edit',
-                    resetOnClose: true
+                    mode: 'edit'
                 });
                 this.contentSelector.on('close', jQuery.proxy(this.handleContentSelection, this));
             },

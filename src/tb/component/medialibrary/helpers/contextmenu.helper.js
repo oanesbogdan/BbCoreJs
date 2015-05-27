@@ -35,15 +35,16 @@ define(['component!contextmenu', 'jquery', 'component!notify'], function (Contex
                     },
 
                     pasteAction: function (position) {
+
                         var data = {},
                             nextSibling,
-                            moveNode = jQuery.proxy(function (cuttedNode, selectedNode, position) {
-                                treeView.moveNode(cuttedNode, selectedNode, position);
-                            }, this, cuttedNode, selectedNode, position);
+                            moveNode;
+
+                        /* Dealing with position */
                         if (position === "before") {
                             data.sibling_uid = selectedNode.uid;
                         }
-                        if (position === 'append') {
+                        if (position === 'inside') {
                             data.parent_uid = selectedNode.uid;
                         }
                         if (position === "after") {
@@ -54,11 +55,27 @@ define(['component!contextmenu', 'jquery', 'component!notify'], function (Contex
                                 data.parent_uid = cuttedNode.parent.uid;
                             }
                         }
-                        mediaFolderStore.moveNode(cuttedNode, data).done(function () {
-                            moveNode();
-                        }).fail(function (reponse) {
-                            notify.error(reponse);
-                        });
+
+                        /* Moving function */
+                        moveNode = jQuery.proxy(function (cuttedNode, selectedNode, position, data) {
+
+                            if (position === "inside") {
+                                mainWidget.openNode(selectedNode, function () {
+                                    treeView.appendNode(cuttedNode, selectedNode);
+                                    mediaFolderStore.moveNode(cuttedNode, data).done(function () {
+                                        treeView.appendNode(cuttedNode, selectedNode);
+                                    }).fail(function (response) { notify(response); });
+                                });
+                            } else {
+                                mediaFolderStore.moveNode(cuttedNode, data).done(function () {
+                                    treeView.moveNode(cuttedNode, selectedNode, position);
+                                }).fail(function (response) { notify(response); });
+                            }
+
+                        }, this, cuttedNode, selectedNode, position, data);
+
+                        /*do Move */
+                        moveNode();
                         cuttedNode = null;
                     }
                 },
@@ -98,6 +115,9 @@ define(['component!contextmenu', 'jquery', 'component!notify'], function (Contex
                     this.addFilter("bb5-context-menu-paste-before");
                     this.addFilter("bb5-context-menu-paste-after");
                 }
+                if (cuttedNode && cuttedNode.parent.uid === selectedNode.uid) {
+                    this.addFilter("bb5-context-menu-paste");
+                }
             };
 
             mediaFolderContextMenu.addMenuItem({
@@ -133,7 +153,7 @@ define(['component!contextmenu', 'jquery', 'component!notify'], function (Contex
             mediaFolderContextMenu.addMenuItem({
                 btnCls: "bb5-context-menu-paste",
                 btnLabel: trans("paste"),
-                btnCallback: jQuery.proxy(actions.pasteAction, this, "append")
+                btnCallback: jQuery.proxy(actions.pasteAction, this, "inside")
             });
 
             mediaFolderContextMenu.addMenuItem({
@@ -152,9 +172,11 @@ define(['component!contextmenu', 'jquery', 'component!notify'], function (Contex
             mediaFolderStore = widget.mediaFolderDataStore;
             mainWidget = widget;
         },
+
         setSelectedNode: function (node) {
             selectedNode = node;
         },
+
         getContextMenu: function () {
             if (!contextMenu) {
                 contextMenu = buildContextMenu();

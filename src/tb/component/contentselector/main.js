@@ -101,13 +101,14 @@ define(
                     this.previousContentTypes = null;
                     this.state = {};
                     this.mode = this.config.mode || this.VIEW_MODE;
-                    this.resetOnClose = this.config.resetOnClose;
                     this.widget = jQuery(CoreRenderer.render(layout, {})).clone();
                     this.popIn = this.initPopIn();
                     Core.ApplicationManager.invokeService('content.main.registerPopin', 'contentSelector', this.popIn);
                     this.popIn.addOption("open", jQuery.proxy(this.onOpen, null, this));
+                    this.popIn.addOption("close", jQuery.proxy(this.onClose, this));
                     this.contentRenderer = new ContentRenderer(this);
                     this.viewmode = this.config.viewmode || "grid";
+                    this.triggerCloseEvent = (this.mode === this.EDIT_MODE) ? true : false;
                     this.handleMode();
                     this.handleViewModeChange();
                     this.initComponents();
@@ -147,21 +148,25 @@ define(
 
                 addCloseAndCancelButtons: function () {
                     var self = this,
-                        label = (this.mode === this.EDIT_MODE) ? trans("add_and_close") : trans("close");
-                    this.popIn.addButton(label, function () {
+                        closeLabel = (this.mode === this.EDIT_MODE) ? trans("add_and_close") : trans("close");
+                    this.popIn.addButton(closeLabel, function () {
                         self.close();
-                        if (self.resetOnClose) {
-                            self.reset();
-                        }
                     });
 
                     self.popIn.addButton(trans("cancel"), function () {
-                        self.popIn.hide();
-                        if (self.resetOnClose) {
-                            self.reset();
-                        }
+                        self.triggerCloseEvent = false;
+                        self.close();
                         self.trigger("cancel");
                     });
+                },
+
+                onClose: function () {
+                    if (this.triggerCloseEvent) {
+                        var selections = this.contentDataView.getSelection();
+                        this.trigger("close", selections);
+                    }
+                    this.reset();
+                    this.triggerCloseEvent = (this.mode === this.EDIT_MODE) ? true : false;
                 },
 
                 /* create components */
@@ -295,8 +300,7 @@ define(
 
                 close: function () {
                     this.popIn.hide();
-                    var selections = this.contentDataView.getSelection();
-                    this.trigger("close", selections);
+                    this.onClose();
                 },
 
                 bindEvents: function () {
