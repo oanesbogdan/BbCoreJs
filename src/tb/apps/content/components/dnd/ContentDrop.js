@@ -80,6 +80,8 @@ define(
                     parent = content.jQueryObject.parent(),
                     self = this;
 
+                mask.mask(parent);
+
                 reader.onload = function (e) {
 
                     var data = {
@@ -87,8 +89,6 @@ define(
                             'originalname': file.name
                         },
                         elements = {};
-
-                    mask.mask(parent);
 
                     ResourceRepository.upload(data).done(function (response) {
 
@@ -99,9 +99,10 @@ define(
 
                         ApplicationManager.invokeService('content.main.save', true).done(function (promise) {
                             promise.done(function () {
-                                content.refresh();
-                                mask.unmask(parent);
-                                content.jQueryObject.unwrap();
+                                content.refresh().done(function () {
+                                    mask.unmask(parent);
+                                    content.jQueryObject.unwrap();
+                                });
                             });
                         });
                     });
@@ -123,7 +124,15 @@ define(
                 var target = jQuery(event.target),
                     config = {},
                     parent = target.parents(this.manager.droppableClass + ':first'),
-                    parentObjectIdentifier = ContentManager.retrievalObjectIdentifier(parent.data(this.manager.identifierDataAttribute));
+                    parentObjectIdentifier = ContentManager.retrievalObjectIdentifier(parent.data(this.manager.identifierDataAttribute)),
+                    mask = require('component!mask').createMask(),
+                    saveFunc = function () {
+                        ApplicationManager.invokeService('content.main.save', true).done(function (promise) {
+                            promise.done(function () {
+                                mask.unmask(config.parent.jQueryObject);
+                            });
+                        });
+                    };
 
                 config.event = event;
 
@@ -131,11 +140,17 @@ define(
                 config.parent = ContentManager.buildElement(parentObjectIdentifier);
                 config.type = this.manager.dataTransfer.content.type;
 
+                mask.mask(config.parent.jQueryObject);
+
                 if (config.parent.accept(config.type)) {
                     if (this.manager.dataTransfer.isNew === true) {
-                        this.addContent(config);
+                        this.addContent(config).done(function () {
+                            saveFunc();
+                        });
                     } else {
-                        this.updateContent(config);
+                        this.updateContent(config).done(function () {
+                            saveFunc();
+                        });
                     }
                 }
             },
@@ -147,14 +162,20 @@ define(
              * @param {Object} config
              */
             addContent: function (config) {
+                var dfd = jQuery.Deferred();
+
                 ContentManager.createElement(config.type).then(
                     function (content) {
-                        config.parent.append(content, config.position);
+                        config.parent.append(content, config.position).done(function () {
+                            dfd.resolve();
+                        });
                     },
                     function () {
                         Notify.error('An error occured when drop a new content');
                     }
                 );
+
+                return dfd.promise();
             },
 
             /**
@@ -164,16 +185,19 @@ define(
              * @param {Object} config
              */
             updateContent: function (config) {
-
-                var content = ContentContainer.find(this.manager.dataTransfer.content.id),
+                var dfd = jQuery.Deferred(),
+                    content = ContentContainer.find(this.manager.dataTransfer.content.id),
                     oldParent = content.jQueryObject.parents('.' + this.manager.contentClass + ':first'),
                     oldParentAsContent;
 
                 oldParentAsContent = ContentManager.getContentByNode(oldParent);
 
-                config.parent.append(content, config.position);
+                config.parent.append(content, config.position).done(function () {
+                    oldParentAsContent.setUpdated(true);
+                    dfd.resolve();
+                });
 
-                oldParentAsContent.setUpdated(true);
+                return dfd.promise();
             }
         });
     }

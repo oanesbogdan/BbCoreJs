@@ -122,9 +122,9 @@ define(
                             }
                         }
                     }
-
-                    delete revision.elements;
                 }
+
+                delete revision.elements;
             },
 
             /**

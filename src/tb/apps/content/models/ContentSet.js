@@ -65,6 +65,8 @@ define(
 
                     content.getHtml(renderMode).done(function (html) {
 
+                        html = require('content.manager').refreshImages(html);
+
                         if (position !== 'last') {
                             if (position > 0) {
                                 children.each(function (key) {
@@ -91,8 +93,6 @@ define(
                         require('content.manager').addDefaultZoneInContentSet(true);
 
                         self.setUpdated(true);
-
-                        require('content.manager').computeImages();
 
                         mask.unmask(self.jQueryObject);
 
