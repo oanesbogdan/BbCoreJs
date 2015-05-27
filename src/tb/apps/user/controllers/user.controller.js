@@ -126,14 +126,22 @@ define(
                             Notify.success(trans('user_save_success'));
                         },
                         function (error) {
-                            Notify.error(trans('user_save_fail'));
+                            var errors = self.parseRestError(error);
 
-                            if (undefined !== user_id) {
-                                user.populate({id: user_id});
+                            if (undefined !== errors) {
+                                Notify.error(trans('user_save_fail'));
+
+                                if (undefined !== user_id) {
+                                    user.populate({id: user_id});
+                                }
+
+                                popin.popinManager.destroy(view.popin);
+                                self.initFormView(user, popin, View, action, errors, id);
+                            } else {
+                                popin.popinManager.destroy(view.popin);
+                                self.indexService(require, popin);
+                                Notify.error(trans('server_error'));
                             }
-
-                            popin.popinManager.destroy(view.popin);
-                            self.initFormView(user, popin, View, action, self.parseRestError(error), id);
                         }
                     );
                 });

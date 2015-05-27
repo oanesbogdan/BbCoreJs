@@ -187,6 +187,7 @@ define(
                             users[i] = new View({user: users[i], group_listing: true});
                         }
 
+                        popin.setTitle(trans('group_users'));
                         popin.setContent(renderer.render(tpl, {users: users}));
                         popin.display();
 
