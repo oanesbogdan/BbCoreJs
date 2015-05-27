@@ -94,12 +94,11 @@ define('tb.component/authentication/main',
                 session.key = response.getHeader(session.HEADER_API_KEY);
                 session.signature = response.getHeader(session.HEADER_API_SIGNATURE);
 
-                if (session.isAuthenticated()) {
+                if (session.isValidAuthentication()) {
                     session.persist();
 
                     window.location.reload();
                 }
-
             },
 
             /**
