@@ -263,6 +263,32 @@ define(
                 return object;
             },
 
+            refreshImages: function (html) {
+                html = jQuery(html);
+
+                var images = html.find('img'),
+                    refreshPicture = function (img) {
+                        var src = img.attr('src');
+
+                        if (src.length === 0 || img.naturalWidth === 0) {
+                            src = require('content.manager').defaultPicturePath;
+
+                        }
+
+                        img.attr('src', src + '?' + new Date().getTime());
+                    };
+
+                if (images.length > 0) {
+                    refreshPicture(images);
+                }
+
+                if (html.get(0).tagName === 'IMG') {
+                    refreshPicture(html);
+                }
+
+                return html;
+            },
+
             computeImages: function (selector) {
 
                 selector = selector || '';

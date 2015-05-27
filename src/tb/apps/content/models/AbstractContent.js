@@ -288,32 +288,14 @@ define(
 
             refresh: function () {
                 var self = this,
-                    dfd = jQuery.Deferred();
+                    dfd = jQuery.Deferred(),
+                    contentManager = require('content.manager');
 
                 ContentRepository.getHtml(this.type, this.uid).done(function (html) {
 
-                    html = jQuery(html);
+                    html = contentManager.refreshImages(html);
 
-                    var images = html.find('img'),
-                        refreshPicture = function (img) {
-                            var src = img.attr('src');
-
-                            if (src.length === 0) {
-                                src = require('content.manager').defaultPicturePath;
-                            }
-
-                            img.attr('src', src + '?' + new Date().getTime());
-                        };
-
-                    if (images.length > 0) {
-                        refreshPicture(images);
-                    }
-
-                    if (html.get(0).tagName === 'IMG') {
-                        refreshPicture(html);
-                    }
-
-                    self.jQueryObject.replaceWith(html);
+                    jQuery('[data-' + contentManager.identifierDataAttribute + '="' + contentManager.buildObjectIdentifier(self.type, self.uid) + '"]').replaceWith(html);
                     self.jQueryObject = html;
 
                     dfd.resolve();
