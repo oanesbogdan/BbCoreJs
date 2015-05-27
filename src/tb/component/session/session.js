@@ -54,7 +54,7 @@ define('tb.component/session/session', ['Core', 'Core/Utils', 'jsclass'], functi
          * @param {Object} Request
          */
         onBeforeSend: function (Request) {
-            if (this.isAuthenticated()) {
+            if (this.isValidAuthentication()) {
                 Request.addHeader(this.HEADER_API_KEY, this.key);
                 Request.addHeader(this.HEADER_API_SIGNATURE, this.signature);
             }
@@ -136,8 +136,16 @@ define('tb.component/session/session', ['Core', 'Core/Utils', 'jsclass'], functi
             return this;
         },
 
-        isAuthenticated: function () {
+        isValidAuthentication: function () {
             if (null !== this.key && null !== this.signature) {
+                return true;
+            }
+            return false;
+        },
+
+        isAuthenticated: function () {
+
+            if (this.isValidAuthentication() && document.getElementById('bb5-ui') && document.getElementById('bb5-ui').hasAttribute('data-autostart')) {
                 return true;
             }
             return false;
