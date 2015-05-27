@@ -55,8 +55,10 @@ define(
             },
 
             parseRestError: function (error) {
-                error = JSON.parse(error);
-                return error.errors || undefined;
+                if (error) {
+                    error = JSON.parse(error);
+                    return error.errors;
+                }
             },
 
             updateIndexView: function (req, popin, users, current) {
