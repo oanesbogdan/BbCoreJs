@@ -17,11 +17,12 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 define(
-    ['require', 'Core/Renderer', 'jquery', 'text!user/templates/user/delete.twig'],
-    function (require, Renderer, jQuery) {
+    ['require', 'Core', 'Core/Renderer', 'jquery', 'text!user/templates/user/delete.twig'],
+    function (require, Core, Renderer, jQuery) {
         'use strict';
 
-        var mainPopin,
+        var trans = Core.get('trans') || function (value) {return value; },
+            mainPopin,
             popin;
 
         /**
@@ -57,6 +58,7 @@ define(
                 mainPopin = data.popin;
                 this.user = data.user;
                 popin = mainPopin.popinManager.createSubPopIn(mainPopin.popin, this.popin_config);
+                popin.setTitle(trans('delete_user'));
                 this.tpl = Renderer.render(require('text!user/templates/user/delete.twig'), {user: this.user});
                 popin.setContent(this.tpl);
             },

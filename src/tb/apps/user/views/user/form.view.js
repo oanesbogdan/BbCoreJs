@@ -17,11 +17,12 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 define(
-    ['require', 'jquery'],
-    function (require, jQuery) {
+    ['require', 'Core', 'jquery'],
+    function (require, Core, jQuery) {
         'use strict';
 
-        var mainPopin,
+        var trans = Core.get('trans') || function (value) {return value; },
+            mainPopin,
             popin;
 
         /**
@@ -44,13 +45,20 @@ define(
             initialize: function (data, action, id) {
                 var self = this,
                     form;
+
                 mainPopin = data.popin;
                 this.user = data.user;
                 if (id !== null) {
                     this.popin_config.id = id;
                 }
-                popin = mainPopin.popinManager.createSubPopIn(mainPopin.popin, this.popin_config);
-                this.popin = popin;
+                this.popin = mainPopin.popinManager.createSubPopIn(mainPopin.popin, this.popin_config);
+                popin = this.popin;
+
+                if ('edit' === action) {
+                    popin.setTitle(data.user.login() + ' ' + trans('edition').toLowerCase());
+                } else {
+                    popin.setTitle(trans('create_user'));
+                }
 
                 form = require('user/form/' + action + '.user.form');
                 form.construct(self, data.errors);
