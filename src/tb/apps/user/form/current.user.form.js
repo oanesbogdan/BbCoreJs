@@ -25,12 +25,12 @@ define(['component!formbuilder', 'component!translator'], function (formbuilder,
             elements: {
                 firstname: {
                     type: 'text',
-                    label: translator.translate('firstname'),
+                    label: translator.translate('first_name'),
                     value: view.user.getObject().firstname
                 },
                 lastname: {
                     type: 'text',
-                    label: translator.translate('lastname'),
+                    label: translator.translate('last_name'),
                     value: view.user.getObject().lastname
                 },
                 email: {

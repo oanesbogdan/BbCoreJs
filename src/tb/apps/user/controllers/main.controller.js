@@ -44,7 +44,7 @@ define(
             indexAction: function () {
                 this.popinView = new PopinView();
                 this.app.popin = this.popinView;
-                Core.ApplicationManager.invokeService('main.main.setTitlePane', trans('users_management'));
+                Core.ApplicationManager.invokeService('main.main.setTitlePane', trans('user_management'));
                 Core.ApplicationManager.invokeService('user.user.index', this.popinView);
                 Core.ApplicationManager.invokeService('user.group.index', this.popinView);
             }
