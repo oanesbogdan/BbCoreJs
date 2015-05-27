@@ -330,7 +330,9 @@ Version: 2.10 Dec2014
   color: #949494;
 }
 #bb5-ui .txt-hightligth,
-#bb5-ui .txt-hightligth * {
+#bb5-ui .txt-hightligth *,
+#bb5-ui .txt-highligth,
+#bb5-ui .txt-highligth * {
   color: #e34c26;
 }
 #bb5-ui .btn,
@@ -594,10 +596,15 @@ Version: 2.10 Dec2014
   -o-user-select: none;
   user-select: none;
 }
-#bb5-ui .bb5-data-toggle.open .bb5-data-toggle-header {
+#bb5-ui .bb5-data-toggle .bb5-data-toggle-header .btn-remove {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+#bb5-ui .bb5-data-toggle .bb5-data-toggle-header.open .bb5-data-toggle-header {
   color: #e34c26;
 }
-#bb5-ui .bb5-data-toggle.open .bb5-data-toggle-header .bb5-data-toggle-trigger .fa {
+#bb5-ui .bb5-data-toggle .bb5-data-toggle-header.open .bb5-data-toggle-header .bb5-data-toggle-trigger .fa {
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
