@@ -5,7 +5,6 @@
             <li class="dropdown">
                 <a class="dropdown-toggle" id="{{ menu.label }}-menu" href="{{ menu.url }}">
                     {{ menu.text|trans }}
-                    <b class="caret"></b>
                 </a>
                 <ul aria-labelledby="{{ menu.label }}" role="menu" class="dropdown-menu">
                     {% for item in menu.items %}

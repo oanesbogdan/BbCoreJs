@@ -462,13 +462,15 @@ Version: 2.10 Dec2014
   padding-left: 8px;
   padding-right: 8px;
 }
-#bb5-ui #bb5-maintabs.nav-tabs > li > a:hover,
-#bb5-ui #bb5-maintabs.nav-tabs > li > a:focus {
+#bb5-ui #bb5-maintabs.nav-tabs > li > a:hover {
   background-color: #4d4d4d;
 }
+#bb5-ui #bb5-maintabs.nav-tabs > li > a:focus {
+  background-color: #333333;
+  outline-width: 0;
+}
 #bb5-ui #bb5-maintabs.nav-tabs > li.active > a,
-#bb5-ui #bb5-maintabs.nav-tabs > li.active > a:hover,
-#bb5-ui #bb5-maintabs.nav-tabs > li.active > a:focus {
+#bb5-ui #bb5-maintabs.nav-tabs > li.active > a:hover {
   color: #e34c26;
   background-color: #f9f9f9;
 }

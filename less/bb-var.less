@@ -237,14 +237,17 @@
     }
     // 		TABS ->	bb5-navbar-primary
 
-    #bb5-maintabs.nav-tabs>li>a:hover,
-    #bb5-maintabs.nav-tabs>li>a:focus {
+    #bb5-maintabs.nav-tabs>li>a:hover{
         background-color:lighten(@navbar-inverse-bg, 10%);
     }
 
+    #bb5-maintabs.nav-tabs>li>a:focus{
+        background-color:@navbar-inverse-bg;
+        outline-width: 0;
+    }
+
     #bb5-maintabs.nav-tabs>li.active>a,
-    #bb5-maintabs.nav-tabs>li.active>a:hover,
-    #bb5-maintabs.nav-tabs>li.active>a:focus {
+    #bb5-maintabs.nav-tabs>li.active>a:hover{
         color:@brand-primary;
         background-color:@bb5-ui-bg;
     }
