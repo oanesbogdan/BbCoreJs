@@ -80,7 +80,7 @@ define(
             updateContent: function () {
                 var self = this;
 
-                if (this.defaultContent === undefined) {
+                if (this.popin && this.defaultContent === undefined) {
 
                     this.popin.mask();
 
