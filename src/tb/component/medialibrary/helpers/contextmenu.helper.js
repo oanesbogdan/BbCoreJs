@@ -38,6 +38,7 @@ define(['component!contextmenu', 'jquery', 'component!notify'], function (Contex
 
                         var data = {},
                             nextSibling,
+                            nbChild,
                             moveNode;
 
                         /* Dealing with position */
@@ -48,11 +49,11 @@ define(['component!contextmenu', 'jquery', 'component!notify'], function (Contex
                             data.parent_uid = selectedNode.uid;
                         }
                         if (position === "after") {
-                            nextSibling = cuttedNode.getNextSibling();
+                            nextSibling = selectedNode.getNextSibling();
                             if (nextSibling) {
                                 data.sibling_uid = nextSibling.uid;
                             } else {
-                                data.parent_uid = cuttedNode.parent.uid;
+                                data.parent_uid = selectedNode.parent.uid;
                             }
                         }
 
@@ -60,13 +61,17 @@ define(['component!contextmenu', 'jquery', 'component!notify'], function (Contex
                         moveNode = jQuery.proxy(function (cuttedNode, selectedNode, position, data) {
 
                             if (position === "inside") {
-                                mainWidget.openNode(selectedNode, function () {
-                                    treeView.appendNode(cuttedNode, selectedNode);
-                                    mediaFolderStore.moveNode(cuttedNode, data).done(function () {
-                                        treeView.appendNode(cuttedNode, selectedNode);
-                                    }).fail(function (response) { notify(response); });
-                                });
+                                mediaFolderStore.moveNode(cuttedNode, data).done(function () {
+                                    nbChild = selectedNode.children.length;
+                                    if (nbChild) {
+                                        treeView.moveNode(cuttedNode, selectedNode.children[nbChild - 1], 'after');//move as last child
+                                    } else {
+                                        treeView.moveNode(cuttedNode, selectedNode, position);
+                                    }
+                                    treeView.invoke("openNode", selectedNode);//refresh
+                                }).fail(function (response) { notify(response); });
                             } else {
+
                                 mediaFolderStore.moveNode(cuttedNode, data).done(function () {
                                     treeView.moveNode(cuttedNode, selectedNode, position);
                                 }).fail(function (response) { notify(response); });

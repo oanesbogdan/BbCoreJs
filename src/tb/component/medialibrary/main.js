@@ -333,10 +333,7 @@ define(
                     if (!node) {
                         return;
                     }
-                    this.silenceOpenEvent = true;
-                    this.mediaFolderTreeView.invoke("openNode", node);
                     this.onNodeTreeOpen({ node : node }, onOpenCallback);
-                    return;
                 },
 
                 /**
@@ -345,10 +342,6 @@ define(
                  */
                 onNodeTreeOpen: function (e, onOpenCallback) {
 
-                    if (this.silenceOpenEvent) {
-                        this.silenceOpenEvent = false;
-                        return;
-                    }
                     this.openedMediaFolder = e.node;
                     if (this.openedMediaFolder.hasFormNode) {
                         this.openedMediaFolder.hasFormNode = false;
@@ -362,7 +355,7 @@ define(
                         return;
                     }
                     var self = this;
-                    (function (node) {
+                    (function (node, onOpenCallback) {
                         /* will not trigger dataStateUpdate */
                         self.mediaFolderDataStore.applyFilter("byMediaFolder", node.uid).execute(false).done(function (data) {
                             if (self.mediaFolderTreeView.isRoot(node)) {
@@ -373,7 +366,7 @@ define(
                                 onOpenCallback();
                             }
                         });
-                    }(e.node));
+                    }(e.node, onOpenCallback));
                 },
 
                 onReady: function () {
