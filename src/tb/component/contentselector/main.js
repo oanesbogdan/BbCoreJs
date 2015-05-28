@@ -64,7 +64,7 @@ define(
                     viewmode: 'grid',
                     autoDisplay: true,
                     dialogConfig: {
-                        title: trans("contents_selector"),
+                        title: trans("content_selector"),
                         draggable: false,
                         resizable: false,
                         autoOpen: false,
