@@ -19,6 +19,7 @@
 
 define(
     [
+        'Core',
         'Core/Renderer',
         'component!popin',
         'page.repository',
@@ -29,7 +30,7 @@ define(
         'jsclass'
     ],
 
-    function (Renderer, PopinManager, PageRepository, template, translator, jQuery, moment) {
+    function (Core, Renderer, PopinManager, PageRepository, template, translator, jQuery, moment) {
 
         'use strict';
 
@@ -39,23 +40,8 @@ define(
              * Init of popin
              */
             initPopin: function () {
-                var parent,
-                    attachToBottomRight = function () {
-                        parent.css({
-                            top: (window.innerHeight - 200),
-                            left: (window.innerWidth - 200)
-                        });
-                    };
-
                 this.popin = PopinManager.createPopIn({
-                    open: function () {
-                        parent = jQuery(this).parent('.ui-dialog:first');
-                        attachToBottomRight();
-                    }
-                });
-
-                jQuery(window).resize(function () {
-                    attachToBottomRight();
+                    position: { my: "right top", at: "right top+" + jQuery(Core.get('wrapper_toolbar_selector')).height()}
                 });
 
                 this.popin.setTitle(translator.translate('page_status'));
