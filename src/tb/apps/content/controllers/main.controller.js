@@ -25,6 +25,7 @@ define(
         'content.save.manager',
         'content.manager',
         'content.view.contribution.index',
+        'content.view.edit.contribution.index',
         'definition.manager',
         'content.repository',
         'revision.repository',
@@ -40,6 +41,7 @@ define(
         SaveManager,
         ContentManager,
         ContributionIndexView,
+        EditContributionIndexView,
         DefinitionManager,
         ContentRepository,
         RevisionRepository,
@@ -285,6 +287,9 @@ define(
                         Core.Scope.register('contribution', 'content');
 
                         if (self.contribution_edit_loaded !== true) {
+                            var view = new EditContributionIndexView();
+                            view.render();
+
                             DndManager.initDnD();
                             self.contribution_edit_loaded = true;
                         }

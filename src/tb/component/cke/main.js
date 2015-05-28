@@ -33,7 +33,7 @@ define(
                 this.editableConfig = {};
                 this.conciseInfos = {};
                 this.lastInstance = null;
-                this.editorContainer = '#content-contrib-tab';
+                this.editorContainer = '#content-contrib-tab .bb-cke-wrapper';
                 var lib = [],
                     self = this;
                 if (this.config.hasOwnProperty('libName')) {
@@ -85,11 +85,7 @@ define(
                 if (jQuery(this.editorContainer).find(editorHtml).length) {
                     return;
                 }
-                jQuery(this.editorContainer).css({
-                    padding: '5px',
-                    width: '552px',
-                    height: '90px'
-                });
+
                 jQuery(this.editorContainer).append(editorHtml);
             },
 
