@@ -69,6 +69,9 @@ define(
 
             dialogContainerTag: '.bb5-dialog-container',
 
+            formErrorTag: '.form_error',
+            publishingElementTag: '.element_publishing',
+
             /**
              * Initialize of PageViewContributionIndex
              */
@@ -153,33 +156,8 @@ define(
                         form: {
                             submitLabel: 'Ok'
                         },
-                        onSubmit: function (data) {
-                            var key,
-                                date;
-
-                            for (key in data) {
-                                if (data.hasOwnProperty(key)) {
-                                    date = new Date(data[key]);
-
-                                    if (isNaN(date.getTime())) {
-                                        delete data[key];
-                                    } else {
-                                        data[key] = date.getTime() / 1000;
-                                        if (data[key] === parseInt(self.currentPage[key], 10)) {
-                                            delete data[key];
-                                        } else {
-                                            SaveManager.addToSave(key, data[key]);
-                                        }
-                                    }
-                                }
-                            }
-
-                            if (!jQuery.isEmptyObject(data)) {
-                                self.setStateScheduling(data);
-                            }
-
-                            jQuery(self.schedulingTag).dialog('close');
-                        }
+                        onSubmit: jQuery.proxy(self.onSubmitSchedulingPublication, self),
+                        onValidate: jQuery.proxy(self.onValidateSchedulingPublication, self)
                     };
 
                 if (jQuery(this.schedulingTag).length === 0) {
@@ -229,6 +207,52 @@ define(
                     },
                     self
                 ));
+            },
+
+            onSubmitSchedulingPublication: function (data, form) {
+                var key,
+                    date,
+                    formObject = jQuery('#' + form.id),
+                    elementWrapper = formObject.find(this.publishingElementTag);
+
+                elementWrapper.find(this.formErrorTag).addClass('hidden');
+
+                for (key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        date = new Date(data[key]);
+
+                        if (isNaN(date.getTime())) {
+                            delete data[key];
+                        } else {
+                            data[key] = date.getTime() / 1000;
+                            if (data[key] === parseInt(this.currentPage[key], 10)) {
+                                delete data[key];
+                            } else {
+                                SaveManager.addToSave(key, data[key]);
+                            }
+                        }
+                    }
+                }
+
+                if (!jQuery.isEmptyObject(data)) {
+                    this.setStateScheduling(data);
+                }
+
+                jQuery(this.schedulingTag).dialog('close');
+            },
+
+            onValidateSchedulingPublication: function (form, data) {
+                var publishingDate,
+                    archivingDate;
+
+                if (data.publishing.length > 0 && data.archiving.length > 0) {
+                    publishingDate = new Date(data.publishing);
+                    archivingDate = new Date(data.archiving);
+
+                    if (publishingDate.getTime() > archivingDate.getTime()) {
+                        form.addError('publishing', translator.translate('publishing_before_archiving'));
+                    }
+                }
             },
 
             /**

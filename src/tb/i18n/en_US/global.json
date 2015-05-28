@@ -166,8 +166,9 @@
     "previous": "Previous",
     "publication_scheduled_for": "Publication scheduled for",
     "publishing_archiving": "Publishing / Archiving",
-    "published_before" : "Published before",
     "published_after" : "Published after",
+    "published_before" : "Published before",
+    "publishing_before_archiving": "Publication date can't be before archiving date",
 
     "remove": "Remove",
     "remove_content": "Remove content",

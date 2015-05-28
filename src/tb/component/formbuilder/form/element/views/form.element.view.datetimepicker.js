@@ -41,7 +41,7 @@ define(
             bindEvents: function () {
                 var self = this;
 
-                jQuery(this.mainSelector).on('click', 'form#' + this.el + ' input[name=' + this.element.getKey() + ']', this.manageDatetimepicker);
+                jQuery(this.mainSelector).on('click', 'form#' + this.el + ' input[name=' + this.element.getKey() + ']', jQuery.proxy(this.manageDatetimepicker, null, this));
 
                 Core.Mediator.subscribe('before:form:submit', function (form) {
                     if (form.attr('id') === self.el) {
@@ -59,12 +59,11 @@ define(
                 });
             },
 
-            manageDatetimepicker: function () {
-                var self = this,
-                    element = jQuery(this);
+            manageDatetimepicker: function (view) {
+                var element = jQuery(this);
 
                 element.datetimepicker({
-                    parentID: self.mainSelector,
+                    parentID: view.mainSelector,
                     minDate: new Date()
                 });
 
