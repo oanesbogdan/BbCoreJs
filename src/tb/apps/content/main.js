@@ -57,6 +57,7 @@ require.config({
         'content/tpl/button': 'src/tb/apps/content/templates/button.twig',
         'content/tpl/content_breadcrumb': 'src/tb/apps/content/templates/content-breadcrumb.twig',
         'content/tpl/contribution/index': 'src/tb/apps/content/templates/contribution.index.twig',
+        'content/tpl/edit/contribution/index': 'src/tb/apps/content/templates/edit-contribution.index.twig',
         'content/tpl/carousel_blocks': 'src/tb/apps/content/templates/carousel-blocks.twig',
         'content/tpl/block_display': 'src/tb/apps/content/templates/block-display.twig',
         'content/tpl/dropzone': 'src/tb/apps/content/templates/dropzone.twig',
@@ -66,7 +67,8 @@ require.config({
         'content/tpl/block_description': 'src/tb/apps/content/templates/block-description.twig',
 
         //Views
-        'content.view.contribution.index': 'src/tb/apps/content/views/content.view.contribution.index'
+        'content.view.contribution.index': 'src/tb/apps/content/views/content.view.contribution.index',
+        'content.view.edit.contribution.index': 'src/tb/apps/content/views/content.view.edit_contribution.index'
     }
 });
 

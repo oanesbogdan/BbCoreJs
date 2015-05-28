@@ -8532,7 +8532,16 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   box-sizing: border-box;
 }
 #bb5-ui [class*="col-bb5-"].bb5-border-right {
-  border-right: 1px solid #E6E6E6;
+  border-right: 1px solid #e0e0e0;
+}
+#bb5-ui [class*="col-bb5-"].bb5-border-right.bb5-border-strong {
+  border-color: #d3d3d3;
+}
+#bb5-ui [class*="col-bb5-"].col-bb5-pad-x2 {
+  padding-left: 18px;
+}
+#bb5-ui [class*="col-bb5-"].col-bb5-pad-x2 > .position-bottom {
+  margin-left: 18px;
 }
 #bb5-ui .navbar {
   min-height: 30px;
@@ -8780,7 +8789,7 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   margin-bottom: 0;
 }
 #bb5-ui .tabs-vertical .nav-tabs > li > a {
-  border: 1px solid #e6e6e6;
+  border: 1px solid #e0e0e0;
   vertical-align: middle;
   border-right: 0;
   margin: 0;
@@ -8902,7 +8911,7 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   margin-top: 0;
 }
 #bb5-ui .bb5-list-bordered .bb5-list-data-item {
-  border-bottom: #e6e6e6 1px solid;
+  border-bottom: #e0e0e0 1px solid;
   padding: 14px 0 5px 0;
 }
 #bb5-ui .bb5-list-users .bb5-list-users-item {
@@ -9059,7 +9068,7 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   font-weight: 700;
   padding: 10px;
   position: relative;
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid #e0e0e0;
 }
 #bb5-ui .bb5-data-toggle .bb5-data-toggle-header .bb5-data-toggle-trigger {
   position: absolute;
