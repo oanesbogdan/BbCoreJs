@@ -126,6 +126,9 @@ define(
                             popin.popinManager.destroy(view.popin);
                             self.indexService(require, popin);
                             Notify.success(trans('user_save_success'));
+                            if ('new' === action) {
+                                setTimeout(Notify.warning, 1500, trans('to_assign_a_user_rights_remember_to_drag_and_drop_the_user_into_a_group'));
+                            }
                         },
                         function (error) {
                             var errors = self.parseRestError(error);
