@@ -47,6 +47,7 @@ require.config({
         'page.view.tree.contribution': 'src/tb/apps/page/views/page.view.tree.contribution',
 
         //Templates
+        'page/tpl': 'src/tb/apps/page/templates',
         'page/tpl/contribution/index': 'src/tb/apps/page/templates/contribution.index.twig',
         'page/tpl/contribution/scheduling_publication': 'src/tb/apps/page/templates/contribution-scheduling.dialog.twig',
         'page/tpl/manage_list': 'src/tb/apps/page/templates/manage.list.twig',

@@ -21,7 +21,6 @@ define(
     [
         'Core',
         'page.view.contribution.index',
-        'page.view.delete',
         'page.view.new',
         'page.view.edit',
         'page.view.clone',
@@ -37,7 +36,6 @@ define(
     function (
         Core,
         ContributionIndexView,
-        DeleteView,
         NewView,
         EditView,
         CloneView,
@@ -62,7 +60,8 @@ define(
                 define: {
                     updatePageInfoService: ['page.widget.InformationPage'],
                     validateService: ['component!translator', 'component!revisionpageselector'],
-                    cancelService: ['component!translator', 'component!revisionpageselector']
+                    cancelService: ['component!translator', 'component!revisionpageselector'],
+                    deletePageService: ['page.view.delete']
                 }
             },
 
@@ -133,9 +132,15 @@ define(
              * Delete page with uid
              * @param {String} uid
              */
-            deletePageService: function (config) {
-                var view = new DeleteView(config);
-                view.render();
+            deletePageService: function (req, config) {
+                var DeleteView = req('page.view.delete');
+                this.repository.find(config.uid).then(
+                    function (page) {
+                        config.page = page;
+                        var view = new DeleteView(config);
+                        view.render();
+                    }
+                );
             },
 
             findCurrentPageService: function () {
