@@ -327,11 +327,28 @@ define(
                         });
                     }
                 },
+
+
+                openNode: function (node, onOpenCallback) {
+                    if (!node) {
+                        return;
+                    }
+                    this.silenceOpenEvent = true;
+                    this.mediaFolderTreeView.invoke("openNode", node);
+                    this.onNodeTreeOpen({ node : node }, onOpenCallback);
+                    return;
+                },
+
                 /**
                  * If the node is not loaded yet
                  * Then load it
                  */
-                onNodeTreeOpen: function (e) {
+                onNodeTreeOpen: function (e, onOpenCallback) {
+
+                    if (this.silenceOpenEvent) {
+                        this.silenceOpenEvent = false;
+                        return;
+                    }
                     this.openedMediaFolder = e.node;
                     if (this.openedMediaFolder.hasFormNode) {
                         this.openedMediaFolder.hasFormNode = false;
@@ -339,6 +356,9 @@ define(
                         return;
                     }
                     if (this.openedMediaFolder.isLoaded) {
+                        if (typeof onOpenCallback === "function") {
+                            onOpenCallback();
+                        }
                         return;
                     }
                     var self = this;
@@ -349,6 +369,9 @@ define(
                                 node = null;
                             }
                             self.populateMediaFolder(data, node);
+                            if (typeof onOpenCallback === "function") {
+                                onOpenCallback();
+                            }
                         });
                     }(e.node));
                 },

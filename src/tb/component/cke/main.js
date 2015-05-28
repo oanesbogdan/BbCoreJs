@@ -42,7 +42,7 @@ define(
                 if (this.config.hasOwnProperty('editableConfig')) {
                     this.editableConfig = this.config.editableConfig;
                 }
-                this.handleSaveEvents();
+                this.handleContentEvents();
                 Utils.requireWithPromise(lib).done(function () {
                     self.editor = CKEDITOR;
                     self.editor.disableAutoInline = true;
@@ -62,14 +62,19 @@ define(
                 });
             },
 
-            handleSaveEvents : function () {
-                /* Force the last editor to blur */
-                var self = this;
-                Core.Mediator.subscribe("on:content:save:click", function () {
-                    if (self.lastInstance) {
-                        self.lastInstance.fire("blur", { editor: self.lastInstance });
-                    }
-                });
+            handleContentEvents : function () {
+
+                Core.Mediator.subscribe("on:content:save:click", jQuery.proxy(this.blurEditor, this));
+
+                Core.Mediator.subscribe("on:content:validate:click", jQuery.proxy(this.blurEditor, this));
+
+                Core.Mediator.subscribe("on:content:validate:click", jQuery.proxy(this.blurEditor, this));
+            },
+
+            blurEditor: function () {
+                if (this.lastInstance) {
+                    this.lastInstance.fire("blur", {editor: this.lastInstance});
+                }
             },
 
             stickEditor: function (e) {

@@ -127,16 +127,23 @@ define(
             },
 
             reset: function () {
+                var fields = jQuery(this.widget).find("input"),
+                    self = this,
+                    field;
                 jQuery(this.widget).find("input").val("");
                 jQuery(this.widget).find(this.config.beforeDateClass).eq(0).data("selectedTime", "");
                 jQuery(this.widget).find(this.config.afterDateClass).eq(0).data("selectedTime", "");
+                fields.each(function (i) {
+                    field = fields[i];
+                    self.trigger("onResetField", jQuery(field).data("fieldname"));
+                });
             },
 
             handleSearch: function () {
                 var criteria = {};
-                criteria.title = jQuery(this.config.titleFieldClass).eq(0).val();
-                criteria.beforeDate = jQuery(this.config.beforeDateClass).eq(0).data('selectedTime') || '';
-                criteria.afterDate = jQuery(this.config.afterDateClass).eq(0).data('selectedTime') || '';
+                criteria.title = jQuery(this.widget).find(this.config.titleFieldClass).eq(0).val();
+                criteria.beforeDate = jQuery(this.widget).find(this.config.beforeDateClass).eq(0).data('selectedTime') || '';
+                criteria.afterDate = jQuery(this.widget).find(this.config.afterDateClass).eq(0).data('selectedTime') || '';
                 this.trigger("doSearch", criteria);
             }
         });
