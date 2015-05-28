@@ -13,6 +13,7 @@
     "add_and_close": "Add and Close",
     "add_media": "Add media",
     "all": "All",
+    "all_subpages_will_automatically_be_deleted_if_you_confirm_this_action": "All subpages will automatically be deleted if you confirm this action",
     "apply_to_all_selected_pages": "Apply to all selected pages",
     "api_key_enabled": "Remote access activated",
     "archiving_scheduled_for": "Archiving scheduled for",
@@ -66,14 +67,16 @@
     "deactivate": "Deactivate",
     "deactivated": "Deactivated",
     "delete": "Delete",
-    "delete_user": "Delete user",
     "delete_content": "Delete content",
     "delete_media": "Delete media",
+    "delete_page": "Delete page",
+    "delete_user": "Delete user",
     "display": "Display",
     "display_external_content": "Display external content",
     "display_links": "Display links",
     "do_you_want_disable_this bundle": "Do you want disable this bundle",
     "do_you_want_enable_this bundle": "Do you want enable this bundle",
+    "do_you_wish_to_delete_the_page": "Do you wish to delete the page",
     "draft": "Draft",
     "duplicate": "Duplicate",
 
@@ -103,6 +106,7 @@
 
     "has_been_deleted": "has been deleted",
 
+    "if_you_wish_to_keep_these_subpages_please_move_them_to_another_location": "If you wish to keep these subpages please move them to another location",
     "import": "Import",
     "internal_link": "Internal link",
 
@@ -207,6 +211,7 @@
 
     "template_is_required": "Template is required",
     "theme": "Theme",
+    "the_page_you_are_about_to_delete_contains_subpages": "The page you are about to delete contains subpages",
     "the_title_field_is_required": "The title field is required",
     "this_media_is_being_used_on_the_following_pages": "This media is being used on the following pages",
     "till": "Till",
@@ -236,5 +241,6 @@
     "warning" : "Warning",
     "website_parameters": "Website parameters",
     "workflow_management": "Workflow management",
+
     "yes": "Yes"
 }
