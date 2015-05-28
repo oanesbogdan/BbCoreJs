@@ -127,6 +127,10 @@ Version: 2.10 Dec2014
         text-align:right;
     }
 
+    .margin-top-none {
+        margin-top: 0!important;
+    }
+
     .float-reflow {
         overflow:auto;
         overflow-y:hidden;
@@ -2727,11 +2731,11 @@ Version: 2.10 Dec2014
 
     .bb-content {
         &.bb-content-hover {
-            -webkit-box-shadow:0px 0px 1px 3px fade(#000,20%); 
+            -webkit-box-shadow:0px 0px 1px 3px fade(#000,20%);
                 box-shadow:0px 0px 1px 3px fade(#000,20%);
         }
         &.bb-content-selected {
-            -webkit-box-shadow:0px 0px 1px 3px fade(@brand-primary, 85%); 
+            -webkit-box-shadow:0px 0px 1px 3px fade(@brand-primary, 85%);
                 box-shadow:0px 0px 1px 3px fade(@brand-primary, 85%);
             margin-top: 44px;
         } /*clicked block -> orange*/
