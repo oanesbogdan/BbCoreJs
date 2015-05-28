@@ -382,7 +382,7 @@ define(
                                             group: key
                                         };
 
-                                        config.elements[key].label = 'Content';
+                                        config.elements[key].label = 'content';
                                         config.elements[key].group = key;
                                     }
                                 }
