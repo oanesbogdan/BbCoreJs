@@ -212,6 +212,7 @@
     "title": "Title",
     "title_is_required": "Title is required",
     "title_must_be_different": "Title must be different",
+    "to_assign_a_user_rights_remember_to_drag_and_drop_the_user_into_a_group": "To assign a user rights, remember to drag and drop the user into a group",
     "tree": "Tree",
 
     "updated": "Updated",
