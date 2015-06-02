@@ -114,7 +114,7 @@ grunt
 
 ### Deciders & mergers
 
-BackBee have a core team who have rights on repositories.
+BackBee has a core team who have rights on repositories.
 * Only mergers can merge your work on master branch;
 * If one of the deciders gives a ``:-1:`` on your suggestion, the pull request won't be merged until he changes his mind;
 
