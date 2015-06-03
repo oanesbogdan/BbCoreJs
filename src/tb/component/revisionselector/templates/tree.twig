@@ -8,6 +8,10 @@
     </div>
 </div>
 
+{% if noteMsg %}
+<p class="alert alert-warning txt-center">{{ noteMsg }}</p>
+{% endif %}
+
 <ul class="bb5-list-data bb5-list-display-list clearfix bb-revision-selector">
     <input type="checkbox" name="test" checked style="margin-left:15px;" class="general-revision-input"/> {{ trans('select_all') }}
     {{ items }}
