@@ -41,9 +41,12 @@ define(
                 this.dataToSave = [];
 
                 data.each(function () {
-                    var element = jQuery(this);
+                    var element = jQuery(this),
+                        object = self.buildObject(element);
 
-                    self.push(self.buildObject(element));
+                    if (object.type !== '') {
+                        self.push(object);
+                    }
                 });
 
                 return this.dataToSave;

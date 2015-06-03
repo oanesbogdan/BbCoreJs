@@ -2,7 +2,7 @@
     {% for item in items %}
 
         {% set margin = item.margin %}
-        <div class="row-draft col-bb5-100">
+        <div class="row-draft col-bb5-100 {% if item.hideHimself %}hidden{% endif %}">
             <span class="col-bb5-60">
                 <span class="checkbox" style="margin-left: {{ margin }}px;">
                     <label {% if item.error == true %}style='color:red;'{% endif %}>
@@ -29,7 +29,7 @@
         </div>
 
         {% if item.paramId != null %}
-            <div class="row-draft col-bb5-100">
+            <div class="row-draft col-bb5-100 {% if item.hideChildren %}hidden{% endif %}" >
                 <span class="col-bb5-60">
                     <span class="checkbox" style="margin-left: {{ margin + 15 }}px;">
                         <label style='font-weight:bold;'>
@@ -45,7 +45,7 @@
                 </span>
             </div>
             {% for key, param in item.parameters %}
-                <div class="row-draft col-bb5-100">
+                <div class="row-draft col-bb5-100 {% if item.hideChildren %}hidden{% endif %}">
                     <span class="col-bb5-60">
                         <span class="checkbox" style="margin-left: {{ margin + 30 }}px;">
                             <label {% if item.error == true %}style='color:red;'{% endif %}>
@@ -73,7 +73,7 @@
         {% endif %}
 
         {% if item.elementId != null or item.isContentSet == true %}
-            <div class="row-draft col-bb5-100">
+            <div class="row-draft col-bb5-100 {% if item.hideChildren %}hidden{% endif %}">
                 <span class="col-bb5-60">
                     <span class="checkbox" style="margin-left: {{ margin + 15 }}px;">
                         <label style='font-weight:bold;'>
