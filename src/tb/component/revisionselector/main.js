@@ -121,7 +121,8 @@ define(
                             var config = {
                                     items: DraftManager.computeDraft(drafts),
                                     title: self.config.title,
-                                    noContentMsg: self.config.noContentMsg
+                                    noContentMsg: self.config.noContentMsg,
+                                    noteMsg: self.config.noteMsg
                                 },
                                 buttonName = 'Ok';
 

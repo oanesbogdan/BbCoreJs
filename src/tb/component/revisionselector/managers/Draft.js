@@ -54,6 +54,8 @@ define(
              */
             buildDraft: function (draft, name, margin, haveSubs, parent) {
 
+                var hideChildren = false;
+
                 draft.stateLabel = 'New';
                 if (draft.state === 1002) {
                     draft.stateLabel = 'Modified';
@@ -67,12 +69,19 @@ define(
                     draft.elementParentId = (typeof parent.elementId === 'string') ? parent.elementId : null;
                 }
 
+                if (draft.state === 1001) {
+                    hideChildren = true;
+                } else {
+                    hideChildren = (draft.type !== undefined) ? (draft.type.substr(0, 7) === 'Element') : false;
+                }
+
+
                 draft.id = this.generateId();
                 draft.uid = (draft.uid !== undefined) ? draft.uid : this.generateId();
                 draft.isContentSet = (draft.type !== undefined) ? this.isContentSet(draft.type) : false;
                 draft.elementId = (haveSubs === true || draft.isContentSet === true) ? this.generateId() : null;
                 draft.name = (name === undefined) ? draft.type : name;
-                draft.hideChildren = (draft.type !== undefined) ? (draft.type.substr(0, 7) === 'Element') : false;
+                draft.hideChildren = hideChildren;
                 draft.hideHimself = (parent !== undefined) ? parent.hideChildren : false;
                 draft.margin = margin;
                 draft.paramId = (typeof draft.parameters === 'object' && Object.keys(draft.parameters).length > 0) ? this.generateId() : null;
