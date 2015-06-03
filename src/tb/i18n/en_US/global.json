@@ -242,7 +242,8 @@
 
     "validate": "Validate",
     "validation_confirmation": "Validation confirmation",
-    "validation_popin_note": "Unselected items wont appear online but will remain saved as a draft and visible in backoffice. If you wish to delete unselected items permanently, press Cancel.",
+    "validation_popin_note": "Unselected items won't appear online but will remain saved as a draft and visible in backoffice.",
+    "validation_unselect_note": "If you wish to delete unselected items permanently, press Cancel.",
 
     "warning" : "Warning",
     "website_parameters": "Website parameters",
