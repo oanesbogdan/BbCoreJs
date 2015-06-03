@@ -207,7 +207,7 @@ define(
                     config = {
                         popinTitle: translator.translate('validation_confirmation'),
                         noContentMsg: translator.translate('no_content_validate'),
-                        noteMsg: translator.translate('validation_popin_note'),
+                        noteMsg: translator.translate('validation_popin_note') + '<br />' + translator.translate('validation_unselect_note'),
                         title: translator.translate('confirm_saving_changes_content_below') + ' :',
                         onSave: function (data, popin) {
                             popin.mask();
