@@ -72,6 +72,8 @@ define(
                 draft.isContentSet = (draft.type !== undefined) ? this.isContentSet(draft.type) : false;
                 draft.elementId = (haveSubs === true || draft.isContentSet === true) ? this.generateId() : null;
                 draft.name = (name === undefined) ? draft.type : name;
+                draft.hideChildren = (draft.type !== undefined) ? (draft.type.substr(0, 7) === 'Element') : false;
+                draft.hideHimself = (parent !== undefined) ? parent.hideChildren : false;
                 draft.margin = margin;
                 draft.paramId = (typeof draft.parameters === 'object' && Object.keys(draft.parameters).length > 0) ? this.generateId() : null;
                 draft.modifiedString = (draft.modified !== undefined) ? Moment.utc(draft.modified, 'X').format('DD/MM/YYYY - HH:mm') : '';
