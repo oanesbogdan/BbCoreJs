@@ -65,11 +65,30 @@ define(['Core', 'Core/Renderer', 'BackBone', 'jquery'], function (Core, Renderer
                 }
             });
 
+            this.computeCheckBoxes(form, paramObj);
+
             disabled.attr('disabled', 'disabled');
 
             this.form.onValidate(this.form, paramObj);
 
             return paramObj;
+        },
+
+        computeCheckBoxes: function (form, paramObj) {
+            var checkboxes = form.find('input:checkbox');
+
+            if (checkboxes.length > 0) {
+                checkboxes.each(function () {
+                    var target = jQuery(this),
+                        name = target.prop('name');
+
+                    if (!target.prop('checked')) {
+                        if (paramObj[name] === undefined) {
+                            paramObj[name] = [];
+                        }
+                    }
+                });
+            }
         },
 
         /**
