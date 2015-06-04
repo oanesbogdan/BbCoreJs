@@ -25,13 +25,14 @@ require.config({
 define(
     [
         'require',
+        'underscore',
         'Core',
         'BackBone',
         'jquery',
         'jsclass',
         'text!dataviewTemplate/layout.tpl'
     ],
-    function (require) {
+    function (require, underscore) {
         'use strict';
         var mainTpl = require('text!dataviewTemplate/layout.tpl'),
             jQuery = require('jquery'),
@@ -51,12 +52,15 @@ define(
                     rendererClass: '',
                     renderMode: 'list',
                     renderAsCollection: false,
+                    enableSelection: true,
                     allowMultiSelection: true,
+
                     customItemEvents: {},
                     itemRenderer: function () {
                         return '<p>An item renderer must be provided</p>';
                     }
                 },
+
                 initialize: function (config) {
                     jQuery.extend(this, {}, Backbone.Events);
                     this.config = jQuery.extend({}, this.defaultConfig, config);
@@ -72,6 +76,7 @@ define(
                     this.data = {};
                     this.bindEvents();
                 },
+
                 handleCustomItemEvents: function () {
                     var self = this;
                     if (jQuery.isEmptyObject(this.config.customItemEvents)) {
@@ -87,6 +92,7 @@ define(
                         });
                     });
                 },
+
                 buildDefaultRenderers: function () {
                     var listRenderer = {
                         name: "list",
@@ -119,14 +125,33 @@ define(
                     }
                 },
 
+                disableSelection: function () {
+                    this.config.enableSelection = false;
+                    this.cleanSelection();
+                },
+
+                enableSelection: function () {
+                    this.config.enableSelection = true;
+                },
+
                 handleItemClick: function (e) {
+                    if (!this.config.enableSelection) { return false; }
                     var target = jQuery(e.currentTarget),
-                        data = target.data('item-data');
+                        data = target.data('item-data'),
+                        selectionItem = {},
+                        itemKey = data[this.itemKey];
+
                     if (target.hasClass(this.config.itemSelectedCls)) {
                         target.removeClass(this.config.itemSelectedCls);
+                        /* remove item from selection */
+                        this.selectionInfos = underscore.reject(this.selectionInfos, function (selection) { return selection.id === itemKey; });
                         this.trigger("itemUnselected", data, target);
                         return;
                     }
+                    selectionItem.id = itemKey;
+                    selectionItem.item = target;
+                    this.selectionInfos.push(selectionItem);
+
                     if (!this.config.allowMultiSelection) {
                         this.cleanSelection();
                     }
@@ -151,6 +176,7 @@ define(
                     var items = (this.renderAsCollection) ? this.data : this.renderItems(),
                         renderer = this.getModeRenderer(this.renderMode).render(items);
                     jQuery(this.dataWrapper).html(renderer);
+                    this.showSelections();
                     this.trigger('afterRender');
                 },
 
@@ -193,15 +219,16 @@ define(
                     var self = this,
                         ctn = document.createDocumentFragment();
                     jQuery.each(this.data, function (i, item) {
-                        var itemRender = jQuery(self.itemRenderer(self.renderMode, item)); // when is a class it should provide a render
+                        var itemRender = jQuery(self.itemRenderer(self.renderMode, item));
+                        if (!itemRender || itemRender.length === 0) {
+                            Core.exception('BaseDataViewException', 50002, '[renderItems] InvalidAppConfig [appPath] key is missing');
+                        }
                         jQuery(itemRender).data("view-item", self.genId("item"));
                         jQuery(itemRender).data("item-data", item);
                         jQuery(itemRender).data("item-no", i);
                         jQuery(itemRender).attr("data-uid", item[self.itemKey]);
                         jQuery(itemRender).addClass(self.config.itemCls);
-                        if (!itemRender || itemRender.length === 0) {
-                            Core.exception('BaseDataViewException', 50002, '[renderItems] InvalidAppConfig [appPath] key is missing');
-                        }
+
                         ctn.appendChild(jQuery(itemRender).get(0));
                     });
                     return ctn;
@@ -223,19 +250,19 @@ define(
                 },
 
                 getSelection: function () {
-                    var selections = jQuery(this.dataWrapper).find("." + this.config.itemSelectedCls),
-                        result = [];
-                    if (selections.length) {
-                        jQuery.each(selections, function (i) {
-                            var item = selections[i];
-                            result.push(jQuery(item).data('itemData'));
-                        });
-                    }
+                    var result = [],
+                        selection;
+                    jQuery.each(this.selectionInfos, function (i) {
+                        selection = this.selectionInfos[i];
+                        result.push(jQuery(selection.item).data('itemData'));
+                    }.bind(this));
+                    result = underscore.compact(result); //remove all falsy values
                     return result;
                 },
 
                 cleanSelection: function () {
                     this.dataWrapper.find("." + this.config.itemCls).removeClass(this.config.itemSelectedCls);
+                    this.selectionInfos = [];
                 },
 
                 reset: function () {
@@ -243,19 +270,35 @@ define(
                     this.setData({});
                 },
 
+                showSelections: function () {
+                    var selection,
+                        selector,
+                        item,
+                        self = this;
+                    jQuery.each(this.selectionInfos, function (i) {
+                        selection = self.selectionInfos[i];
+                        selector = '[data-uid="' + selection[self.itemKey] + '"]';
+                        item = self.dataWrapper.find(selector);
+                        if (item.length) {
+                            jQuery(item).addClass(self.config.itemSelectedCls);
+                            selection.item = item;
+                            jQuery(item).addClass(self.config.itemSelectedClass);
+
+                        }
+                    });
+                },
+
                 selectItems: function (items) {
                     var self = this,
-                        itemRender,
                         item;
                     items = (jQuery.isArray(items)) ? items : [items];
                     jQuery.each(items, function (i) {
                         item = items[i];
-                        var selector = '[data-uid="' + item[self.itemKey] + '"]';
-                        itemRender = self.dataWrapper.find(selector);
-                        if (itemRender.length) {
-                            jQuery(itemRender).addClass(self.config.itemSelectedCls);
+                        if (!underscore.findWhere(this.selectionInfos, {id : item.id})) {
+                            self.selectionInfos.push({id : item[self.config.itemKey], item : item});
                         }
                     });
+                    this.showSelections();
                 }
             });
         return {

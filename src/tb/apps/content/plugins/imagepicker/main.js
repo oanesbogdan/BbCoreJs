@@ -36,7 +36,8 @@ define(['Core/Utils', 'content.pluginmanager', 'content.manager', 'jquery'], fun
 
         eventHandler: function (selections) {
             if (!selections.length) { return; }
-            var selection = selections[0],
+            var lastIndex =  selections.length - 1,
+                selection = selections[lastIndex],
                 content = ContentManager.buildElement(selection.content);
             this.replaceCurrentContentWith(content);
         },
