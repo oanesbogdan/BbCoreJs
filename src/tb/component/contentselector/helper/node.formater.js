@@ -1,4 +1,4 @@
-define(['Core', 'jquery'], function (Core, jquery) {
+define(['Core', 'jquery'], function (Core, jQuery) {
     'use strict';
     var formaterMap = {
         category: 'formatCategory',
@@ -7,13 +7,17 @@ define(['Core', 'jquery'], function (Core, jquery) {
         NodeFormater = {
             formatSubcontents: function (contents) {
                 var result = [],
-                    data = contents || [];
-                /*jslint unparam: true*/
-                jquery.each(data, function (i, content) {
-                    if (content.hasOwnProperty("label") && typeof content.label === "string") {
-                        content.isACategory = false;
-                        content.no = i + 1;
-                        result.push(content);
+                    data = contents || [],
+                    cContent;
+                jQuery.each(data, function (i) {
+                    cContent = data[i];
+                    if (!cContent.visible) {
+                        return true;
+                    }
+                    if (cContent.hasOwnProperty("label") && typeof cContent.label === "string") {
+                        cContent.isACategory = false;
+                        cContent.no = i + 1;
+                        result.push(cContent);
                     }
                 });
                 return result;
@@ -37,7 +41,10 @@ define(['Core', 'jquery'], function (Core, jquery) {
                         isRoot: true
                     },
                     result = [];
-                jquery.each(contents, function (i, category) {
+                jQuery.each(contents, function (i, category) {
+                    if (!self.isCategoryVisible(category)) {
+                        return true;
+                    }
                     category.label = category.name;
                     category.isACategory = true;
                     category.no = i + 1;
@@ -48,6 +55,21 @@ define(['Core', 'jquery'], function (Core, jquery) {
                 return result;
             },
 
+            isCategoryVisible: function (category) {
+                var isVisible = false,
+                    content;
+                if (category.contents) {
+                    jQuery.each(category.contents, function (i) {
+                        content = category.contents[i];
+                        if (content.visible) {
+                            isVisible = true;
+                        }
+                        return false;
+                    });
+                }
+                return isVisible;
+            },
+
             formatContentType: function (data) {
                 var result = [],
                     root = {
@@ -55,7 +77,7 @@ define(['Core', 'jquery'], function (Core, jquery) {
                         children: [],
                         isRoot: true
                     };
-                jquery.each(data, function (i, content) {
+                jQuery.each(data, function (i, content) {
                     root.children.push({
                         label: content,
                         type: content,
@@ -68,6 +90,6 @@ define(['Core', 'jquery'], function (Core, jquery) {
             }
         };
     return {
-        format: jquery.proxy(NodeFormater.format, NodeFormater)
+        format: jQuery.proxy(NodeFormater.format, NodeFormater)
     };
 });
