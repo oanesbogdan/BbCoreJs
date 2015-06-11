@@ -26,6 +26,13 @@ define(['Core', 'contribution.view.index', 'jquery'], function (Core, IndexView,
             Core.Scope.register('contribution');
 
             if (this.viewIsLoaded !== true) {
+
+                Core.Scope.subscribe('page', function () {
+                    jQuery('.bb-content').addClass('bb-content-page-mode');
+                }, function () {
+                    jQuery('.bb-content').removeClass('bb-content-page-mode');
+                });
+
                 this.viewIsLoaded = true;
             } else {
                 config.alreadyLoaded = true;

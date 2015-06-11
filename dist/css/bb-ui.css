@@ -10522,7 +10522,7 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   overflow: auto;
 }
 /* CONTENT */
-.bb-content {
+.bb-content:not(.bb-content-page-mode) {
   position: relative;
   min-height: 21px;
   padding-bottom: 15px;
