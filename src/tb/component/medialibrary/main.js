@@ -60,8 +60,8 @@ define(
                     width: jQuery(window).width() - (20 * 2)
                 },
                 rangeSelector: {
-                    range: [10, 50, 10],
-                    selected: 10
+                    range: [1, 50, 1],
+                    selected: 1//10
                 },
                 mode: 'edit',
                 searchEngine: {},
@@ -141,6 +141,8 @@ define(
                 setMode: function (mode) {
                     if (this.config.mode === this.EDIT_MODE) {
                         this.addButtons();
+                    } else {
+                        this.mediaListView.disableSelection();
                     }
                     this.mediaItemRenderer.setMode(mode);
                     /* edit mode */
