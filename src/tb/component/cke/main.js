@@ -28,10 +28,12 @@ define(
         'use strict';
 
         return RteManager.createAdapter('cke', {
+
             onInit: function () {
                 this.editors = [];
                 this.editableConfig = {};
                 this.conciseInfos = {};
+                this.identifierMap = {};
                 this.lastInstance = null;
                 this.editorContainer = '#content-contrib-tab .bb-cke-wrapper';
                 var lib = [],
@@ -42,6 +44,7 @@ define(
                 if (this.config.hasOwnProperty('editableConfig')) {
                     this.editableConfig = this.config.editableConfig;
                 }
+
                 this.handleContentEvents();
                 Utils.requireWithPromise(lib).done(function () {
                     self.editor = CKEDITOR;
@@ -107,13 +110,22 @@ define(
 
             applyToContent: function (content) {
                 var self = this,
-                    editable;
+                    editable,
+                    nodeSelector;
+
                 this.getEditableContents(content).done(function (editableContents) {
                     if (!editableContents.length) {
                         return;
                     }
                     jQuery.each(editableContents, function (i) {
                         editable = editableContents[i];
+                        if (!self.identifierMap[editable.uid]) {
+                            self.identifierMap[editable.uid] = editable.jQueryObject.selector;
+                        }
+                        nodeSelector = self.identifierMap[editable.uid];
+                        if (!jQuery.contains(document, editable.jQueryObject.get(0))) {
+                            editable.jQueryObject = content.jQueryObject.find(nodeSelector).eq(0);
+                        }
                         self.applyToElement(editable.jQueryObject);
                     });
                 });
@@ -139,7 +151,6 @@ define(
                     });
                 }
             },
-
 
             applyToElement: function (element) {
                 element = jQuery(element);

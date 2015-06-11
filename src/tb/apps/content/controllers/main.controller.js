@@ -24,6 +24,7 @@ define(
         'content.mouseevent.manager',
         'content.save.manager',
         'content.manager',
+        'content.container',
         'content.view.contribution.index',
         'content.view.edit.contribution.index',
         'definition.manager',
@@ -40,6 +41,7 @@ define(
         MouseEventManager,
         SaveManager,
         ContentManager,
+        ContentContainer,
         ContributionIndexView,
         EditContributionIndexView,
         DefinitionManager,
@@ -119,6 +121,10 @@ define(
              */
             getContentManagerService: function () {
                 return ContentManager;
+            },
+
+            getContentContainerService: function () {
+                return ContentContainer;
             },
 
             getPluginManagerService: function (req) {
