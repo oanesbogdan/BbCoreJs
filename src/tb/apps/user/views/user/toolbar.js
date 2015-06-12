@@ -46,6 +46,7 @@ define(
              */
             render: function () {
                 this.$el.append(renderer.render(this.template, {login: this.user.login()}));
+                jQuery('.dropdown-toggle').dropdown();
                 return this;
             },
 

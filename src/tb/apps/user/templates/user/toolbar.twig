@@ -1,9 +1,9 @@
 <div id="bb-current-user" class="nav navbar-nav pull-right">
-    <div class="btn-group">
-        <button id="bb5-topmost-login" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    <div class="btn-group dropdown">
+        <button id="bb5-topmost-login" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-user"></i> {{ login }} <i class="fa fa-caret-down"></i>
         </button>
-        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="bb5-topmost-login">
             <li>
                 <a href="#/user/edit" class="bb-service" data-service="editCurrent">
                     <i class="fa fa-pencil"></i> {{ 'Edit'|trans }}
