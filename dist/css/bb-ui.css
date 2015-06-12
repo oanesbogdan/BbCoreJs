@@ -8598,6 +8598,7 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   margin-left: 4px;
 }
 #bb5-ui .bb5-ui-carousel {
+  height: 51px;
   margin: 0 18px;
 }
 #bb5-ui .bb5-ui-carousel .carousel-inner .item-inner {
