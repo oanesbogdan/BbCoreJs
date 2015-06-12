@@ -73,8 +73,8 @@ define(
                         };
 
                     FormBuilder.renderForm(config).done(function (html) {
-                        self.popin.setContent(html);
                         self.popin.display();
+                        self.popin.setContent(html);
                     });
                 });
             },
