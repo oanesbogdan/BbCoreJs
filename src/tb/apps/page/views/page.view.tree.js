@@ -56,7 +56,7 @@ define(
                 var config = {
                         dragAndDrop: true,
                         onCreateLi: this.onCreateLi,
-                        id: 'bb-page-tree'
+                        id: this.config.popinId || 'bb-page-tree'
                     };
 
                 this.formatedData = [];
