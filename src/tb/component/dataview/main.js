@@ -149,7 +149,7 @@ define(
                         return;
                     }
                     selectionItem.id = itemKey;
-                    selectionItem.item = target;
+                    selectionItem.item = data;
                     this.selectionInfos.push(selectionItem);
 
                     if (!this.config.allowMultiSelection) {
@@ -254,9 +254,9 @@ define(
                         selection;
                     jQuery.each(this.selectionInfos, function (i) {
                         selection = this.selectionInfos[i];
-                        result.push(jQuery(selection.item).data('itemData'));
+                        result.push(selection.item);
                     }.bind(this));
-                    result = underscore.compact(result); //remove all falsy values
+                    result = underscore.compact(result);
                     return result;
                 },
 
@@ -281,9 +281,7 @@ define(
                         item = self.dataWrapper.find(selector);
                         if (item.length) {
                             jQuery(item).addClass(self.config.itemSelectedCls);
-                            selection.item = item;
-                            jQuery(item).addClass(self.config.itemSelectedClass);
-
+                            selection.item = jQuery(item).data("item-data");
                         }
                     });
                 },
@@ -294,7 +292,7 @@ define(
                     items = (jQuery.isArray(items)) ? items : [items];
                     jQuery.each(items, function (i) {
                         item = items[i];
-                        if (!underscore.findWhere(this.selectionInfos, {id : item.id})) {
+                        if (!underscore.findWhere(self.selectionInfos, {id : item[self.config.itemKey]})) {
                             self.selectionInfos.push({id : item[self.config.itemKey], item : item});
                         }
                     });
