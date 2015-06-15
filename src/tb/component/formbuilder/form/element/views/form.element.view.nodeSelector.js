@@ -82,19 +82,26 @@ define(['Core', 'Core/Renderer', 'BackBone', 'jquery'], function (Core, Renderer
                     do_loading: true,
                     do_pagination: true,
                     site_uid: Core.get('site.uid'),
-                    popin: true
+                    popin: true,
+                    popinId: 'popin_' + self.el
                 };
 
-            Core.ApplicationManager.invokeService('page.main.getPageTreeViewInstance').done(function (TreeView) {
-                self.pageTreeView = new TreeView(config);
+            if (self.pageTreeView === undefined) {
+                Core.ApplicationManager.invokeService('page.main.getPageTreeViewInstance').done(function (TreeView) {
+                    self.pageTreeView = new TreeView(config);
 
-                self.bindTreeEvents();
+                    self.pageTreeView.getTree().done(function (tree) {
+                        self.pageTree = tree;
+                        self.pageTree.display();
 
-                self.pageTreeView.getTree().done(function (tree) {
-                    self.pageTree = tree;
-                    self.pageTree.display();
+                        self.bindTreeEvents();
+                    });
                 });
-            });
+            } else {
+                self.pageTree.display();
+            }
+
+            return false;
         },
 
         /**
@@ -122,6 +129,8 @@ define(['Core', 'Core/Renderer', 'BackBone', 'jquery'], function (Core, Renderer
             inputTitle.val(event.node.name);
 
             this.pageTree.hide();
+
+            return false;
         },
 
         /**
