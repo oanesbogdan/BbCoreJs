@@ -10,30 +10,32 @@
             </div>
             <div class="bb5-data-drpdown">
                 <div class="bb5-list-data bb5-list-bordered">
-                    {% for block in category.contents %}
-                    <div class="bb5-list-data-item bb-block">
-                        <div class="bb5-extension-pane">
-                            <div class="pull-left">
-                                <figure class="bb5-extension-img">
-                                    <img
-                                        {% if draggable == true %}
-                                            draggable="true"
-                                            class="bb-dnd"
-                                        {% endif %}
-                                        data-bb-type="{{ block.type }}"
-                                        style="width:75px;"
-                                        src="{{ block.thumbnail }}"
-                                    >
-                                </figure>
+                    {% for content in category.contents %}
+                        {% if content.visible  %}
+                            <div class="bb5-list-data-item bb-block">
+                                <div class="bb5-extension-pane">
+                                    <div class="pull-left">
+                                        <figure class="bb5-extension-img">
+                                            <img
+                                                {% if draggable == true %}
+                                                    draggable="true"
+                                                    class="bb-dnd"
+                                                {% endif %}
+                                                data-bb-type="{{ content.type }}"
+                                                style="width:75px;"
+                                                src="{{ content.thumbnail }}"
+                                            >
+                                        </figure>
+                                    </div>
+                                    <div class="float-reflow">
+                                        <p>
+                                            <strong>{{ content.label }}</strong>
+                                        </p>
+                                        <p>{{ content.description }}</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="float-reflow">
-                                <p>
-                                    <strong>{{ block.label }}</strong>
-                                </p>
-                                <p>{{ block.description }}</p>
-                            </div>
-                        </div>
-                    </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
