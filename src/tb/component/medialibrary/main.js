@@ -60,8 +60,8 @@ define(
                     width: jQuery(window).width() - (20 * 2)
                 },
                 rangeSelector: {
-                    range: [1, 50, 1],
-                    selected: 1//10
+                    range: [10, 50, 10],
+                    selected: 10
                 },
                 mode: 'edit',
                 searchEngine: {},
