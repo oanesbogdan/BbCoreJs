@@ -93,8 +93,6 @@ define(
                         Core.ApplicationManager.invokeService('content.main.save').done(function (promise) {
                             promise.done(function () {
                                 content.refresh().done(function () {
-                                    content.refresh();
-
                                     self.popin.hide();
                                 });
                             });
