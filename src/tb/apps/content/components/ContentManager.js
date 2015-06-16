@@ -279,7 +279,9 @@ define(
                     };
 
                 if (images.length > 0) {
-                    refreshPicture(images);
+                    images.each(function () {
+                        refreshPicture(jQuery(this));
+                    });
                 }
 
                 if (html.get(0).tagName === 'IMG') {
