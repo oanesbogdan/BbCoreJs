@@ -298,6 +298,8 @@ define(
                     jQuery('[data-' + contentManager.identifierDataAttribute + '="' + contentManager.buildObjectIdentifier(self.type, self.uid) + '"]').replaceWith(html);
                     self.jQueryObject = html;
 
+                    contentManager.addDefaultZoneInContentSet(true);
+
                     dfd.resolve();
                 });
 

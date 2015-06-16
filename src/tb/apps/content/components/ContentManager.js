@@ -164,6 +164,7 @@ define(
 
                         ContentContainer.addContent(content);
                     } else {
+                        content.jQueryObject = element;
                         content.populate();
                     }
                 }
