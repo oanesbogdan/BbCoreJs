@@ -95,6 +95,17 @@ define(
                 });
             },
 
+            getSelectedContentService: function () {
+                var content = null,
+                    nodeSelected = jQuery('.bb-content-selected');
+
+                if (nodeSelected.length > 0) {
+                    content = ContentManager.getContentByNode(nodeSelected);
+                }
+
+                return content;
+            },
+
             /**
              * Return the content repository
              */
@@ -321,7 +332,15 @@ define(
             listenDOMService: function (definitions) {
                 DefinitionManager.setDefinitions(definitions);
 
-                Core.Scope.subscribe('contribution', function () {
+                Core.Scope.subscribe('content', function () {
+                    DndManager.bindEvents();
+                    MouseEventManager.enable(true);
+                }, function () {
+                    DndManager.unbindEvents();
+                    MouseEventManager.enable(false);
+                });
+
+                Core.Scope.subscribe('block', function () {
                     DndManager.bindEvents();
                     MouseEventManager.enable(true);
                 }, function () {

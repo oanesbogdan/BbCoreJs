@@ -83,11 +83,16 @@ define(
                 content.select();
 
                 this.show(content, this.selector);
+            },
+
+            hide: function (selector) {
+                jQuery(selector).html('');
             }
         };
 
         return {
-            show: jQuery.proxy(Breadcrumb.show, Breadcrumb)
+            show: jQuery.proxy(Breadcrumb.show, Breadcrumb),
+            hide: jQuery.proxy(Breadcrumb.hide, Breadcrumb)
         };
     }
 );

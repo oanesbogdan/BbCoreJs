@@ -29,6 +29,13 @@ define(['Core', 'contribution.view.index', 'jquery'], function (Core, IndexView,
 
                 Core.Scope.subscribe('page', function () {
                     jQuery('.bb-content').addClass('bb-content-page-mode');
+
+                    Core.ApplicationManager.invokeService('content.main.getSelectedContent').done(function (content) {
+                        if (null !== content) {
+                            content.unSelect();
+                        }
+                    });
+
                 }, function () {
                     jQuery('.bb-content').removeClass('bb-content-page-mode');
                 });
