@@ -388,6 +388,26 @@ define(
             },
 
             /**
+             * Get Parents as content
+             * @returns {Array}
+             */
+            getParents: function () {
+                var parentsNode = this.jQueryObject.parents(this.contentClass),
+                    contentManager = require('content.manager'),
+                    parents = [];
+
+                parentsNode.each(function () {
+                    var parent = contentManager.getContentByNode(jQuery(this));
+
+                    if (null !== parent) {
+                        parents.push(parent);
+                    }
+                });
+
+                return parents;
+            },
+
+            /**
              * Return the html of content
              * @param {String} renderMode
              * @returns {Promise}

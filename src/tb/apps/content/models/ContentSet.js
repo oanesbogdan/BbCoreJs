@@ -23,6 +23,8 @@ define(
         'jquery',
         'content.manager',
         'component!mask',
+        'component!notify',
+        'component!translator',
         'jsclass'
     ],
     function (AbstractContent, jQuery) {
@@ -57,6 +59,17 @@ define(
                     mask = require('component!mask').createMask();
 
                 mask.mask(this.jQueryObject);
+
+                if (!this.isAllowToAppend(content.uid)) {
+
+                    mask.unmask(self.jQueryObject);
+
+                    require('component!notify').warning(require('component!translator').translate('cant_select_current_content'));
+
+                    dfd.resolve();
+
+                    return dfd.promise();
+                }
 
                 this.getData('parameters').done(function () {
 
@@ -104,7 +117,29 @@ define(
                     mask.unmask(self.jQueryObject);
                 });
 
+
                 return dfd.promise();
+            },
+
+            isAllowToAppend: function (uid) {
+                var parents = this.getParents(),
+                    key,
+                    result = true;
+
+                if (this.uid === uid) {
+                    return false;
+                }
+
+                for (key in parents) {
+                    if (parents.hasOwnProperty(key)) {
+                        if (parents[key].uid === uid) {
+                            result = false;
+                            break;
+                        }
+                    }
+                }
+
+                return result;
             },
 
             updateRevision: function () {
