@@ -42,7 +42,7 @@ define(
                     elementsWrapper.find('li').each(function () {
                         var li = jQuery(this),
                             object = {
-                                'url': li.children('input.link').val(),
+                                'url': li.find('input.link').val(),
                                 'title': li.children('input.title').val(),
                                 'pageUid': li.children('input.pageuid').val(),
                                 'target': li.find('select.target option:selected').val()

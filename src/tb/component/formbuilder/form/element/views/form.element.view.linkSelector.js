@@ -34,6 +34,11 @@ define(
             linkSelectorClass: 'add_link',
             trashClass: 'trash',
             elementsWrapperClass: 'link_elements_wrapper',
+            editClass: 'link-selector-edit',
+            moveClass: 'move',
+            moveDownClass: 'move-down',
+            moveUpClass: 'move-up',
+            listClass: 'linkselector_list',
 
             /**
              * Initialize of node selector
@@ -48,6 +53,7 @@ define(
                 this.linkSelector = require('tb.component/linkselector/main').create();
                 this.elementSelector = 'form#' + this.el + ' .element_' + this.element.getKey();
                 this.bindEvents();
+                this.currentEditItem = null;
             },
 
             bindEvents: function () {
@@ -55,6 +61,8 @@ define(
 
                 jQuery(this.mainSelector).on('click', this.elementSelector + ' .' + this.linkSelectorClass, jQuery.proxy(this.onClick, this));
                 jQuery(this.mainSelector).on('click', this.elementSelector + ' .' + this.trashClass, jQuery.proxy(this.onTrash, this));
+                jQuery(this.mainSelector).on('click', this.elementSelector + ' .' + this.editClass, jQuery.proxy(this.onEditClick, this));
+                jQuery(this.mainSelector).on('click', this.elementSelector + ' .' + this.moveClass, jQuery.proxy(this.onMove, this));
 
                 this.linkSelector.on('close', jQuery.proxy(this.handleLinkSelection, this));
 
@@ -90,19 +98,85 @@ define(
                 });
             },
 
+            onEditClick: function (event) {
+                this.currentEditItem = jQuery(event.currentTarget).parents('li:first');
+                this.linkSelector.show();
+            },
+
+            onMove: function (event) {
+                var target = jQuery(event.currentTarget),
+                    li = target.parents('li:first'),
+                    prev = li.prev('li'),
+                    next = li.next('li');
+
+                if (target.hasClass(this.moveUpClass)) {
+                    if (prev.length > 0) {
+                        prev.before(li);
+                    }
+                } else if (target.hasClass(this.moveDownClass)) {
+                    if (next.length > 0) {
+                        next.after(li);
+                    }
+                }
+
+                this.updateMoveBtn();
+            },
+
+            updateMoveBtn: function () {
+                var self = this,
+                    list = jQuery(this.elementSelector + ' .' + this.listClass),
+                    children = list.children('li'),
+                    count = children.length;
+
+                list.children('li').each(function (index) {
+
+                    var element = jQuery(this),
+                        moveDownBtn = element.find('.' + self.moveDownClass),
+                        moveUpBtn = element.find('.' + self.moveUpClass);
+
+                    moveDownBtn.addClass('hidden');
+                    moveUpBtn.addClass('hidden');
+
+                    if (count > 1) {
+                        if (index === 0) {
+                            moveDownBtn.removeClass('hidden');
+                        } else if (index === count - 1) {
+                            moveUpBtn.removeClass('hidden');
+                        } else {
+                            moveDownBtn.removeClass('hidden');
+                            moveUpBtn.removeClass('hidden');
+                        }
+                    }
+                });
+            },
+
             onTrash: function (event) {
                 jQuery(event.currentTarget).parent().remove();
             },
 
             onClick: function () {
+                this.currentEditItem = null;
                 this.linkSelector.show();
             },
 
             handleLinkSelection: function (data) {
+
+                if (this.currentEditItem !== null) {
+
+                    this.currentEditItem.find('input.pageuid').val(data.pageUid);
+                    this.currentEditItem.find('input.link').val(data.url);
+
+                    this.currentEditItem = null;
+
+                    return;
+                }
+
                 var elementsWrapper = jQuery(this.elementSelector).find(' .' + this.elementsWrapperClass + ' ul'),
                     item = Renderer.render(itemTemplate, {'data': data});
 
                 elementsWrapper.append(item);
+
+                this.updateMoveBtn();
             },
 
             getCurrentLinks: function () {
@@ -112,7 +186,7 @@ define(
                 elementsWrapper.children('li').each(function () {
                     var li = jQuery(this),
                         link = {
-                            'url': li.children('input.link').val(),
+                            'url': li.find('input.link').val(),
                             'title': li.children('input.title').val(),
                             'pageUid': li.children('input.pageuid').val(),
                             'target': li.find('select.target option:selected').val()
