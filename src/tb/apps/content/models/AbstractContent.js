@@ -320,6 +320,8 @@ define(
              */
             unSelect: function () {
                 this.removeClass('bb-content-selected');
+
+                Breadcrumb.hide(this.breadcrumbSelector);
             },
 
             /**
