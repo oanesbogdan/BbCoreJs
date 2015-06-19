@@ -21,9 +21,10 @@ define(
         'Core',
         'Core/Renderer',
         'BackBone',
-        'jquery'
+        'jquery',
+        'moment'
     ],
-    function (Core, Renderer, Backbone, jQuery) {
+    function (Core, Renderer, Backbone, jQuery, moment) {
         'use strict';
 
         var DatetimepickerView = Backbone.View.extend({
@@ -35,7 +36,20 @@ define(
                 this.template = template;
                 this.element = element;
 
+                this.buildRenderValue();
+
                 this.bindEvents();
+            },
+
+            buildRenderValue: function () {
+                var value = this.element.getValue(),
+                    timestamp;
+
+                this.element.renderValue = '';
+                if (value !== '') {
+                    timestamp = moment.unix(value);
+                    this.element.renderValue = timestamp.format('YYYY/MM/DD HH:mm');
+                }
             },
 
             bindEvents: function () {
@@ -63,8 +77,7 @@ define(
                 var element = jQuery(this);
 
                 element.datetimepicker({
-                    parentID: view.mainSelector,
-                    minDate: new Date()
+                    parentID: view.mainSelector
                 });
 
                 element.datetimepicker('show');

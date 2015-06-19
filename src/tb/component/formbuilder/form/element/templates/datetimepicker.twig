@@ -2,7 +2,7 @@
 <input type="text"
        name="{{ element.getKey() }}"
        {% if element.isDisabled() %}disabled{% endif %}
-       value="{{ element.getValue() }}"
+       value="{{ element.renderValue }}"
        class="form-control"
        >
 <span class="hidden updated"></span>
