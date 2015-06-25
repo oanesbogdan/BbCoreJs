@@ -62,10 +62,18 @@ define(
              */
             bindEvents: function () {
                 var listElement = jQuery('#' + this.id + ' .btn-dialog-extension'),
-                    activeElement = jQuery('#' + this.id + ' div.activation-btn-group a');
+                    activeElement = jQuery('#' + this.id + ' div.activation-btn-group a'),
+                    adminElement = jQuery('#' + this.id + ' .btn-bundle-admin');
 
                 listElement.off('click').on('click', this.doListDialog);
                 activeElement.off('click').on('click', this.doExtensionActivation);
+                if (0 !== adminElement.length) {
+                    adminElement.off('click').on('click', this.openAdmin.bind(this));
+                }
+            },
+
+            openAdmin: function () {
+                ApplicationManager.invokeService('bundle.main.admin', this.bundle);
             },
 
             /**

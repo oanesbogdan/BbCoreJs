@@ -28,7 +28,8 @@ define(['Core', 'bundle.view.list', 'bundle.view.index'], function (Core, ListVi
         config: {
             imports: ['bundle.repository'],
             define: {
-                confirmService: ['bundle/views/confirm.view', 'jquery']
+                confirmService: ['bundle/views/confirm.view', 'jquery'],
+                adminService: ['bundle/views/admin.view']
             }
         },
 
@@ -58,6 +59,13 @@ define(['Core', 'bundle.view.list', 'bundle.view.index'], function (Core, ListVi
             }
 
             this.listAndRender(IndexView, config);
+        },
+
+        adminService: function (req, bundle) {
+            var View = req('bundle/views/admin.view'),
+                adminView = new View({bundle: bundle});
+
+            adminView.render();
         },
 
         /**
