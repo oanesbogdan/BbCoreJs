@@ -127,6 +127,7 @@
 
     "theme": "Thème",
     "title": "Titre",
+    "title_must_contain_at_least_3_characters": "Le titre doit contenir au minimum 3 caractères",
     "tree": "Arborescence",
 
     "updated": "Mis(e) à jour",
