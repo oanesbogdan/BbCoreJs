@@ -373,7 +373,7 @@ define(
                 DriverHandler.delete('security/session').then(
                     function () {
                         req('component!session').destroy();
-                        document.cookie = 'PHPSESSID=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                        document.cookie = 'PHPSESSID=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/';
                         document.location.reload();
                     }
                 );
