@@ -143,10 +143,19 @@ define(
                                 subDrafts.push(this.buildDraft(subDraft[subDraftKeys[0]], i, margin, false, currentParent));
                             }
                         }
-
-                        if (subDraft.hasOwnProperty('uid')) {
+                        if (subDraft.hasOwnProperty('uid') && subDraft.hasOwnProperty('elements')) {
                             if (Object.keys(subDraft.elements).length > 0 && this.isContentSet(subDraft.type) === false) {
-                                jQuery.merge(subDrafts, this.computeElements(subDraft.elements, margin, this.searchDraft(subDraft.uid, subDrafts)));
+                                jQuery.merge(
+                                    subDrafts,
+                                    this.computeElements(
+                                        subDraft.elements,
+                                        margin,
+                                        this.searchDraft(
+                                            subDraft.uid,
+                                            subDrafts
+                                        )
+                                    )
+                                );
                             }
                         }
                     }
