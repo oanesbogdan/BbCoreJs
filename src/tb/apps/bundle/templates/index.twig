@@ -11,6 +11,13 @@
                         <a class="btn btn-xs btn-default enable {% if bundle.enable %}active{% endif %}" role="button">{{ 'activate'|trans }}</a>
                         <a class="btn btn-xs btn-default disable {% if bundle.enable == false %}active{% endif %}" role="button">{{ 'deactivate'|trans }}</a>
                     </div>
+                    {% if bundle.admin_entry_point%}
+                        <div class="">
+                        <a class="btn btn-primary btn-xs btn-bundle-admin" href="#/bundle/admin/{{ bundle.id }}">
+                            {{ 'manage'|trans }}
+                        </a>
+                        </div>
+                    {% endif %}
                     <p class="position-bottom">
                         <a class="btn btn-transparent btn-xs btn-toggle btn-dialog-extension" href="javascript:;">
                             <i class="fa fa-angle-down"></i>{{ 'see_my_extensions'|trans }}
