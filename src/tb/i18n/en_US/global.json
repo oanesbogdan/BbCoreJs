@@ -114,6 +114,7 @@
 
     "last_name": "Last name",
     "link_selector_label": "Link Selector",
+    "loading_sites": "Loading sites...",
     "login": "Login",
     "log_in": "Log in",
     "login_is_required": "Login is required",

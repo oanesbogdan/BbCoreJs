@@ -1,6 +1,8 @@
 <div id="library-pane-wrapper" class="bb5-windowpane-wrapper windowpane-treeview">
     <div class="bb5-windowpane-tree ui-layout-pane ui-layout-west">
         <div class="ui-layout-north">
+            <p><strong data-i18n="toolbar.selector._">{{ "select_a_website" | trans}}</strong></p>
+            <div class="site-selector-ctn"></div>
             <p><strong data-i18n="toolbar.selector.select_folder">{{ "select_a_category" | trans}}</strong></p>
         </div>
 
@@ -8,7 +10,6 @@
   <div class="bb5-windowpane-tree-inner">
     <!-- tree pane: tree wrapper -->
     <div class="bb5-windowpane-treewrapper">
-
         <div class="bb5-windowpane-treewrapper-inner jstree jstree-3 jstree-focused jstree-bb5">
           <div class="bb5-treeview">
           </div>
