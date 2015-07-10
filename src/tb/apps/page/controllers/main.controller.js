@@ -21,32 +21,18 @@ define(
     [
         'Core',
         'page.view.contribution.index',
-        'page.view.new',
-        'page.view.edit',
-        'page.view.clone',
         'page.view.manage',
-        'page.view.tree',
-        'page.view.tree.contribution',
-        'page.repository',
-        'page.save.manager',
         'Core/Request',
         'Core/RequestHandler',
-        'component!notify'
+        'page.save.manager'
     ],
     function (
         Core,
         ContributionIndexView,
-        NewView,
-        EditView,
-        CloneView,
         ManageView,
-        PageTreeView,
-        PageTreeViewContribution,
-        PageRepository,
-        SaveManager,
         Request,
         RequestHandler,
-        notify
+        SaveManager
     ) {
 
         'use strict';
@@ -58,9 +44,14 @@ define(
             config: {
                 imports: ['page.repository'],
                 define: {
+                    treeService: ['page.view.tree.contribution'],
+                    getPageTreeViewInstanceService: ['page.view.tree'],
                     updatePageInfoService: ['page.widget.InformationPage'],
-                    validateService: ['component!translator', 'component!revisionpageselector'],
-                    cancelService: ['component!translator', 'component!revisionpageselector'],
+                    clonePageService: ['page.view.clone'],
+                    newPageService: ['page.view.new'],
+                    editPageService: ['page.view.edit'],
+                    validateService: ['component!translator', 'component!revisionpageselector', 'component!notify'],
+                    cancelService: ['component!translator', 'component!revisionpageselector', 'component!notify'],
                     deletePageService: ['page.view.delete']
                 }
             },
@@ -109,18 +100,19 @@ define(
             /**
              * Show tree with pages
              */
-            treeService: function (config) {
-                var view = new PageTreeViewContribution(config);
+            treeService: function (req, config) {
+                var PageTreeViewContribution = req('page.view.tree.contribution'),
+                    view = new PageTreeViewContribution(config);
 
                 view.render();
             },
 
-            getPageTreeViewInstanceService: function () {
-                return PageTreeView;
+            getPageTreeViewInstanceService: function (req) {
+                return req('page.view.tree');
             },
 
             getPageRepositoryService: function () {
-                return PageRepository;
+                return this.repository;
             },
 
             getSaveManagerService: function () {
@@ -147,23 +139,25 @@ define(
                 return this.repository.findCurrentPage();
             },
 
-            clonePageService: function (config) {
-
+            clonePageService: function (req, config) {
                 config.callbackAfterSubmit = this.newPageRedirect;
-                var view = new CloneView(config);
+                var CloneView = req('page.view.clone'),
+                    view = new CloneView(config);
                 view.render();
             },
 
-            newPageService: function (config) {
+            newPageService: function (req, config) {
                 if ('redirect' === config.flag) {
                     config.callbackAfterSubmit = this.newPageRedirect;
                 }
-                var view = new NewView(config);
+                var NewView = req('page.view.new'),
+                    view = new NewView(config);
                 view.render();
             },
 
-            editPageService: function (config) {
-                var view = new EditView(config);
+            editPageService: function (req, config) {
+                var EditView = req('page.view.edit'),
+                    view = new EditView(config);
                 view.render();
             },
 
@@ -172,6 +166,7 @@ define(
              */
             manageAction: function () {
                 var view = new ManageView();
+                Core.Scope.register('page', 'management');
                 view.render();
             },
 
@@ -193,6 +188,7 @@ define(
             validateService: function (req) {
                 this.repository.findCurrentPage().done(function (page) {
                     var translator = req('component!translator'),
+                        notify = req('component!notify'),
                         config = {
                             popinTitle: translator.translate('validation_confirmation'),
                             noContentMsg: translator.translate('no_page_modification_validate'),
@@ -223,6 +219,7 @@ define(
             cancelService: function (req) {
                 this.repository.findCurrentPage().done(function (page) {
                     var translator = req('component!translator'),
+                        notify = req('component!notify'),
                         config = {
                             popinTitle: translator.translate('cancel_confirmation'),
                             noContentMsg: translator.translate('no_page_modification_cancel'),
