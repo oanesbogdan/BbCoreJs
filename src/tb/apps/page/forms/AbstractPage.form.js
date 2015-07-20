@@ -43,9 +43,7 @@ define(
                     label: 'Target',
                     options: {
                         '_self': '_self',
-                        '_blank': '_blank',
-                        '_parent': '_parent',
-                        '_top': '_top'
+                        '_blank': '_blank'
                     }
                 },
                 url: {
