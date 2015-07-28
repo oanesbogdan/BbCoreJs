@@ -65,6 +65,7 @@ define(['Core', 'bundle.view.list', 'bundle.view.index'], function (Core, ListVi
             var View = req('bundle/views/admin.view'),
                 adminView = new View({bundle: bundle});
 
+            Core.set('currentAdminView', adminView);
             adminView.render();
         },
 
