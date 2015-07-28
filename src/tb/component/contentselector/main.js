@@ -45,6 +45,7 @@ define(
         'component!jquery-layout',
         "component!datastore",
         "component!treeview",
+        "component!siteselector",
         "component!pagination",
         "node.formater",
         'nunjucks',
@@ -98,7 +99,7 @@ define(
                     if (this.config) {
                         this.isLoaded = false;
                     }
-                    this.previousContentTypes = null;
+                    this.currentContentTypes = null;
                     this.state = {};
                     this.mode = this.config.mode || this.VIEW_MODE;
                     this.widget = jQuery(CoreRenderer.render(layout, {})).clone();
@@ -113,7 +114,6 @@ define(
                     this.handleViewModeChange();
                     this.initComponents();
                     this.initControls();
-                    this.bindEvents();
                     this.addCloseAndCancelButtons();
                 },
 
@@ -222,7 +222,7 @@ define(
 
                 /**
                  * This fonction is called only once for each instance
-                 * the tree is loaded here to prevent useless rest call
+                 * the tree is loaded here to prevent useless rest calls
                  **/
                 onReady: function () {
                     var self = this,
@@ -241,7 +241,9 @@ define(
 
                     this.contentPagination.render(paginationCtn, 'replaceWith');
                     this.pageRangeSelector.render(pageRangeCtn, 'replaceWith');
+
                     this.searchEngine.render(searchEnginerCtn, 'html');
+
                     if (!this.isloaded && this.config.autoload) {
                         this.loadAllCategories();
                     }
@@ -270,7 +272,6 @@ define(
                 loadRootNode: function () {
                     var tree = this.categoryTreeView.getRootNode();
                     this.categoryTreeView.invoke("openNode", tree.children[0]);
-
                 },
 
                 initLayout: function () {
@@ -305,7 +306,7 @@ define(
 
                 bindEvents: function () {
                     var self = this;
-                    /* show mask */
+
                     this.contentRestDataStore.on('processing', function () {
                         self.showMask();
                     });
@@ -408,23 +409,26 @@ define(
                     }
                 },
 
+                /* handle contenttype
+                 * if the selector is not reader add it to a queue
+                 * */
                 setContenttypes: function (contentypeArr) {
                     if (!Array.isArray(contentypeArr)) {
                         throw "ContentSelectorWidgetException [setContenttypes] expects an array";
                     }
-                    /* If it's do nothing */
-                    if (underscore.isEqual(this.previousContentTypes, contentypeArr)) {
+                    /* If it's the same do nothing */
+                    if (underscore.isEqual(this.currentContentTypes, contentypeArr)) {
                         return;
                     }
                     if (contentypeArr.length) {
                         var data = formater.format("contenttype", contentypeArr);
                         this.categoryTreeView.setData(data);
-                        this.previousContentTypes = contentypeArr;
+                        this.currentContentTypes = contentypeArr;
                         this.loadRootNode();
                     } else {
                         this.loadAllCategories();
                     }
-                    this.previousContentTypes = contentypeArr;
+                    this.currentContentTypes = contentypeArr;
                 },
 
                 initPopIn: function () {
@@ -432,11 +436,25 @@ define(
                     return PopInMng.createPopIn(this.config.dialogConfig);
                 },
 
+                /*will be called once*/
+                createSiteSelector: function () {
+                    var self = this,
+                        siteSelectorCtn = jQuery(this.widget).find('.site-selector-ctn').eq(0);
+                    this.siteSelector = require("component!siteselector").createSiteSelector({selected : Core.get("site.uid") });
+                    jQuery(siteSelectorCtn).replaceWith(this.siteSelector.render());
+                    this.siteSelector.on("ready", function () {
+                        self.bindEvents();
+                        self.onReady();
+                        self.isLoaded = true;
+                        self.contentRestDataStore.applyFilter("bySite", this.getSelectedSite());
+                    });
+                },
+
                 onOpen: function (selector) {
-                    selector.onReady();
-                    selector.onReady = jQuery.noop;
+                    selector.createSiteSelector();
+                    selector.createSiteSelector = jQuery.noop;
                     if (!selector.isLoaded) {
-                        jQuery(this).html(selector.widget);
+                        jQuery(this).html(selector.widget); //this == dialog
                         var widgetLayout = selector.initLayout();
                         widgetLayout.resizeAll();
                         widgetLayout.sizePane("west", 201); //useful to fix layout size
@@ -444,7 +462,6 @@ define(
                     } else {
                         selector.loadRootNode();
                     }
-                    selector.isLoaded = true;
                     selector.trigger("open");
                 },
 

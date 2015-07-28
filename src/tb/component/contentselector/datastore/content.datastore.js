@@ -23,7 +23,11 @@ define(['component!datastore', 'jsclass'], function (DataStore) {
     restDataStore.addFilter("byTitle", function (value, restParams) {
         restParams.criterias.searchField = value;
         return restParams;
+    });
 
+    restDataStore.addFilter("bySite", function (value, restParams) {
+        restParams.criterias.site_uid = value;
+        return restParams;
     });
 
     restDataStore.addFilter("byBeforeDate", function (value, restParams) {
