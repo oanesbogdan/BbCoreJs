@@ -143,7 +143,7 @@ define('tb.component/authentication/main',
                             }
                         },
                         form: {
-                            submitLabel: 'Connexion',
+                            submitLabel: 'Sign in',
                             error: error
                         },
                         onSubmit: jQuery.proxy(this.onSubmitForm, this),
