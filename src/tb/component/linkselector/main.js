@@ -36,6 +36,7 @@ define(
         'component!rangeselector',
         'component!formbuilder',
         'component!mask',
+        'component!siteselector',
         'text!ls-templates/layout.twig',
         'text!ls-templates/page-item.twig',
         'jquery-layout',
@@ -98,6 +99,60 @@ define(
                 this.initRangeSelector();
 
                 this.maskManager = Mask.createMask({});
+            },
+
+            createSiteSelector: function () {
+                var self = this,
+                    siteSelectorCtn = jQuery(this.widget).find('.site-selector-ctn').eq(0);
+                this.siteSelector = require("component!siteselector").createSiteSelector({selected : Core.get("site.uid") });
+                jQuery(siteSelectorCtn).replaceWith(this.siteSelector.render());
+                this.siteSelector.on("ready", function () {
+                    self.treeConfig.site_uid = this.getSelectedSite();
+                    self.loadTree(self);
+                });
+                this.siteSelector.on("siteChange", this.handleSiteChange.bind(this));
+            },
+
+
+            handleSiteChange: function (siteUid) {
+                this.mask();
+                this.treeConfig.site_uid = siteUid;
+                this.dataStore.setStart(0).setLimit(this.pagination.getItemsOnPage());
+                this.loadTree(this, false);
+                this.dataView.reset();
+                this.widget.find(this.resultInfosSelector).html("");
+            },
+
+            loadTree: function (Selector) {
+
+                Core.ApplicationManager.invokeService('page.main.getPageTreeViewInstance').done(function (PageTreeView) {
+                    var pageTree = new PageTreeView(Selector.treeConfig);
+                    pageTree.getTree().done(function (tree) {
+
+                        Selector.tree = tree;
+
+                        Selector.tree.render(Selector.widget.find(Selector.treeSelector));
+                        if (!Selector.isLoaded) {
+                            Selector.onReady();
+                            Selector.manageMenu();
+                            Selector.bindTreeEvents();
+                        }
+                        /* rebind event */
+                        Selector.tree.on('click', Selector.onTreeClick.bind(Selector));
+
+                        /* load root node */
+                        Selector.loadRootNode();
+
+                        Selector.isLoaded = true;
+                    }).always(function () {
+                        Selector.unMask();
+                    });
+                });
+            },
+
+            loadRootNode: function () {
+                var tree = this.tree.getRootNode();
+                this.tree.invoke("openNode", tree.children[0]);
             },
 
             initExternal: function () {
@@ -175,10 +230,11 @@ define(
             },
 
             onOpen: function (Selector) {
-
                 if (Selector.isShown === true) {
                     return;
                 }
+                Selector.createSiteSelector();
+                Selector.createSiteSelector = jQuery.noop;
 
                 var internalLink = Selector.widget.find(Selector.internalLinkSelector);
 
@@ -194,25 +250,10 @@ define(
                     Selector.layout.resizeAll();
                     Selector.layout.sizePane("west", 201);
                 }, 0);
-
-                Core.ApplicationManager.invokeService('page.main.getPageTreeViewInstance').done(function (PageTreeView) {
-
-                    var pageTree = new PageTreeView(Selector.treeConfig);
-
-                    pageTree.getTree().done(function (tree) {
-                        Selector.tree = tree;
-
-                        Selector.tree.render(Selector.widget.find(Selector.treeSelector));
-
-                        Selector.onReady();
-
-                        Selector.manageMenu();
-                        Selector.bindTreeEvents();
-                    });
-                });
-
-
             },
+
+
+
 
             onReady: function () {
                 var bodyElement = this.widget.find(this.bodySelector),
@@ -293,7 +334,7 @@ define(
                     self.pagination.setItemsOnPage(val); // -->will trigger pageChange
                 });
 
-                this.tree.on('click', jQuery.proxy(this.onTreeClick, this));
+                this.dataStore.on("dataStateUpdate", jQuery.proxy(this.updatePaginationInfos, this));
             },
 
             onTreeClick: function (event) {
@@ -307,8 +348,6 @@ define(
                 this.dataStore.applyFilter('byParent', event.node.id);
                 this.dataStore.setStart(0);
                 self.dataStore.execute();
-
-                this.dataStore.on("dataStateUpdate", jQuery.proxy(this.updatePaginationInfos, this));
             },
 
             updatePaginationInfos: function () {
