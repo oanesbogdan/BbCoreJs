@@ -210,14 +210,18 @@ define(
                     return require('component!treeview').createTreeView(this.config.categoryTreeView);
                 },
 
-                reset: function () {
+                reset: function (keepSelection) {
+                    keepSelection =  keepSelection || false;
                     this.contentDataView.reset();
                     this.contentPagination.setItems(0);
                     this.pageRangeSelector.reset();
                     this.searchEngine.reset();
                     /* Reset the category label */
                     jQuery(this.widget).find(".result-infos").html("");
-                    this.categoryTreeView.unselectNode();
+                    if (!keepSelection) {
+                        this.categoryTreeView.unselectNode();
+                    }
+
                 },
 
                 /**
@@ -448,6 +452,24 @@ define(
                         self.isLoaded = true;
                         self.contentRestDataStore.applyFilter("bySite", this.getSelectedSite());
                     });
+                    this.siteSelector.on("siteChange", this.handleSiteChange.bind(this));
+                },
+
+                handleSiteChange: function (site) {
+                    var currentSelectedNode = this.categoryTreeView.getSelectedNode();
+                    if (!currentSelectedNode || currentSelectedNode.isRoot) { return false; }
+                    this.reset(true);
+                    this.contentRestDataStore.clear();
+                    if (currentSelectedNode.isACategory) {
+                        this.contentRestDataStore.applyFilter('byCategory', currentSelectedNode.name);
+                    } else {
+                        this.contentRestDataStore.applyFilter('byClasscontent', currentSelectedNode.type);
+                    }
+
+                    this.contentRestDataStore
+                        .setStart(0).setLimit(this.pageRangeSelector.getValue())
+                        .applyFilter("bySite", site)
+                        .execute();
                 },
 
                 onOpen: function (selector) {
