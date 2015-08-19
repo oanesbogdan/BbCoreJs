@@ -41,7 +41,7 @@ define(
                     'key': 'state_code',
                     'label': 'State',
                     'treatment': function (value) {
-                        return (value === 0) ? 'Offline' : 'Online';
+                        return (parseInt(value, 10) === 0) ? 'Offline' : 'Online';
                     }
                 },
                 'publishing': {
