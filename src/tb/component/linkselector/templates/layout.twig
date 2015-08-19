@@ -1,8 +1,8 @@
 <div class="link-selector" style="height: 100%;">
     <div class="link-selector-menu">
         <ul class="nav nav-pills">
-            <li class="active" data-pane="internal"><a href="#">{{ trans('internal_link') }}</a></li> 
-            <li data-pane="external"><a href="#">{{ trans('external_link') }}</a></li> 
+            <li class="active" data-pane="internal"><a href="#">{{ trans('internal_link') }}</a></li>
+            <li data-pane="external"><a href="#">{{ trans('external_link') }}</a></li>
         </ul>
     </div>
     <div class="link-selector-external-link hidden">
@@ -10,10 +10,16 @@
     </div>
     <div class="link-selector-internal-link" class="bb5-windowpane-wrapper windowpane-treeview" style="height: 100%;">
         <div class="bb5-windowpane-tree ui-layout-pane ui-layout-west link-selector-tree">
+
+            <div class="ui-layout-north">
+                <p><strong data-i18n="toolbar.selector.select_a_website">{{ trans('select_a_website') }}</strong></p>
+                <div class="site-selector-ctn"></div>
+            </div>
+
             <div class="bb5-treeview">
-                
+
                 {{ trans('loading') }}...
-                
+
             </div>
         </div>
         <div class="bb5-windowpane-main ui-layout-pane ui-layout-center">
