@@ -7019,13 +7019,13 @@ button#bb5-ui .close {
 }
 #bb5-ui .xdsoft_datetimepicker {
   box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.506);
-  background: #fff;
-  border-bottom: 1px solid #bbb;
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
-  border-top: 1px solid #ccc;
-  color: #333;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: #FFFFFF;
+  border-bottom: 1px solid #BBBBBB;
+  border-left: 1px solid #CCCCCC;
+  border-right: 1px solid #CCCCCC;
+  border-top: 1px solid #CCCCCC;
+  color: #333333;
+  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   padding: 8px;
   padding-left: 0;
   padding-top: 2px;
@@ -7136,20 +7136,19 @@ button#bb5-ui .close {
 #bb5-ui .xdsoft_datetimepicker .xdsoft_today_button {
   background-color: transparent;
   background-repeat: no-repeat;
-  border: 0 none;
+  border: 0 none currentColor;
   cursor: pointer;
   display: block;
   height: 30px;
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  outline: medium none;
+  outline: medium none currentColor;
   overflow: hidden;
   padding: 0;
   position: relative;
   text-indent: 100%;
   white-space: nowrap;
   width: 20px;
-  min-width: 0;
 }
 #bb5-ui .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_prev,
 #bb5-ui .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_next {
@@ -7169,12 +7168,12 @@ button#bb5-ui .close {
 #bb5-ui .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box {
   height: 151px;
   overflow: hidden;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #DDDDDD;
 }
 #bb5-ui .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box > div > div {
-  background: #f5f5f5;
-  border-top: 1px solid #ddd;
-  color: #666;
+  background: #F5F5F5;
+  border-top: 1px solid #DDDDDD;
+  color: #666666;
   font-size: 12px;
   text-align: center;
   border-collapse: collapse;
@@ -7239,8 +7238,8 @@ button#bb5-ui .close {
   text-decoration: none !important;
 }
 #bb5-ui .xdsoft_datetimepicker .xdsoft_label > .xdsoft_select > div > .xdsoft_option.xdsoft_current {
-  background: #33aaff;
-  box-shadow: #178fe5 0 1px 3px 0 inset;
+  background: #33AAFF;
+  box-shadow: #178FE5 0 1px 3px 0 inset;
   color: #fff;
   font-weight: 700;
 }
@@ -7268,9 +7267,9 @@ button#bb5-ui .close {
 #bb5-ui .xdsoft_datetimepicker .xdsoft_calendar td,
 #bb5-ui .xdsoft_datetimepicker .xdsoft_calendar th {
   width: 14.2857142%;
-  background: #f5f5f5;
-  border: 1px solid #ddd;
-  color: #666;
+  background: #F5F5F5;
+  border: 1px solid #DDDDDD;
+  color: #666666;
   font-size: 12px;
   text-align: right;
   vertical-align: middle;
@@ -7284,26 +7283,16 @@ button#bb5-ui .close {
   width: 12.5%;
 }
 #bb5-ui .xdsoft_datetimepicker .xdsoft_calendar th {
-  background: #f1f1f1;
+  background: #F1F1F1;
 }
 #bb5-ui .xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_today {
-  color: #33aaff;
-}
-#bb5-ui .xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_highlighted_default {
-  background: #ffe9d2;
-  box-shadow: #ffb871 0 1px 4px 0 inset;
-  color: #000;
-}
-#bb5-ui .xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_highlighted_mint {
-  background: #c1ffc9;
-  box-shadow: #00dd1c 0 1px 4px 0 inset;
-  color: #000;
+  color: #33AAFF;
 }
 #bb5-ui .xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_default,
 #bb5-ui .xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_current,
 #bb5-ui .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box > div > div.xdsoft_current {
-  background: #33aaff;
-  box-shadow: #178fe5 0 1px 3px 0 inset;
+  background: #33AAFF;
+  box-shadow: #178FE5 0 1px 3px 0 inset;
   color: #fff;
   font-weight: 700;
 }
@@ -7312,7 +7301,6 @@ button#bb5-ui .close {
 #bb5-ui .xdsoft_datetimepicker .xdsoft_time_box > div > div.xdsoft_disabled {
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  cursor: default;
 }
 #bb5-ui .xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_other_month.xdsoft_disabled {
   opacity: 0.2;
@@ -7323,12 +7311,6 @@ button#bb5-ui .close {
   color: #fff !important;
   background: #ff8000 !important;
   box-shadow: none !important;
-}
-#bb5-ui .xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_current.xdsoft_disabled:hover,
-#bb5-ui .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box > div > div.xdsoft_current.xdsoft_disabled:hover {
-  background: #33aaff !important;
-  box-shadow: #178fe5 0 1px 3px 0 inset !important;
-  color: #fff !important;
 }
 #bb5-ui .xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_disabled:hover,
 #bb5-ui .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box > div > div.xdsoft_disabled:hover {
@@ -7350,10 +7332,10 @@ button#bb5-ui .close {
   margin-left: 8px;
 }
 #bb5-ui .xdsoft_datetimepicker .xdsoft_copyright a {
-  color: #eeeeee !important;
+  color: #eee !important;
 }
 #bb5-ui .xdsoft_datetimepicker .xdsoft_copyright a:hover {
-  color: #aaaaaa !important;
+  color: #aaa !important;
 }
 #bb5-ui .xdsoft_time_box {
   position: relative;
@@ -7377,20 +7359,20 @@ button#bb5-ui .close {
 }
 #bb5-ui .xdsoft_datetimepicker.xdsoft_dark {
   box-shadow: 0 5px 15px -5px rgba(255, 255, 255, 0.506);
-  background: #000;
-  border-bottom: 1px solid #444;
-  border-left: 1px solid #333;
-  border-right: 1px solid #333;
-  border-top: 1px solid #333;
-  color: #ccc;
+  background: #000000;
+  border-bottom: 1px solid #444444;
+  border-left: 1px solid #333333;
+  border-right: 1px solid #333333;
+  border-top: 1px solid #333333;
+  color: #cccccc;
 }
 #bb5-ui .xdsoft_datetimepicker.xdsoft_dark .xdsoft_timepicker .xdsoft_time_box {
-  border-bottom: 1px solid #222;
+  border-bottom: 1px solid #222222;
 }
 #bb5-ui .xdsoft_datetimepicker.xdsoft_dark .xdsoft_timepicker .xdsoft_time_box > div > div {
   background: #0a0a0a;
-  border-top: 1px solid #222;
-  color: #999;
+  border-top: 1px solid #222222;
+  color: #999999;
 }
 #bb5-ui .xdsoft_datetimepicker.xdsoft_dark .xdsoft_label {
   background-color: #000;
@@ -7417,24 +7399,14 @@ button#bb5-ui .close {
 #bb5-ui .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar td,
 #bb5-ui .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar th {
   background: #0a0a0a;
-  border: 1px solid #222;
-  color: #999;
+  border: 1px solid #222222;
+  color: #999999;
 }
 #bb5-ui .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar th {
   background: #0e0e0e;
 }
 #bb5-ui .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar td.xdsoft_today {
   color: #cc5500;
-}
-#bb5-ui .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar td.xdsoft_highlighted_default {
-  background: #ffe9d2;
-  box-shadow: #ffb871 0 1px 4px 0 inset;
-  color: #000;
-}
-#bb5-ui .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar td.xdsoft_highlighted_mint {
-  background: #c1ffc9;
-  box-shadow: #00dd1c 0 1px 4px 0 inset;
-  color: #000;
 }
 #bb5-ui .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar td.xdsoft_default,
 #bb5-ui .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar td.xdsoft_current,
@@ -7452,71 +7424,19 @@ button#bb5-ui .close {
   color: #666;
 }
 #bb5-ui .xdsoft_datetimepicker.xdsoft_dark .xdsoft_copyright {
-  color: #333333 !important;
+  color: #333 !important;
 }
 #bb5-ui .xdsoft_datetimepicker.xdsoft_dark .xdsoft_copyright a {
-  color: #111111 !important;
+  color: #111 !important;
 }
 #bb5-ui .xdsoft_datetimepicker.xdsoft_dark .xdsoft_copyright a:hover {
-  color: #555555 !important;
+  color: #555 !important;
 }
 #bb5-ui .xdsoft_dark .xdsoft_time_box {
   border: 1px solid #333;
 }
 #bb5-ui .xdsoft_dark .xdsoft_scrollbar > .xdsoft_scroller {
   background: #333 !important;
-}
-#bb5-ui .xdsoft_datetimepicker .xdsoft_save_selected {
-  display: block;
-  border: 1px solid #dddddd !important;
-  margin-top: 5px;
-  width: 100%;
-  color: #454551;
-  font-size: 13px;
-}
-#bb5-ui .xdsoft_datetimepicker .blue-gradient-button {
-  font-family: "museo-sans", "Book Antiqua", sans-serif;
-  font-size: 12px;
-  font-weight: 300;
-  color: #82878c;
-  height: 28px;
-  position: relative;
-  padding: 4px 17px 4px 33px;
-  border: 1px solid #d7d8da;
-  background: -moz-linear-gradient(top, #ffffff 0%, #f4f8fa 73%);
-  /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(73%, #f4f8fa));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, #ffffff 0%, #f4f8fa 73%);
-  /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #ffffff 0%, #f4f8fa 73%);
-  /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #ffffff 0%, #f4f8fa 73%);
-  /* IE10+ */
-  background: linear-gradient(to bottom, #ffffff 0%, #f4f8fa 73%);
-  /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff', endColorstr='#f4f8fa', GradientType=0);
-  /* IE6-9 */
-}
-#bb5-ui .xdsoft_datetimepicker .blue-gradient-button:hover,
-#bb5-ui .xdsoft_datetimepicker .blue-gradient-button:focus,
-#bb5-ui .xdsoft_datetimepicker .blue-gradient-button:hover span,
-#bb5-ui .xdsoft_datetimepicker .blue-gradient-button:focus span {
-  color: #454551;
-  background: -moz-linear-gradient(top, #f4f8fa 0%, #ffffff 73%);
-  /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f4f8fa), color-stop(73%, #ffffff));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, #f4f8fa 0%, #ffffff 73%);
-  /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #f4f8fa 0%, #ffffff 73%);
-  /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #f4f8fa 0%, #ffffff 73%);
-  /* IE10+ */
-  background: linear-gradient(to bottom, #f4f8fa 0%, #ffffff 73%);
-  /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f4f8fa', endColorstr='#FFF', GradientType=0);
-  /* IE6-9 */
 }
 /*COLOR PICKER*/
 /*
@@ -8693,6 +8613,7 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   height: 218px;
 }
 #bb5-ui .bb5-ui-banner p {
+  line-height: 1.4em;
   margin-bottom: 5px;
 }
 #bb5-ui .bb5-ui-banner > .tab-content {
@@ -8724,7 +8645,7 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   padding-top: 5px;
 }
 #bb5-ui .bb5-ui-banner .tab-pane .tab-pane > .row > [class^="col-bb5-"] p {
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 #bb5-ui .bb5-ui-banner .tab-pane .tab-pane > .row > [class^="col-bb5-"] .bb5-3-row p {
   margin-bottom: 8px;
@@ -10577,7 +10498,12 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   position: fixed;
   bottom: 0;
 }
-/* END CONTENT */
+#bb5-ui .backbee-autocomplete {
+  border: 1px solid #D3D3D3;
+  background: "white";
+  position: "absolute";
+  width: "150px";
+}
 /* bb notify css start author http://tympanus.net/codrops/2012/06/25/timed-notifications-with-css-animations/ */
 #bb-box-wrapper {
   position: fixed;
@@ -10819,4 +10745,24 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   position: static !important;
   top: auto;
   left: auto;
+}
+.kw-wrapper.list-inline {
+  border: solid 1px #e0e0e0;
+  padding: 3px 3px 0 3px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+.kw-wrapper.list-inline .btn-rm-kw {
+  margin-bottom: 3px;
+}
+.kw-wrapper.list-inline .keyword-wrapper.list-inline {
+  margin-left: 0;
+}
+.kw-wrapper.list-inline .keyword-wrapper.list-inline li {
+  padding: 0 2px;
+}
+.kw-wrapper.list-inline input.kw-editor {
+  border-width: 0;
 }
