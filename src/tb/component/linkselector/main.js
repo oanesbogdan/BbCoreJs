@@ -36,9 +36,9 @@ define(
         'component!rangeselector',
         'component!formbuilder',
         'component!mask',
-        'component!siteselector',
         'text!ls-templates/layout.twig',
         'text!ls-templates/page-item.twig',
+        'component!siteselector',
         'jquery-layout',
         'jsclass'
     ],
