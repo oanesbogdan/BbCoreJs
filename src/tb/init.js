@@ -49,7 +49,10 @@ define(function () {
             },
 
             load: function (removeSession) {
-                var self = this;
+                var self = this,
+                    loader = document.getElementById('backbee-loader');
+
+                loader.classList.add('visible');
                 require(['vendor'], function () {
                     require(['Core', 'component!session', 'jquery'], function (Core, session, jQuery) {
 
@@ -70,6 +73,7 @@ define(function () {
                                 'component!translator'
                             ],
                             function (DriverHandler, RestDriver, Renderer, Translator) {
+                                loader.classList.remove('visible');
 
                                 RestDriver.setBaseUrl(Core.get('api_base_url'));
                                 DriverHandler.addDriver('rest', RestDriver);
