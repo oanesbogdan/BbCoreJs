@@ -38,10 +38,13 @@ define(
                     data = null;
 
                 if (span.text() === 'updated') {
+                    data = '';
                     date = new Date(value);
-                    ts = date.getTime() / 1000;
-                    if (!isNaN(ts)) {
-                        data = ts;
+                    if (date !== 'Invalid Date') {
+                        ts = date.getTime() / 1000;
+                        if (!isNaN(ts)) {
+                            data = ts;
+                        }
                     }
                 }
 
