@@ -196,6 +196,7 @@ define('tb.component/popin/main', ['Core', 'tb.component/popin/PopIn', 'jquery',
 
             if (typeof parent === 'object' && typeof parent.isA === 'function' && parent.isA(PopIn)) {
                 parent.addChild(popIn);
+                popIn.parent = parent;
             } else {
                 throw 'Provided parent is not a PopIn object';
             }
@@ -232,7 +233,7 @@ define('tb.component/popin/main', ['Core', 'tb.component/popin/PopIn', 'jquery',
                     jQuery('#' + popIn.getId()).on('dialogclose', function () {
                         self.hide(popIn);
                     });
-                    
+
                     jQuery("#" + popIn.getId()).on('dialogfocus', jQuery.proxy(this.handleFocus, this, popIn));
 
                     jQuery("#" + popIn.getId()).on('dialogopen', function (event) {
