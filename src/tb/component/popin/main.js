@@ -208,7 +208,10 @@ define('tb.component/popin/main', ['Core', 'tb.component/popin/PopIn', 'jquery',
          * @param {PopIn} popIn the pop-in to display
          */
         display: function (popIn) {
-            var self = this;
+            var self = this,
+                dialogWrapper,
+                parentZIndex;
+
             if (popIn.isClose()) {
                 popIn.open();
 
@@ -229,11 +232,20 @@ define('tb.component/popin/main', ['Core', 'tb.component/popin/PopIn', 'jquery',
                     jQuery('#' + popIn.getId()).on('dialogclose', function () {
                         self.hide(popIn);
                     });
-                    /*deal with focus*/
+                    
                     jQuery("#" + popIn.getId()).on('dialogfocus', jQuery.proxy(this.handleFocus, this, popIn));
-                }
 
-                jQuery('#' + popIn.getId()).dialog('open');
+                    jQuery("#" + popIn.getId()).on('dialogopen', function (event) {
+
+                        if (popIn.parent) {
+                            parentZIndex = jQuery('#' + popIn.parent.getId()).zIndex();
+                            dialogWrapper = jQuery(event.currentTarget).closest(".ui-dialog").eq(0);
+                            jQuery(dialogWrapper).zIndex(parentZIndex + 1);
+                        }
+                    });
+
+                    jQuery('#' + popIn.getId()).dialog('open');
+                }
             }
         },
 
