@@ -100,7 +100,7 @@ define(
             },
 
             triggerLink: function (event) {
-                var target = jQuery(event.target),
+                var target = jQuery(event.currentTarget),
                     link = target.attr('href'),
                     method = target.attr('data-http-method');
                 this.sendRequest(method, link);
