@@ -262,6 +262,13 @@ define([
                 }
             });
 
+            jQuery(window).resize(function () {
+                parent.css({
+                    height: window.innerHeight - 192,
+                    width: document.body.clientWidth
+                });
+            });
+
             this.popin.display();
             this.popin.mask();
 
