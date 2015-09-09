@@ -46,12 +46,23 @@ define(
              * @param {Object} element
              */
             initialize: function (template, formTag, element) {
+                var maxEntry;
+
                 this.el = formTag;
                 this.template = template;
                 this.element = element;
                 this.elementSelector = 'form#' + this.el + ' .element_' + this.element.getKey();
                 this.bindEvents();
                 this.currentEditItem = null;
+
+                maxEntry = parseInt(this.element.config.max_entry, 10);
+                if (!isNaN(maxEntry)) {
+                    if (maxEntry <= 0) {
+                        maxEntry = null;
+                    }
+                }
+
+                this.maxEntry = maxEntry;
             },
 
             bindEvents: function () {
@@ -89,6 +100,10 @@ define(
                             element.val('');
                         }
                     }
+                });
+
+                Core.Mediator.subscribe('on:form:render', function () {
+                    self.updateAddButton();
                 });
             },
 
@@ -144,8 +159,20 @@ define(
                 });
             },
 
+            updateAddButton: function () {
+                var currentNodes = this.getCurrentNodes(),
+                    btn = jQuery(this.elementSelector + ' .' + this.nodeSelectorClass);
+
+                if (null !== this.maxEntry && this.maxEntry <= currentNodes.length) {
+                    btn.addClass('hidden');
+                } else {
+                    btn.removeClass('hidden');
+                }
+            },
+
             onTrash: function (event) {
                 jQuery(event.currentTarget).parent().remove();
+                this.updateAddButton();
             },
 
             onClick: function () {
@@ -215,6 +242,8 @@ define(
                 elementsWrapper.append(item);
 
                 this.pageTree.hide();
+
+                this.updateAddButton();
 
                 this.updateMoveBtn();
 
