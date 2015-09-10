@@ -5,29 +5,38 @@
 {% set col5 = 'col-bb5-6' %}
 {% set col6 = 'col-bb5-6' %}
 {% set col7 = 'col-bb5-3' %}
-<div id="content-library" style="height: 100%;">
-  <div id="content-library-pane-wrapper" class="bb5-windowpane-wrapper windowpane-treeview" style="height: 100%;">
-    <div class="ui-layout-north">
-      <div class="row">
-        <div class="col-bb5-100">
-          <div class="bb5-widget-toolbar list-options clearfix">
-            <div id="bb-page-management-pagination-view"></div>
-            <p id="bb-page-management-range-view" class="pull-right"></p>
+<div id="content-library" class="bb5-dialog" style="display: block; height:100%">
+  <div id="content-library-pane-wrapper" class="bb5-windowpane-wrapper windowpane-treeview">
+
+    <div class="bb5-windowpane-tree ui-layout-pane ui-layout-west">
+
+      <div class="inner-center layout-overflow-scroll">
+        <div class="bb5-windowpane-tree-inner">
+          <div class="bb5-windowpane-treewrapper">
+            <div class="bb5-windowpane-treewrapper-inner jstree jstree-3 jstree-focused jstree-bb5">
+              <div id="bb-page-management-tree-view" class="bb5-treeview"></div>
+            </div>
           </div>
         </div>
       </div>
-    </div><!--/.ui-layout-north-->
 
-    <div class="ui-layout-pane ui-layout-west">
-      <div id="bb-page-management-tree-view" class="bb5-windowpane-tree"></div>
-      <div>
+      <div class="ui-layout-south">
         <a id="bb-page-management-trash-view" href="#"><i class="fa fa-trash-o"></i> {{ 'trash'|trans }}</a>
-      </div>
-    </div>
-    <div class="bb5-windowpane-main ui-layout-pane ui-layout-center">
+      </div><!--/.ui-layout-south-west-->
+    </div><!--/.ui-layout-west-->
 
-      <div class="inner-center layout-overflow-scroll">
-        <div class="bb5-list-data-toolbar bb5-toolbar-order">
+    <div class="bb5-windowpane-main ui-layout-pane ui-layout-center">
+      <div id="bb-windowpane-north" class="ui-layout-north">
+        <div class="row">
+          <div class="col-bb5-100">
+            <div class="bb5-widget-toolbar list-options clearfix">
+              <div id="bb-page-management-pagination-view"></div>
+              <p id="bb-page-management-range-view" class="pull-right"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bb5-list-data-toolbar bb5-toolbar-order"><!--table header-->
           <div class="row">
             <p class="bb5-toolbar-order-col {{ col7 }}">
               <input id="bb-page-manage-select-all" type="checkbox">
@@ -49,12 +58,13 @@
             </p>
           </div>
         </div><!--/.bb5-list-data-toolbar-->
-        <div id="bb-page-management-data-view">
+      </div><!--/.ui-layout-center-north-->
 
-        </div><!--/.bb5-list-users : list -->
-      </div><!--/.inner-center-->
+      <div id="bb-windowpane-center" class="inner-center layout-overflow-scroll">
+        <div id="bb-page-management-data-view"></div><!--/.bb5-list-users : list -->
+      </div><!--/.inner-center-center-->
 
-      <div class="ui-layout-south">
+      <div id="bb-windowpane-south" class="ui-layout-south">
         <p class="selection-toolbar">
           <i class="fa fa-level-up fa-rotate-90"></i> {{ 'apply_to_all_selected_pages'|trans }}
           <select id="bb-page-manage-grouped-action" class="max-per-page-selector input-xs">
@@ -65,8 +75,7 @@
             {#<option value="changeParentGrouped">{{ 'change_parent'|trans }}</option>#}
           </select>
         </p>
-      </div><!--/.ui-layout-south-->
-
-    </div>
+      </div><!--/.ui-layout-center-south-->
+    </div><!--/.ui-layout-center-->
   </div>
 </div><!--id:content-library-->
