@@ -123,12 +123,12 @@ define([
                 closable: false,
                 west__childOptions: {
                     center__paneSelector: '.inner-center',
-                    north__paneSelector: '.ui-layout-north'
+                    south__paneSelector: '.ui-layout-south'
                 },
                 center__childOptions: {
-                    center__paneSelector:   '.inner-center',
-                    north__paneSelector:    '.ui-layout-north',
-                    south__paneSelector:    '.ui-layout-south'
+                    center__paneSelector: '.inner-center',
+                    north__paneSelector: '.ui-layout-north',
+                    south__paneSelector: '.ui-layout-south'
                 }
             });
             this.layout.resizeAll();
@@ -193,6 +193,12 @@ define([
                 this.pageStore.applyFilter('byTrash', [4]);
                 this.pageStore.execute();
             }.bind(this));
+        },
+
+        resizeCenterPane: function () {
+            jQuery('#bb-windowpane-center').height(
+                jQuery('#content-library-pane-wrapper').height() - (jQuery('#bb-windowpane-north').height() + jQuery('#bb-windowpane-south').height() + 20)
+            );
         },
 
         bindGroupedActions: function () {
@@ -267,7 +273,9 @@ define([
                     height: window.innerHeight - 192,
                     width: document.body.clientWidth
                 });
-            });
+                jQuery('#content-library-pane-wrapper').layout().resizeAll();
+                this.resizeCenterPane();
+            }.bind(this));
 
             this.popin.display();
             this.popin.mask();
@@ -288,7 +296,8 @@ define([
 
             this.pagination.on('afterRender', function () {
                 jQuery('#content-library-pane-wrapper').layout().resizeAll();
-            });
+                this.resizeCenterPane();
+            }.bind(this));
             this.pagination.render('#bb-page-management-pagination-view', 'replaceWith');
 
             this.dataview.render('#bb-page-management-data-view');
