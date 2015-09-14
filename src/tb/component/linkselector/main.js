@@ -160,7 +160,7 @@ define(
                     config = {
                         elements: {
                             url: {
-                                type: 'text',
+                                type: 'url',
                                 label: 'URL'
                             }
                         },
