@@ -27,22 +27,8 @@ define(['Core', 'page.view.tree.contribution', 'jquery'], function (Core, Parent
          * Event trigged on double click in node tree
          * @param {Object} event
          */
-        onDoubleClick: function (event) {
-            if (event.node.is_fake === true) {
-                return;
-            }
-
-            var element = jQuery(event.node.element),
-                children = element.children('.jqtree-element'),
-                westBlock = element.parents('.ui-layout-west');
-
-            westBlock.find('.txt-highlight').removeClass('txt-highlight');
-            children.find('span').addClass('txt-highlight');
-
-            PageStore.applyFilter('byStatus', [0, 1, 2, 3]);
-            PageStore.applyFilter('byOffset', 1);
-            PageStore.applyFilter('byParent', event.node.uid);
-            PageStore.execute();
+        onDoubleClick: function () {
+            return;
         },
 
         setPageStore: function (pageStore) {
@@ -63,6 +49,24 @@ define(['Core', 'page.view.tree.contribution', 'jquery'], function (Core, Parent
                     var rootNode = tree.invoke('getNodeById', Core.get('root.uid'));
 
                     jQuery(rootNode.element).children('div.jqtree-element').find('span').addClass('txt-highlight');
+                });
+
+                self.treeView.on('click', function (event) {
+                    if (event.node.is_fake === true) {
+                        return;
+                    }
+
+                    var element = jQuery(event.node.element),
+                        children = element.children('.jqtree-element'),
+                        westBlock = element.parents('.ui-layout-west');
+
+                    westBlock.find('.txt-highlight').removeClass('txt-highlight');
+                    children.find('span').addClass('txt-highlight');
+
+                    PageStore.applyFilter('byStatus', [0, 1, 2, 3]);
+                    PageStore.applyFilter('byOffset', 1);
+                    PageStore.applyFilter('byParent', event.node.uid);
+                    PageStore.execute();
                 });
             });
 

@@ -201,7 +201,7 @@ define([
         bindTrash: function () {
             var self = this;
 
-            jQuery('#bb-page-management-trash-view').dblclick(function (event) {
+            jQuery('#bb-page-management-trash-view').on('click', function (event) {
                 var element = jQuery(event.currentTarget),
                     westBlock = self.selector.find('.ui-layout-west');
 
@@ -231,7 +231,7 @@ define([
             });
 
             this.selector.on('click', '.' + this.itemLineClass, function () {
-                var input = jQuery(this).find('.' + self.inputItemClass);
+                var input = jQuery(this).parent('li').find('.' + self.inputItemClass);
 
                 if (input.length > 0) {
                     input.prop('checked', !input.is(':checked'));
