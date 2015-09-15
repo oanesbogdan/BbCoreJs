@@ -5,24 +5,23 @@
 {% set col5 = 'col-bb5-6' %}
 {% set col6 = 'col-bb5-6' %}
 {% set col7 = 'col-bb5-3' %}
-<li class="bb5-list-data-item bb-page-manage-item-line">
+<li class="bb5-list-data-item">
   <p class="{{ col7 }}">
     <input data-identifier="{{ page.uid }}" class="bb-page-manage-select-page" type="checkbox">
   </p>
-  <p class="{{ col1 }}">
+  <p class="{{ col1 }} bb-page-manage-item-line">
     <label>{{ page.title }}</label>
   </p>
-  <p class="{{ col2 }}">
+  <p class="{{ col2 }} bb-page-manage-item-line">
     {{ page.state }}
   </p>
-  <p class="{{ col3 }}">
+  <p class="{{ col3 }} bb-page-manage-item-line">
     {{ page.layout_label }}
   </p>
-  <p class="{{ col4 }}">
+  <p class="{{ col4 }} bb-page-manage-item-line">
     {{ page.modified }}
   </p>
   <p class="{{ col6 }}">
     <button type="button" class="btn btn-delete btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-    <a href="{{ page.uri }}" target="_blank" type="button" title="{{ trans('see') }}" class="btn btn-default btn-sm"><i class="fa fa-external-link"></i></a>
   </p>
 </li>

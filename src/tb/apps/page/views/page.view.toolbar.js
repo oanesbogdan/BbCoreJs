@@ -85,6 +85,8 @@ define([
                 }
             }.bind(this));
 
+            this.pageStore.unApplyFilter('byParent');
+
             this.pageStore.execute();
         },
 
