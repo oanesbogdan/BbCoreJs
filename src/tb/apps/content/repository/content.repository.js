@@ -122,7 +122,7 @@ define(
                     }
 
                     if (null !== currentPageUid) {
-                        data.page = currentPageUid;
+                        data.page_uid = currentPageUid;
                     }
 
                     request.setData(data);
