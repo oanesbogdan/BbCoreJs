@@ -19,13 +19,14 @@
 
 define(
     [
+        'Core',
         'Core/DriverHandler',
         'Core/RestDriver',
         'Core/RequestHandler',
         'Core/Request',
         'jquery'
     ],
-    function (CoreDriverHandler, CoreRestDriver, RequestHandler, Request, jQuery) {
+    function (Core, CoreDriverHandler, CoreRestDriver, RequestHandler, Request, jQuery) {
 
         'use strict';
 
@@ -110,14 +111,21 @@ define(
                  */
                 getHtml: function (type, uid, renderMode) {
                     var request = new Request(),
-                        url = '/rest/1/' + resourceName + '/' + type + '/' + uid;
+                        url = '/rest/1/' + resourceName + '/' + type + '/' + uid,
+                        currentPageUid = Core.get('page.uid'),
+                        data = {};
 
                     request.addHeader('Accept', 'text/html');
 
-                    if (renderMode !== undefined) {
-                        url = url + '?mode=' + renderMode;
+                    if (undefined !== renderMode) {
+                        data.mode = renderMode;
                     }
 
+                    if (null !== currentPageUid) {
+                        data.page = currentPageUid;
+                    }
+
+                    request.setData(data);
                     request.setUrl(url);
 
                     return RequestHandler.send(request);
