@@ -63,10 +63,16 @@ define(['Core', 'bundle.view.list', 'bundle.view.index'], function (Core, ListVi
 
         adminService: function (req, bundle) {
             var View = req('bundle/views/admin.view'),
-                adminView = new View({bundle: bundle});
+                adminView = Core.get('current_admin_view'),
+                currentBundle = Core.get('current_bundle');
 
-            Core.set('currentAdminView', adminView);
-            adminView.render();
+            if (undefined === adminView || currentBundle !== bundle) {
+                adminView = new View({bundle: bundle});
+                Core.set('current_admin_view', adminView);
+                Core.set('current_bundle', bundle);
+            }
+
+            adminView.display();
         },
 
         /**

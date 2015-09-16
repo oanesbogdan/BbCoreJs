@@ -172,7 +172,6 @@ define(
             display: function () {
                 this.popin.display();
                 this.bindAction();
-                return this.dfd.promise();
             },
 
             destruct: function () {
