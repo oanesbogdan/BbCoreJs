@@ -52,6 +52,7 @@ define(
                     this.checkParameters();
 
                     this.popinTemplate = jQuery(Renderer.render(popinTemplate)).clone();
+
                     this.popIn = this.createPopIn();
                     this.popIn.setContent(this.popinTemplate);
                     this.popIn.addOption("create", jQuery.proxy(this.initOnCreate, this));
@@ -68,13 +69,21 @@ define(
                  * @param {Function} func
                  * @param {Object} context
                  */
-                on: function (actionClass, func, context) {
+                on: function (event, actionClass, func, context) {
 
                     context = context || null;
 
-                    if (typeof func === 'function') {
-                        this.popinTemplate.on('click', '.' + actionClass, jQuery.proxy(func, context));
+                    if (typeof event === "string" && typeof func === 'function') {
+                        this.popinTemplate.on(event, actionClass, jQuery.proxy(func, context));
                     }
+                },
+
+                showFilter: function () {
+                    jQuery(this.popinTemplate).find(".folder-filter").removeClass("hidden").show();
+                },
+
+                hideFilter: function () {
+                    jQuery(this.popinTemplate).find(".folder-filter").addClass("hidden").hide();
                 },
 
                 getPopIn: function () {

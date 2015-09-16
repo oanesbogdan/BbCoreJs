@@ -72,6 +72,7 @@ define(
                     treePromise = Core.ApplicationManager.invokeService('page.main.tree', config);
                     treePromise.done(function (pageTreeContribution) {
                         pageTreeContribution.view.on("rootIsLoaded", function () {
+                            pageTreeContribution.view.showFilter();
                             pageTreeContribution.selectPage(Core.get("page.uid"));
                         });
 
