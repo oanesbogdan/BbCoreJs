@@ -48,7 +48,7 @@ define(['jquery', 'Core/Renderer', 'text!main/tpl/toolbar', 'component!translato
                     },
                     {
                         label: translator.translate('page_management'),
-                        text: translator.translate('page'),
+                        text: translator.translate('page_management'),
                         url: '#/page/manage',
                         active: false
                     },
