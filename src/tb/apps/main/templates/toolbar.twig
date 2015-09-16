@@ -4,13 +4,13 @@
         {% for menu in menus %}
             <li{% if menu.items %} class="dropdown"{% endif %}>
                 <a{% if menu.items %} class="dropdown-toggle"{% endif %} id="{{ menu.label }}-menu" href="{{ menu.url }}">
-                    {{ menu.text|trans }}
+                    {{ menu.text }}
                 </a>
                 {% if menu.items %}
                     <ul aria-labelledby="{{ menu.label }}" role="menu" class="dropdown-menu">
                         {% for item in menu.items %}
                             <li>
-                                <a data-toggle="tab" class="bb-item-menu" tabindex="-1" href="{{ item.url }}">{{ item.text|trans }}</a>
+                                <a data-toggle="tab" class="bb-item-menu" tabindex="-1" href="{{ item.url }}">{{ item.text }}</a>
                             </li>
                         {% endfor %}
                     </ul>
