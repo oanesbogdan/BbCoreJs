@@ -27,6 +27,7 @@ define([
         chooseActionSelectClass: 'bb-page-manage-grouped-action',
         selectAllClass: 'bb-page-manage-select-all',
         itemLineClass: 'bb-page-manage-item-line',
+        seeClass: 'btn-see',
 
         /**
          * Initialize of PageViewReview
@@ -312,6 +313,11 @@ define([
             jQuery('#content-library-pane-wrapper').on('click', '.btn-delete', function () {
                 this.deletePage(this.retrieveUid(event.target));
             }.bind(this));
+
+            this.selector.on('click', '.' + this.seeClass, function () {
+                localStorage.removeItem('current_url');
+                window.open(jQuery(this).data('href'));
+            });
 
             this.tree.renderIn('#bb-page-management-tree-view');
             this.range.render('#bb-page-management-range-view');
