@@ -69,12 +69,10 @@ define(
                     onCreateLi: this.onCreateLi,
                     id: this.config.popinId || 'bb-page-tree',
                     onCanMove: function (node) {
-                        if (node.is_fake) {
+                        if (node.is_fake || node.has_ellipsis) {
                             return false;
                         }
-                        if (node.has_ellipsis === true) {
-                            return false;
-                        }
+                        return true;
                     }
                 };
 
