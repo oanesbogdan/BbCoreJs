@@ -29,7 +29,7 @@ define(
         'Core/RequestHandler',
         'component!translator'
     ],
-    function (Core, ApplicationManager, TreeView, ContextMenu, PageRepository, jQuery, Request, RequestHandler, Translator) {
+    function (Core, ApplicationManager, PageTreeView, ContextMenu, PageRepository, jQuery, Request, RequestHandler, Translator) {
 
         'use strict';
 
@@ -46,7 +46,7 @@ define(
              */
             initialize: function (config) {
                 jQuery.extend(this, {}, Backbone.Events);
-                this.view = new TreeView(config);
+                this.view = new PageTreeView(config);
                 this.treeView = this.view.treeView;
                 this.autoLoadRoot = false;
                 if (config.hasOwnProperty("autoLoadRoot") && config.autoLoadRoot === true) {
@@ -55,6 +55,9 @@ define(
                 this.bindEvents();
             },
 
+            showFilter: function () {
+                this.view.showFilter();
+            },
             /**
              * Bind events to tree
              */

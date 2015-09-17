@@ -55,6 +55,11 @@ define(
                 this.initializeTree();
             },
 
+            showFilter: function () {
+                if (this.config.popin === true) {
+                    this.tree.showFilter();
+                }
+            },
             /**
             * Initialize tree
             */
@@ -78,6 +83,7 @@ define(
                 if (this.config.popin === true) {
                     this.tree = Tree.createPopinTreeView(config);
                     this.treeView = this.tree.treeView;
+                    this.tree.on("click", ".show_folder_action", this.handleSectionFilter, this);
                     Core.ApplicationManager.invokeService('content.main.registerPopin', 'treeView', this.tree);
                 } else {
                     this.treeView = this.tree = Tree.createTreeView(config);
@@ -85,6 +91,47 @@ define(
 
                 this.bindDefaultEvents();
             },
+
+            handleSectionFilter: function (e) {
+                this.config.only_section = jQuery(e.target).is(":checked");
+                this.previousTree = {};
+                var leafSelector = "li.jqtree_common:not(.jqtree-folder)";
+                if (this.config.only_section) {
+                    this.saveTreeActions = true;
+                    this.nodeActionMemory = [];
+                    jQuery(this.treeView.treeEl).find(leafSelector).hide();
+                } else {
+                    this.saveTreeActions = false;
+                    jQuery(this.treeView.treeEl).find(leafSelector).show();
+                    this.handleNodeActionMemory();
+                }
+            },
+
+            handleNodeActionMemory: function () {
+                var memorizedNode,
+                    self = this;
+
+                jQuery.each(this.nodeActionMemory, function (i) {
+                    memorizedNode = self.treeView.getNodeById(self.nodeActionMemory[i]);
+                    if (memorizedNode) {
+                        memorizedNode.before_load = true;
+                       /* remove children too if they exist */
+                        jQuery.each(memorizedNode.children, function (i) {
+                            self.treeView.invoke("removeNode", memorizedNode.children[i]);
+                        });
+
+                        self.treeView.invoke("closeNode", memorizedNode);
+                        self.treeView.invoke("openNode", memorizedNode);
+
+                    }
+                });
+                this.nodeActionMemory = null;
+            },
+
+            loadFreeLeafTree: function () {
+                this.getTree();
+            },
+
 
             /**
             * Event trigged when LI is created
@@ -149,6 +196,10 @@ define(
                 }
 
                 if (event.node.before_load === true) {
+                    if (this.saveTreeActions) {
+                        this.nodeActionMemory.push(event.node.id);
+                    }
+
                     self.findPages(event.node, 0).done(function (data) {
                         self.insertDataInNode(data, event.node);
                         if (self.treeView.isRoot(event.node)) {
