@@ -9275,12 +9275,10 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   margin: 0;
   min-height: 1px;
 }
-#bb5-ui .bb5-list-display-list .btn-edit,
-#bb5-ui .bb5-list-display-list .btn-delete {
+#bb5-ui .bb5-list-display-list .btn {
   font-size: 0.000001em;
 }
-#bb5-ui .bb5-list-display-list .btn-edit i,
-#bb5-ui .bb5-list-display-list .btn-delete i {
+#bb5-ui .bb5-list-display-list .btn i {
   font-size: 14px;
   margin: 0;
 }
