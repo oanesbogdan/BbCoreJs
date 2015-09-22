@@ -328,6 +328,7 @@ define(
                     }
                 }
 
+
                 if (node.range_total > children.length && this.config.do_pagination === true) {
                     this.treeView.invoke('appendNode', this.buildNode('next results...', {
                         'is_fake': true
@@ -392,6 +393,7 @@ define(
                             self.unmask();
                             self.handleLastNode(pageUid, ancestor);
 
+
                         }
                     });
                 };
@@ -417,12 +419,17 @@ define(
 
             handleNewNode: function (node, parentNode, nodeChildren) {
                 /* case 1: The node is already in the tree: open it silently */
-                var pageNode = this.treeView.getNodeById(node.uid);
+                var pageNode = this.treeView.getNodeById(node.uid),
+                    rangeInfos = {};
 
                 if (pageNode) {
                     /* as root is loaded by default add nothing to root */
                     if (!parentNode) { return; }
-                    this.insertDataInNode(nodeChildren, pageNode);
+                    /* preserve range info */
+                    rangeInfos.range_total = parentNode.range_total;
+                    rangeInfos.range_to = parentNode.range_to;
+                    rangeInfos.range_from = parentNode.range_from;
+                    this.insertDataInNode(nodeChildren, jQuery.extend(pageNode, rangeInfos));
                 } else {
 
                     /* case 2: the node hasn't been loaded yet */
@@ -455,7 +462,6 @@ define(
 
             addEllipsisNode: function (node, parentNode, nodeChildren) {
                 var ellipsis_before;
-
                 if (parentNode) {
                     parentNode = this.treeView.getNodeById(parentNode.uid);
                 }
