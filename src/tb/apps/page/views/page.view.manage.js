@@ -12,7 +12,8 @@ define([
     'component!pagination',
     'content.repository',
     'component!notify',
-    'component!translator'
+    'component!translator',
+    'jquery-layout'
 ], function (jQuery, repository, Core, Renderer, template) {
 
     'use strict';
