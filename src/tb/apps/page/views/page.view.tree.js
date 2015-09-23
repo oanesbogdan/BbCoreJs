@@ -68,6 +68,8 @@ define(
                     dragAndDrop: true,
                     onCreateLi: this.onCreateLi,
                     id: this.config.popinId || 'bb-page-tree',
+                    height: 400 > jQuery(window).height() - 40 ? jQuery(window).height() - 40 : 400,
+
                     onCanMove: function (node) {
                         if (node.is_fake || node.has_ellipsis) {
                             return false;
