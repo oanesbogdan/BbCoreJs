@@ -55,6 +55,8 @@ define(
                         Core.exception('MissingPropertyException', 500, 'Property "elements" not found');
                     }
 
+                    Core.Mediator.publish('on:form:preRender', config);
+
                     config = jQuery.extend({}, config);
 
                     this.mappingRequire = [];
