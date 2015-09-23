@@ -34,7 +34,8 @@ define(['page.abstract.form', 'jquery', 'jsclass'], function (Form, jQuery) {
                         target: this.form.target,
                         redirect: this.form.redirect,
                         layout_uid: this.form.layout_uid
-                    }
+                    },
+                    form_name: 'new-page'
                 };
 
             this.getLayoutsObject().done(function (layoutObject) {
@@ -56,7 +57,9 @@ define(['page.abstract.form', 'jquery', 'jsclass'], function (Form, jQuery) {
                         redirect: this.form.redirect,
                         layout_uid: this.form.layout_uid,
                         state: this.form.state
-                    }
+                    },
+                    form_name: 'edit-page',
+                    page_uid: page_uid
                 },
                 self = this;
 
