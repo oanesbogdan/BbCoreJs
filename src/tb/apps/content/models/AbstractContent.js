@@ -234,6 +234,8 @@ define(
                     ContentRepository.findData(this.type, this.uid).done(function (data) {
                         self.data = data;
                         dfd.resolve(func(data, key));
+                    }).fail(function (data, response) {
+                        dfd.reject(data, response);
                     });
                 } else {
                     if (async === false) {

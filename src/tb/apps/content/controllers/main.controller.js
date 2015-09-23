@@ -30,6 +30,7 @@ define(
         'definition.manager',
         'content.repository',
         'revision.repository',
+        'keyword.repository',
         'component!revisionselector',
         'jquery',
         'content.widget.DialogContentsList',
@@ -47,6 +48,7 @@ define(
         DefinitionManager,
         ContentRepository,
         RevisionRepository,
+        KeywordRepository,
         RevisionSelector,
         jQuery,
         DialogContentsList,
@@ -111,6 +113,10 @@ define(
              */
             getRepositoryService: function () {
                 return this.repository;
+            },
+
+            getKeywordRepositoryService: function () {
+                return KeywordRepository;
             },
 
             /**
