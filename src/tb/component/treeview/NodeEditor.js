@@ -88,8 +88,8 @@ define(['jquery', 'BackBone', 'jsclass'], function (jQuery, BackBone) {
             }
             if (!node) {
                 return false;
-
             }
+
             this.isEditing = true;
             this.currentNode = node;
             jQuery(node.element).hide();
@@ -99,6 +99,7 @@ define(['jquery', 'BackBone', 'jsclass'], function (jQuery, BackBone) {
         },
 
         cancelEdition: function () {
+            if (!this.isEditing) { return; }
             var node = this.tree.getNodeById('node-editor');
             if (node) {
                 this.tree.removeNode(node);

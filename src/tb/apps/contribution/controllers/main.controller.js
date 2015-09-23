@@ -15,7 +15,9 @@ define(['Core', 'contribution.view.index', 'jquery'], function (Core, IndexView,
         onInit: function () {
             this.mainApp = Core.get('application.main');
             this.mediaLibraryIsLoaded = false;
-            this.mediaLibrary = false;
+            this.kwEditorIsLoaded = false;
+            this.mediaLibrary = null;
+            this.kwEditor = null;
         },
 
         indexService: function () {
@@ -68,6 +70,24 @@ define(['Core', 'contribution.view.index', 'jquery'], function (Core, IndexView,
          */
         indexAction: function () {
             this.indexService();
+        },
+
+
+        showKeywordEditorService: function (config) {
+            var self = this;
+
+            if (!this.kwEditorIsLoaded) {
+                require(["component!keywordseditor"], function (kwEditorComponent) {
+                    if (self.kwEditorIsLoaded) { return; }
+                    self.kwEditor = kwEditorComponent.createKeywordEditor(config);
+                    self.kwEditor.display();
+                    self.kwEditorIsLoaded = true;
+                });
+            } else {
+                self.kwEditor.display();
+            }
+
+
         },
 
         showMediaLibraryService: function (config) {

@@ -201,7 +201,6 @@ define(
                 initComponents: function () {
                     this.mediaFolderDataStore = require("mediaFolder.datastore").getDataStore();
                     this.mediaDataStore = require('media.datastore').getDataStore();
-                    this.maskMng = require('component!mask').createMask({});
                     this.mediaFolderTreeView = this.createMediaFolderView();
                     this.mediaListView = this.createMediaListView();
                     this.maskMng = require('component!mask').createMask({});

@@ -360,6 +360,18 @@ define(
                     this.setStart((page - 1) * this.limit);
                 },
 
+                find: function (uid) {
+                    var dfd = new jQuery.Deferred(),
+                        self = this;
+                    this.trigger("processing");
+                    this.restHandler.read(this.config.resourceEndpoint, {id: uid}).done(function (node) {
+                        dfd.resolve(node);
+                    }).fail(dfd.reject).always(function () {
+                        self.trigger("doneProcessing");
+                    });
+                    return dfd.promise();
+                },
+
                 remove: function (itemData) {
                     this.trigger("processing");
                     var self = this,

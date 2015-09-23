@@ -61,9 +61,11 @@
     "create": "Create",
     "create_a_draft": "Create a draft",
     "create_a_folder": "Create a folder",
+    "create_a_keyword": "Create a keyword",
     "create_a_new": "Create a new",
     "create_a_page": "Create a page",
     "create_group": "Create group",
+
     "create_user": "Create user",
     "created_before": "Created before",
     "created_after": "Created after",
@@ -125,6 +127,8 @@
     "import": "Import",
     "inactive": "Inactive",
     "internal_link": "Internal link",
+
+    "keywords_editor": "Keywords editor",
 
     "last_name": "Last name",
     "layout": "Layout",

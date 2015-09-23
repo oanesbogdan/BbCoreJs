@@ -39,6 +39,7 @@ define(
                 element.on('click', '.bundle-toolbar-global-validate', this.manageValidate);
                 element.on('click', '.bundle-toolbar-global-cancel', this.manageCancel);
                 element.on("click", "#btn-show-mediaLibrary", this.showMediaLibrary);
+                element.on("click", "#keyword-editor", this.showKwEditor.bind(this));
             },
 
             showContentSelector: function () {
@@ -97,6 +98,10 @@ define(
 
             showMediaLibrary: function (config) {
                 return Core.ApplicationManager.invokeService('contribution.main.showMediaLibrary', config);
+            },
+
+            showKwEditor: function () {
+                Core.ApplicationManager.invokeService('contribution.main.showKeywordEditor');
             },
 
             manageMenu: function (event) {

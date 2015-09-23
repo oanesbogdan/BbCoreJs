@@ -110,8 +110,8 @@ define(['jquery', 'tb.component/treeview/NodeEditor', "BackBone", "lib.jqtree", 
             this.nodeEditor.createNode();
         },
 
-        cancelEdit: function () {
-            this.nodeEditor.cancel();
+        cancelEdition: function () {
+            this.nodeEditor.cancelEdition();
         },
 
         getEditedNode: function () {
