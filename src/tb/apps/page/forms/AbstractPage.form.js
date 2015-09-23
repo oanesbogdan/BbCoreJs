@@ -123,6 +123,8 @@ define(
                     }
                 }
 
+                config.object = object;
+
                 return config;
             }
         });
