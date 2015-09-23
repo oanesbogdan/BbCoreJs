@@ -178,7 +178,14 @@ define(
             },
 
             popinManagementService: function (req) {
+                var treePopin = jQuery('#bb-page-tree');
+
                 Core.Scope.register('page', 'management');
+
+                if (treePopin.length > 0) {
+                    treePopin.dialog('destroy').remove();
+                }
+
                 if (!this.manageView) {
                     var ManageView = req('page.view.manage');
                     this.manageView = new ManageView({'pageStore': PageStore});
