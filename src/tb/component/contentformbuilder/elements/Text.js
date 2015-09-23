@@ -64,6 +64,8 @@ define(
                     config.object_name = object.name;
 
                     dfd.resolve(config);
+                }).fail(function (data, response) {
+                    dfd.reject(data, response);
                 });
             }
         };

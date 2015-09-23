@@ -31,6 +31,7 @@ require.config({
         'content.repository': 'src/tb/apps/content/repository/content.repository',
         'revision.repository': 'src/tb/apps/content/repository/revision.repository',
         'resource.repository': 'src/tb/apps/content/repository/resource.repository',
+        'keyword.repository': 'src/tb/apps/content/repository/keyword.repository',
 
         //Components
         'content.manager': 'src/tb/apps/content/components/ContentManager',

@@ -34,21 +34,39 @@ define(
         'Core/Utils',
         'jsclass'
     ],
-    function (require, jQuery) {
+    function (require, jQuery, Core) {
         'use strict';
 
         var Utils = require('Core/Utils');
 
         return {
-            getConfig: function (classname, object) {
+            getConfig: function (classname, object, content) {
 
                 var dfd = jQuery.Deferred();
 
                 Utils.requireWithPromise(['ElementInterpreter!' + classname]).done(function (element) {
 
                     if (element !== null) {
-                        element.getConfig(object).done(function (config) {
+                        element.getConfig(object, content).done(function (config) {
                             dfd.resolve(config);
+                        }).fail(function (data, response) {
+                            if (404 === response.status) {
+
+                                Core.ApplicationManager.invokeService('content.main.getContentManager').done(function (service) {
+                                    service.createElement(object.type).done(function (data) {
+                                        service.buildElement({'type': object.type, 'uid': data.uid});
+
+                                        content.addElement(object.name, {'uid': data.uid, 'type': object.type});
+
+                                        object.uid = data.uid;
+                                        element.getConfig(object, content).done(function (newConfig) {
+                                            dfd.resolve(newConfig);
+                                        });
+                                    });
+                                });
+                            }
+
+                            return data;
                         });
                     } else {
                         dfd.resolve(null);

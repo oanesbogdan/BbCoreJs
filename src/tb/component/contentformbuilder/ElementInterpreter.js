@@ -26,6 +26,7 @@
         var association = {
                 'Element/Text': 'Text',
                 'Element/Image': 'Image',
+                'Element/Keyword': 'Keyword',
                 'scalar': 'Scalar'
             };
 

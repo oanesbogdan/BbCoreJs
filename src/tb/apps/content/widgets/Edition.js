@@ -87,14 +87,24 @@ define(
 
                             element = elements[key];
 
-                            object = {
-                                'type': (element.type === undefined) ? 'scalar' : element.type,
-                                'uid': element.uid,
-                                'name': key
-                            };
+                            if (jQuery.isArray(element)) {
+                                object = self.buildArrayObjectConfig(element, key);
+                            } else {
 
-                            if (object.type === 'scalar') {
-                                object.parent = self.content;
+                                if (null === element) {
+                                    element = {};
+                                    element.type = self.content.definition.accept[key][0];
+                                }
+
+                                object = {
+                                    'type': (element.type === undefined) ? 'scalar' : element.type,
+                                    'uid': element.uid,
+                                    'name': key
+                                };
+
+                                if (object.type === 'scalar') {
+                                    object.parent = self.content;
+                                }
                             }
 
                             elementArray.push(object);
@@ -107,6 +117,21 @@ define(
                 });
 
                 return dfd.promise();
+            },
+
+            buildArrayObjectConfig: function (elements, key) {
+                var accept = this.content.definition.accept[key],
+                    object = {};
+
+                if (undefined === accept) {
+                    return null;
+                }
+
+                object.type = accept[0];
+                object.name = key;
+                object.elements = elements;
+
+                return object;
             },
 
             buildConfig: function (parameters) {
@@ -145,8 +170,7 @@ define(
                     if (elementsArray.hasOwnProperty(key)) {
 
                         object = elementsArray[key];
-
-                        promises.push(ContentFormBuilder.getConfig(object.type, object));
+                        promises.push(ContentFormBuilder.getConfig(object.type, object, this.content));
                     }
                 }
 
@@ -173,22 +197,22 @@ define(
             onSubmit: function (data, form) {
                 var self = this;
                 self.popin.mask();
+
                 FormSubmitter.process(data, form).done(function (res) {
+                    self.computeData(res).done(function () {
+                        Core.ApplicationManager.invokeService('content.main.save').done(function (promise) {
+                            promise.done(function () {
+                                self.content.refresh().done(function () {
 
-                    self.computeData(res);
+                                    self.popin.unmask();
+                                    self.popin.hide();
 
-                    Core.ApplicationManager.invokeService('content.main.save').done(function (promise) {
-                        promise.done(function () {
-                            self.content.refresh().done(function () {
-
-                                self.popin.unmask();
-                                self.popin.hide();
-
-                                if (typeof self.config.onSave === "function") {
-                                    self.config.onSave(data);
-                                }
-                                self.config.onSave = null;
-                                self.config.onValidate = null;
+                                    if (typeof self.config.onSave === "function") {
+                                        self.config.onSave(data);
+                                    }
+                                    self.config.onSave = null;
+                                    self.config.onValidate = null;
+                                });
                             });
                         });
                     });
@@ -196,8 +220,10 @@ define(
             },
 
             computeData: function (data) {
-                var element,
+                var promises = [],
+                    element,
                     contentElements = this.content.data.elements,
+                    type,
                     key,
                     item,
                     value;
@@ -205,28 +231,118 @@ define(
                 for (key in data) {
 
                     if (data.hasOwnProperty(key)) {
+
                         value = data[key];
                         item = contentElements[key];
 
                         if (value !== null) {
                             if (typeof item === 'string') {
                                 if (item !== value) {
-                                    this.content.addElement(key, value);
+                                    promises.push(this.content.addElement(key, value));
                                 }
                             } else {
-                                element = ContentManager.buildElement(item);
 
-                                if (element.type === 'Element/Text') {
-                                    if (element.get('value') !== value) {
-                                        element.set('value', value);
-                                    }
+                                element = null;
+                                if (item !== null) {
+                                    element = ContentManager.buildElement(item);
+                                }
+
+                                if (null === element) {
+                                    type = this.content.definition.accept[key][0];
                                 } else {
-                                    element.setElements(value);
+                                    type = element.type;
+                                }
+
+                                if (type === 'Element/Text') {
+                                    if (element.get('value') !== value) {
+                                        promises.push(element.set('value', value));
+                                    }
+                                } else if (type === 'Element/Keyword') {
+                                    promises.push(this.setKeywordsElements(value, key));
+                                } else {
+                                    promises.push(element.setElements(value));
                                 }
                             }
                         }
                     }
                 }
+
+                return jQuery.when.apply(undefined, promises).promise();
+            },
+
+            setKeywordsElements: function (values, key) {
+                var data = [],
+                    dfd = jQuery.Deferred(),
+                    newKey = key,
+                    self = this;
+
+                this.computeKeywords(values, key).done(function () {
+                    var i;
+
+                    for (i in arguments) {
+                        if (arguments.hasOwnProperty(i)) {
+                            data.push(arguments[i]);
+                        }
+                    }
+
+                    self.content.addElement(newKey, data);
+                    dfd.resolve();
+                });
+
+                return dfd.promise();
+            },
+
+            computeKeywords: function (values, key) {
+                var i,
+                    value,
+                    promises = [],
+                    currentValues = this.content[key + '_values'];
+
+                if (undefined !== currentValues) {
+                    for (i in values) {
+                        if (values.hasOwnProperty(i)) {
+                            value = values[i];
+
+                            promises.push(this.findKeywordElement(value.uid, currentValues));
+                        }
+                    }
+                }
+
+                return jQuery.when.apply(undefined, promises).promise();
+            },
+
+            findKeywordElement: function (keywordUid, currentValues) {
+                var dfd = jQuery.Deferred(),
+                    key,
+                    keyword,
+                    element,
+                    found = false,
+                    object = {
+                        'type': 'Element/Keyword'
+                    };
+
+                for (key in currentValues) {
+                    if (currentValues.hasOwnProperty(key)) {
+
+                        keyword = currentValues[key];
+                        if (keyword.uid === keywordUid) {
+                            found = true;
+                            object.uid = keyword.object_uid;
+                            dfd.resolve(object);
+                        }
+                    }
+                }
+
+                if (!found) {
+                    ContentManager.createElement('Element/Keyword').done(function (data) {
+                        element = ContentManager.buildElement({'type': 'Element/Keyword', 'uid': data.uid});
+                        element.set('value', keywordUid);
+                        object.uid = data.uid;
+                        dfd.resolve(object);
+                    });
+                }
+
+                return dfd.promise();
             }
         };
 
