@@ -25,7 +25,8 @@ define(
         'Core/RequestHandler',
         'page.save.manager',
         'Core/Utils',
-        'page.store'
+        'page.store',
+        'jquery'
     ],
     function (
         Core,
@@ -34,7 +35,8 @@ define(
         RequestHandler,
         SaveManager,
         Utils,
-        PageStore
+        PageStore,
+        jQuery
     ) {
 
         'use strict';
@@ -178,7 +180,8 @@ define(
             },
 
             popinManagementService: function (req) {
-                var treePopin = jQuery('#bb-page-tree');
+                var treePopin = jQuery('#bb-page-tree'),
+                    ManageView;
 
                 Core.Scope.register('page', 'management');
 
@@ -187,7 +190,7 @@ define(
                 }
 
                 if (!this.manageView) {
-                    var ManageView = req('page.view.manage');
+                    ManageView = req('page.view.manage');
                     this.manageView = new ManageView({'pageStore': PageStore});
                     this.manageView.render();
                 } else {
