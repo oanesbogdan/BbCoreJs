@@ -66,12 +66,7 @@ define(
             },
 
             handleContentEvents : function () {
-
-                Core.Mediator.subscribe("on:content:save:click", jQuery.proxy(this.blurEditor, this));
-
-                Core.Mediator.subscribe("on:content:validate:click", jQuery.proxy(this.blurEditor, this));
-
-                Core.Mediator.subscribe("on:content:validate:click", jQuery.proxy(this.blurEditor, this));
+                jQuery(document).on('click', jQuery.proxy(this.blurEditor, this));
             },
 
             blurEditor: function () {
