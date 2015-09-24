@@ -37,7 +37,7 @@ define(
                 defaultConfig: {
                     height: 300,
                     width: 350,
-                    title: 'Page tree',
+                    title: 'popin title',
                     autoDisplay: true,
                     position: "left"
                 },
@@ -114,7 +114,6 @@ define(
                     if (this.isLoaded) {
                         return;
                     }
-
                     this.options.open();
                     this.isLoaded = true;
                 },

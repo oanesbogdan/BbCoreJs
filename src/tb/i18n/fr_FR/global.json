@@ -68,6 +68,8 @@
 
     "import": "Importer",
 
+    "keyword_editor": "Editeur de mots-clés",
+
     "last_name": "Nom de famille",
     "login": "Pseudo",
     "loading": "Chargement",
