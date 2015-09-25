@@ -236,7 +236,7 @@ define(
                         item = contentElements[key];
 
                         if (value !== null) {
-                            if (typeof item === 'string') {
+                            if (typeof item === 'string' || typeof item === 'number') {
                                 if (item !== value) {
                                     promises.push(this.content.addElement(key, value));
                                 }

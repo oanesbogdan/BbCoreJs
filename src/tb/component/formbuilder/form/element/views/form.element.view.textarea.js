@@ -40,7 +40,7 @@ define(['Core', 'Core/Renderer', 'BackBone'], function (Core, Renderer, Backbone
                         span = element.find('span.updated'),
                         oldValue = self.element.value;
 
-                    if (input.val() !== oldValue) {
+                    if (input.val().toString() !== oldValue.toString()) {
                         span.text('updated');
                     } else {
                         span.text('');
