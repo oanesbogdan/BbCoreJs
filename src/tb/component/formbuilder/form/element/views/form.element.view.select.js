@@ -53,7 +53,7 @@ define(['Core', 'Core/Renderer', 'BackBone', 'jquery'], function (Core, Renderer
                     } else {
                         for (key in data) {
                             if (data.hasOwnProperty(key)) {
-                                if (data[key] !== oldData[key]) {
+                                if (data[key].toSring() !== oldData[key].toString()) {
                                     updated = true;
                                     break;
                                 }
