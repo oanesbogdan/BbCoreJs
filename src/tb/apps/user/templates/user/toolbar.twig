@@ -1,5 +1,5 @@
 <div id="bb-current-user" class="nav navbar-nav pull-right">
-    <div class="btn-group dropdown">
+    <div class="dropdown">
         <button id="bb5-topmost-login" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-user"></i> {{ login }} <i class="fa fa-caret-down"></i>
         </button>
@@ -14,6 +14,14 @@
                     <i class="fa fa-unlock-alt"></i> {{ 'Change password'|trans }}
                 </a>
             </li>
+            <li role="separator" class="divider"></li>
+            <li class="dropdown-header">{{ 'Langue'|trans }}</li>
+            <li class="list-lang">
+            {% for key, locale in locales %}
+                <a href="#" data-locale="{{ key }}" class="bb-locale-btn btn btn-default btn-sm {% if key == current_locale %}active{% endif %}">{{ locale }}</a>
+            {% endfor %}
+            </li>
+            <li role="separator" class="divider"></li>
             <li>
                 <a href="#/user/logout" class="bb-service" data-service="logout">
                     <i class="fa fa-power-off"></i> {{ 'Logout'|trans }}

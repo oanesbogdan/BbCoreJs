@@ -41,12 +41,32 @@ define('tb.component/translator/main', ['component!logger', 'jquery', 'Core'], f
              * @param {Object} config
              */
             init: function (config) {
-                this.base = config.base;
+                this.config = config;
+                this.base = this.config.base;
+                this.default_locale = config.default_locale;
                 this.catalogs = {};
-                this.default_locale =  config.locale || 'en_US';
-                this.locale = this.default_locale;
-                this.loadCatalog(this.locale);
+                this.defineDefaultLocale();
+
                 Core.set('trans', this.translate.bind(this));
+            },
+
+            /**
+             * Define a locale according to current choice or browser
+             */
+            defineDefaultLocale: function () {
+                var locale = localStorage.getItem('locale');
+
+                if (null === locale) {
+                    locale = navigator.language;
+
+                    if (-1 !== locale.indexOf('-')) {
+                        locale = locale.replace('-', '_');
+                    } else {
+                        locale = locale + '_' + locale.toUpperCase();
+                    }
+                }
+
+                this.setLocale(locale);
             },
 
             /**
@@ -62,8 +82,9 @@ define('tb.component/translator/main', ['component!logger', 'jquery', 'Core'], f
              * @param {String} locale
              */
             setLocale: function (locale) {
-                this.loadCatalog(locale);
                 this.locale = locale;
+
+                localStorage.setItem('locale', locale);
             },
 
             /**
@@ -85,15 +106,12 @@ define('tb.component/translator/main', ['component!logger', 'jquery', 'Core'], f
              * @returns {String}
              */
             translate: function (key) {
-                var translation = key;
+                var catalog = this.getCatalog(this.locale),
+                    translation = catalog[key];
 
-                if (this.getCatalog(this.locale)[key] !== undefined) {
-                    translation = this.getCatalog(this.locale)[key];
-                } else if (this.locale !== this.default_locale && this.getCatalog(this.default_locale)[key] !== undefined) {
-                    Logger.notice('The key "' + key + '" has not translation in the selected catalog.');
-                    translation = this.getCatalog(this.default_locale)[key];
-                } else {
-                    Logger.warning('The key "' + key + '" is malformed.');
+                if (translation === undefined) {
+                    Logger.notice('The key "' + key + '" has not translation.');
+                    translation = key;
                 }
 
                 return translation;
@@ -105,10 +123,6 @@ define('tb.component/translator/main', ['component!logger', 'jquery', 'Core'], f
              * @returns {Object}
              */
             getCatalog: function (locale) {
-                if (this.catalogs[locale] === undefined) {
-                    this.loadCatalog(locale);
-                }
-
                 return this.catalogs[locale];
             },
 
@@ -117,7 +131,18 @@ define('tb.component/translator/main', ['component!logger', 'jquery', 'Core'], f
              * @param {String} locale
              */
             loadCatalog: function (locale) {
-                var self = this;
+                var self = this,
+                    dfd = jQuery.Deferred(),
+                    catalog = this.getCatalog(locale);
+
+                if (undefined === locale) {
+                    locale = this.locale;
+                }
+
+                if (undefined !== catalog) {
+                    this.setLocale(locale);
+                    dfd.resolve();
+                }
 
                 jQuery.ajax({
                     'url': self.base + '/' + locale + '/global.json',
@@ -127,8 +152,20 @@ define('tb.component/translator/main', ['component!logger', 'jquery', 'Core'], f
                     if (typeof response === 'string') {
                         response = JSON.parse(response);
                     }
+
                     self.catalogs[locale] = response;
+                    self.setLocale(locale);
+
+                    dfd.resolve();
+                }).fail(function (response) {
+                    if (404 === response.status) {
+                        self.loadCatalog(self.config.default_locale).done(function () {
+                            dfd.resolve();
+                        });
+                    }
                 });
+
+                return dfd.promise();
             }
         };
 

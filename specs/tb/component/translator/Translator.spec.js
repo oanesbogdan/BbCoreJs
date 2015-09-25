@@ -10,10 +10,16 @@ define(
 
         'use strict';
 
-        Translator.init({'locale': 'en_US', 'base': 'src/tb/i18n/'});
+        var locale_fr = "fr_FR",
+            locale_en = 'en_US';
+
+        Translator.init({'base': 'src/tb/i18n/'});
+
+        Translator.loadCatalog(locale_fr);
+        Translator.loadCatalog(locale_en);
+
         Renderer.addFilter('trans', jQuery.proxy(Translator.translate, Translator));
         Renderer.addFunction('trans', jQuery.proxy(Translator.translate, Translator));
-        var locale_fr = "fr_FR";
 
         describe("Translator core library test suite", function () {
 
@@ -31,27 +37,16 @@ define(
                 expect(Translator.translate('app_validate')).toEqual('Valider');
             });
 
-            it("Should return the default locale value if requested is not available", function () {
-                Translator.setLocale(locale_fr);
-                expect(Translator.translate('app_only_default')).toEqual('Only default');
-            });
-
             it("Should log a notice if the translation for the selected catalog is not found", function () {
                 spyOn(Logger, "notice").and.returnValue('The key "foo.bar" is malformed.').and.callThrough();
                 Translator.setLocale(locale_fr);
-                Translator.translate('app_only_default');
+                Translator.translate('app_only_not_default');
                 expect(Logger.notice).toHaveBeenCalled();
             });
 
             it("Should return at least the key if key is malformed", function () {
                 Translator.setLocale(locale_fr);
                 expect(Translator.translate('app_only_not_default')).toEqual('app_only_not_default');
-            });
-
-            it("Should log a warning if the translation is not found", function () {
-                spyOn(Logger, "warning").and.returnValue('The key "foo.bar" is malformed.').and.callThrough();
-                Translator.translate('foo.bar');
-                expect(Logger.warning).toHaveBeenCalled();
             });
 
             it("Should be able to render key in Renderer scope (Filter)", function () {
