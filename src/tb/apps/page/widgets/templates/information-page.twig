@@ -3,5 +3,8 @@
         {% set pageStatus = 'state-'+state %}
         {{ pageStatus|trans }}<br />
     {% endfor %}
+    {% for template in templates %}
+        {{ template }}
+    {% endfor %}
 </p>
 <p>Last update: <span class="page-date">{{ page.modified }}</span></p>
