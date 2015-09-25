@@ -19,6 +19,11 @@ define(function () {
             var wrapper = window.document.getElementById('bb-box-wrapper'),
                 box = this.getBox(),
                 content = box.getElementsByTagName('p');
+
+            if (null === wrapper) {
+                return;
+            }
+
             box.className = box.className + ' ' + type;
             content = content[0];
             content.innerHTML = text;

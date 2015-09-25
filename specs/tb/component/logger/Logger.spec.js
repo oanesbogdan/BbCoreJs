@@ -5,9 +5,12 @@ define(['require', 'Core', 'component!logger'], function (require) {
         logger = require('component!logger');
 
     describe('Logger spec', function () {
+
         it('Logs actions', function () {
+            api.set('logs', []);
 
             logger.emergency('Test a emergency log.');
+
             expect(api.get('logs').length).toBe(1);
 
             logger.info('Test a info log.');
