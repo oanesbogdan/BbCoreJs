@@ -4,11 +4,24 @@ define(['jquery', 'text!content/tpl/content-action', 'jsclass'], function (jQuer
         initialize: function () {
             this.content = null;
             this.widget = jQuery(template).clone();
+            this.contentContextMenu =  jQuery(template).clone();
             jQuery(this.widget).addClass('content-actions');
+            this.bindCxtMenuEvent();
+        },
+
+        bindCxtMenuEvent: function () {
+            var self = this;
+            jQuery(document).on("click", function () {
+                self.contentContextMenu.hide();
+            });
         },
 
         setContent: function (content) {
             this.content = content;
+        },
+
+        setDomTag: function (tag) {
+            this.mainWrapper = jQuery(tag);
         },
 
         /*  listen to context */
@@ -29,25 +42,62 @@ define(['jquery', 'text!content/tpl/content-action', 'jsclass'], function (jQuer
             this.widget.empty();
         },
 
+        cleanContextActions: function () {
+            this.contentContextMenu.empty();
+        },
+
         show: function () {
             jQuery(this.content).append(this.widget);
         },
 
-        hide: function () {
-            this.widget.empty();
+        showAsContextMenu: function (actionInfos, event) {
+            if (!this.contentContextMenu) {
+                this.contentContextMenu = jQuery(template).clone();
+            }
+            this.contentContextMenu.empty();
+            jQuery(this.contentContextMenu).addClass("bb5-context-menu");
+            var wrapper,
+                actionNode;
+
+            jQuery(this.contentContextMenu).css({
+                position: "absolute",
+                left: event.clientX + "px",
+                top: event.clientY + "px"
+            });
+            actionNode = this.buildAction(actionInfos, true);
+            wrapper = jQuery("<ul/>").append(actionNode);
+            this.contentContextMenu.html(wrapper);
+            this.mainWrapper.append(this.contentContextMenu);
+            jQuery(this.contentContextMenu).show();
         },
 
-        buildAction: function (actions) {
+        hide: function () {
+            this.cleanActions();
+        },
+
+        hideAll: function () {
+            this.cleanContextActions();
+            this.cleanActions();
+        },
+
+        buildAction: function (actions, contextualRender) {
             actions = (jQuery.isArray(actions)) ? actions : [actions];
             var actionInfos,
+                button,
                 btnCtn = document.createDocumentFragment();
+
             jQuery.each(actions, function (i) {
                 actionInfos = actions[i];
-
-                var button = jQuery("<a></a>").clone();
-                button.attr("title", actionInfos.label);
-                button.attr('draggable', 'true');
-                button.addClass(actionInfos.ico);
+                if (!contextualRender) {
+                    button = jQuery("<a></a>").clone();
+                    button.attr("title", actionInfos.label);
+                    button.attr('draggable', 'true');
+                    button.addClass(actionInfos.ico);
+                } else {
+                    button = jQuery("<li></li>").clone();
+                    var icoNode = jQuery('<i/>').addClass(actionInfos.ico);
+                    button.append(jQuery('<a/>').append(icoNode).attr({"alt" : actionInfos.label, onclick : 'return false;'}).append(" " + actionInfos.label));
+                }
                 jQuery(button).on("click", actionInfos.cmd.execute);
                 btnCtn.appendChild(jQuery(button).get(0));
             });

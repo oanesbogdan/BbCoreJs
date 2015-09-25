@@ -30,7 +30,7 @@ define(['Core', 'jquery', 'Core/Utils', 'Core/Api', 'actionContainer', 'undersco
                 return null;
             },
 
-            /* allowed params as redical:blaze:strange */
+            /* allowed params as radical:blaze:strange */
             getConfig: function (key) {
                 if (!key) {
                     return this.config;
@@ -192,7 +192,11 @@ define(['Core', 'jquery', 'Core/Utils', 'Core/Api', 'actionContainer', 'undersco
                 this.enabled = false;
                 this.currentContent = null;
                 this.pluginsInstance = {};
+                this.CLICK_CONTEXT = "on:classcontent:click";
+                this.RIGHT_CLICK_CONTEXT = "on:classcontent:contextmenu";
+                this.loadingErrorInfos = {};
                 this.contentActionWidget = new ContentActionWidget();
+                this.contentActionWidget.setDomTag(Core.get('wrapper_toolbar_selector'));
                 this.contentPlugins = {};
                 this.pluginActions = [];
                 this.actionsPosition = {};
@@ -262,17 +266,35 @@ define(['Core', 'jquery', 'Core/Utils', 'Core/Api', 'actionContainer', 'undersco
                 return false;
             },
 
+            hasError: function (pluginName) {
+                if (this.loadingErrorInfos.hasOwnProperty(pluginName)) {
+                    return true;
+                }
+                return false;
+            },
+
+
             getPluginInstance: function (pluginName) {
                 return this.pluginsInstance[pluginName];
             },
 
             init: function () {
-                mediator.subscribe('on:classcontent:click', jQuery.proxy(this.clickHandler, this));
+                mediator.subscribe('on:classcontent:click', jQuery.proxy(this.clickHandler, this, this.CLICK_CONTEXT));
+                /* handle context menu */
+                mediator.subscribe('on:classcontent:contextmenu', jQuery.proxy(this.handleContextMenu, this));
+
+                mediator.subscribe('on:pluginManager:loaded', jQuery.proxy(this.showContextMenu, this));
                 this.init = jQuery.noop;
+            },
+
+            handleContextMenu: function (content, event) {
+                event.preventDefault();
+                this.clickHandler(this.RIGHT_CLICK_CONTEXT, content, event);
             },
 
             handleLoading: function (pluginInfos) {
                 try {
+
                     var pluginName = pluginInfos.name,
                         pluginInstance = new this.pluginsInfos[pluginName]();
 
@@ -286,10 +308,15 @@ define(['Core', 'jquery', 'Core/Utils', 'Core/Api', 'actionContainer', 'undersco
                         pluginInstance.onEnable();
                         this.handlePluginActions(pluginInstance.getActions(), pluginInfos.completeName);
                     }
-
+                    this.loadedPluginCount = this.loadedPluginCount + 1;
+                    this.checkLoadedStatus();
                 } catch (e) {
                     Api.exception('PluginException', 75010, "[handleLoading] " + e);
                 }
+            },
+
+            hideContextMenu: function () {
+                this.contentActionWidget.cleanContextActions();
             },
 
             isScopeValid: function (pluginInstance) {
@@ -304,28 +331,53 @@ define(['Core', 'jquery', 'Core/Utils', 'Core/Api', 'actionContainer', 'undersco
             },
 
             handleLoadingErrors: function (error) {
+                this.pluginsToLoadCount = this.pluginsToLoadCount - 1;
+                this.loadingErrorInfos[error.pluginName] = true;
+                this.checkLoadedStatus();
+
                 Api.exception('PluginException', 75011, "Error while loading plugin [" + error.name + "]");
             },
 
-            clickHandler: function (content, e) {
-                e.preventDefault();
+            /* checkload status */
+            checkLoadedStatus: function () {
+                if (this.pluginsToLoadCount === this.loadedPluginCount) {
+                    mediator.publish("on:pluginManager:loaded", this.currentContent);
+                }
+            },
 
+            showContextMenu: function () {
+                if (this.eventType !== this.RIGHT_CLICK_CONTEXT) { return; }
+                this.contentActionWidget.showAsContextMenu(this.getContentActions(), this.contentEvent);
+            },
+
+            clickHandler: function (eventType, content, e) {
+                this.eventType = eventType;
+                this.contentEvent = e;
+                this.hideContextMenu();
+                e.preventDefault();
                 var plugins, context = {};
 
                 if (this.currentContent === null ||
                         this.currentContent.id !== content.id ||
-                        this.contentActionWidget.isBuild(content) === false) {
+                        this.contentActionWidget.isBuild(content) === false ||
+                        this.eventType === "on:classcontent:contextmenu"
+                        ) {
 
                     try {
                         if (!this.isEnabled()) {
                             return;
                         }
+
                         context.content = content;
                         jQuery(context.content.jQueryObject).css('position', 'relative');
                         context.scope = this.currentScope;
-                        context.events = ['on:classcontent:click'];
+                        context.events = [eventType];
                         this.context = context;
                         plugins = this.getContentPlugins(content.type);
+
+                        /* exp */
+                        this.pluginsToLoadCount = plugins.length;
+                        this.loadedPluginCount = 0;
                         this.clearContentActions();
                         this.contentActionWidget.hide();
 
@@ -340,6 +392,11 @@ define(['Core', 'jquery', 'Core/Utils', 'Core/Api', 'actionContainer', 'undersco
 
                     this.currentContent = content;
                 }
+            },
+
+            resetPluginLoadInfos: function () {
+                this.pluginsToLoad = 0;
+                this.loadedPlugin = 0;
             },
 
             enablePlugins: function () {
@@ -386,7 +443,7 @@ define(['Core', 'jquery', 'Core/Utils', 'Core/Api', 'actionContainer', 'undersco
                     pluginName = pluginsName[i];
 
                     if (self.isPluginLoaded(pluginName)) {
-
+                        self.loadedPluginCount = self.loadedPluginCount + 1;
                         pluginInstance = self.getPluginInstance(pluginName);
                         pluginInstance.setContext(self.context);
                         if (self.isScopeValid(pluginInstance) && pluginInstance.canApplyOnContext()) {
@@ -394,11 +451,14 @@ define(['Core', 'jquery', 'Core/Utils', 'Core/Api', 'actionContainer', 'undersco
                             self.handlePluginActions(pluginInstance.getActions(), pluginName);
                         }
 
+                    } else if (self.hasError(pluginName)) {
+                        /* no need to reload the plugin if the first attempt failed*/
+                        self.pluginsToLoadCount = self.pluginsToLoadCount - 1;
                     } else {
-                        pluginsToLoad[i] = 'contentplugin!' + pluginName;
+                        pluginsToLoad.push('contentplugin!' + pluginName);
                     }
                 });
-
+                this.checkLoadedStatus();
                 if (!pluginsToLoad.length) {
                     return;
                 }

@@ -62,8 +62,21 @@ define(
                 body.on('click', '.' + this.contentClass, jQuery.proxy(this.onClick, this));
                 body.on('mouseenter', '.' + this.contentClass, jQuery.proxy(this.onMouseEnter, this));
                 body.on('mouseleave', '.' + this.contentClass, jQuery.proxy(this.onMouseLeave, this));
+                body.on("contextmenu", '.' + this.contentClass, jQuery.proxy(this.onContextMenu, this));
             },
 
+
+            onContextMenu: function (event) {
+                if (this.isEnabled === true) {
+                    var currentTarget = jQuery(event.currentTarget),
+                        content = ContentManager.getContentByNode(currentTarget);
+                    if (ContentManager.isUsable(content.type)) {
+                        content.jQueryObject = currentTarget;
+                        Core.Mediator.publish('on:classcontent:contextmenu', content, event);
+                    }
+                }
+                return false;
+            },
             /**
              * Event trigged on click
              *
