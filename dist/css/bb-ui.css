@@ -8317,6 +8317,18 @@ colpick Color Picker / colpick.com
   color: #fff;
   text-shadow: none;
 }
+#bb5-ui .dropdown .list-lang {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+#bb5-ui .dropdown .list-lang a {
+  display: inline-block;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+#bb5-ui .dropdown .list-lang a + a {
+  margin-left: 0.5em;
+}
 #bb5-ui .btn-default-grey:hover .fa,
 #bb5-ui .btn-default-grey:active .fa,
 #bb5-ui .btn-default-grey.active .fa,

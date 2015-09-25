@@ -88,11 +88,13 @@ define(function () {
                                             Core.initConfig(config);
 
                                             Translator.init(Core.config('component:translator'));
+                                            Translator.loadCatalog().done(function () {
 
-                                            Renderer.addFunction('trans', jQuery.proxy(Translator.translate, Translator));
-                                            Renderer.addFilter('trans', jQuery.proxy(Translator.translate, Translator));
+                                                Renderer.addFunction('trans', jQuery.proxy(Translator.translate, Translator));
+                                                Renderer.addFilter('trans', jQuery.proxy(Translator.translate, Translator));
 
-                                            require(['component!exceptions-viewer'], {});
+                                                require(['component!exceptions-viewer'], {});
+                                            });
                                         });
 
                                     },

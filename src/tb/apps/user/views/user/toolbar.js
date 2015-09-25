@@ -17,8 +17,16 @@
  * along with BackBuilder5. If not, see <http://www.gnu.org/licenses/>.
  */
 define(
-    ['require', 'Core/Renderer', 'user/entity/user', 'Core', 'jquery', 'text!user/templates/user/toolbar.twig'],
-    function (require, renderer, User, Core, jQuery) {
+    [
+        'require',
+        'Core/Renderer',
+        'user/entity/user',
+        'Core',
+        'jquery',
+        'component!translator',
+        'text!user/templates/user/toolbar.twig'
+    ],
+    function (require, renderer, User, Core, jQuery, Translator) {
         'use strict';
 
         /**
@@ -45,7 +53,26 @@ define(
              * @returns {Object} PageViewEdit
              */
             render: function () {
-                this.$el.append(renderer.render(this.template, {login: this.user.login()}));
+                var locales = Core.config('component:translator').locales,
+                    dataTemplate = {
+                        'login': this.user.login(),
+                        'locales': locales,
+                        'current_locale': Translator.locale
+                    };
+
+                this.$el.append(renderer.render(this.template, dataTemplate));
+
+                this.$el.on('click', '.bb-locale-btn', function () {
+                    var element = jQuery(this),
+                        locale = element.data('locale');
+
+
+                    if (locale !== Translator.locale) {
+                        Translator.setLocale(locale);
+                        location.reload();
+                    }
+                });
+
                 jQuery('.dropdown-toggle').dropdown();
                 return this;
             },
