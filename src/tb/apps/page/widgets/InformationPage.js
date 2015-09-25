@@ -71,8 +71,15 @@ define(
                     this.popin.mask();
 
                     PageRepository.findCurrentPage().done(function (page) {
+                        var data = {
+                                'page': page,
+                                'templates': []
+                            };
+
+                        Core.Mediator.publish('on:informationPage:preRender', data, self.popin);
+
                         page.modified = moment.unix(parseInt(page.modified, 10)).format('H:m DD/MM/YYYY');
-                        self.setContent(Renderer.render(template, {'page': page}));
+                        self.setContent(Renderer.render(template, data));
                         self.popin.unmask();
                     });
                 }
