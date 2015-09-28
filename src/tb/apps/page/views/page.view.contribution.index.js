@@ -111,11 +111,25 @@ define(
              * Edit the page
              */
             manageEdit: function () {
-                /* */
-                ApplicationManager.invokeService('page.main.editPage', {callbackAfterSubmit : this.afterSubmitHandler, 'page_uid': Core.get('page.uid')});
+                var config = {
+                        'callbackAfterSubmit': this.afterSubmitHandler,
+                        'page_uid': Core.get('page.uid'),
+                        'move_to': true
+                    };
+
+                ApplicationManager.invokeService('page.main.editPage', config);
             },
 
-            afterSubmitHandler: function () {
+            afterSubmitHandler: function (data) {
+
+                if (data.parent_uid !== undefined) {
+                    PageRepository.find(data.uid).done(function (page) {
+                        window.location = page.uri;
+                    });
+
+                    return;
+                }
+
                 if (this.layoutHasChanged()) {
                     location.reload();
                 }

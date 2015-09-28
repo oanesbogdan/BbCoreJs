@@ -24,11 +24,12 @@ define(
         'jquery',
         'page.repository',
         'page.form',
+        'tb.component/formsubmitter/elements/nodeSelector',
         'component!translator',
         'component!popin',
         'component!formbuilder'
     ],
-    function (require, Core, jQuery, PageRepository, PageForm, translator) {
+    function (require, Core, jQuery, PageRepository, PageForm, nodeSelectorValidator, translator) {
 
         'use strict';
 
@@ -48,6 +49,7 @@ define(
 
                 this.config = config;
                 this.chosenLayout = null;
+                this.moveTo = config.move_to || false;
 
                 this.page_uid = this.config.page_uid;
                 this.callbackAfterSubmit = this.config.callbackAfterSubmit;
@@ -61,17 +63,28 @@ define(
                 Core.ApplicationManager.invokeService('page.main.registerPopin', 'pageEdit', this.popin);
             },
 
-            onSubmit: function (data) {
-                var self = this;
+            onSubmit: function (data, form) {
+                var self = this,
+                    nodes;
 
-                if (typeof this.page_uid === 'string') {
+                if (this.page_uid !== undefined) {
                     data.uid = this.page_uid;
+                }
+
+                if (true === this.moveTo) {
+                    nodes = nodeSelectorValidator.compute('move_to', data.move_to, form);
+                    if (nodes !== null) {
+                        data.parent_uid = nodes[0].pageUid;
+                    }
+
+                    delete data.move_to;
                 }
 
                 this.popin.mask();
                 PageRepository.save(data).done(function (result, response) {
 
                     if (typeof self.callbackAfterSubmit === 'function') {
+                        data.uid = self.page_uid;
                         self.callbackAfterSubmit(data, response, result);
                     }
 
@@ -116,7 +129,7 @@ define(
                 this.popin.display();
                 this.popin.mask();
 
-                PageForm.edit(this.page_uid).done(function (configForm) {
+                PageForm.edit(this.page_uid, this.moveTo).done(function (configForm) {
 
                     configForm.onSubmit = jQuery.proxy(self.onSubmit, self);
                     configForm.onValidate = self.onValidate;

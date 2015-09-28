@@ -157,6 +157,7 @@ define(
             },
 
             newPageService: function (req, config) {
+
                 if ('redirect' === config.flag) {
                     config.callbackAfterSubmit = this.newPageRedirect;
                 }
@@ -166,8 +167,13 @@ define(
             },
 
             editPageService: function (req, config) {
+                if (config.page_uid === Core.get('root.uid')) {
+                    delete config.move_to;
+                }
+
                 var EditView = req('page.view.edit'),
                     view = new EditView(config);
+
                 view.render();
             },
 
