@@ -6,10 +6,12 @@ define(
         'page.repository',
         'page.form',
         'component!translator',
+        'tb.component/formsubmitter/elements/nodeSelector',
         'component!popin',
-        'component!formbuilder'
+        'component!formbuilder',
+        'component!formsubmitter'
     ],
-    function (Core, require, jQuery, PageRepository, PageForm, translator) {
+    function (Core, require, jQuery, PageRepository, PageForm, translator, nodeSelectorValidator) {
 
         'use strict';
 
@@ -28,6 +30,7 @@ define(
                 });
 
                 this.popin.setId(config.popinId);
+                this.moveTo = config.move_to || false;
 
                 this.formBuilder = require('component!formbuilder');
 
@@ -54,15 +57,26 @@ define(
                 return data;
             },
 
-            onSubmit: function (data) {
-                var self = this;
+            onSubmit: function (data, form) {
+                var self = this,
+                    nodes;
 
                 if (typeof this.parent_uid === 'string') {
                     data.parent_uid = this.parent_uid;
                 }
 
-                this.popin.mask();
+                if (true === this.moveTo) {
+                    nodes = nodeSelectorValidator.compute('move_to', data.move_to, form);
+                    if (nodes !== null) {
+                        data.parent_uid = nodes[0].pageUid;
+                    }
 
+                    delete data.move_to;
+                }
+
+                delete data.move_to;
+
+                this.popin.mask();
                 PageRepository.save(data).done(function (data, response) {
                     if (typeof self.callbackAfterSubmit === 'function') {
                         self.callbackAfterSubmit(data, response);
@@ -98,7 +112,7 @@ define(
                 this.popin.display();
                 this.popin.mask();
 
-                PageForm.new().done(function (configForm) {
+                PageForm.new(this.moveTo).done(function (configForm) {
 
                     configForm.onSubmit = jQuery.proxy(self.onSubmit, self);
                     configForm.onValidate = self.onValidate;

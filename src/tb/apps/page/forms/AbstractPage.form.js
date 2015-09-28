@@ -51,6 +51,12 @@ define(
                     label: 'URL',
                     disabled: true
                 },
+                move_to: {
+                    type: 'nodeSelector',
+                    label: 'Move to',
+                    value: [],
+                    max_entry: 1
+                },
                 redirect: {
                     type: 'text',
                     label: 'Redirect to'

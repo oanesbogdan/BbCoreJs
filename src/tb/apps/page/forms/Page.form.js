@@ -22,7 +22,7 @@ define(['page.abstract.form', 'jquery', 'jsclass'], function (Form, jQuery) {
 
     var PageForm = new JS.Class(Form, {
 
-        new: function () {
+        new: function (moveTo) {
 
             this.clear();
 
@@ -38,6 +38,10 @@ define(['page.abstract.form', 'jquery', 'jsclass'], function (Form, jQuery) {
                     form_name: 'new-page'
                 };
 
+            if (true === moveTo) {
+                config.elements.move_to = this.form.move_to;
+            }
+
             this.getLayoutsObject().done(function (layoutObject) {
                 config.elements.layout_uid = layoutObject;
                 dfd.resolve(config);
@@ -46,7 +50,7 @@ define(['page.abstract.form', 'jquery', 'jsclass'], function (Form, jQuery) {
             return dfd.promise();
         },
 
-        edit: function (page_uid) {
+        edit: function (page_uid, moveTo) {
             var dfd = jQuery.Deferred(),
                 config = {
                     elements: {
@@ -62,6 +66,10 @@ define(['page.abstract.form', 'jquery', 'jsclass'], function (Form, jQuery) {
                     page_uid: page_uid
                 },
                 self = this;
+
+            if (true === moveTo) {
+                config.elements.move_to = this.form.move_to;
+            }
 
             this.getPage(page_uid).done(function (page) {
                 self.getLayoutsObject().done(function (layoutObject) {
