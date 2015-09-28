@@ -261,6 +261,8 @@ define([
                     uids.push(elems.get(i).getAttribute('data-identifier'));
                 }
                 Core.ApplicationManager.invokeService('page.main.' + service, {uids: uids, popin: this.popin}, this.pageStore);
+
+                this.selector.find('.' + this.chooseActionSelectClass).val('0');
             }.bind(this));
         },
 
