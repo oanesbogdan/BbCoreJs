@@ -3,6 +3,7 @@ define(
         'content.pluginmanager',
         'Core',
         'component!contentselector',
+        'component!translator',
         'jquery',
         'content.manager',
         'jsclass'
@@ -11,6 +12,7 @@ define(
         PluginManager,
         Core,
         ContentSelector,
+        Translator,
         jQuery,
         ContentManager
     ) {
@@ -63,7 +65,7 @@ define(
                 return [{
                     ico: 'fa fa-th-large',
                     cmd: self.createCommand(self.showContentSelector, self),
-                    label: 'Contents selector',
+                    label: Translator.translate('content_selector'),
                     checkContext: function () {
                         return self.canApplyOnContext();
                     }

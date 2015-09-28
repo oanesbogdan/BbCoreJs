@@ -4,6 +4,7 @@ define([
     'Core',
     'Core/Renderer',
     'text!page/tpl/manage.list.twig',
+    'component!translator',
     'page.view.tree.management',
     'component!popin',
     'component!rangeselector',
@@ -12,9 +13,8 @@ define([
     'component!pagination',
     'content.repository',
     'component!notify',
-    'component!translator',
     'jquery-layout'
-], function (jQuery, repository, Core, Renderer, template) {
+], function (jQuery, repository, Core, Renderer, template, Translator) {
 
     'use strict';
 
@@ -273,7 +273,7 @@ define([
 
             this.content = Renderer.render(template);
 
-            this.popin.setTitle('Review pages');
+            this.popin.setTitle(Translator.translate('page_management'));
             this.popin.setContent(this.content);
             this.initLayout(this.content);
 

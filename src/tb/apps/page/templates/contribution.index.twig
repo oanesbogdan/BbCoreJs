@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-bb5-24">
+    <div class="col-bb5-21 bb5-border-right bb5-border-strong">
         <p>
             <button id="contribution-edit-page" type="button" class="btn btn-simple btn-xs btn-block">
                 <i class="fa fa-pencil-square-o"></i> {{ 'edit'|trans }}
@@ -19,8 +19,7 @@
             </button>
         </p>
     </div>
-    <div class="col-bb5-6 bb5-border-right bb5-border-strong"></div>
-    <div class="col-bb5-49 col-bb5-pad-x2">
+    <div class="col-bb5-54 col-bb5-pad-x2">
         <p>{{ 'page_status'|trans }} :
             <select id="page-state-select" class="form-inline input-xs" name="state" {% if page.is_root == true %}disabled{% endif %} >
                 {% for state in states %}
@@ -44,7 +43,7 @@
             </button>
         </p>
     </div>
-    <div class="col-bb5-20">
+    <div class="col-bb5-25">
         <p>
             <button type="button" class="btn btn-default-grey btn-sm btn-block bundle-toolbar-global-validate">
                 <i class="fa fa-floppy-o"></i> {{ 'save_status'|trans }}

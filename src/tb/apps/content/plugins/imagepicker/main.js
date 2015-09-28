@@ -8,7 +8,7 @@
  * Image picker allows us to edit an by using the media library
  *
  */
-define(['Core/Utils', 'content.pluginmanager', 'content.manager', 'jquery'], function (Utils, PluginManager, ContentManager, jQuery) {
+define(['Core/Utils', 'content.pluginmanager', 'content.manager', 'jquery', 'component!translator'], function (Utils, PluginManager, ContentManager, jQuery, Translator) {
     'use strict';
 
 
@@ -80,7 +80,7 @@ define(['Core/Utils', 'content.pluginmanager', 'content.manager', 'jquery'], fun
             return [{
                 'ico': 'fa fa-th',
                 cmd: self.createCommand(self.processCommands, self),
-                label: 'Media selector',
+                label: Translator.translator('media_selector'),
                 checkContext: function () {
                     return self.canApplyOnContext();
                 }

@@ -8248,6 +8248,8 @@ colpick Color Picker / colpick.com
 }
 #bb5-ui .btn-block {
   padding-right: 4px;
+  /*       white-space: normal;
+        text-align: center;*/
 }
 #bb5-ui .btn .fa {
   font-size: 1.4em;

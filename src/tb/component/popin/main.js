@@ -17,7 +17,7 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('tb.component/popin/main', ['Core', 'tb.component/popin/PopIn', 'jquery', 'jqueryui', 'jsclass'], function (Core, PopIn, jQuery) {
+define('tb.component/popin/main', ['Core', 'tb.component/popin/PopIn', 'jquery', 'component!translator', 'jqueryui', 'jsclass'], function (Core, PopIn, jQuery, Translator) {
     'use strict';
 
     /**
@@ -154,7 +154,7 @@ define('tb.component/popin/main', ['Core', 'tb.component/popin/PopIn', 'jquery',
                 var popInId = '#' + popIn.getId(),
                     element = jQuery('<div/>', {
                         class: 'loader'
-                    }).html('<i class="fa fa-spin fa-spinner"></i>' + (message || 'Loading...'));
+                    }).html('<i class="fa fa-spin fa-spinner"></i>' + (message || Translator.translate('loading')));
 
                 element.css('background-color', 'rgba(0, 0, 0, .7)');
                 element.css('color', 'white');
