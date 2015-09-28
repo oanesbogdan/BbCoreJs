@@ -46,29 +46,28 @@
                             realName = 'ContentSet';
                         }
 
-                        if (realName !== undefined) {
-                            req(['cf.edition.elements/' + realName], function (elementObject) {
-                                self.getServices(elementObject.services).done(function () {
-
-                                    var key,
-                                        i = 0;
-
-                                    for (key in elementObject.services) {
-                                        if (elementObject.services.hasOwnProperty(key)) {
-                                            elementObject[key] = arguments[i];
-                                            i = i + 1;
-                                        }
-                                    }
-
-                                    onload(elementObject.init(definition));
-                                });
-                            }, function () {
-                                onload(null);
-                            });
-                        } else {
-                            onload(null);
+                        if (!realName) {
+                            realName = 'All';
                         }
 
+                        req(['cf.edition.elements/' + realName], function (elementObject) {
+                            self.getServices(elementObject.services).done(function () {
+
+                                var key,
+                                    i = 0;
+
+                                for (key in elementObject.services) {
+                                    if (elementObject.services.hasOwnProperty(key)) {
+                                        elementObject[key] = arguments[i];
+                                        i = i + 1;
+                                    }
+                                }
+
+                                onload(elementObject.init(definition));
+                            });
+                        }, function () {
+                            onload(null);
+                        });
                     } else {
                         onload(null);
                     }

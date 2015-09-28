@@ -46,17 +46,27 @@ define(
                     element = this.ContentManager.buildElement({'uid': object.uid, 'type': object.type});
 
                 element.getData().done(function () {
+                    self.getChildren(element).done(function () {
+                        var i,
+                            children = [];
 
-                    config = {
-                        'type': 'contentSet',
-                        'label': object.name,
-                        'object_name': object.name,
-                        'object_uid': object.uid,
-                        'object_type': object.type,
-                        'children': self.getChildren(element)
-                    };
+                        for (i in arguments) {
+                            if (arguments.hasOwnProperty(i)) {
+                                children.push(arguments[i]);
+                            }
+                        }
 
-                    dfd.resolve(config);
+                        config = {
+                            'type': 'contentSet',
+                            'label': object.name,
+                            'object_name': object.name,
+                            'object_uid': object.uid,
+                            'object_type': object.type,
+                            'children': children
+                        };
+
+                        dfd.resolve(config);
+                    });
                 }).fail(function (data, response) {
                     dfd.reject(data, response);
                 });
@@ -66,18 +76,29 @@ define(
 
             getChildren: function (content) {
                 var key,
-                    contents = [],
                     element,
-                    elements = content.data.elements;
+                    elements = content.data.elements,
+                    promises = [];
 
                 for (key in elements) {
                     if (elements.hasOwnProperty(key)) {
                         element = elements[key];
-                        contents.push(this.ContentManager.buildElement({'uid': element.uid, 'type': element.type}));
+                        promises.push(this.loadChild(element.uid, element.type));
                     }
                 }
 
-                return contents;
+                return jQuery.when.apply(undefined, promises).promise();
+            },
+
+            loadChild: function (uid, type) {
+                var dfd = jQuery.Deferred(),
+                    subcontent = this.ContentManager.buildElement({'uid': uid, 'type': type});
+
+                subcontent.getData().done(function () {
+                    dfd.resolve(subcontent);
+                });
+
+                return dfd.promise();
             }
         };
 

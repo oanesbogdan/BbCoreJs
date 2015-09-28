@@ -42,6 +42,7 @@ define(
                 this.template = template;
                 this.element = element;
 
+                this.editClass = 'edit';
                 this.trashClass = 'trash';
                 this.trashAllClass = 'trashall';
                 this.addContentClass = 'addcontent';
@@ -59,6 +60,7 @@ define(
                 var self = this,
                     mainNode = jQuery(this.mainSelector);
 
+                mainNode.on('click', this.elementSelector + ' .' + this.editClass, jQuery.proxy(this.onEdit, this));
                 mainNode.on('click', this.elementSelector + ' .' + this.trashClass, jQuery.proxy(this.onDelete, this));
                 mainNode.on('click', this.elementSelector + ' .' + this.moveClass, jQuery.proxy(this.onMove, this));
 
@@ -105,6 +107,19 @@ define(
                 });
 
                 return contents;
+            },
+
+            onEdit: function (event) {
+                var target = jQuery(event.currentTarget),
+                    li = target.parents('li');
+
+                Core.ApplicationManager.invokeService('content.main.getContentManager').done(function (ContentManager) {
+                    var content = ContentManager.buildElement({'uid': li.attr('data-uid'), 'type': li.attr('data-type')});
+
+                    Core.ApplicationManager.invokeService('content.main.getEditionWidget').done(function (Edition) {
+                        Edition.show(content);
+                    });
+                });
             },
 
             onSearchContent: function () {

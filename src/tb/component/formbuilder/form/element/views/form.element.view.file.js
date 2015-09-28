@@ -50,7 +50,10 @@ define(['Core', 'Core/Renderer', 'BackBone', 'jquery', 'component!translator', '
 
             jQuery.extend(config, this.defaultDropzoneConfig, this.element.config.dropzone);
 
-            Core.Mediator.subscribeOnce('on:form:render', function (form) {
+            Core.Mediator.subscribe('on:form:render', function (form) {
+                if (form.attr('id') !== self.form) {
+                    return;
+                }
 
                 var element = form.find('.element_' + self.element.getKey()),
                     dropzoneElement = element.find(self.dropzoneSelector),

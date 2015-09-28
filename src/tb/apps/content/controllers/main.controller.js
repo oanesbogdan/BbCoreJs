@@ -34,7 +34,8 @@ define(
         'component!revisionselector',
         'jquery',
         'content.widget.DialogContentsList',
-        'component!notify'
+        'component!notify',
+        'content.widget.Edition'
     ],
     function (
         Core,
@@ -52,7 +53,8 @@ define(
         RevisionSelector,
         jQuery,
         DialogContentsList,
-        notify
+        notify,
+        Edition
     ) {
         'use strict';
 
@@ -389,6 +391,10 @@ define(
 
             getPopinService: function (id) {
                 return this.getContentPopins()[id];
+            },
+
+            getEditionWidgetService: function () {
+                return Edition;
             }
         });
     }

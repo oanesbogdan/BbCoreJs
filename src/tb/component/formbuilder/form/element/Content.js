@@ -38,6 +38,8 @@ define('tb.component/formbuilder/form/element/Content', function () {
 
         buildCustomConfig: function (config) {
             this.image = config.image;
+            this.title = config.object_label;
+            this.classname = config.object_type;
             this.popinInstance = config.popinInstance;
         },
 

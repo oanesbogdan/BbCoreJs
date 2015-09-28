@@ -21,10 +21,9 @@ define(
         'Core',
         'Core/Renderer',
         'BackBone',
-        'component!popin',
         'jquery'
     ],
-    function (Core, Renderer, Backbone, PopinManager, jQuery) {
+    function (Core, Renderer, Backbone, jQuery) {
         'use strict';
 
         var ContentView = Backbone.View.extend({
@@ -35,26 +34,44 @@ define(
                 this.el = formTag;
                 this.template = template;
                 this.element = element;
-
-                this.updateBtnId = '#' + element.getKey() + '_update_btn';
-
-                this.buildPopin();
+                this.editClass = 'edit';
+                this.elementSelector = 'form#' + this.el + ' ul[data-uid=' + this.element.value + ']';
 
                 this.bindEvents();
             },
 
-            buildPopin: function () {
-                var currentPopin = this.element.popinInstance;
-
-                this.popin = (currentPopin !== undefined) ? PopinManager.createSubPopIn(currentPopin) : PopinManager.createPopIn();
-            },
-
             bindEvents: function () {
-                jQuery(this.mainSelector).on('click', this.updateBtnId, jQuery.proxy(this.onUpdateClick, this));
+                jQuery(this.mainSelector).on('click', this.elementSelector + ' .' + this.editClass, jQuery.proxy(this.onUpdateClick, this));
             },
 
-            onUpdateClick: function () {
-                this.popin.display();
+            onUpdateClick: function (event) {
+                var target = jQuery(event.currentTarget),
+                    ul = target.parents('ul');
+
+                Core.ApplicationManager.invokeService('content.main.getContentManager').done(function (ContentManager) {
+                    var content = ContentManager.buildElement({'uid': ul.attr('data-uid'), 'type': ul.attr('data-type')});
+
+                    Core.ApplicationManager.invokeService('content.main.getEditionWidget').done(function (Edition) {
+                        var config = {
+                            onSave: function () {
+                                content.getData(undefined, false, true).done(function () {
+                                    var img = ul.find('.bb-content-img'),
+                                        title = ul.find('.bb-content-form-edit');
+
+                                    if (img.length > 0) {
+                                        img.attr('src', content.data.image);
+                                    }
+
+                                    if (title.length > 0) {
+                                        title.text(content.data.label.substring(0, 5));
+                                    }
+                                });
+                            }
+                        };
+
+                        Edition.show(content, config);
+                    });
+                });
             },
 
             /**
