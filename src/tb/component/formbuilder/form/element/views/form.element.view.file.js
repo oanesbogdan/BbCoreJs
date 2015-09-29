@@ -18,7 +18,7 @@
  */
 
 /*global Dropzone */
-define(['Core', 'Core/Renderer', 'BackBone', 'jquery', 'tb.component/mask/main', 'component!session'], function (Core, Renderer, Backbone, jQuery) {
+define(['Core', 'Core/Renderer', 'BackBone', 'jquery', 'component!translator', 'tb.component/mask/main', 'component!session'], function (Core, Renderer, Backbone, jQuery, Translator) {
     'use strict';
 
     var FileView = Backbone.View.extend({
@@ -38,7 +38,7 @@ define(['Core', 'Core/Renderer', 'BackBone', 'jquery', 'tb.component/mask/main',
             this.form = formTag;
             this.template = template;
             this.element = element;
-            this.maskManager = require('tb.component/mask/main').createMask({'message': 'Uploading...'});
+            this.maskManager = require('tb.component/mask/main').createMask({'message': Translator.translate('uploading')});
 
             this.uploadEvent();
         },

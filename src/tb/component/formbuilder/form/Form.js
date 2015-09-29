@@ -22,9 +22,10 @@ define(
         'Core',
         'underscore',
         'BackBone',
+        'component!translator',
         'jsclass'
     ],
-    function (Core, us, Backbone) {
+    function (Core, us, Backbone, Translator) {
         'use strict';
 
         /**
@@ -109,7 +110,7 @@ define(
                     this.action = config.action;
                 }
 
-                this.submitLabel = 'Submit';
+                this.submitLabel = Translator.translate('save');
                 if (config.hasOwnProperty('submitLabel')) {
                     this.submitLabel = config.submitLabel;
                 }
