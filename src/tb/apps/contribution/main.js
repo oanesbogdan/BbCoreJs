@@ -33,7 +33,7 @@ define('app.contribution', ['Core'], function (Core) {
             }, function () {
                 var popin;
                 for (popin in popins) {
-                    if (popins.hasOwnProperty(popin) && popins[popin] !== undefined) {
+                    if (popins.hasOwnProperty(popin)) {
                         popins[popin].hide();
                     }
                 }

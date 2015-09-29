@@ -1,4 +1,4 @@
-define(['jquery', 'tb.component/treeview/NodeEditor', 'component!translator', "BackBone", "lib.jqtree", "jsclass"], function (jQuery, NodeEditor, Translator) {
+define(['jquery', 'tb.component/treeview/NodeEditor', "BackBone", "lib.jqtree", "jsclass"], function (jQuery, NodeEditor) {
     "use strict";
     /**
      * TreeView's class
@@ -6,7 +6,7 @@ define(['jquery', 'tb.component/treeview/NodeEditor', 'component!translator', "B
 
     var TreeView = new JS.Class({
         defaultOptions: {
-            loadingMessage: Translator.translate('loading'),
+            loadingMessage: "Loading...",
             allowMultiRoots: false,
             beforeRender: jQuery.noop
         },

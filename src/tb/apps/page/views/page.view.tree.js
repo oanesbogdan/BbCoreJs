@@ -22,11 +22,10 @@ define(
         'jquery',
         'page.repository',
         'component!treeview',
-        'component!mask',
-        'component!translator'
+        'component!mask'
     ],
 
-    function (Core, jQuery, PageRepository, Tree, Mask, Translator) {
+    function (Core, jQuery, PageRepository, Tree, Mask) {
 
 
 
@@ -264,7 +263,7 @@ define(
                 if (page.has_children) {
                     if (this.config.do_loading === true) {
                         page.before_load = true;
-                        page.children.push(this.buildNode(Translator.translate('loading'), {
+                        page.children.push(this.buildNode('Loading...', {
                             'is_fake': true
                         }));
                     }
