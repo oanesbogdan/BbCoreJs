@@ -180,7 +180,7 @@ define(
                             self.popin.hide();
                         });
                     });
-                    self.popin.addButton(trans("No"), function () {
+                    self.popin.addButton(trans("no"), function () {
                         self.popin.hide();
                     });
                 }

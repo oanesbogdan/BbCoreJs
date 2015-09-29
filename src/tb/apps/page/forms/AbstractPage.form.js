@@ -32,15 +32,15 @@ define(
             form: {
                 title: {
                     type: 'text',
-                    label: 'Title'
+                    label: translator.translate('title')
                 },
                 alttitle: {
                     type: 'text',
-                    label: 'Alt title'
+                    label: translator.translate('alt_title')
                 },
                 target: {
                     type: 'select',
-                    label: 'Target',
+                    label: translator.translate('target_page'),
                     options: {
                         '_self': '_self',
                         '_blank': '_blank'
@@ -48,18 +48,18 @@ define(
                 },
                 url: {
                     type: 'text',
-                    label: 'URL',
+                    label: translator.translate('url'),
                     disabled: true
                 },
                 move_to: {
                     type: 'nodeSelector',
-                    label: 'Move to',
+                    label: translator.translate('move_to_page'),
                     value: [],
                     max_entry: 1
                 },
                 redirect: {
                     type: 'text',
-                    label: 'Redirect to'
+                    label: translator.translate('redirect_to')
                 },
                 state: {
                     type: 'hidden',
@@ -72,7 +72,7 @@ define(
                     self = this,
                     layout_uid = {
                         type: 'select',
-                        label: 'Template',
+                        label: translator.translate('layout'),
                         options: {}
                     };
 

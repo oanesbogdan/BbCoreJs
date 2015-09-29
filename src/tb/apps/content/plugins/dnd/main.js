@@ -20,9 +20,10 @@
 define(
     [
         'content.pluginmanager',
+        'component!translator',
         'jsclass'
     ],
-    function (PluginManager) {
+    function (PluginManager, Translator) {
 
         'use strict';
 
@@ -61,7 +62,7 @@ define(
                     {
                         name: 'dnd',
                         ico: 'fa fa-hand-o-up bb-dnd btn-dnd',
-                        label: 'Drag and drop',
+                        label: Translator.translate('drag_and_drop'),
                         cmd: self.createCommand(self.doDnd, self),
                         checkContext: function () {
                             return true;
