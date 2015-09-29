@@ -53,7 +53,7 @@ define(
              * Initialize of PageViewEdit
              */
             initialize: function (data) {
-                var text = 'do_you_want_' + data.action + '_this bundle',
+                var text = 'do_you_want_' + data.action + '_this_bundle',
                     tpl = Renderer.render(require('text!bundle/templates/confirm.twig'), {text: text});
                 popin = PopinManager.createPopIn(this.popin_config);
 
