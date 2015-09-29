@@ -1,9 +1,9 @@
-define(['Core', 'jquery', 'component!translator', 'jsclass'], function (Core, jQuery, Translator) {
+define(['Core', 'jquery', 'jsclass'], function (Core, jQuery) {
     'use strict';
     var Mask = new JS.Class({
         defaultConfig: {
             loaderCls: 'bb5-overlay',
-            message: Translator.translate('loading')
+            message: 'Loading...'
         },
 
         initialize: function (config) {

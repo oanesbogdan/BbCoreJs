@@ -21,13 +21,11 @@ define(
     [
         'content.pluginmanager',
         'content.widget.Edition',
-        'component!translator',
         'jsclass'
     ],
     function (
         PluginManager,
-        Edition,
-        Translator
+        Edition
     ) {
 
         'use strict';
@@ -64,7 +62,7 @@ define(
                     {
                         name: 'Edit',
                         ico: 'fa fa-pencil',
-                        label: Translator.translate('edit_content'),
+                        label: 'Edit the content',
                         cmd: self.createCommand(self.edit, self),
                         checkContext: function () {
                             return true;
