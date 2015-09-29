@@ -24,9 +24,10 @@ define(
         'definition.manager',
         'content.widget.DialogContentsList',
         'jquery',
+        'component!translator',
         'jsclass'
     ],
-    function (PluginManager, ContentManager, DefinitionManager, DialogContentsList, jQuery) {
+    function (PluginManager, ContentManager, DefinitionManager, DialogContentsList, jQuery, Translator) {
 
         'use strict';
 
@@ -43,7 +44,7 @@ define(
 
             /**
              * Add block into contentset
-             * 
+             *
              * accepts: 0 => show all contents in popin
              * accepts: 1 => add content directly in contentset
              * accepts: > 0 => show all blocks needed
@@ -149,7 +150,7 @@ define(
             },
 
             /**
-             * Return the config for shown button 
+             * Return the config for shown button
              * and event associated
              * @returns {Array}
              */
@@ -160,7 +161,7 @@ define(
                     {
                         name: 'Plus',
                         ico: 'fa fa fa-plus',
-                        label: 'Add a new item to this container',
+                        label: Translator.translate('add_item_plus_plugin'),
                         cmd: self.createCommand(self.add, self),
                         checkContext: function () {
                             return true;
