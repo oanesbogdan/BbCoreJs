@@ -46,16 +46,12 @@ define(
                     this.options = jQuery.extend({}, this.defaultConfig, options);
 
                     this.isLoaded = false;
-
-                    this.treeView = TreeViewMng.createTreeView(null, this.options);
-
                     this.checkParameters();
 
                     this.popinTemplate = jQuery(Renderer.render(popinTemplate)).clone();
 
                     this.popIn = this.createPopIn();
                     this.popIn.setContent(this.popinTemplate);
-                    this.popIn.addOption("create", jQuery.proxy(this.initOnCreate, this));
                     this.popIn.addOption("open", jQuery.proxy(this.initOnOpen, this));
 
                     if (this.options.hasOwnProperty("autoDisplay") && this.options.autoDisplay) {
@@ -103,17 +99,19 @@ define(
                     }
                 },
 
-                initOnCreate: function () {
-                    var container = this.popinTemplate.find(".bb5-treeview");
-
-                    this.treeView.render(container);
-                    this.options.create(); //won't be need
+                initTree: function () {
+                    var treeWrapper = this.popinTemplate.find('.bb5-treeview').eq(0);
+                    this.treeView = TreeViewMng.createTreeView(treeWrapper, this.options);
+                    this.options.create();
                 },
 
                 initOnOpen: function () {
+
                     if (this.isLoaded) {
                         return;
                     }
+                    this.initTree();
+
                     this.options.open();
                     this.isLoaded = true;
                 },

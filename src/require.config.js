@@ -27,9 +27,9 @@ define('vendor', ['jquery-helper'], function (jqHelper) {
     'use strict';
     jqHelper.restoreCoreJQuery();
 });
-var baseURI = document.getElementById('bb5-ui').getAttribute('data-base-url') + "resources/toolbar/";
+
+
 require.config({
-    baseUrl: baseURI,
     catchError: true,
     waitSeconds: 15,
     urlArgs: 'cb=' + Math.random(),
@@ -115,3 +115,6 @@ require.config({
         init.listen();
     }
 });
+
+require.config({ baseUrl: document ? document.getElementById('bb5-ui').getAttribute('data-base-url') + "resources/toolbar/" : './resources/toolbar/'});
+
