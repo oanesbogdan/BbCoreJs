@@ -497,7 +497,6 @@ define(
                         rootNode.id = rootNode.uid;
 
                         self.treeView.setData([self.formatePageToNode(rootNode)]);
-
                         dfd.resolve(self.tree);
                     }
                 }).fail(function () {

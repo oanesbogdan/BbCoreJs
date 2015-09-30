@@ -27,6 +27,7 @@ define(['jquery', 'tb.component/treeview/NodeEditor', 'component!translator', "B
                 jQuery("body").append(this.el);
                 this.useWrapper = true;
             }
+            this.options.dragAndDrop = true;
             this.nodeEditor = new NodeEditor(this);
             this.treeEl = jQuery(this.el).tree(this.options);
         },
@@ -266,7 +267,6 @@ define(['jquery', 'tb.component/treeview/NodeEditor', 'component!translator', "B
          * @return TreeView
          **/
         createTreeView = function (el, options) {
-            el = (typeof el === "string") ? el : null;
             options = jQuery.isPlainObject(options) ? options : {};
             var config = {
                 el: el,

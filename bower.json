@@ -24,7 +24,7 @@
     "i18next": "*",
     "nunjucks": "~1.1.0",
     "jquery-ui": "~1.11.2",
-    "jqtree": "~0.22.0",
+    "jqtree": "~1.2.1",
     "datetimepicker": "~2.4.3",
     "jquery.layout": "https://github.com/jlbfalcao/jquery.layout.git",
     "jssimplepagination": "https://github.com/flaviusmatis/simplePagination.js.git",
