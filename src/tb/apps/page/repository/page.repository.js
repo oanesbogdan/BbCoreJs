@@ -245,10 +245,6 @@ define(
                     return CoreDriverHandler.read('layout', {'id': layout_uid});
                 },
 
-                findLayouts: function (site_uid) {
-                    return CoreDriverHandler.read('layout', {'site_uid': site_uid}, {}, 0, null);
-                },
-
                 groupedPatch: function (uids, data) {
                     var i,
                         key,

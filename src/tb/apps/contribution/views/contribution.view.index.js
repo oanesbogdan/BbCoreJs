@@ -87,7 +87,7 @@ define(
                         'parent_uid': Core.get('page.uid'),
                         'flag': 'redirect',
                         'popinId': popinId,
-                        'move_to': true
+                        'from_page': true
                     };
                 if (document.getElementById(popinId) !== null) {
                     jQuery('#' + popinId).dialog('open');

@@ -4,14 +4,16 @@ define(
         'require',
         'jquery',
         'page.repository',
+        'layout.repository',
         'page.form',
         'component!translator',
         'tb.component/formsubmitter/elements/nodeSelector',
         'component!popin',
         'component!formbuilder',
-        'component!formsubmitter'
+        'component!formsubmitter',
+        'component!notify'
     ],
-    function (Core, require, jQuery, PageRepository, PageForm, translator, nodeSelectorValidator) {
+    function (Core, require, jQuery, PageRepository, LayoutRepository, PageForm, translator, nodeSelectorValidator) {
 
         'use strict';
 
@@ -30,7 +32,7 @@ define(
                 });
 
                 this.popin.setId(config.popinId);
-                this.moveTo = config.move_to || false;
+                this.fromPage = config.from_page || false;
 
                 this.formBuilder = require('component!formbuilder');
 
@@ -65,7 +67,7 @@ define(
                     data.parent_uid = this.parent_uid;
                 }
 
-                if (true === this.moveTo) {
+                if (false === this.fromPage) {
                     nodes = nodeSelectorValidator.compute('move_to', data.move_to, form);
                     if (nodes !== null) {
                         data.parent_uid = nodes[0].pageUid;
@@ -77,13 +79,33 @@ define(
                 delete data.move_to;
 
                 this.popin.mask();
-                PageRepository.save(data).done(function (data, response) {
-                    if (typeof self.callbackAfterSubmit === 'function') {
-                        self.callbackAfterSubmit(data, response);
-                    }
+                PageRepository.find(data.parent_uid).done(function (parent) {
+                    LayoutRepository.find(parent.layout_uid).done(function (layout) {
 
-                    self.popin.unmask();
-                    self.popin.hide();
+                        if (true === layout.is_final) {
+                            data.parent_uid = parent.parent_uid;
+                        }
+
+                        if (data.parent_uid === undefined) {
+                            self.popin.unmask();
+                            self.popin.hide();
+                            return;
+                        }
+
+                        PageRepository.save(data).done(function (data, response) {
+                            if (typeof self.callbackAfterSubmit === 'function') {
+                                self.callbackAfterSubmit(data, response);
+                            }
+
+                            self.popin.unmask();
+                            self.popin.hide();
+                        }).fail(function (error) {
+                            require('component!notify').error(error);
+
+                            self.popin.unmask();
+                            self.popin.hide();
+                        });
+                    });
                 });
             },
 
@@ -112,14 +134,25 @@ define(
                 this.popin.display();
                 this.popin.mask();
 
-                PageForm.new(this.moveTo).done(function (configForm) {
+                PageForm.new(this.fromPage).done(function (configForm) {
 
                     configForm.onSubmit = jQuery.proxy(self.onSubmit, self);
                     configForm.onValidate = self.onValidate;
 
-                    self.formBuilder.renderForm(configForm).done(function (html) {
-                        self.popin.setContent(html);
-                        self.popin.unmask();
+                    PageRepository.find(self.parent_uid).done(function (parent) {
+                        LayoutRepository.find(parent.layout_uid).done(function (layout) {
+                            if (layout.is_final) {
+                                if (undefined === configForm.form) {
+                                    configForm.form = {};
+                                }
+                                configForm.form.information = translator.translate('new_page_final_message');
+                            }
+
+                            self.formBuilder.renderForm(configForm).done(function (html) {
+                                self.popin.setContent(html);
+                                self.popin.unmask();
+                            });
+                        });
                     });
                 });
 

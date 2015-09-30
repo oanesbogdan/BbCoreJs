@@ -20,7 +20,10 @@
 require.config({
     paths: {
         'page.routes': 'src/tb/apps/page/routes',
+
+        //Repositories
         'page.repository': 'src/tb/apps/page/repository/page.repository',
+        'layout.repository': 'src/tb/apps/page/repository/layout.repository',
 
         //store
         'page.store': 'src/tb/apps/page/store/page.store',

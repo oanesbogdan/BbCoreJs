@@ -4,6 +4,9 @@
       onsubmit="return false;"
       >
 
+    {% if form.information != null %}
+        <div class="alert alert-info" role="alert">{{ form.information }}</div>
+    {% endif %}
     {% if form.getFormError() != null %}
         <span class="help-block">{{ form.getFormError() }}</span>
     {% endif %}

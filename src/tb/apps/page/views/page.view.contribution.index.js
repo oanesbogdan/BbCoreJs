@@ -114,7 +114,7 @@ define(
                 var config = {
                         'callbackAfterSubmit': this.afterSubmitHandler,
                         'page_uid': Core.get('page.uid'),
-                        'move_to': true
+                        'from_page': true
                     };
 
                 ApplicationManager.invokeService('page.main.editPage', config);

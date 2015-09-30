@@ -161,6 +161,7 @@
     "name": "Name",
     "name_is_required": "Name is required",
     "new_page": "New page",
+    "new_page_final_message": "The current page does not accept children. The page will be created at the same level",
     "next": "Next",
     "no": "No",
     "no_content_save": "No content to save",
