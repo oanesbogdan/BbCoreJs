@@ -80,7 +80,7 @@ define(['Core/Utils', 'content.pluginmanager', 'content.manager', 'jquery', 'com
             return [{
                 'ico': 'fa fa-th',
                 cmd: self.createCommand(self.processCommands, self),
-                label: Translator.translator('media_selector'),
+                label: Translator.translate('media_selector'),
                 checkContext: function () {
                     return self.canApplyOnContext();
                 }
