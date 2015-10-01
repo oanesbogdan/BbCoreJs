@@ -48,14 +48,21 @@ define(
                     this.isLoaded = false;
                     this.checkParameters();
 
-                    this.popinTemplate = jQuery(Renderer.render(popinTemplate)).clone();
+                    this.widget = this.popinTemplate = jQuery(Renderer.render(popinTemplate)).clone();
 
                     this.popIn = this.createPopIn();
                     this.popIn.setContent(this.popinTemplate);
+                    this.popIn.addOption("create", jQuery.proxy(this.handleCreate, this));
                     this.popIn.addOption("open", jQuery.proxy(this.initOnOpen, this));
 
                     if (this.options.hasOwnProperty("autoDisplay") && this.options.autoDisplay) {
                         this.display();
+                    }
+                },
+
+                handleCreate: function () {
+                    if (typeof this.options.onCreate === 'function') {
+                        this.options.onCreate.call(this);
                     }
                 },
 
@@ -102,7 +109,6 @@ define(
                 initTree: function () {
                     var treeWrapper = this.popinTemplate.find('.bb5-treeview').eq(0);
                     this.treeView = TreeViewMng.createTreeView(treeWrapper, this.options);
-                    this.options.create();
                 },
 
                 initOnOpen: function () {

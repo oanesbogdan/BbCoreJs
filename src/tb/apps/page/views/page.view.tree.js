@@ -23,7 +23,8 @@ define(
         'page.repository',
         'component!treeview',
         'component!mask',
-        'component!translator'
+        'component!translator',
+        'component!siteselector'
     ],
 
     function (Core, jQuery, PageRepository, Tree, Mask, Translator) {
@@ -48,12 +49,15 @@ define(
                 if (typeof this.config.site_uid !== 'string') {
                     Core.exception('MissingPropertyException', 500, 'Property "site_uid" must be set to constructor');
                 }
+                this.tree_isLoaded = false;
+                this.isProcessing = false;
                 this.maskMng = Mask.createMask({});
-
                 this.config.only_section = this.config.only_section || false;
                 this.limit_of_page = this.config.limit_of_page || this.limit_of_page;
                 this.site_uid = this.config.site_uid;
+                this.enable_siteSelection = this.config.enable_siteSelection || false;
                 this.initializeTree();
+
             },
 
             showFilter: function () {
@@ -61,23 +65,68 @@ define(
                     this.tree.showFilter();
                 }
             },
+
+            hasSiteSelector: function () {
+                return this.enable_siteSelection;
+            },
+
+            getSelectedSite: function () {
+                return this.selectedSite;
+            },
+
+            getAvailableSites: function () {
+                return this.siteSelector.sites.length;
+            },
+
+            handleSiteSelector: function (widget) {
+                var self = this;
+                this.selectedSite = null;
+
+                this.siteSelector = require("component!siteselector").createSiteSelector({selected : Core.get("site.uid") });
+
+                this.siteSelector.on("ready", function () {
+                    self.tree_isLoaded = false;
+                    self.selectedSite = this.getSelectedSite(true);
+                    self.site_uid = self.selectedSite.uid;
+                    self.siteSelectorIsReady = true;
+                    self.getTree();
+                });
+
+                this.siteSelector.on("siteChange", function (site_uid, site) {
+                    self.selectedSite = site;
+                    self.site_uid = site_uid;
+                    self.tree_isLoaded = false;
+                    self.getTree();
+                });
+
+                jQuery(widget.find('.site-selector')).html(this.siteSelector.render());
+            },
+
             /**
             * Initialize tree
             */
             initializeTree: function () {
-                var config = {
-                    dragAndDrop: true,
-                    onCreateLi: this.onCreateLi,
-                    id: this.config.popinId || 'bb-page-tree',
-                    height: 400 > jQuery(window).height() - 40 ? jQuery(window).height() - 40 : 400,
+                var self = this,
+                    uid = Math.random().toString(36).substr(2, 9),
+                    config = {
+                        dragAndDrop: true,
+                        onCreateLi: this.onCreateLi,
+                        id: this.config.popinId || 'bb-page-tree' + '-' + uid,
+                        height: 400 > jQuery(window).height() - 40 ? jQuery(window).height() - 40 : 400,
 
-                    onCanMove: function (node) {
-                        if (node.is_fake || node.has_ellipsis) {
-                            return false;
+                        onCanMove: function (node) {
+                            if (node.is_fake || node.has_ellipsis) {
+                                return false;
+                            }
+                            return true;
+                        },
+
+                        onCreate: function () {
+                            if (self.hasSiteSelector()) {
+                                self.handleSiteSelector(this.widget);
+                            }
                         }
-                        return true;
-                    }
-                };
+                    };
 
                 this.formatedData = [];
 
@@ -487,23 +536,34 @@ define(
 
             getTree: function () {
                 var self = this,
-                    dfd = jQuery.Deferred(),
+                    promise,
                     rootNode;
+                this.lastTreeDfd = this.lastTreeDfd || jQuery.Deferred();
+                promise = this.lastTreeDfd.promise();
 
-                PageRepository.findRoot().done(function (data) {
+                if (this.tree_isLoaded || this.isProcessing) { return; }
+
+                if (this.hasSiteSelector() && !this.siteSelectorIsReady) {
+                    return promise;
+                }
+
+                PageRepository.findRoot(self.site_uid).done(function (data) {
+                    self.isProcessing = true;
                     if (data.hasOwnProperty(0)) {
-
                         rootNode = data[0];
                         rootNode.id = rootNode.uid;
-
                         self.treeView.setData([self.formatePageToNode(rootNode)]);
-                        dfd.resolve(self.tree);
+                        self.tree_isLoaded = true;
+                        self.lastTreeDfd.resolve(self.tree);
+
                     }
                 }).fail(function () {
-                    dfd.reject();
+                    self.lastTreeDfd.reject();
+                }).always(function () {
+                    self.isProcessing = false;
                 });
 
-                return dfd.promise();
+                return promise;
             }
         });
 

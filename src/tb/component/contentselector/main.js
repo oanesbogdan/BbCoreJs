@@ -445,14 +445,14 @@ define(
                     var self = this,
                         siteSelectorCtn = jQuery(this.widget).find('.site-selector-ctn').eq(0);
                     this.siteSelector = require("component!siteselector").createSiteSelector({selected : Core.get("site.uid") });
-                    jQuery(siteSelectorCtn).replaceWith(this.siteSelector.render());
+
                     this.siteSelector.on("ready", function () {
                         self.bindEvents();
                         self.onReady();
-                        self.isLoaded = true;
                         self.contentRestDataStore.applyFilter("bySite", this.getSelectedSite());
                     });
                     this.siteSelector.on("siteChange", this.handleSiteChange.bind(this));
+                    jQuery(siteSelectorCtn).replaceWith(this.siteSelector.render());
                 },
 
                 handleSiteChange: function (site) {
@@ -481,6 +481,7 @@ define(
                         widgetLayout.resizeAll();
                         widgetLayout.sizePane("west", 201); //useful to fix layout size
                         selector.fixDataviewLayout();
+                        selector.isLoaded = true;
                     } else {
                         selector.loadRootNode();
                     }

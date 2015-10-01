@@ -18,7 +18,8 @@ define(
             bindChangeEvent = function (render, api) {
                 render = jQuery(render);
                 render.on("change", "select", function () {
-                    api.trigger("siteChange", this.value);
+                    var siteItem = underscore.findWhere(sites, {uid: this.value});
+                    api.trigger("siteChange", this.value, siteItem);
                 });
                 return render;
             },
@@ -52,6 +53,8 @@ define(
 
                     config: jQuery.extend(true, {}, config),
 
+                    isRendered: false,
+
                     sites: [],
 
                     render: function (identifier) {
@@ -61,19 +64,29 @@ define(
 
                         jQuery(this.widget).attr("id", this.identifier).attr("disabled");
 
+                        if (this.isRendered) {
+                            self.trigger("ready");
+                        }
                         loadSites().then(function (sites) {
+                            self.sites = sites;
                             var selected = self.config.selected || false,
                                 render = Renderer.render(tpl, { sites: sites, selected: selected });
                             jQuery(self.widget).html(render);
                             bindChangeEvent(self.widget, self);
+                            self.isRendered = true;
                             self.trigger("ready");
                         });
 
                         return this.widget;
                     },
 
-                    getSelectedSite: function () {
-                        return jQuery(this.widget).find("select").eq(0).val();
+                    getSelectedSite: function (verbose) {
+                        verbose = (typeof verbose === "boolean") ? verbose : false;
+                        var selectedSite = jQuery(this.widget).find("select").eq(0).val();
+                        if (verbose) {
+                            selectedSite = underscore.findWhere(sites, {uid: selectedSite});
+                        }
+                        return selectedSite;
                     },
 
                     getJqueryElement: function () {
