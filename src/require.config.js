@@ -35,6 +35,7 @@ require.config({
     urlArgs: 'cb=' + Math.random(),
     paths: {
         'component': 'src/tb/component/component',
+        'filter': 'src/tb/filter/filter',
         'Core': 'bower_components/backbee-core-js/dist/Core',
         'jsclass' : 'node_modules/jsclass/min/core',
         'underscore': 'bower_components/underscore/underscore',

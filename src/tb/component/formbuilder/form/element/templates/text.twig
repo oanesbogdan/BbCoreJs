@@ -2,7 +2,7 @@
 <input type="text"
        name="{{ element.getKey() }}"
        {% if element.isDisabled() %}disabled{% endif %}
-       value="{{ element.getValue() }}"
+       value="{{ element.getValue()|escapeQuote }}"
        placeholder="{{ element.getPlaceholder() }}"
        class="form-control"
        >

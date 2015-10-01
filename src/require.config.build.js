@@ -30,6 +30,7 @@ require.config({
     waitSeconds: 15,
     paths: {
         'component': 'src/tb/component/component',
+        'filter': 'src/tb/filter/filter',
         'vendor': 'dist/vendor.min',
         'jquery.noconflict': 'src/core-jquery.noconflict',
         'ckeeditor': 'dist/ckeeditor/ckeditor'
