@@ -207,7 +207,7 @@ define(
                 },
 
                 createCategoryTreeView: function () {
-                    return require('component!treeview').createTreeView(this.config.categoryTreeView);
+                    return require('component!treeview').createTreeView(null, this.config.categoryTreeView);
                 },
 
                 reset: function (keepSelection) {

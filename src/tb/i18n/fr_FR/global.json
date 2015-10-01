@@ -161,6 +161,7 @@
     "name": "Nom",
     "name_is_required": "nom obligatoire",
     "new_page": "Nouvelle page",
+    "new_page_final_message": "La page courante n'accepte pas d'enfants, cette page va être créée au même niveau",
     "next": "Suivant",
     "no": "Non",
     "no_content_save": "Aucun contenu à sauvegarder",

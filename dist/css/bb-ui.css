@@ -8071,6 +8071,10 @@ colpick Color Picker / colpick.com
   /*datetimepicker*/
   /*Loader*/
 }
+#bb5-ui .alert {
+  padding: 1em;
+  line-height: 1.2em;
+}
 #bb5-ui.bb5-hidden {
   display: none;
 }
@@ -10394,6 +10398,7 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   margin-bottom: 15px;
   border: 1px solid transparent;
   border-radius: 4px;
+  line-height: 1.2em;
   width: 100%;
   text-align: center;
   padding: 1em;

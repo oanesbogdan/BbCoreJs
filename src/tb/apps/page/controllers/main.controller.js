@@ -46,7 +46,7 @@ define(
             appName: 'page',
 
             config: {
-                imports: ['page.repository'],
+                imports: ['page.repository', 'layout.repository'],
                 define: {
                     treeService: ['page.view.tree.contribution'],
                     getPageTreeViewInstanceService: ['page.view.tree'],
@@ -72,6 +72,7 @@ define(
             onInit: function () {
                 this.mainApp = Core.get('application.main');
                 this.repository = require('page.repository');
+                this.layoutRepository = require('layout.repository');
             },
 
             /**
@@ -122,7 +123,7 @@ define(
             },
 
             getPageRepositoryService: function () {
-                return this.repository;
+                return require('page.repository');
             },
 
             getSaveManagerService: function () {
@@ -208,7 +209,7 @@ define(
                 var ToolbarView = req('page.view.toolbar'),
                     view = new ToolbarView({'pageStore': PageStore});
 
-                this.repository.findLayouts(Core.get('site.uid')).then(
+                this.layoutRepository.findLayouts(Core.get('site.uid')).then(
                     function (layouts) {
                         Core.ApplicationManager.invokeService('main.main.toolbarManager').done(function (Service) {
                             Service.append('bb-page-app', view.render(Utils.castAsArray(layouts)), true);

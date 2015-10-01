@@ -87,7 +87,7 @@ define(
                     this.tree.on("click", ".show_folder_action", this.handleSectionFilter, this);
                     Core.ApplicationManager.invokeService('content.main.registerPopin', 'treeView', this.tree);
                 } else {
-                    this.treeView = this.tree = Tree.createTreeView(config);
+                    this.treeView = this.tree = Tree.createTreeView(null, config);
                 }
 
                 this.bindDefaultEvents();

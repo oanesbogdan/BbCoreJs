@@ -27,7 +27,8 @@ define(
         'tb.component/formsubmitter/elements/nodeSelector',
         'component!translator',
         'component!popin',
-        'component!formbuilder'
+        'component!formbuilder',
+        'component!notify'
     ],
     function (require, Core, jQuery, PageRepository, PageForm, nodeSelectorValidator, translator) {
 
@@ -49,7 +50,7 @@ define(
 
                 this.config = config;
                 this.chosenLayout = null;
-                this.moveTo = config.move_to || false;
+                this.fromPage = config.from_page || false;
 
                 this.page_uid = this.config.page_uid;
                 this.callbackAfterSubmit = this.config.callbackAfterSubmit;
@@ -71,7 +72,7 @@ define(
                     data.uid = this.page_uid;
                 }
 
-                if (true === this.moveTo) {
+                if (true === this.fromPage) {
                     nodes = nodeSelectorValidator.compute('move_to', data.move_to, form);
                     if (nodes !== null) {
                         data.parent_uid = nodes[0].pageUid;
@@ -87,6 +88,11 @@ define(
                         data.uid = self.page_uid;
                         self.callbackAfterSubmit(data, response, result);
                     }
+
+                    self.popin.unmask();
+                    self.popin.hide();
+                }).fail(function (error) {
+                    require('component!notify').error(error);
 
                     self.popin.unmask();
                     self.popin.hide();
@@ -129,7 +135,7 @@ define(
                 this.popin.display();
                 this.popin.mask();
 
-                PageForm.edit(this.page_uid, this.moveTo).done(function (configForm) {
+                PageForm.edit(this.page_uid, this.fromPage).done(function (configForm) {
 
                     configForm.onSubmit = jQuery.proxy(self.onSubmit, self);
                     configForm.onValidate = self.onValidate;

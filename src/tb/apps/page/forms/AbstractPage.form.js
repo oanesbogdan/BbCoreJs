@@ -22,9 +22,10 @@ define(
         'jquery',
         'page.repository',
         'component!translator',
+        'layout.repository',
         'jsclass'
     ],
-    function (jQuery, PageRepository, translator) {
+    function (jQuery, PageRepository, translator, LayoutRepository) {
         'use strict';
 
         var Form = new JS.Class({
@@ -77,7 +78,7 @@ define(
                     };
 
                 PageRepository.findCurrentPage().done(function (page) {
-                    PageRepository.findLayouts(page.site_uid).done(function (data) {
+                    LayoutRepository.findLayouts(page.site_uid).done(function (data) {
                         layout_uid.options = self.computeLayouts(data);
                         dfd.resolve(layout_uid);
                     });

@@ -238,7 +238,7 @@ define(
                 },
 
                 createMediaFolderView: function () {
-                    return TreeView.createTreeView(this.config.mediaFolderTreeView);
+                    return TreeView.createTreeView(null, this.config.mediaFolderTreeView);
                 },
 
                 createRangeSelector: function () {

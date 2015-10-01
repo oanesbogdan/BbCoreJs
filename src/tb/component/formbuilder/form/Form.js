@@ -115,6 +115,11 @@ define(
                     this.submitLabel = config.submitLabel;
                 }
 
+                this.information = null;
+                if (config.hasOwnProperty('information')) {
+                    this.information = config.information;
+                }
+
                 this.error = null;
                 if (config.hasOwnProperty('error')) {
                     this.error = config.error;
