@@ -1,11 +1,11 @@
 <li class="bb5-content-item" data-uid="{{ item.uid }}" data-type="{{ item.type }}">
     <p>
-        <a href="javascript:;" title="Christian">
+        <a href="javascript:;" title="{{ item.title }}">
             <img src="{{ item.definition.image }}" alt="{{ item.type }}">
         </a>
     </p>
     <p>
-        <a href="javascript:;" title="Christian">{{ item.type }} {{ item.uid|truncate(5) }}</a>
+        <a href="javascript:;" title="{{ item.title }}">{{ item.type }} {{ item.uid|truncate(5) }}</a>
     </p>
     <p>Date de création: <strong>01/10/2013</strong></p>
     <p>
