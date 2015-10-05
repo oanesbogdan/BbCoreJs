@@ -28,6 +28,7 @@ require.config({
     urlArgs: 'cb=' + Math.random(),
     paths: {
         'component': 'src/tb/component/component',
+        'filter': 'src/tb/filter/filter',
         'vendor': 'dist/vendor.min',
         'ckeeditor': 'dist/ckeeditor/ckeditor',
 
