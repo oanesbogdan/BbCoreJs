@@ -293,7 +293,7 @@ define(
                     dfd = jQuery.Deferred(),
                     contentManager = require('content.manager');
 
-                ContentRepository.getHtml(this.type, this.uid).done(function (html) {
+                ContentRepository.getHtml(this.type, this.uid, this.getRendermode()).done(function (html) {
 
                     html = contentManager.refreshImages(html);
 
@@ -387,6 +387,18 @@ define(
                 var parentNode = this.jQueryObject.parents(this.contentClass + ':first');
 
                 return require('content.manager').getContentByNode(parentNode);
+            },
+
+            getRendermode: function () {
+                var rendermode = 'default';
+
+                if (undefined !== this.jQueryObject) {
+                    if (this.jQueryObject.data('rendermode')) {
+                        rendermode = this.jQueryObject.data('rendermode');
+                    }
+                }
+
+                return rendermode;
             },
 
             /**
