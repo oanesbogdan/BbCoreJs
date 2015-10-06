@@ -94,9 +94,12 @@ define(['jquery', 'text!content/tpl/content-action', 'jsclass'], function (jQuer
                     button.attr('draggable', 'true');
                     button.addClass(actionInfos.ico);
                 } else {
+                    if (actionInfos.hideInContextMenu === true) {
+                        return true;
+                    }
                     button = jQuery("<li></li>").clone();
                     var icoNode = jQuery('<i/>').addClass(actionInfos.ico);
-                    button.append(jQuery('<a/>').append(icoNode).attr({"alt" : actionInfos.label, onclick : 'return false;'}).append(" " + actionInfos.label));
+                    button.append(jQuery('<button/>').append(icoNode).attr({"title" : actionInfos.label}).append(" " + actionInfos.label));
                 }
                 jQuery(button).on("click", actionInfos.cmd.execute);
                 btnCtn.appendChild(jQuery(button).get(0));

@@ -142,8 +142,12 @@ define(
                     return CoreDriverHandler.read(this.TYPE, {content_type: contentType, content_uid: contentUid});
                 },
 
-                findRoot: function () {
-                    return CoreDriverHandler.read(this.TYPE, {'root': 1});
+                findRoot: function (site_uid) {
+                    var params = {root: 1};
+                    if (typeof site_uid === "string") {
+                        params.site_uid = site_uid;
+                    }
+                    return CoreDriverHandler.read(this.TYPE, params);
                 },
 
                 /**

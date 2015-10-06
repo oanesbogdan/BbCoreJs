@@ -105,12 +105,15 @@ define(
                 var self = this,
                     siteSelectorCtn = jQuery(this.widget).find('.site-selector-ctn').eq(0);
                 this.siteSelector = require("component!siteselector").createSiteSelector({selected : Core.get("site.uid") });
-                jQuery(siteSelectorCtn).replaceWith(this.siteSelector.render());
+
                 this.siteSelector.on("ready", function () {
                     self.treeConfig.site_uid = this.getSelectedSite();
                     self.loadTree(self);
                 });
+
                 this.siteSelector.on("siteChange", this.handleSiteChange.bind(this));
+
+                jQuery(siteSelectorCtn).replaceWith(this.siteSelector.render());
             },
 
 

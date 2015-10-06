@@ -187,12 +187,14 @@ define(
                         do_pagination: true,
                         site_uid: Core.get('site.uid'),
                         popin: true,
+                        enable_siteSelection: true,
                         popinId: 'popin_' + self.el
                     };
 
                 if (self.pageTreeView === undefined) {
-                    Core.ApplicationManager.invokeService('page.main.getPageTreeViewInstance').done(function (TreeView) {
-                        self.pageTreeView = new TreeView(config);
+                    Core.ApplicationManager.invokeService('page.main.getPageTreeViewInstance').done(function (PageTreeView) {
+
+                        self.pageTreeView = new PageTreeView(config);
 
                         self.pageTreeView.getTree().done(function (tree) {
                             self.pageTree = tree;
@@ -221,14 +223,23 @@ define(
                     return;
                 }
 
-                var elementsWrapper = jQuery(this.elementSelector).find(' .' + this.elementsWrapperClass + ' ul'),
+                var selectedSite = this.pageTreeView.getSelectedSite(),
+                    fieldTitle,
+                    siteLabel = "",
+                    elementsWrapper = jQuery(this.elementSelector).find(' .' + this.elementsWrapperClass + ' ul'),
                     data = {'pageUid': event.node.id, 'title': event.node.name},
                     item;
+
+                if (selectedSite && this.pageTreeView.getAvailableSites() > 0) {
+                    data.siteLabel = selectedSite.label;
+                    siteLabel = "(" + data.siteLabel + ")";
+                }
 
                 if (this.currentEditItem !== null) {
 
                     this.currentEditItem.find('input.pageuid').val(data.pageUid);
-                    this.currentEditItem.find('input.title').val(data.title);
+                    fieldTitle = data.title + siteLabel;
+                    this.currentEditItem.find('input.title').val(fieldTitle);
 
                     this.currentEditItem = null;
 
