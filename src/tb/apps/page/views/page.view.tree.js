@@ -178,11 +178,6 @@ define(
                 this.nodeActionMemory = null;
             },
 
-            loadFreeLeafTree: function () {
-                this.getTree();
-            },
-
-
             /**
             * Event trigged when LI is created
             * @param {Object} node
@@ -391,8 +386,8 @@ define(
 
             selectPage: function (pageUid) {
                 var self = this;
+                if (!pageUid) { return false; }
                 this.mask();
-
                 PageRepository.findAncestors(pageUid).done(function (ancestorInfos) {
 
                     if (!Array.isArray(ancestorInfos) || ancestorInfos.length === 0) {
@@ -418,6 +413,8 @@ define(
                     }
 
                     callbacks[0].call(this);
+                }).always(function () {
+                    self.unmask();
                 });
 
             },
@@ -427,7 +424,7 @@ define(
                     nextCallback;
                 return function () {
 
-
+                    this.mask();
                     if ((callbacksList.length === 1) && (self.treeView.isRoot({id: ancestor.uid}))) {
                         self.handleLastNode(pageUid, ancestor);
                         self.unmask();

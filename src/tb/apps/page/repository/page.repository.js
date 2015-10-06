@@ -144,7 +144,7 @@ define(
 
                 findRoot: function (site_uid) {
                     var params = {root: 1};
-                    if (typeof site_uid === "string") {
+                    if (typeof site_uid === "string" && site_uid.length !== 0) {
                         params.site_uid = site_uid;
                     }
                     return CoreDriverHandler.read(this.TYPE, params);
