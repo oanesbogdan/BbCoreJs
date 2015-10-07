@@ -23,19 +23,21 @@ define(['Core', 'jquery', '../keywordseditor/datastore/keyword.datastore', '../k
                 this.config.open = this.onReady.bind(this);
                 this.dialog = TreeViewComponent.createPopinTreeView(this.config);
                 this.isEditing = false;
-                this.kwTree = this.dialog.treeView;
-                this.maskMng = MaskManager.createMask({});
-                this.treeContainer = jQuery(this.dialog.popinTemplate);
-                this.initComponents();
-                this.initDataStore();
-                this.bindEvents();
             },
-
 
             initComponents: function () {
                 this.contextMenuHelper = ContextMenuHelper;
             },
 
+            onReady: function () {
+                this.maskMng = MaskManager.createMask({});
+                this.kwTree = this.dialog.treeView;
+                this.treeContainer = jQuery(this.dialog.popinTemplate);
+                this.initComponents();
+                this.initDataStore();
+                this.bindEvents();
+                this.loadRoot();
+            },
 
             bindEvents: function () {
                 this.kwTree.on("open", this.loadNode.bind(this));
@@ -179,11 +181,8 @@ define(['Core', 'jquery', '../keywordseditor/datastore/keyword.datastore', '../k
 
             initDataStore: function () {
                 this.keywordStore = KwDataStore;
-            },
-
-            onReady: function () {
-                this.loadRoot();
             }
+
         });
 
 
