@@ -24,9 +24,10 @@ define(
         'content.container',
         'Core/Renderer',
         'text!content/tpl/breadcrumb',
+        'content.pluginmanager',
         'content.manager'
     ],
-    function (require, jQuery, ContentContainer, Renderer, template) {
+    function (require, jQuery, ContentContainer, Renderer, template, PluginManager) {
 
         'use strict';
 
@@ -83,6 +84,10 @@ define(
                 content.select();
 
                 this.show(content, this.selector);
+
+                PluginManager.getInstance().reApplyPlugins();
+
+                return false;
             },
 
             hide: function (selector) {
