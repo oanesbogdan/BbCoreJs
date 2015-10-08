@@ -31,7 +31,7 @@ define('vendor', ['jquery-helper'], function (jqHelper) {
 
 require.config({
     catchError: true,
-    waitSeconds: 15,
+    waitSeconds: 45,
     urlArgs: 'cb=' + Math.random(),
     paths: {
         'component': 'src/tb/component/component',
