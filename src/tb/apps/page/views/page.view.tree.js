@@ -46,6 +46,8 @@ define(
             */
             initialize: function (config) {
                 this.config = config;
+                this.config.popin_title = this.config.popin_title || Translator.translate('page_tree');
+
                 if (typeof this.config.site_uid !== 'string') {
                     Core.exception('MissingPropertyException', 500, 'Property "site_uid" must be set to constructor');
                 }
@@ -112,6 +114,7 @@ define(
                         dragAndDrop: true,
                         onCreateLi: this.onCreateLi,
                         id: this.config.popinId || 'bb-page-tree' + '-' + uid,
+                        title: self.config.popin_title,
                         height: 400 > jQuery(window).height() - 40 ? jQuery(window).height() - 40 : 400,
 
                         onCanMove: function (node) {
