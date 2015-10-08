@@ -54,7 +54,7 @@ define(function () {
 
                 loader.classList.add('visible');
                 require(['vendor'], function () {
-                    require(['Core', 'component!session', 'jquery'], function (Core, session, jQuery) {
+                    require(['Core', 'component!session', 'jquery', 'hook'], function (Core, session, jQuery) {
 
                         if (removeSession === true) {
                             session.destroy();
@@ -64,6 +64,9 @@ define(function () {
                         Core.set('is_connected', session.isAuthenticated());
                         Core.set('wrapper_toolbar_selector', '#' + selector.id);
                         Core.set('api_base_url', selector.getAttribute('data-api'));
+
+                        document.bb_core = true;
+                        require('hook').execute(Core);
 
                         require(
                             [

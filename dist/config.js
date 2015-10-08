@@ -28,6 +28,32 @@ define('vendor', ['jquery-helper'], function (jqHelper) {
     jqHelper.restoreCoreJQuery();
 });
 
+define('hook', function () {
+    return {
+        'hooks': [],
+        'register': function (func) {
+            if (document.hasOwnProperty('bb_core')) {
+                if ('function' === typeof func) {
+                    func(require('Core'));
+                }
+            } else {
+                this.hooks.push(func);
+            }
+        },
+        'execute': function (core) {
+            var key;
+
+            for (key in this.hooks) {
+                if (this.hooks.hasOwnProperty(key)) {
+                    if ('function' === typeof this.hooks[key]) {
+                        this.hooks[key](core);
+                        delete this.hooks[key];
+                    }
+                }
+            }
+        }
+    };
+});
 
 require.config({
     catchError: true,
