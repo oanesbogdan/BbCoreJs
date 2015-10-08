@@ -114,7 +114,7 @@ define(
                     form.addError('title', translator.translate('title_is_required'));
                 }
 
-                if (data.title.trim().length < 4) {
+                if (data.title.trim().length < 3) {
                     form.addError('title', translator.translate('title_must_contain_at_least_3_characters'));
                 }
 
