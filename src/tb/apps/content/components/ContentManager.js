@@ -285,7 +285,7 @@ define(
                     });
                 }
 
-                if (html.get(0).tagName === 'IMG') {
+                if (html.get(0) && html.get(0).tagName === 'IMG') {
                     refreshPicture(html);
                 }
 

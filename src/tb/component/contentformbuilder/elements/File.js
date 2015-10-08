@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2011-2013 Lp digital system
  *
@@ -26,7 +27,7 @@ define(
 
         'use strict';
 
-        var Image = {
+        var File = {
 
             services: {
                 'ContentManager': 'content.main.getContentManager'
@@ -77,6 +78,6 @@ define(
             }
         };
 
-        return Image;
+        return File;
     }
 );
