@@ -8075,6 +8075,9 @@ colpick Color Picker / colpick.com
   padding: 1em;
   line-height: 1.2em;
 }
+#bb5-ui .dropdown-menu {
+  z-index: 490003;
+}
 #bb5-ui.bb5-hidden {
   display: none;
 }
@@ -10040,6 +10043,7 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   background-clip: padding-box;
+  z-index: 490003;
   display: block;
   z-index: 999999;
 }
@@ -10610,6 +10614,9 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   background: "white";
   position: "absolute";
   width: "150px";
+}
+#bb5-ui .content-actions a {
+  cursor: pointer;
 }
 /* bb notify css start author http://tympanus.net/codrops/2012/06/25/timed-notifications-with-css-animations/ */
 #bb-box-wrapper {
