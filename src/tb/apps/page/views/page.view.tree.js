@@ -497,6 +497,13 @@ define(
                 this.maskMng.unmask(this.treeView.el);
             },
 
+            loadTreeRoot: function () {
+                var root = this.treeView.invoke("getTree");
+                if (root && root.children.length !== 0) {
+                    this.treeView.invoke("openNode", root.children[0]);
+                }
+            },
+
             handleEllipsisNode: function (node) {
                 var elpsNode = this.treeView.getNodeById("elps_" + node.uid),
                     linkedNode = this.treeView.getNodeById(node.uid);

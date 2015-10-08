@@ -188,6 +188,7 @@ define(
                         site_uid: Core.get('site.uid'),
                         popin: true,
                         enable_siteSelection: true,
+                        autoloadRoot: true,
                         popinId: 'popin_' + self.el
                     };
 
@@ -198,9 +199,9 @@ define(
 
                         self.pageTreeView.getTree().done(function (tree) {
                             self.pageTree = tree;
-                            self.pageTree.display();
-
+                            self.pageTreeView.loadTreeRoot();
                             self.bindTreeEvents();
+
                         });
                     });
                 } else {
