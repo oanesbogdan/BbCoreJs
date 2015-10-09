@@ -23,6 +23,37 @@ require.onResourceLoad = function (context, map) {
         require.undef(map.name);
     }
 };
+
+define('hook', function () {
+
+    'use strict';
+
+    return {
+        'hooks': [],
+        'register': function (func) {
+            if (document.hasOwnProperty('bb_core')) {
+                if ('function' === typeof func) {
+                    func(require('Core'));
+                }
+            } else {
+                this.hooks.push(func);
+            }
+        },
+        'execute': function (core) {
+            var key;
+
+            for (key in this.hooks) {
+                if (this.hooks.hasOwnProperty(key)) {
+                    if ('function' === typeof this.hooks[key]) {
+                        this.hooks[key](core);
+                        delete this.hooks[key];
+                    }
+                }
+            }
+        }
+    };
+});
+
 var baseURI = document.getElementById('bb5-ui').getAttribute('data-base-url') + "resources/toolbar/";
 require.config({
     baseUrl: baseURI,
