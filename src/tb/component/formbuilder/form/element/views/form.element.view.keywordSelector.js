@@ -35,7 +35,13 @@ define(['Core', 'jquery', 'BackBone', 'component!keywordselector', 'Core/Rendere
         parseConfig : function () {
             var config = {},
                 keywords = (this.element.config && this.element.config.hasOwnProperty("value")) ? this.element.config.value : [];
+
             config.keywords = keywords;
+
+            if (this.element.config && this.element.config.hasOwnProperty('maxentry')) {
+                config.maxentry = this.element.config.maxentry;
+            }
+
             this.previousValue = (Array.isArray(config.keywords)) ? config.keywords : [];
             return config;
         },

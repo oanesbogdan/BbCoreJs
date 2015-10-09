@@ -41,7 +41,7 @@ define(['Core/Utils',
     var KeywordSelector = new JS.Class({
         defaultConfig: {
             keywords: [],
-            max: 3,
+            maxentry: 25,
             keywordCls: "kw-item",
             editMode: false,
             cls: "kw-wrapper"
@@ -56,7 +56,7 @@ define(['Core/Utils',
             jQuery.extend(this, {}, BackBone.Events);
             this.kwList = new Utils.SmartList({
                 idKey: "uid",
-                maxEntry: parseInt(this.defaultConfig.max, 10)
+                maxEntry: parseInt(this.defaultConfig.maxentry, 10)
             });
 
             this.kwList.onChange = this.updateui.bind(this);
