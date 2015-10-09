@@ -29,6 +29,9 @@ define('vendor', ['jquery-helper'], function (jqHelper) {
 });
 
 define('hook', function () {
+
+    'use strict';
+
     return {
         'hooks': [],
         'register': function (func) {
@@ -57,7 +60,7 @@ define('hook', function () {
 
 require.config({
     catchError: true,
-    waitSeconds: 45,
+    waitSeconds: 15,
     urlArgs: 'cb=' + Math.random(),
     paths: {
         'component': 'src/tb/component/component',
