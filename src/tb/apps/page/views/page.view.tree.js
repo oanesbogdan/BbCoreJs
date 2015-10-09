@@ -427,7 +427,7 @@ define(
                     nextCallback;
                 return function () {
 
-                    this.mask();
+                    self.mask();
                     if ((callbacksList.length === 1) && (self.treeView.isRoot({id: ancestor.uid}))) {
                         self.handleLastNode(pageUid, ancestor);
                         self.unmask();
