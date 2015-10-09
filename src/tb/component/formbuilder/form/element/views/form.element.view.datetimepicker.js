@@ -73,11 +73,14 @@ define(
                 });
             },
 
-            manageDatetimepicker: function (view) {
+            manageDatetimepicker: function () {
                 var element = jQuery(this);
 
                 element.datetimepicker({
-                    parentID: view.mainSelector
+                    parentID: '#bb5-dialog-container',
+                    onGenerate: function () {
+                        jQuery(this).css('top', element.position().top + (element.innerHeight() * 2.5));
+                    }
                 });
 
                 element.datetimepicker('show');
