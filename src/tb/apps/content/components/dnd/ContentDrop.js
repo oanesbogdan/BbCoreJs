@@ -63,9 +63,10 @@ define(
                 img.attr('dropzone', false);
                 img.css('opacity', '1');
 
-                img.each(function (index) {
-                    current = jQuery(img.get(index));
-                    if (!current.parent().hasClass('img-wrap-dnd')) {
+                img.each(function () {
+                    current = jQuery(this);
+
+                    if (current.parent().hasClass('img-wrap-dnd')) {
                         current.unwrap('<div class="img-wrap-dnd">');
                     }
                 });
@@ -77,10 +78,10 @@ define(
                     reader = new window.FileReader(),
                     content = ContentManager.getContentByNode(target),
                     mask = Mask.createMask(),
-                    parent = content.jQueryObject.parent(),
+                    maskTarget = content.jQueryObject.parent().parent(),
                     self = this;
 
-                mask.mask(parent);
+                mask.mask(maskTarget);
 
                 reader.onload = function (e) {
 
@@ -100,7 +101,7 @@ define(
                         ApplicationManager.invokeService('content.main.save', true).done(function (promise) {
                             promise.done(function () {
                                 content.refresh().done(function () {
-                                    mask.unmask(parent);
+                                    mask.unmask(maskTarget);
                                     content.jQueryObject.unwrap();
                                 });
                             });
