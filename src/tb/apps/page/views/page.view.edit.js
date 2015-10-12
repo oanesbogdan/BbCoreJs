@@ -104,6 +104,10 @@ define(
                     form.addError('title', translator.translate('title_is_required'));
                 }
 
+                if (data.title.trim().length < 4) {
+                    form.addError('title', translator.translate('title_must_contain_at_least_3_characters'));
+                }
+
                 if (!data.hasOwnProperty('layout_uid') || data.layout_uid.trim().length === 0) {
                     form.addError('layout_uid', translator.translate('template_is_required'));
                 }
