@@ -10860,23 +10860,27 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   top: auto;
   left: auto;
 }
-.kw-wrapper.list-inline {
+#bb5-ui .kw-wrapper.list-inline {
   border: solid 1px #e0e0e0;
-  padding: 3px 3px 0 3px;
+  padding: 3px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
 }
-.kw-wrapper.list-inline .btn-rm-kw {
+#bb5-ui .kw-wrapper.list-inline .btn-rm-kw {
   margin-bottom: 3px;
 }
-.kw-wrapper.list-inline .keyword-wrapper.list-inline {
+#bb5-ui .kw-wrapper.list-inline .keyword-wrapper.list-inline {
   margin-left: 0;
 }
-.kw-wrapper.list-inline .keyword-wrapper.list-inline li {
+#bb5-ui .kw-wrapper.list-inline .keyword-wrapper.list-inline li {
   padding: 0 2px;
 }
-.kw-wrapper.list-inline input.kw-editor {
+#bb5-ui .kw-wrapper.list-inline input.kw-editor {
   border-width: 0;
+}
+#bb5-ui .kw-wrapper .btn-rm-kw .btn.fa-remove {
+  padding: 0;
+  margin-right: -7px;
 }
