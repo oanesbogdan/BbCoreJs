@@ -63,7 +63,7 @@ define(
                     config.label = object.name;
                     config.object_name = object.name;
 
-                    if (elements.path !== '' && elements.originalname !== '') {
+                    if (elements.path && elements.path !== '' && elements.originalname && elements.originalname !== '') {
                         config.value = {
                             thumbnail: '/images/' + elements.path,
                             name: elements.originalname,
