@@ -247,6 +247,9 @@ define('tb.component/popin/main', ['Core', 'tb.component/popin/PopIn', 'jquery',
                 }
 
                 jQuery('#' + popIn.getId()).dialog('open');
+                jQuery('#' + popIn.getId()).attr('tabindex', '-1');
+                jQuery('#' + popIn.getId()).focus();
+                jQuery(document.documentElement).css('overflow', 'hidden');
             }
         },
 
@@ -286,6 +289,8 @@ define('tb.component/popin/main', ['Core', 'tb.component/popin/PopIn', 'jquery',
                     }
                 }
             }
+
+            jQuery(document.documentElement).css('overflow', '');
         },
 
         /**
