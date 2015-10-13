@@ -49,7 +49,7 @@ define(
 
             popin_config: {
                 id: 'bundle-admin',
-                width: window.innerWidth,
+                width: window.innerWidth - 20,
                 top: 180,
                 height: window.innerHeight - 192,
                 closeOnEscape: false,
