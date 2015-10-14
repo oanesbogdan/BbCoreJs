@@ -1,7 +1,6 @@
 {
     "app_validate": "Утвердить",
     "app_only_default": "Только поумолчанию",
-
     "account_activated": "Аккаунт активирован",
     "account_edit": "Редактировать аккаунт",
     "account_updated": "Аккаунт обновлен",
@@ -23,11 +22,10 @@
     "apply_to_all_selected_pages": "Применить ко всем выбранным страницам",
     "api_key_enabled": "Удаленный доступ включен",
     "archiving_scheduled_for": "Архивирование запланировано на",
-    "are_you_sure_you_want_to_delete_this_item" :"Вы уверены что вы хотите удалить это",
-    "are_you_sure_you_want_to_delete_this_media" : "Вы уверены что вы хотите удалить это медиа",
+    "are_you_sure_you_want_to_delete_this_item": "Вы уверены что вы хотите удалить это",
+    "are_you_sure_you_want_to_delete_this_media": "Вы уверены что вы хотите удалить это медиа",
     "author": "Автор",
     "available_in_menus": "Доступно в меню",
-
     "before": "До",
     "block": "Блок",
     "blocks": "Блоки",
@@ -35,7 +33,6 @@
     "block_display": "Блок показа",
     "block_description": "Блок описания",
     "browse_to": "Перейти на",
-
     "cancel": "Отменить",
     "cancel_changes_content_below": "Отменить изменение содержимого",
     "cancel_changes_page_below": "Отменить изменения страницы",
@@ -73,8 +70,6 @@
     "cut": "Вырезать",
     "current_directory": "Текущая папка",
     "content_preview": "Предпросмотр содержимого",
-
-
     "data_base": "База данных",
     "date_format": "YYYY.MM.DD hh:mm a",
     "deactivate": "Выключить",
@@ -91,9 +86,10 @@
     "do_you_want_enable_this bundle": "Включить этот пакет?",
     "do_you_wish_to_delete_the_page": "Удалить страницу?",
     "draft": "Черновик",
+    "drag_and_drop": "Перетащите",
     "duplicate": "Дублировать",
-
     "edit": "Редактировать",
+    "edit_content": "Редактировать содержание",
     "edit_page": "Редактировать страницу",
     "edited": "Изменено",
     "edition": "Редакция",
@@ -103,12 +99,10 @@
     "error_retry_later": "Ошибка, повторите позже",
     "export": "Экспорт",
     "external_link": "Внешняя ссылка",
-
     "filters": "Фильтры",
     "first_name": "Имя",
     "find_users": "Найти пользователей",
     "from": "От",
-
     "gabarit": "Шаблон",
     "general_settings": "Основные настройки",
     "group": "Группа",
@@ -120,24 +114,23 @@
     "grouped_online_text": "Сделать страницы видимыми?",
     "grouped_remove_text": "Удалить выбраные страницы?<br>Внимание : если удаляемые страницы - в корзине, то они будут удалены навсегда",
     "groups": "Группы",
-
     "has_been_deleted": "было удалено",
-
     "if_you_wish_to_keep_these_subpages_please_move_them_to_another_location": "Если вы хотите сохранить эти подстраницы - переместите их в другое место",
     "import": "Импорт",
     "inactive": "Не активно",
     "internal_link": "Внутренняя ссылка",
-
+    "keywords_editor": "Ключевые слова",
     "last_name": "Фамилия",
     "layout": "Макет",
+    "language": "язык",
     "link_selector_label": "Селектор ссылок",
     "loading_sites": "Загружаю сайты...",
     "login": "Логин",
     "log_in": "Залогиниться",
+    "log_out": "Выйти",
     "login_is_required": "Требуется логин",
     "login_should_contain_6_characters": "Логин должен быть минимум 6 знаков",
     "loading": "Загрузка",
-
     "manage": "Управление",
     "manage_bundle": "Управление пакетами",
     "manage_rights": "Управление прпавами",
@@ -147,9 +140,10 @@
     "media_width": "Ш",
     "media_library": "Медиа библиотека",
     "media_preview": "Предпросмотр медиа",
+    "media_selector": "селектор Медиа",
     "modified_at": "Изменено",
     "modified_date": "Дата изменения",
-
+    "move_to_page": "Выберите место для вашей страницы",
     "name": "Имя",
     "name_is_required": "Требуется ввести имя",
     "new_page": "Новая страница",
@@ -163,11 +157,9 @@
     "no_page_modification_validate": "Нет изменения страницы для утверждения",
     "no_one": "Ни одного",
     "no_user_found": "Пользователи не найдены",
-
     "online": "Онлайн",
     "orphaned_content": "Содержимое устарело",
-    "orphaned_media_delete_this_media" : "Медиа устарело. Удалите это медиа",
-
+    "orphaned_media_delete_this_media": "Медиа устарело. Удалите это медиа",
     "page": "Страница",
     "page_deleted": "Страница удалена",
     "page_filters": "Фильтры страницы",
@@ -182,7 +174,6 @@
     "page_status": "Статус страницы",
     "page_tree": "Дерево страницы",
     "page_management": "Управление страницей",
-    "pages_management": "Управление страницами",
     "parameters": "Параметры",
     "paste": "Вставить как подстраницу",
     "paste_after": "Вставить после",
@@ -199,10 +190,10 @@
     "previous": "До",
     "publication_scheduled_for": "Публикация назначена на",
     "publishing_archiving": "Публикация / Архивирование",
-    "published_after" : "Опубликовано после",
-    "published_before" : "Опубликовано до",
+    "published_after": "Опубликовано после",
+    "published_before": "Опубликовано до",
     "publishing_before_archiving": "Дата публикация не может быть после даты архивирования",
-
+    "redirect_to": "Перенаправление",
     "remove": "Удалить",
     "remove_content": "Удалить содержимое",
     "remove_content_confirmation_message": "Удалить это содержимое?",
@@ -214,7 +205,6 @@
     "rights_description": "Описание прав",
     "rights_management": "Управление правами",
     "roles_management": "Управление ролями",
-
     "save": "Сохранить",
     "save_as_draft": "Сохранить как черновик",
     "save_draft": "Сохранить черновик",
@@ -242,7 +232,7 @@
     "state-4": "Удалено",
     "status": "Статус",
     "submit": "Отправить",
-
+    "target_page": "Страница режим открытия",
     "template_is_required": "Требуется шаблон",
     "theme": "Тема",
     "the_page_you_are_about_to_delete_contains_subpages": "Удаляемая страница содержит подстраницы",
@@ -257,9 +247,9 @@
     "to_assign_a_user_rights_remember_to_drag_and_drop_the_user_into_a_group": "Чтобы назначить права пользователя не забудьте переместить пользователя в группу",
     "trash": "Корзина",
     "tree": "Дерево",
-
     "updated": "Обновлено",
     "upload_drop_message": "Перетащите файлы сюда или щелкните чтобы выложить.",
+    "uploading": "Загрузка",
     "url_required": "Требуется указать ссылку",
     "user": "Пользователь",
     "user_filters": "Фильтрация пользователей",
@@ -272,15 +262,12 @@
     "user_update_success": "Пользователь успешно обновлен",
     "users": "Пользователи",
     "user_management": "Управление пользователями",
-
     "validate": "Утвердить",
     "validation_confirmation": "Подтверждение утверждения",
     "validation_popin_note": "Не выбранные пункты не будут показаны, но останутся сохраненными как черновики.",
     "validation_unselect_note": "Если вы хотите удалить не отмеченные пункты, нажмите Отмена.",
-
-    "warning" : "Предупреждение",
+    "warning": "Предупреждение",
     "website_parameters": "Параметры сайта",
     "workflow_management": "Управление работой",
-
     "yes": "Да"
 }
