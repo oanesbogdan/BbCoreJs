@@ -26,7 +26,8 @@ define(
         'component!contentformbuilder',
         'component!formbuilder',
         'component!formsubmitter',
-        'component!translator'
+        'component!translator',
+        'content.repository'
     ],
     function (Core, jQuery, ContentManager, PopinManager, ContentFormBuilder, FormBuilder, FormSubmitter, translator) {
 
@@ -110,10 +111,41 @@ define(
                             elementArray.push(object);
                         }
                     }
-
-                    self.getElementsConfig(elementArray).done(function () {
-                        dfd.resolve(self.buildConfig(arguments));
+                    self.preLoadElements(elementArray).done(function () {
+                        self.getElementsConfig(elementArray).done(function () {
+                            dfd.resolve(self.buildConfig(arguments));
+                        });
                     });
+                });
+
+                return dfd.promise();
+            },
+
+            preLoadElements: function (elementsArray) {
+                var key,
+                    dfd = jQuery.Deferred(),
+                    object,
+                    uids = [];
+
+                for (key in elementsArray) {
+                    if (elementsArray.hasOwnProperty(key)) {
+                        object = elementsArray[key];
+                        uids.push(object.uid);
+                    }
+                }
+
+                require('content.repository').findByUids(uids).done(function (elements) {
+                    var element,
+                        key2;
+
+                    for (key2 in elements) {
+                        if (elements.hasOwnProperty(key2)) {
+                            element = elements[key2];
+                            ContentManager.buildElement({'type': element.type, 'uid': element.uid, 'elementData': element});
+                        }
+                    }
+
+                    dfd.resolve();
                 });
 
                 return dfd.promise();
