@@ -35,6 +35,7 @@ define(
 
         var Edition = {
 
+            popin: [],
             contentSetClass: '.contentset',
             config: {
                 onSave: null,
@@ -44,31 +45,33 @@ define(
             show: function (content, config) {
                 this.config = config || {};
                 if (content !== undefined) {
+                    if (this.popin && this.popin[content.uid]) {
+                        this.popin[content.uid].destroy();
+                    }
                     this.content = content;
-                    this.createPopin();
+                    this.popin[this.content.uid] = this.createPopin('contentEdit-' + this.content.uid);
                     this.edit();
                 }
             },
 
-            createPopin: function () {
-                if (this.popin) {
-                    this.popin.destroy();
-                }
-                this.popin = PopinManager.createPopIn({
+            createPopin: function (name) {
+                var popin = PopinManager.createPopIn({
                     close: function () {
-                        Core.ApplicationManager.invokeService('content.main.removePopin', 'contentEdit');
+                        Core.ApplicationManager.invokeService('content.main.removePopin', name);
                     },
                     position: { my: "center top", at: "center top+" + jQuery('#' + Core.get('menu.id')).height()}
                 });
 
-                this.popin.setTitle(translator.translate('edit'));
-                this.popin.addOption('width', '500px');
+                popin.setTitle(translator.translate('edit'));
+                popin.addOption('width', '500px');
 
-                Core.ApplicationManager.invokeService('content.main.registerPopin', 'contentEdit', this.popin);
+                Core.ApplicationManager.invokeService('content.main.registerPopin', name, popin);
+
+                return popin;
             },
 
             getDialog: function () {
-                var dialog = this.popin || null;
+                var dialog = this.popin[this.content.uid] || null;
                 return dialog;
             },
 
@@ -183,7 +186,7 @@ define(
                         param = parameters[key];
 
                         if (param !== null) {
-                            param.popinInstance = this.popin;
+                            param.popinInstance = this.popin[this.content.uid];
                             config.elements[param.object_name] = param;
                         }
                     }
@@ -215,20 +218,20 @@ define(
             edit: function () {
                 var self = this;
 
-                this.popin.display();
-                this.popin.mask();
+                this.popin[this.content.uid].display();
+                this.popin[this.content.uid].mask();
 
                 this.getFormConfig().done(function (config) {
                     FormBuilder.renderForm(config).done(function (html) {
-                        self.popin.setContent(html);
-                        self.popin.unmask();
+                        self.popin[self.content.uid].setContent(html);
+                        self.popin[self.content.uid].unmask();
                     });
                 });
             },
 
             onSubmit: function (data, form) {
                 var self = this;
-                self.popin.mask();
+                self.popin[self.content.uid].mask();
 
                 FormSubmitter.process(data, form).done(function (res) {
                     self.computeData(res).done(function () {
@@ -236,8 +239,8 @@ define(
                             promise.done(function () {
                                 self.content.refresh().done(function () {
 
-                                    self.popin.unmask();
-                                    self.popin.hide();
+                                    self.popin[self.content.uid].unmask();
+                                    self.popin[self.content.uid].hide();
 
                                     if (typeof self.config.onSave === "function") {
                                         self.config.onSave(data);

@@ -28,6 +28,10 @@ define(
 
         var All = {
 
+            services: {
+                'ContentManager': 'content.main.getContentManager'
+            },
+
             init: function (definition) {
                 this.definition = definition;
 
@@ -36,27 +40,27 @@ define(
 
             getConfig: function (object) {
                 var dfd = jQuery.Deferred(),
+                    config,
+                    element = this.ContentManager.buildElement({'uid': object.uid, 'type': object.type});
+
+                element.getData().done(function () {
+
                     config = {
                         'type': 'content',
-                        'image': this.definition.image,
-                        'label': this.definition.type
+                        'label': object.name,
+                        'value': object.uid,
+                        'image': element.data.image,
+                        'object_name': object.name,
+                        'object_type': object.type,
+                        'object_label': element.data.label
                     };
 
-                if (object !== undefined) {
-                    this.populateConfig(object, config, dfd);
-                } else {
                     dfd.resolve(config);
-                }
+                }).fail(function (data, response) {
+                    dfd.reject(data, response);
+                });
 
                 return dfd.promise();
-            },
-
-            populateConfig: function (object, config, dfd) {
-
-                config.label = object.name;
-                config.object_name = object.name;
-
-                dfd.resolve(config);
             }
         };
 
