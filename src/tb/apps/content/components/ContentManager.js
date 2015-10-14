@@ -143,7 +143,9 @@ define(
             buildElement: function (config) {
                 var content,
                     objectIdentifier = this.buildObjectIdentifier(config.type, config.uid),
-                    element = jQuery('[data-' + this.identifierDataAttribute + '="' + objectIdentifier + '"]');
+                    element = jQuery('[data-' + this.identifierDataAttribute + '="' + objectIdentifier + '"]'),
+                    allowedAttributes = [],
+                    key;
 
                 if (objectIdentifier !== undefined) {
 
@@ -166,6 +168,29 @@ define(
                     } else {
                         content.jQueryObject = element;
                         content.populate();
+                    }
+
+                    if (undefined !== config.elementData) {
+                        if (undefined === content.data) {
+                            allowedAttributes = [
+                                'elements',
+                                'extra',
+                                'image',
+                                'label',
+                                'parameters',
+                                'type',
+                                'uid'
+                            ];
+
+                            content.data = {};
+                            for (key in config.elementData) {
+                                if (config.elementData.hasOwnProperty(key)) {
+                                    if (-1 !== allowedAttributes.indexOf(key)) {
+                                        content.data[key] = config.elementData[key];
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
 

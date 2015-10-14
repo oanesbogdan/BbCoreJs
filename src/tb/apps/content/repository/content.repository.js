@@ -64,6 +64,12 @@ define(
                     return CoreDriverHandler.read(this.TYPE, {'definition': ''});
                 },
 
+                findByUids: function (uids) {
+                    uids = uids.join();
+
+                    return CoreDriverHandler.read(this.TYPE, {'uids': uids, 'site_uid': ''});
+                },
+
                 /**
                  * Find all categories
                  * @returns {Promise}
