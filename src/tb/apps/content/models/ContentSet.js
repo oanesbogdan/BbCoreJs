@@ -74,7 +74,7 @@ define(
                 this.getData('parameters').done(function () {
 
                     var renderModeParam = self.getParameters('rendermode'),
-                        renderMode = (renderModeParam !== undefined) ? renderModeParam.value : undefined;
+                        renderMode = (renderModeParam !== undefined) ? renderModeParam.value : self.getRendermode();
 
                     content.getHtml(renderMode).done(function (html) {
 
