@@ -173,7 +173,9 @@ define(
                                 self.close(data);
                             },
                             onValidate: function (form, data) {
-                                if (!data.hasOwnProperty('url') || data.url.trim().length === 0) {
+                                var urlPattern = new RegExp(/^(https?:\/\/){1}([\da-z\.\-]+)\.([a-z\.]{2,6})([\/\w \.\-]*)*\/?$/);
+
+                                if (!data.hasOwnProperty('url') || data.url.trim().length === 0 || urlPattern.test(data.url)) {
                                     form.addError('url', Translator.translate('url_required'));
                                 }
                             }
