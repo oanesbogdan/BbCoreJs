@@ -2,10 +2,12 @@ define(['jquery', 'BackBone', 'jsclass'], function (jQuery, BackBone) {
     'use strict';
     var NodeEditor = new JS.Class({
         CREATION_MODE: "create",
+        EDIT_MODE: "edit",
         initialize: function (tree) {
             this.tree = tree;
             this.currentNode = null;
             this.isEditing = false;
+            this.previousTitle = null;
             jQuery.extend(this, {}, BackBone.Events);
             this.formWrapper = this.createEditForm();
             this.editField = this.formWrapper.find('input').eq(0);
@@ -14,8 +16,13 @@ define(['jquery', 'BackBone', 'jsclass'], function (jQuery, BackBone) {
         },
 
         handleEdition: function () {
-            var nodeValue = this.editField.val(),
+            var nodeValue = jQuery.trim(this.editField.val()),
                 parentNode = null;
+
+            if (nodeValue.length === 0 || nodeValue === jQuery.trim(this.previousTitle)) {
+                this.cancelEdition();
+                return;
+            }
             this.currentNode.title = nodeValue;
             this.tree.invoke('updateNode', this.currentNode, nodeValue);
             this.formWrapper.hide();
@@ -45,7 +52,6 @@ define(['jquery', 'BackBone', 'jsclass'], function (jQuery, BackBone) {
         },
 
         createNode: function () {
-            this.mode = this.CREATION_MODE;
             var selectedNode = this.tree.getSelectedNode(),
                 node;
             if (this.isEditing) {
@@ -83,6 +89,8 @@ define(['jquery', 'BackBone', 'jsclass'], function (jQuery, BackBone) {
         },
 
         edit: function (node) {
+            this.mode = (node.id === "node-editor") ? this.CREATION_MODE : this.EDIT_MODE;
+
             if (this.isEditing) {
                 jQuery(this.currentNode.element).show();
             }
@@ -92,6 +100,7 @@ define(['jquery', 'BackBone', 'jsclass'], function (jQuery, BackBone) {
 
             this.isEditing = true;
             this.currentNode = node;
+            this.previousTitle = this.currentNode.title;
             jQuery(node.element).hide();
             jQuery(node.element).after(this.formWrapper.show());
             this.editField.val(this.currentNode.title);
@@ -100,13 +109,16 @@ define(['jquery', 'BackBone', 'jsclass'], function (jQuery, BackBone) {
 
         cancelEdition: function () {
             if (!this.isEditing) { return; }
-            var node = this.tree.getNodeById('node-editor');
-            if (node) {
-                this.tree.removeNode(node);
+            var formNode = this.tree.getNodeById('node-editor');
+            if (formNode) {
+                this.tree.removeNode(formNode);
             }
             this.isEditing = false;
             this.formWrapper.remove();
-            if (this.currentNode) {
+            if (this.currentNode && this.currentNode.id !== 'node-editor') {
+                this.tree.invoke('updateNode', this.currentNode, this.previousTitle);
+                this.currentNode.title = this.previousTitle;
+                this.previousTitle = null;
                 jQuery(this.currentNode.element).show();
             }
         }

@@ -80,6 +80,8 @@ define(['Core', 'jquery', '../keywordseditor/datastore/keyword.datastore', '../k
             handleNodeEdition: function (onEditCallBack, node, keyword, parentNode) {
                 var self = this,
                     currentNodeInfos,
+                    errorKey,
+                    msg,
                     parentNodeUid = parentNode ? parentNode.uid : null,
                     jsonNode = {
                         uid: node.uid,
@@ -95,9 +97,11 @@ define(['Core', 'jquery', '../keywordseditor/datastore/keyword.datastore', '../k
                         onEditCallBack(currentNodeInfos[0]);
                     });
                 }).fail(function (response) {
+                    response = JSON.parse(response);
+                    errorKey = response.message.toLowerCase();
+                    msg = TranslatorComponent.translate(errorKey) + " !";
                     self.kwTree.cancelEdition();
-                    self.kwTree.removeNode(node);
-                    notify.error(response);
+                    notify.error(msg);
                 });
             },
 
@@ -108,10 +112,17 @@ define(['Core', 'jquery', '../keywordseditor/datastore/keyword.datastore', '../k
             },
 
             removeNewKeyword: function (node) {
-                var self = this;
-
+                var self = this,
+                    msg,
+                    errorKey;
                 this.keywordStore.remove(node).done(function () {
                     self.kwTree.removeNode(node);
+                }).fail(function (response) {
+                    response = JSON.parse(response);
+                    errorKey = response.message.toLowerCase();
+                    msg = TranslatorComponent.translate(errorKey) + " !";
+                    self.kwTree.cancelEdition();
+                    notify.error(msg);
                 });
             },
 

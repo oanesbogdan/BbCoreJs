@@ -63,6 +63,7 @@
     "create": "Créer",
     "create_a_draft": "Créer un brouillon",
     "create_a_folder": "Créer un dossier",
+    "create_a_keyword": "Créer un mot-clé",
     "create_a_new": "Créer une nouvelle",
     "create_a_page": "Créer une page",
     "create_group": "Créer un groupe",
@@ -130,7 +131,9 @@
     "inactive": "Inactif",
     "internal_link": "Lien interne",
 
-	"keywords_editor": "Mots clés",
+    "keyword_already_exists" : "Ce mot-clé existe déjà",
+    "keywords_editor": "Mots clés",
+    "keyword_is_linked": "Le mot-clé est associé à un contenu",
 
     "last_name": "Nom de famille",
     "layout": "Gabarit",
