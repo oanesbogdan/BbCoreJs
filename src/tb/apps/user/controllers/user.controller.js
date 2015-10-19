@@ -131,7 +131,8 @@ define(
                             }
                         },
                         function (error) {
-                            var errors = self.parseRestError(error);
+                            var errors = self.parseRestError(error),
+                                internalError = '';
 
                             if (undefined !== errors) {
                                 Notify.error(trans('user_save_fail'));
@@ -145,7 +146,13 @@ define(
                             } else {
                                 popin.popinManager.destroy(view.popin);
                                 self.indexService(require, popin);
-                                Notify.error(trans('server_error'));
+
+                                error = JSON.parse(error);
+                                if (error.internal_error) {
+                                    internalError = ' ' + error.internal_error;
+                                }
+
+                                Notify.error(trans('server_error') + internalError);
                             }
                         }
                     );
