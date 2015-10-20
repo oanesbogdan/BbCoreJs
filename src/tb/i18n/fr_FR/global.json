@@ -295,6 +295,7 @@
     "warning" : "Attention",
     "website_parameters": "Paramètres du site",
     "workflow_management": "Gestion du workflow",
+    "wrong_upload_file_types": "Vous ne pouvez pas upload des fichiers de ce type",
 
     "yes": "Oui"
 }

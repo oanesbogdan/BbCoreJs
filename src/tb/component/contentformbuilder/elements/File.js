@@ -40,12 +40,22 @@ define(
                 return this;
             },
 
-            getConfig: function (object) {
+            getConfig: function (object, parent) {
                 var dfd = jQuery.Deferred(),
                     config = {
                         'type': 'file',
-                        'label': this.definition.type
-                    };
+                        'label': this.definition.type,
+                        'dropzone': {
+                            'default_thumbnail': parent.data.image
+                        }
+                    },
+                    extra = parent.definition.defaultOptions[object.name].extra;
+
+                if (extra) {
+                    if (extra.dropzone) {
+                        jQuery.extend(config.dropzone, extra.dropzone);
+                    }
+                }
 
                 if (object !== undefined) {
                     this.populateConfig(object, config, dfd);
