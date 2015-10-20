@@ -95,7 +95,7 @@ define(['component!contextmenu', 'jquery', 'component!notify'], function (Contex
                             item = mediaList[i];
                             contextMenu.addMenuItem({
                                 btnCls: "bb5-contextmenu-" + nomalizeMediaType(item.type),
-                                btnLabel: trans("create_a_new") + " " + item.title,
+                                btnLabel: trans("create_a_new_media") + " " + item.title,
                                 btnCallback: jQuery.proxy(actions.showMediaFormAction, this, item.type)
                             });
                         });

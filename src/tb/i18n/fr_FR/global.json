@@ -65,6 +65,7 @@
     "create_a_folder": "Créer un dossier",
     "create_a_keyword": "Créer un mot-clé",
     "create_a_new": "Créer une nouvelle",
+    "create_a_new_media": "Créer un nouveau média",
     "create_a_page": "Créer une page",
     "create_group": "Créer un groupe",
     "create_user": "Créer un utilisateur",
@@ -295,7 +296,7 @@
     "warning" : "Attention",
     "website_parameters": "Paramètres du site",
     "workflow_management": "Gestion du workflow",
-    "wrong_upload_file_types": "Vous ne pouvez pas upload des fichiers de ce type",
+    "wrong_upload_file_types": "Vous ne pouvez pas ajouter des fichiers de ce type",
 
     "yes": "Oui"
 }
