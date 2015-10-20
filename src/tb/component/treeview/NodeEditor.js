@@ -98,6 +98,7 @@ define(['jquery', 'BackBone', 'jsclass'], function (jQuery, BackBone) {
                 return false;
             }
 
+            this.trigger('editing', node);
             this.isEditing = true;
             this.currentNode = node;
             this.previousTitle = this.currentNode.title;
