@@ -97,7 +97,15 @@ define(
                         self.maskManager.unmask(form);
                     });
 
+                    dropzone.on('thumbnail', function () {
+
+                        var detail = dropzoneElement.find('.dz-details');
+
+                        detail.addClass('hidden');
+                    });
+
                     dropzone.on('success', function (file, response) {
+
                         var detail = dropzoneElement.find('.dz-details'),
                             thumbnail;
 
