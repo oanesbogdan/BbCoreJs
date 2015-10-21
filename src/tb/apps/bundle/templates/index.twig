@@ -2,10 +2,10 @@
     <div class="col-bb5-30 bb5-border-right">
         <div class="bb5-extension-pane">
             <div class="row">
-                <div class="col-bb5-30">
-                    <figure class="bb5-extension-img"><img src="{{ bundle.thumbnail }}" alt=""></figure>
+                <div class="col-bb5-40">
+                    <figure class="bb5-extension-img"><img style="width:75px;" src="{{ bundle.thumbnail }}" alt=""></figure>
                 </div>
-                <div class="col-bb5-70">
+                <div class="col-bb5-60">
                     <p><strong>{{ bundle.name }}</strong></p>
                     <div class="hidden form-group btn-group btn-group-justified activation-btn-group" data-bundle-id="{{ bundle.id }}">
                         <a class="btn btn-xs btn-default enable {% if bundle.enable %}active{% endif %}" role="button">{{ 'activate'|trans }}</a>
