@@ -224,6 +224,10 @@ define(['jquery', 'tb.component/treeview/NodeEditor', 'component!translator', "B
         isRoot: function (node) {
             var rootNode = this.getRootNode(),
                 firstChild = rootNode.children[0];
+
+            if (!node || !node.hasOwnProperty('id')) {
+                return false;
+            }
             if (firstChild && firstChild.hasOwnProperty("id")) {
                 return firstChild.id === node.id;
             }

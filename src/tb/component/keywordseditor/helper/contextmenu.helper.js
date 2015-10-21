@@ -15,6 +15,11 @@ define(['component!contextmenu', 'BackBone', 'jquery'], function (ContextMenu, B
                 if (selectedNode && keywordTree.isRoot(selectedNode)) {
                     this.addFilter("bb5-context-menu-remove");
                 }
+                if (selectedNode && selectedNode.isPager) {
+                    this.addFilter("bb5-context-menu-remove");
+                    this.addFilter("bb5-context-menu-add");
+                    this.addFilter("bb5-context-menu-edit");
+                }
             };
 
             kwContextMenu.addMenuItem({

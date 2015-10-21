@@ -140,9 +140,11 @@ define(['jquery', 'jsclass'], function (jQuery) {
         },
 
         show: function (e) {
+
             if (!this.isEnabled) {
                 return false;
             }
+
             this.beforeShow(e.currentTarget);
 
             e.preventDefault();
@@ -151,21 +153,47 @@ define(['jquery', 'jsclass'], function (jQuery) {
                 left: e.clientX,
                 top: e.clientY
             };
+
             jQuery(this.contextMenu).css({
                 position: "absolute",
                 left: position.left + "px",
                 top: position.top + "px"
                 //zIndex: jQuery(e.currentTarget).zIndex()+1
             });
+
             this.contextMenuTarget = jQuery(e.currentTarget);
             this.applyFilters(this.filters);
             this.resetFilters();
+
+            if (!this.hasVisibleItems()) {
+                return this.hide();
+            }
+
             jQuery(this.contextMenu).show();
         },
+
 
         resetFilters: function () {
             this.filters = [];
         },
+
+        hasVisibleItems: function () {
+            var showMenu = false,
+                li,
+                item;
+            li = jQuery(this.contextMenu).find("li");
+
+            jQuery(li).each(function (i) {
+                item = li[i];
+                if (jQuery(item).css('display') !== 'none') {
+                    showMenu = true;
+                    return false;
+                }
+            });
+
+            return showMenu;
+        },
+
         /**
          * Hide contextmenu
          */

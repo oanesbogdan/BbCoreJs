@@ -314,7 +314,7 @@ define(
                     CoreDriverHandler.read(this.config.resourceEndpoint, restParams.criterias, restParams.sorters, this.start, this.limit).done(function (data, response) {
                         self.total = response.getRangeTotal();
                         self.setData(data);
-                        resultPromise.resolve(data);
+                        resultPromise.resolve(data, response);
                     }).fail(function (response) {
                         self.trigger('doneProcessing');
                         self.trigger('dataStoreError', response);
@@ -338,9 +338,9 @@ define(
                             self.trigger('change', 'update', itemData);
                             self.trigger("doneProcessing");
                             dfd.resolve(itemData, response, headers);
-                        }).fail(function (reason) {
+                        }).fail(function (reason, response) {
                             self.trigger("doneProcessing");
-                            dfd.reject(reason);
+                            dfd.reject(reason, response);
                         });
                     } else {
                         CoreDriverHandler.create(this.config.resourceEndpoint, itemData).done(function (response, headers) {
@@ -348,9 +348,9 @@ define(
                             self.trigger('change', 'create', itemData);
                             self.trigger("doneProcessing");
                             dfd.resolve(itemData, response, headers);
-                        }).fail(function (reason) {
+                        }).fail(function (reason, response) {
                             self.trigger("doneProcessing");
-                            dfd.reject(reason);
+                            dfd.reject(reason, response);
                         });
                     }
                     return dfd.promise();
@@ -394,8 +394,8 @@ define(
                         self.setStart(nextStart);
                         self.trigger("doneProcessing");
                         self.trigger("dataDelete", itemData);
-                    }).fail(function (reason) {
-                        dfd.reject(reason);
+                    }).fail(function (reason, response) {
+                        dfd.reject(reason, response);
                         self.trigger("error", {
                             method: "remove"
                         });
