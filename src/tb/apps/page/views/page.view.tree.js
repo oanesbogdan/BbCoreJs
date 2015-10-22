@@ -271,13 +271,13 @@ define(
             * @param {Object} event
             */
             onOpen: function (event) {
-                this.mask();
                 var self = this;
                 if (event.node.is_fake === true) {
                     return;
                 }
 
                 if (event.node.before_load === true) {
+                    this.mask();
                     if (this.saveTreeActions) {
                         this.nodeActionMemory.push(event.node.id);
                     }
@@ -413,7 +413,6 @@ define(
                     }
                 }
 
-
                 if (node.range_total > children.length && this.config.do_pagination === true) {
                     this.treeView.invoke('appendNode', this.buildNode('next results...', {
                         'is_fake': true
@@ -447,12 +446,11 @@ define(
                     });
 
                     if (callbacks.length === 0) {
+                        self.unmask();
                         return false;
                     }
 
                     callbacks[0].call(this);
-                }).always(function () {
-                    self.unmask();
                 });
 
             },
@@ -461,11 +459,9 @@ define(
                 var self = this,
                     nextCallback;
                 return function () {
-
                     self.mask();
                     if ((callbacksList.length === 1) && (self.treeView.isRoot({id: ancestor.uid}))) {
                         self.handleLastNode(pageUid, ancestor);
-                        self.unmask();
                         return;
                     }
 
@@ -477,7 +473,6 @@ define(
                         if (typeof callbacksList[nextId + 1] === "function") {
                             nextCallback.call(this);
                         } else {
-                            self.unmask();
                             self.handleLastNode(pageUid, ancestor);
 
 
@@ -487,13 +482,12 @@ define(
             },
 
             handleLastNode: function (pageUid, ancestor) {
-
                 var self = this,
                     currentNode = this.treeView.getNodeById(pageUid);
                 if (currentNode) {
                     this.treeView.invoke('selectNode', currentNode);
+                    this.unmask();
                 } else {
-                    this.mask();
                     PageRepository.findCurrentPage().done(function (data) {
                         currentNode = self.formatePageToNode(data);
                         self.addEllipsisNode(currentNode, ancestor);
