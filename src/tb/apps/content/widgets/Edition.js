@@ -133,7 +133,9 @@ define(
                 for (key in elementsArray) {
                     if (elementsArray.hasOwnProperty(key)) {
                         object = elementsArray[key];
-                        uids.push(object.uid);
+                        if (undefined !== object.uid) {
+                            uids.push(object.uid);
+                        }
                     }
                 }
 
@@ -238,7 +240,7 @@ define(
                 self.popin[self.content.uid].mask();
 
                 FormSubmitter.process(data, form).done(function (res) {
-                    self.computeData(res).done(function () {
+                    self.computeData(res, form).done(function () {
                         Core.ApplicationManager.invokeService('content.main.save').done(function (promise) {
                             promise.done(function () {
                                 self.content.refresh().done(function () {
@@ -258,14 +260,15 @@ define(
                 });
             },
 
-            computeData: function (data) {
+            computeData: function (data, form) {
                 var promises = [],
                     element,
                     contentElements = this.content.data.elements,
                     type,
                     key,
                     item,
-                    value;
+                    value,
+                    formElement;
 
                 for (key in data) {
 
@@ -284,6 +287,11 @@ define(
                                 element = null;
                                 if (item !== null) {
                                     element = ContentManager.buildElement(item);
+                                } else {
+                                    formElement = form.elements[key];
+                                    if (formElement && formElement.element) {
+                                        element = formElement.element;
+                                    }
                                 }
 
                                 if (null === element) {
