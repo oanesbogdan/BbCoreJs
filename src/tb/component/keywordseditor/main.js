@@ -80,11 +80,11 @@ define(['Core', 'jquery', '../keywordseditor/datastore/keyword.datastore', '../k
             },
 
             showMask: function () {
-                this.maskMng.mask(this.treeContainer);
+                this.dialog.popIn.mask();
             },
 
             hideMask: function () {
-                this.maskMng.unmask(this.treeContainer);
+                this.dialog.popIn.unmask();
             },
 
 
