@@ -39,9 +39,18 @@ define(
             },
 
             getConfig: function (object) {
+
                 var dfd = jQuery.Deferred(),
                     config,
-                    element = this.ContentManager.buildElement({'uid': object.uid, 'type': object.type});
+                    element;
+
+                if (undefined === object.uid || undefined === object.type) {
+                    dfd.reject('null_content');
+
+                    return dfd.promise();
+                }
+
+                element = this.ContentManager.buildElement({'uid': object.uid, 'type': object.type});
 
                 element.getData().done(function () {
 
@@ -52,7 +61,8 @@ define(
                         'image': element.data.image,
                         'object_name': object.name,
                         'object_type': object.type,
-                        'object_label': element.data.label
+                        'object_label': element.data.label,
+                        'element': element
                     };
 
                     dfd.resolve(config);

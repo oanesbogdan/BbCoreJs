@@ -55,6 +55,12 @@ define(
             },
 
             populateConfig: function (object, config, dfd) {
+
+                if (undefined === object.uid || undefined === object.type) {
+                    dfd.reject('null_content');
+                    return;
+                }
+
                 var element = this.ContentManager.buildElement({'uid': object.uid, 'type': object.type});
 
                 element.getData().done(function () {
@@ -62,6 +68,7 @@ define(
                     config.label = object.name;
                     config.value = element.get('value');
                     config.object_name = object.name;
+                    config.element = element;
 
                     dfd.resolve(config);
                 }).fail(function (data, response) {

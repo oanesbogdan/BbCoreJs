@@ -50,7 +50,8 @@ define(
                         element.getConfig(object, content).done(function (config) {
                             dfd.resolve(config);
                         }).fail(function (data, response) {
-                            if (404 === response.status) {
+
+                            if ('null_content' === data || (undefined !== response && 404 === response.status)) {
 
                                 Core.ApplicationManager.invokeService('content.main.getContentManager').done(function (service) {
                                     service.createElement(object.type).done(function (data) {

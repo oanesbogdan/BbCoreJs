@@ -62,7 +62,8 @@ define(
                             'object_name': object.name,
                             'object_uid': object.uid,
                             'object_type': object.type,
-                            'children': children
+                            'children': children,
+                            'element': element
                         };
 
                         dfd.resolve(config);
