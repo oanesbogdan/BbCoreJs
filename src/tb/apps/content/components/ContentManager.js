@@ -296,7 +296,7 @@ define(
                     refreshPicture = function (img) {
                         var src = img.attr('src');
 
-                        if (src.length === 0 || img.naturalWidth === 0) {
+                        if (src === undefined || src.length === 0 || img.naturalWidth === 0) {
                             src = require('content.manager').defaultPicturePath;
 
                         }
