@@ -187,12 +187,15 @@ define(
                     config.onValidate = this.config.onValidate;
                 }
 
+                config.form = {};
+                config.form.popinInstance = this.popin[this.content.uid];
+                config.form.content = this.content;
+
                 for (key in parameters) {
                     if (parameters.hasOwnProperty(key)) {
                         param = parameters[key];
 
                         if (param !== null) {
-                            param.popinInstance = this.popin[this.content.uid];
                             config.elements[param.object_name] = param;
                         }
                     }
@@ -237,16 +240,17 @@ define(
 
             onSubmit: function (data, form) {
                 var self = this;
-                self.popin[self.content.uid].mask();
+
+                form.config.popinInstance.mask();
 
                 FormSubmitter.process(data, form).done(function (res) {
                     self.computeData(res, form).done(function () {
                         Core.ApplicationManager.invokeService('content.main.save').done(function (promise) {
                             promise.done(function () {
-                                self.content.refresh().done(function () {
+                                form.config.content.refresh().done(function () {
 
-                                    self.popin[self.content.uid].unmask();
-                                    self.popin[self.content.uid].hide();
+                                    form.config.popinInstance.unmask();
+                                    form.config.popinInstance.hide();
 
                                     if (typeof self.config.onSave === "function") {
                                         self.config.onSave(data);
@@ -263,7 +267,8 @@ define(
             computeData: function (data, form) {
                 var promises = [],
                     element,
-                    contentElements = this.content.data.elements,
+                    content = form.config.content,
+                    contentElements = content.data.elements,
                     type,
                     key,
                     item,
@@ -280,7 +285,7 @@ define(
                         if (value !== null) {
                             if (typeof item === 'string' || typeof item === 'number') {
                                 if (item !== value) {
-                                    promises.push(this.content.addElement(key, value));
+                                    promises.push(content.addElement(key, value));
                                 }
                             } else {
 
@@ -295,7 +300,7 @@ define(
                                 }
 
                                 if (null === element) {
-                                    type = this.content.definition.accept[key][0];
+                                    type = content.definition.accept[key][0];
                                 } else {
                                     type = element.type;
                                 }
@@ -305,7 +310,7 @@ define(
                                         promises.push(element.set('value', value));
                                     }
                                 } else if (type === 'Element/Keyword') {
-                                    promises.push(this.setKeywordsElements(value, key));
+                                    promises.push(this.setKeywordsElements(value, key, content));
                                 } else {
                                     promises.push(element.setElements(value));
                                 }
@@ -317,13 +322,12 @@ define(
                 return jQuery.when.apply(undefined, promises).promise();
             },
 
-            setKeywordsElements: function (values, key) {
+            setKeywordsElements: function (values, key, content) {
                 var data = [],
                     dfd = jQuery.Deferred(),
-                    newKey = key,
-                    self = this;
+                    newKey = key;
 
-                this.computeKeywords(values, key).done(function () {
+                this.computeKeywords(values, key, content).done(function () {
                     var i;
 
                     for (i in arguments) {
@@ -332,18 +336,18 @@ define(
                         }
                     }
 
-                    self.content.addElement(newKey, data);
+                    content.addElement(newKey, data);
                     dfd.resolve();
                 });
 
                 return dfd.promise();
             },
 
-            computeKeywords: function (values, key) {
+            computeKeywords: function (values, key, content) {
                 var i,
                     value,
                     promises = [],
-                    currentValues = this.content[key + '_values'];
+                    currentValues = content[key + '_values'];
 
                 if (undefined !== currentValues) {
                     for (i in values) {
