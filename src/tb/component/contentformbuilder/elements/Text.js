@@ -65,7 +65,7 @@ define(
 
                 element.getData().done(function () {
 
-                    config.label = object.name;
+                    config.label = object.label || object.name;
                     config.value = element.get('value');
                     config.object_name = object.name;
                     config.element = element;
