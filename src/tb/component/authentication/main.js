@@ -43,6 +43,8 @@ define('tb.component/authentication/main',
                 this.popinManager = require('component!popin');
                 this.popin = this.popinManager.createPopIn({
                     'close': function reloadWebsite() {
+                        session.destroy();
+                        document.cookie = 'PHPSESSID=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/';
                         window.location.reload();
                     }
                 });
