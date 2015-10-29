@@ -56,7 +56,7 @@ define(
 
                     config = {
                         'type': 'content',
-                        'label': object.name,
+                        'label': object.label || object.name,
                         'value': object.uid,
                         'image': element.data.image,
                         'object_name': object.name,

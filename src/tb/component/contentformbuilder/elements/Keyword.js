@@ -50,7 +50,7 @@ define(
                     self.getKeywords(arguments).done(function () {
                         config = {
                             'type': 'keywordSelector',
-                            'label': object.name,
+                            'label': object.label || object.name,
                             'object_name': object.name,
                             'value': self.getValue(arguments)
                         };

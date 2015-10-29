@@ -76,7 +76,7 @@ define(
                 var element = this.ContentManager.buildElement({'uid': object.uid, 'type': object.type});
 
                 element.getData('elements', true, true).done(function (elements) {
-                    config.label = object.name;
+                    config.label = object.label || object.name;
                     config.object_name = object.name;
                     config.element = element;
 

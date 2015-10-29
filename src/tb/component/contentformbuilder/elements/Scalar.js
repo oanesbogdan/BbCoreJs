@@ -39,8 +39,7 @@ define(
             getConfig: function (object) {
                 var dfd = jQuery.Deferred(),
                     config = {
-                        'type': 'text',
-                        'label': 'aze'
+                        'type': 'text'
                     };
 
                 if (object !== undefined) {

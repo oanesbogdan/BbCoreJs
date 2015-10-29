@@ -84,15 +84,17 @@ define(
                     var key,
                         object,
                         element,
-                        elementArray = [];
+                        elementArray = [],
+                        defaultOption;
 
                     for (key in elements) {
                         if (elements.hasOwnProperty(key)) {
 
                             element = elements[key];
+                            defaultOption = self.content.definition.defaultOptions[key];
 
                             if (jQuery.isArray(element)) {
-                                object = self.buildArrayObjectConfig(element, key);
+                                object = self.buildArrayObjectConfig(element, key, defaultOption);
                             } else {
 
                                 if (null === element) {
@@ -105,6 +107,12 @@ define(
                                     'uid': element.uid,
                                     'name': key
                                 };
+
+                                if (defaultOption) {
+                                    if (defaultOption.label) {
+                                        object.label = defaultOption.label;
+                                    }
+                                }
 
                                 if (object.type === 'scalar') {
                                     object.parent = self.content;
@@ -160,7 +168,7 @@ define(
                 return dfd.promise();
             },
 
-            buildArrayObjectConfig: function (elements, key) {
+            buildArrayObjectConfig: function (elements, key, defaultOption) {
                 var accept = this.content.definition.accept[key],
                     object = {};
 
@@ -171,6 +179,12 @@ define(
                 object.type = accept[0];
                 object.name = key;
                 object.elements = elements;
+
+                if (defaultOption) {
+                    if (defaultOption.label) {
+                        object.label = defaultOption.label;
+                    }
+                }
 
                 return object;
             },

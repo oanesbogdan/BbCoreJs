@@ -58,7 +58,7 @@ define(
 
                         config = {
                             'type': 'contentSet',
-                            'label': object.name,
+                            'label': object.label || object.name,
                             'object_name': object.name,
                             'object_uid': object.uid,
                             'object_type': object.type,
