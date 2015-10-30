@@ -40,11 +40,18 @@ define('tb.component/authentication/main',
              * Initialize of AuthenticationHandler
              */
             initialize: function () {
+
+                var self = this;
+
                 this.popinManager = require('component!popin');
                 this.popin = this.popinManager.createPopIn({
                     'close': function reloadWebsite() {
-                        session.destroy();
-                        document.cookie = 'PHPSESSID=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/';
+
+                        if (self.destroy !== false) {
+                            session.destroy();
+                            document.cookie = 'PHPSESSID=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/';
+                        }
+
                         window.location.reload();
                     }
                 });
@@ -72,6 +79,7 @@ define('tb.component/authentication/main',
             authenticate: function (username, password) {
                 var self = this,
                     onDone = function (data, response) {
+                        self.destroy = false;
                         self.popin.unmask();
                         self.popin.hide();
                         self.onRequestDone(response);
@@ -151,6 +159,8 @@ define('tb.component/authentication/main',
                         onSubmit: jQuery.proxy(this.onSubmitForm, this),
                         onValidate: jQuery.proxy(this.onValidateForm, this)
                     };
+
+                this.destroy = true;
 
                 this.popin.setTitle('Log in');
                 this.formBuilder.renderForm(configForm).done(function (html) {
