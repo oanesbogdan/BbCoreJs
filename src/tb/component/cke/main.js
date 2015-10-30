@@ -69,7 +69,11 @@ define(
                 jQuery(document).on('click', jQuery.proxy(this.blurEditor, this));
             },
 
-            blurEditor: function () {
+            blurEditor: function (e) {
+                var isInEditorZone = jQuery(e.target).closest('.cke_top').length;
+                if (isInEditorZone) {
+                    return;
+                }
                 if (this.lastInstance) {
                     this.lastInstance.fire("blur", {editor: this.lastInstance});
                 }
