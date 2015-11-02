@@ -65,6 +65,7 @@ define(
                         do_pagination: true,
                         site_uid: Core.get('site.uid'),
                         popin: true,
+                        popinId: popinId,
                         autoLoadRoot: true
                     };
                 if (document.getElementById(popinId) !== null) {
