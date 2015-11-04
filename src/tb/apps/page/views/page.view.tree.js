@@ -424,10 +424,12 @@ define(
             selectPage: function (pageUid) {
                 var self = this;
                 if (!pageUid) { return false; }
+                this.setProcessingState();
                 this.mask();
                 PageRepository.findAncestors(pageUid).done(function (ancestorInfos) {
 
                     if (!Array.isArray(ancestorInfos) || ancestorInfos.length === 0) {
+                        self.clearProcessingState();
                         self.unmask();
                         return false;
                     }
@@ -446,6 +448,7 @@ define(
                     });
 
                     if (callbacks.length === 0) {
+                        self.clearProcessingState();
                         self.unmask();
                         return false;
                     }
@@ -486,6 +489,7 @@ define(
                     currentNode = this.treeView.getNodeById(pageUid);
                 if (currentNode) {
                     this.treeView.invoke('selectNode', currentNode);
+                    this.clearProcessingState();
                     this.unmask();
                 } else {
                     PageRepository.findCurrentPage().done(function (data) {
@@ -493,6 +497,7 @@ define(
                         self.addEllipsisNode(currentNode, ancestor);
                         self.treeView.invoke('selectNode', self.treeView.getNodeById(currentNode.id));
                     }).always(function () {
+                        self.clearProcessingState();
                         self.unmask();
                     });
                 }
@@ -524,7 +529,16 @@ define(
                 }
             },
 
+            setProcessingState: function () {
+                this.isProcessing = true;
+            },
+
+            clearProcessingState: function () {
+                this.isProcessing = false;
+            },
+
             unmask: function () {
+                if (this.isProcessing) { return false; }
                 if (this.config.popin) {
                     this.tree.popIn.unmask();
                 }
@@ -584,7 +598,6 @@ define(
                 }
                 this.mask();
                 PageRepository.findRoot(self.site_uid).done(function (data) {
-                    self.isProcessing = true;
                     if (data.hasOwnProperty(0)) {
                         rootNode = data[0];
                         rootNode.id = rootNode.uid;
@@ -593,9 +606,6 @@ define(
                     }
                 }).fail(function () {
                     dfd.reject();
-                }).always(function () {
-                    self.isProcessing = false;
-                    self.unmask();
                 });
 
                 return dfd.promise();
