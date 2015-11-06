@@ -215,8 +215,9 @@
     "published_after" : "Publier après",
     "published_before" : "Publié avant",
     "publishing_before_archiving": "la date de publication ne peut pas être postérieure à celle d'archivage",
+    "publishing_in_past_not_allowed": "la publication dans le passé n'est pas autorisée",
 
-	"redirect_to": "Rediriger vers",
+    "redirect_to": "Rediriger vers",
     "remove": "Supprimer",
     "remove_content": "Supprimer le contenu",
     "remove_content_confirmation_message": "Supprimer ce contenu ?",
@@ -257,7 +258,7 @@
     "status": "Statut",
     "submit": "Soumettre",
 
-	"target_page": "Ouvrir la page en :",
+    "target_page": "Ouvrir la page en :",
     "template_is_required": "Sélectionnez un gabarit",
     "theme": "Thême",
     "the_page_you_are_about_to_delete_contains_subpages": "La page que vous souhaitez supprimer a des pages filles",

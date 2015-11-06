@@ -215,8 +215,9 @@
     "published_after" : "Published after",
     "published_before" : "Published before",
     "publishing_before_archiving": "Publication date can't be after archiving date",
+    "publishing_in_past_not_allowed": "Publishing in past is not allowed",
 
-	"redirect_to": "Redirect to",
+    "redirect_to": "Redirect to",
     "remove": "Remove",
     "remove_content": "Remove content",
     "remove_content_confirmation_message": "Remove this content?",
@@ -257,7 +258,7 @@
     "status": "Status",
     "submit": "Submit",
 
-	"target_page": "Page opening mode",
+    "target_page": "Page opening mode",
     "template_is_required": "Template is required",
     "theme": "Theme",
     "the_page_you_are_about_to_delete_contains_subpages": "The page you are about to delete contains subpages",

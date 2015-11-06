@@ -264,10 +264,18 @@ define(
 
             onValidateSchedulingPublication: function (form, data) {
                 var publishingDate,
-                    archivingDate;
+                    archivingDate,
+                    now = new Date();
+
+                if (data.publishing.length > 0) {
+                    publishingDate = new Date(data.publishing);
+
+                    if (publishingDate.getTime() < now.getTime()) {
+                        form.addError('publishing', translator.translate('publishing_in_past_not_allowed'));
+                    }
+                }
 
                 if (data.publishing.length > 0 && data.archiving.length > 0) {
-                    publishingDate = new Date(data.publishing);
                     archivingDate = new Date(data.archiving);
 
                     if (publishingDate.getTime() > archivingDate.getTime()) {
