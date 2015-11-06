@@ -94,6 +94,7 @@ define(
                             }
                         },
                         append: function (func) {
+                            this.processDfd = new jQuery.Deferred();
                             if (typeof func !== 'function') { return false; }
                             this.queue.push(func);
                             return this.processDfd.promise();
@@ -118,20 +119,26 @@ define(
             handleSiteSelector: function (widget) {
                 var self = this;
                 this.selectedSite = null;
-                this.getCallStack = this.initCallStack();
+                this.callStack = this.initCallStack();
                 this.siteSelector = require("component!siteselector").createSiteSelector({selected : Core.get("site.uid") });
 
                 this.siteSelector.on("ready", function () {
                     self.selectedSite = this.getSelectedSite(true);
                     self.site_uid = self.selectedSite.uid;
                     self.siteSelectorIsReady = true;
-                    self.getCallStack.execute();
+                    self.callStack.execute();
                 });
 
                 this.siteSelector.on("siteChange", function (site_uid, site) {
                     self.selectedSite = site;
                     self.site_uid = site_uid;
-                    self.getCallStack.execute();
+
+                    if (!self.callStack.hasTask()) {
+                        self.callStack.append(self.getTree).done(function () {
+                            self.loadTreeRoot();
+                        });
+                    }
+                    self.callStack.execute();
                 });
 
                 jQuery(widget.find('.site-selector')).html(this.siteSelector.render());
@@ -594,7 +601,7 @@ define(
                     rootNode;
 
                 if (this.hasSiteSelector() && !this.siteSelectorIsReady) {
-                    return this.getCallStack.append(this.getTree);
+                    return this.callStack.append(this.getTree);
                 }
                 this.mask();
                 PageRepository.findRoot(self.site_uid).done(function (data) {
