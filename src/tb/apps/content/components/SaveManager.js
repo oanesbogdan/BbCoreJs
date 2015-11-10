@@ -107,7 +107,6 @@ define(
 
                                 for (key in elements) {
                                     if (elements.hasOwnProperty(key)) {
-                                        console.log(elements[key].uid, content.uid);
                                         if (elements[key].uid === content.uid) {
                                             currentKey = key;
                                             break;
