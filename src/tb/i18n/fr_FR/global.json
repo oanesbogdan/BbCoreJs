@@ -33,7 +33,7 @@
     "blocks": "Blocs",
     "block_categories": "Categories de blocs",
     "block_display": "Palette de blocs ",
-    "block_description": "Description du block",
+    "block_description": "Description du bloc",
     "browse_to": "Aller à",
 
     "cancel": "Annuler",
@@ -127,7 +127,7 @@
 
     "has_been_deleted": "a été supprimé(e))",
 
-    "if_you_wish_to_keep_these_subpages_please_move_them_to_another_location": "Pour garder ces pages filles, veuillez les déplacer ailleur dans l'arborescence",
+    "if_you_wish_to_keep_these_subpages_please_move_them_to_another_location": "Pour garder ces pages filles, veuillez les déplacer ailleurs dans l'arborescence",
     "import": "Import",
     "inactive": "Inactif",
     "internal_link": "Lien interne",
@@ -204,7 +204,7 @@
     "password_edit": "Editer le mot de passe",
     "password_is_invalid": "Mot de passe incorrect",
     "password_updated": "Mot de passe mis à jour",
-    "pick_a_block": "Glissez déposez un block",
+    "pick_a_block": "Glissez déposez un bloc",
     "password_is_too_short": "6 charactères minimum",
     "please_wait_while_the_content_is_being_deleted": "Suppression du contenu en cours",
     "please_wait_while_the_media_is_being_deleted": "Suppression du média en cours",
@@ -213,7 +213,7 @@
     "publication_scheduled_for": "Publication programmée pour le",
     "publishing_archiving": "Publier / Archiver",
     "published_after" : "Publier après",
-    "published_before" : "Publié avant",
+    "published_before" : "Publier avant",
     "publishing_before_archiving": "la date de publication ne peut pas être postérieure à celle d'archivage",
     "publishing_in_past_not_allowed": "la publication dans le passé n'est pas autorisée",
 
