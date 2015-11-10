@@ -457,6 +457,8 @@ define(
 
                 handleSiteChange: function (site) {
                     var currentSelectedNode = this.categoryTreeView.getSelectedNode();
+                    this.contentRestDataStore.applyFilter("bySite", site);
+
                     if (!currentSelectedNode || currentSelectedNode.isRoot) { return false; }
                     this.reset(true);
                     this.contentRestDataStore.clear();
