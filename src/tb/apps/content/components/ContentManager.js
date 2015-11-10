@@ -122,11 +122,11 @@ define(
              * @param {String} type
              * @returns {Promise}
              */
-            createElement: function (type) {
+            createElement: function (type, data) {
                 var self = this,
                     dfd = jQuery.Deferred();
 
-                ContentRepository.save({'type': type}).done(function (data, response) {
+                ContentRepository.save({'type': type, 'data': data}).done(function (data, response) {
                     dfd.resolve(self.buildElement({'type': type, 'uid': response.getHeader('BB-RESOURCE-UID')}));
 
                     return data;

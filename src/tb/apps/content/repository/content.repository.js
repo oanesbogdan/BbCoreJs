@@ -147,7 +147,11 @@ define(
                     if (data.hasOwnProperty('uid')) {
                         result = CoreDriverHandler.update(this.TYPE + '/' + data.type, data, {'id': data.uid});
                     } else {
-                        result = CoreDriverHandler.create(this.TYPE + '/' + data.type);
+                        if (undefined === data.data) {
+                            data.data = {};
+                        }
+
+                        result = CoreDriverHandler.create(this.TYPE + '/' + data.type, data.data);
                     }
 
                     return result;
