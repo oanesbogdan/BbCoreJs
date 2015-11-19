@@ -175,7 +175,7 @@ define(
                             onValidate: function (form, data) {
                                 var urlPattern = new RegExp(/^(https?:\/\/){1}([\da-z\.\-]+)\.([a-z\.]{2,6})([\/\w \.\-]*)*\/?$/);
 
-                                if (!data.hasOwnProperty('url') || jQuery.trim(data.url).length === 0 || urlPattern.test(data.url)) {
+                                if (!data.hasOwnProperty('url') || jQuery.trim(data.url).length === 0 || !urlPattern.test(data.url)) {
                                     form.addError('url', Translator.translate('url_required'));
                                 }
                             }
