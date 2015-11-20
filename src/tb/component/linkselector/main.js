@@ -183,7 +183,7 @@ define(
                     };
 
                 FormBuilder.renderForm(config).done(function (html) {
-                    jQuery(self.externalLinkSelector + ' ' + self.wrapperAreaSelector).html(html);
+                    self.widget.find(self.externalLinkSelector + ' ' + self.wrapperAreaSelector).html(html);
                 });
             },
 
@@ -256,9 +256,6 @@ define(
                     Selector.layout.sizePane("west", 201);
                 }, 0);
             },
-
-
-
 
             onReady: function () {
                 var bodyElement = this.widget.find(this.bodySelector),
