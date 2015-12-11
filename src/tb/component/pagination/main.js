@@ -106,6 +106,8 @@ define(['jquery', '../pagination/helper/renderer.helper', 'jssimplepagination'],
                 if (parseInt(state.items, 10) === 0 || parseInt(state.items, 10) <= parseInt(state.itemsOnPage, 10)) {
                     hideWidget = true;
                 }
+
+
                 if (hideWidget) {
                     $(this.widget).hide();
                     this.IS_VISIBLE = false;
@@ -129,6 +131,7 @@ define(['jquery', '../pagination/helper/renderer.helper', 'jssimplepagination'],
             },
 
             reset: function () {
+                this.selectPage(1, true);
                 this.invoke('redraw');
                 this.beforeRender(this.widget);
             },
@@ -176,6 +179,7 @@ define(['jquery', '../pagination/helper/renderer.helper', 'jssimplepagination'],
                 this.silenceNextEvent = silent;
                 this.invoke('selectPage', pageNo);
             },
+
 
             prevPage: function () {
                 this.invoke('prevPage');
