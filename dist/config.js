@@ -62,6 +62,14 @@ require.config({
     catchError: true,
     waitSeconds: 15,
     urlArgs: 'cb=' + Math.random(),
+    config: {
+        text: {
+            useXhr: function () {
+                "use strict";
+                return true;
+            }
+        }
+    },
     paths: {
         'component': 'src/tb/component/component',
         'filter': 'src/tb/filter/filter',
@@ -146,5 +154,5 @@ require.config({
     }
 });
 
-require.config({ baseUrl: document ? document.getElementById('bb5-ui').getAttribute('data-base-url') + "resources/toolbar/" : './resources/toolbar/'});
+require.config({ baseUrl: document ? document.getElementById('bb5-ui').getAttribute('data-base-toolbar') : './resources/toolbar/'});
 
