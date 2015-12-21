@@ -54,11 +54,19 @@ define('hook', function () {
     };
 });
 
-var baseURI = document.getElementById('bb5-ui').getAttribute('data-base-url') + "resources/toolbar/";
+var baseURI = document.getElementById('bb5-ui').getAttribute('data-base-toolbar');
 require.config({
     baseUrl: baseURI,
     catchError: true,
     waitSeconds: 15,
+    config: {
+        text: {
+            useXhr: function () {
+                "use strict";
+                return true;
+            }
+        }
+    },
     paths: {
         'component': 'src/tb/component/component',
         'filter': 'src/tb/filter/filter',
