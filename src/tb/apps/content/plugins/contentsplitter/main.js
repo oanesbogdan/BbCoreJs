@@ -11,7 +11,6 @@ define(['content.pluginmanager', 'Core/ApplicationManager', 'content.manager', '
             this.SPLITTABLE_CONTENT = "Text/Paragraph";
             this.btnState = 0;
             this.splitData = {};
-            this.bindEvents();
             return true;
         },
 
@@ -38,10 +37,6 @@ define(['content.pluginmanager', 'Core/ApplicationManager', 'content.manager', '
 
             state.isActivated = false;
             this.state[previousContext.content] = state;
-        },
-
-        bindEvents: function () {
-            this.getCurrentContent().jQueryObject.on('click', '.split-panel', this.splitContent.bind(this));
         },
 
         insertMarker: function (e) {
@@ -72,7 +67,7 @@ define(['content.pluginmanager', 'Core/ApplicationManager', 'content.manager', '
                 afterContent: after,
                 anchorNode: anchorNode
             });
-            return true;
+            return false;
         },
 
         removeMarker: function () {
@@ -232,6 +227,8 @@ define(['content.pluginmanager', 'Core/ApplicationManager', 'content.manager', '
 
         activate: function () {
             this.getCurrentContent().jQueryObject.off("mouseup.splitter").on("mouseup.splitter", this.insertMarker.bind(this));
+            this.getCurrentContent().jQueryObject.off('click.splitter').on('click.splitter', '.doSplit', this.splitContent.bind(this));
+
             var splitModePanel = jQuery("<div class='split-panel'></div>").clone(),
 
                 textLabel = jQuery('<span></span>').addClass('contentsplitter-label'),
@@ -255,6 +252,7 @@ define(['content.pluginmanager', 'Core/ApplicationManager', 'content.manager', '
 
         deactivate: function () {
             this.getCurrentContent().jQueryObject.off("mouseup.splitter");
+            this.getCurrentContent().jQueryObject.off("click.splitter");
             this.getCurrentContent().jQueryObject.find('.split-panel').remove();
             this.getCurrentContent().jQueryObject.css({
                 cursor: 'default'
