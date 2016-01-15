@@ -99,7 +99,7 @@ define(
             computeLayouts: function (layouts) {
                 var key,
                     layout,
-                    data = {'': ''};
+                    data = {};
 
                 for (key in layouts) {
                     if (layouts.hasOwnProperty(key)) {
