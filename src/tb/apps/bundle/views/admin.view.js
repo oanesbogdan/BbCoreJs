@@ -51,13 +51,13 @@ define(
                 id: 'bundle-admin',
                 width: window.innerWidth - 20,
                 top: 180,
-                height: window.innerHeight - 192,
+                height: window.innerHeight - 150,
                 closeOnEscape: false,
                 draggable: false,
                 open: function () {
                     parent = jQuery(this).parent('.ui-dialog:first');
                     parent.css({
-                        top: 192
+                        top: 150
                     });
                 }
             },

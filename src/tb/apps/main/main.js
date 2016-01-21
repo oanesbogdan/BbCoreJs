@@ -82,12 +82,14 @@ define(
                 Core.set('layout.uid', layoutUid);
                 Core.set('root.uid', rootUid);
                 Core.set('menu.id', 'bb5-navbar-primary');
+                Core.set('current_url', (current_url !== null) ? current_url : Core.config('default_url'));
 
                 Core.set('application.main', this);
 
                 Popin.init(this.config.tbSelector);
 
                 Core.RouteManager.navigateByPath('/');
+
                 if (current_url !== null) {
                     Core.RouteManager.navigateByPath(current_url);
                 } else {

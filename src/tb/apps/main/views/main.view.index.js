@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
-define(['jquery', 'Core/Renderer', 'text!main/tpl/toolbar', 'component!translator'], function (jQuery, Renderer, template, translator) {
+define(['jquery', 'Core/Renderer', 'text!main/tpl/toolbar', 'component!translator', 'Core'], function (jQuery, Renderer, template, translator, Core) {
 
     'use strict';
 
@@ -64,12 +64,34 @@ define(['jquery', 'Core/Renderer', 'text!main/tpl/toolbar', 'component!translato
 
         },
 
+        onItemClick: function (event) {
+            var target = jQuery(event.currentTarget);
+
+            target.siblings('.active').removeClass('active');
+
+            target.addClass('active');
+        },
+
         /**
          * Render the template into the DOM with the Renderer
          * @returns {Object} MainViewIndex
          */
         render: function () {
-            jQuery(this.el).html(Renderer.render(template, this.toolbar));
+            var html = jQuery(Renderer.render(template, this.toolbar)),
+                currentUrl = Core.get('current_url'),
+                link;
+
+            jQuery(this.el).html(html);
+
+            html.find('ul#bb5-maintabs li').on('click', this.onItemClick);
+
+            if (currentUrl !== null) {
+                link = jQuery('li a[href="#/' + currentUrl + '"]');
+
+                if (link.length > 0) {
+                    link.parent('li').addClass('active');
+                }
+            }
 
             return this;
         }

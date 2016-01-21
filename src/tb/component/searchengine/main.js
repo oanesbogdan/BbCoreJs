@@ -35,7 +35,8 @@ define(['Core', 'jquery', 'Core/Renderer', 'text!../searchengine/templates/layou
         },
 
         showOrInitDateTimePicker: function (e) {
-            var dateField = jQuery(e.currentTarget).parents(".col-bb5-22").find(this.defaultConfig.datepickerFieldClass).eq(0);
+            var dateField = jQuery(e.currentTarget).parents(".col-bb5-24").find(this.defaultConfig.datepickerFieldClass).eq(0);
+
             if (!jQuery(dateField).data('datetimepicker')) {
                 this.initDatepicker();
             }
