@@ -66,8 +66,6 @@ define(
                         modal: true,
                         minHeight: 200,
                         minWidth: 450,
-                        maxHeight: 500,
-                        maxWidth: 450,
                         title: title
                     });
                     return this.popin;
@@ -131,7 +129,6 @@ define(
                         contentRepository.getHtml(itemData.type, itemData.uid).done(function (response) {
                             response = self.clearContent(jQuery(response));
                             self.popin.setContent(response);
-                            jQuery('#' + self.popin.getId()).dialog("option", "maxHeight", 450);
                         }).fail(function (response) {
                             Core.exception('ContentRendererException', 57567, 'error while showing showContentPreview ' + response);
                         }).always(self.popin.unmask);
