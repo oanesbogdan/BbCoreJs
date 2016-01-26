@@ -299,6 +299,10 @@
 
     "validate": "Valider",
     "validate_cancel_see_details": "Voir le détail",
+    "validate_content": "Mettre en ligne",
+    "validate_content_publish_modifications_online": "Publier et mettre en ligne vos modifications ?",
+    "cancel_content_cancel_modifications": "Annuler vos modifications ?",
+    "validate_cancel_see_details": "Voir les détails",
     "validation_confirmation": "Confirmer la validation",
     "validation_popin_note": "Les éléments non sélectionnés n'apparaîtrons pas en front office. Ils resterons sauvés en tant que brouillon et visibles en back office",
     "validation_unselect_note": "Si vous souhaitez supprimer les élements non sélectionnés définitivement, appuyez sur Annuler",
