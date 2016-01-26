@@ -198,6 +198,7 @@
     "page_status": "Statut de la page",
     "page_tree": "Arborescence",
     "page_management": "Gestion des pages",
+    "page_no_results_found": "Aucune page trouvée.",
     "parameters": "Paramètres",
     "paste": "Coller en tant que page fille",
     "paste_after": "Coller après",

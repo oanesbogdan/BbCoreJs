@@ -41,6 +41,7 @@ define([
             this.pageStore.applyFilter('byOffset', 1);
             this.pageStore.applyFilter('byStatus', [0, 1, 2, 3]);
             this.pageStore.applyFilter('byParent', Core.get('root.uid'));
+            this.pageStore.applyFilter('searchAction', '1');
 
             this.initTree();
             this.initRange();
@@ -48,7 +49,11 @@ define([
             this.initDataview();
 
             this.pageStore.on("dataStateUpdate", function () {
-                this.pagination.setItems(this.pageStore.getTotal());
+                if (this.pageStore.getTotal() > 0) {
+                    this.pagination.setItems(this.pageStore.getTotal());
+                } else {
+                    this.pagination.setItems(0);
+                }
             }.bind(this));
         },
 
@@ -74,6 +79,9 @@ define([
                 render: function (items) {
                     var wrapper = jQuery("<ul/>");
                     wrapper.addClass('bb5-list-data bb5-list-display-list clearfix');
+                    if (items.children.length === 0) {
+                        items = Translator.translate('page_no_results_found');
+                    }
                     return jQuery(wrapper).html(items);
                 }
             });

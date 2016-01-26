@@ -51,6 +51,7 @@ define([
             this.pageStore.clearFilters();
             this.pageStore.applyFilter('byStatus', [0, 1, 2, 3]);
             this.pageStore.applySorter('byModified', 'desc');
+            this.pageStore.applyFilter('searchAction', 1);
             this.pageStore.execute();
         },
 
