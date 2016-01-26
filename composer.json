@@ -5,18 +5,16 @@
     "license": "GPL-3.0+",
     "authors": [
         {
-            "name": "Nicolas Dufreche",
-            "email": "nicolas.dufrech@lp-digital.fr"
+            "name": "Florian Kroockmann",
+            "email": "florian.kroockmann@lp-digital.fr"
+        },
+        {
+            "name": "Harris Baptiste",
+            "email": "harris.baptiste@lp-digital.fr"
         },
         {
             "name": "BackBee community",
             "homepage": "https://github.com/backbee/BbCoreJs/graphs/contributors"
         }
-    ],
-    "minimum-stability": "stable",
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
-        }
-    }
+    ]
 }
