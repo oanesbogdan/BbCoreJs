@@ -27,9 +27,10 @@
 
 //dialog
 .ui-dialog {
+    border:2px solid @bb-border-clr;
+    border-radius: 0;
     overflow: hidden;
     position: absolute;
-    border:2px solid @bb-border-clr;
     padding: 0;
     outline: 0;
     z-index: @bb5-z-index+2;
@@ -138,7 +139,9 @@
 }
 
 .ui-widget-header {
+    border-color: transparent transparent @bb-border-clr transparent;
     border-bottom: 1px solid @bb-border-clr;
+    border-radius: 0;
     position:relative;
     font-size:@bb-font-size-default;
     text-transform: uppercase;

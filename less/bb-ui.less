@@ -513,7 +513,7 @@ Version: 2.10 Dec2014
 
         figure.bb5-extension-img {
             &, img {
-                height: @bb5-ui-height;
+                height: auto;
             }
             .label {
                 position: absolute;
@@ -593,6 +593,7 @@ Version: 2.10 Dec2014
         }
 
         .carousel-inner .item .slider-col {
+            height: 70px!important;
             text-align:center;
         }
 
@@ -714,6 +715,9 @@ Version: 2.10 Dec2014
                     -webkit-box-sizing: border-box;
                     -moz-box-sizing: border-box;
                     box-sizing: border-box;
+                    > .tab-pane.bb5-content-txt {
+                        height:97px;
+                    }
                 }
             }
         }
@@ -724,7 +728,7 @@ Version: 2.10 Dec2014
     }
 
     .bb5-scroll-overflow {
-        overflow:scroll; overflow-x:hidden; height:100%}
+        overflow:auto; overflow-x:hidden; height:100%}
     .bb5-content-txt {
         padding-top:5px; padding-bottom:5px;
     }
@@ -1046,6 +1050,18 @@ Version: 2.10 Dec2014
             }
 
         }
+
+
+        /**/
+        &.bb5-list-media-is-list.contentset_list li  {
+            p:first-child {
+                width: 55px;
+                a, a img {
+                    width: 100%;
+                }
+            }
+        }
+
     }
 
     /*bb5-data-toggle*/

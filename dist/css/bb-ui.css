@@ -7355,7 +7355,7 @@ fieldset[disabled] #bb5-ui .btn-online.active {
 }
 #bb5-ui .bb5-extension-pane figure.bb5-extension-img,
 #bb5-ui .bb5-extension-pane figure.bb5-extension-img img {
-  height: 97px;
+  height: auto;
 }
 #bb5-ui .bb5-extension-pane figure.bb5-extension-img .label {
   position: absolute;
@@ -7418,6 +7418,7 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   padding-right: 8px;
 }
 #bb5-ui .bb5-ui-carousel .carousel-inner .item .slider-col {
+  height: 70px!important;
   text-align: center;
 }
 #bb5-ui .bb5-ui-carousel .carousel-control {
@@ -7525,11 +7526,14 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+#bb5-ui .bb5-ui-banner > .tab-content > .tab-pane > .row [class^="col-bb5-"] > .tab-pane.bb5-content-txt {
+  height: 97px;
+}
 #bb5-ui .bb5-ui-banner .tab-pane .bb5-scroll-overflow {
   margin-right: -8px;
 }
 #bb5-ui .bb5-scroll-overflow {
-  overflow: scroll;
+  overflow: auto;
   overflow-x: hidden;
   height: 100%;
 }
@@ -7616,6 +7620,9 @@ fieldset[disabled] #bb5-ui .btn-online.active {
 }
 #bb5-ui .form-group {
   margin-bottom: 6px;
+}
+#bb5-ui textarea {
+  resize: vertical;
 }
 #bb5-ui .ui-dialog .label {
   display: block;
@@ -9196,6 +9203,7 @@ fieldset[disabled] #bb5-ui .btn-online.active {
 #bb5-ui .bb5-list-media {
   padding: 0;
   /* -> list*/
+  /**/
 }
 #bb5-ui .bb5-list-media li {
   position: relative;
@@ -9289,6 +9297,13 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   width: 43px;
 }
 #bb5-ui .bb5-list-media.bb5-list-media-is-list li.bb5-content-item p:first-child a.edit img {
+  width: 100%;
+}
+#bb5-ui .bb5-list-media.bb5-list-media-is-list.contentset_list li p:first-child {
+  width: 55px;
+}
+#bb5-ui .bb5-list-media.bb5-list-media-is-list.contentset_list li p:first-child a,
+#bb5-ui .bb5-list-media.bb5-list-media-is-list.contentset_list li p:first-child a img {
   width: 100%;
 }
 #bb5-ui .bb5-data-toggle {
@@ -9770,9 +9785,10 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   color: #e34c26;
 }
 #bb5-ui .ui-dialog {
+  border: 2px solid #e4e4e4;
+  border-radius: 0;
   overflow: hidden;
   position: absolute;
-  border: 2px solid #e4e4e4;
   padding: 0;
   outline: 0;
   z-index: 490002;
@@ -9877,7 +9893,9 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   top: -5px;
 }
 #bb5-ui .ui-widget-header {
+  border-color: transparent transparent #e4e4e4 transparent;
   border-bottom: 1px solid #e4e4e4;
+  border-radius: 0;
   position: relative;
   font-size: 13px;
   text-transform: uppercase;
