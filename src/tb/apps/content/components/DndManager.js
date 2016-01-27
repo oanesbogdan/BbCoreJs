@@ -19,6 +19,7 @@
 
 define(
     [
+        'Core',
         'Core/Renderer',
         'jquery',
         'text!content/tpl/dropzone',
@@ -30,7 +31,8 @@ define(
         'text!content/tpl/scrollzone',
         'jsclass'
     ],
-    function (Renderer,
+    function (Core,
+              Renderer,
               jQuery,
               dropZoneTemplate,
               dnd,
@@ -63,6 +65,8 @@ define(
 
             intervalId: 0,
 
+            scrollClass: 'bb-scroll',
+
             initialize: function () {
                 this.resetDataTransfert();
                 this.common = new CommonDnD();
@@ -73,7 +77,7 @@ define(
             initDnD: function () {
                 dnd('#block-contrib-tab').addListeners('classcontent', '.' + this.dndClass);
                 dnd('#bb5-site-wrapper').addListeners('classcontent', '.' + this.dndClass);
-                jQuery('body').on('dragenter', jQuery.proxy(this.mediaDragEnter, this));
+                jQuery('[data-bb-identifier^="Element/Image"]').on('dragenter', jQuery.proxy(this.mediaDragEnter, this));
             },
 
             attachDnDOnPalette: function () {
@@ -102,20 +106,16 @@ define(
                 this.drop.unbindEvents();
             },
 
-            mediaDragEnter: function () {
-                var img = jQuery('[data-bb-identifier^="Element/Image"]'),
-                    current;
+            mediaDragEnter: function (event) {
+                var img = jQuery(event.currentTarget);
 
                 img.addClass('bb-dnd');
                 img.attr('dropzone', true);
                 img.css('opacity', '0.6');
 
-                img.each(function (index) {
-                    current = jQuery(img.get(index));
-                    if (!current.parent().hasClass('img-wrap-dnd')) {
-                        current.wrap('<div class="img-wrap-dnd">');
-                    }
-                });
+                if (!img.parent().hasClass('img-wrap-dnd')) {
+                    img.wrap('<div class="img-wrap-dnd">');
+                }
             },
 
             scrollFnc: function () {
@@ -124,7 +124,7 @@ define(
                 }
             },
 
-            attachScrollDragEnter: function (element) {
+            attachScrollDragEnter: function (element, context) {
                 var scrollFnc = this;
 
                 element.addEventListener('dragenter', function (event) {
@@ -145,10 +145,14 @@ define(
                         scrollFnc.size = 7;
                     }
                     target.classList.add('over');
+
+                    if (0 === context.intervalId) {
+                        context.intervalId = setInterval(scrollFnc.bind(scrollFnc), 10);
+                    }
                 }, true);
             },
 
-            attachScrollDragLeave: function (element) {
+            attachScrollDragLeave: function (element, context) {
                 var scrollFnc = this;
 
                 element.addEventListener('dragleave', function (event) {
@@ -163,32 +167,47 @@ define(
                     }
 
                     target.classList.remove('over');
+
+                    if (0 !== context.intervalId) {
+                        clearInterval(context.intervalId);
+                    }
+
+                    context.intervalId = 0;
                 }, true);
             },
 
             showScrollZones: function () {
                 var scrollUp = Renderer.render(scrollzone, {direction: 'up'}),
                     scrollDown = Renderer.render(scrollzone, {direction: 'down'}),
-                    scrolls,
-                    i;
+                    self = this,
+                    scrolls;
 
                 this.scrollFnc.size = false;
 
-                this.intervalId = setInterval(this.scrollFnc.bind(this.scrollFnc), 10);
+                jQuery(Core.get('wrapper_toolbar_selector')).append(scrollUp + scrollDown);
 
-                document.querySelector('#bb5-ui').insertAdjacentHTML('beforeend', scrollUp + scrollDown);
+                scrolls = jQuery('.' + self.scrollClass);
 
-                scrolls = document.querySelectorAll('.scroll');
+                setTimeout(function () {
+                    scrolls.addClass('shown');
+                }, 350);
 
-                for (i = scrolls.length - 1; i >= 0; i = i - 1) {
-                    this.attachScrollDragEnter.call(this.scrollFnc, scrolls[i]);
-                    this.attachScrollDragLeave.call(this.scrollFnc, scrolls[i]);
-                }
+                scrolls.each(function () {
+                    var current = jQuery(this).get(0);
+
+                    self.attachScrollDragEnter.call(self.scrollFnc, current, self);
+                    self.attachScrollDragLeave.call(self.scrollFnc, current, self);
+                });
             },
 
             removeScrollZones: function () {
-                clearInterval(this.intervalId);
-                jQuery('.scroll').remove();
+                var scrolls = jQuery('.' + this.scrollClass);
+
+                scrolls.removeClass('shown');
+
+                setTimeout(function () {
+                    scrolls.remove();
+                }, 350);
             },
 
             /**
@@ -199,14 +218,15 @@ define(
                 var key,
                     contentSet,
                     children,
-                    firstChild,
                     config,
-                    div;
+                    dropzoneEl,
+                    parent,
+                    label;
 
                 ContentManager.addDefaultZoneInContentSet(false);
 
                 for (key in contentSets) {
-                    if (contentSets.hasOwnProperty(key)) {
+                    if (contentSets.hasOwnProperty(key) && contentSets[key].jQueryObject instanceof jQuery) {
 
                         contentSet = contentSets[key];
                         contentSet.isChildrenOf(currentContentId);
@@ -214,35 +234,29 @@ define(
                         if (contentSet.id !== currentContentId && !contentSet.isChildrenOf(currentContentId)) {
 
                             children = contentSet.getNodeChildren();
-                            firstChild = children.first();
+                            parent = contentSet.getParent();
+                            label = (parent !== null) ? (parent.getLabel() + ' > ' + contentSet.getLabel()) : contentSet.getLabel();
 
                             config = {
-                                'type': contentSet.getLabel()
+                                'label': label,
+                                'class': children.length === 0 ? 'without-children' : ''
                             };
 
                             if (contentSet.accept(type)) {
-                                config.class = this.dropZoneClass + ' ' + this.validDropZoneClass;
+                                config.class = config.class + ' ' + this.dropZoneClass + ' ' + this.validDropZoneClass;
                                 config.droppable = "true";
-                                div = Renderer.render(dropZoneTemplate, config);
+                                dropzoneEl = Renderer.render(dropZoneTemplate, config);
                             } else {
-                                config.class = this.dropZoneClass + ' ' + this.forbiddenDropZoneClass;
+                                config.class = config.class + ' ' + this.dropZoneClass + ' ' + this.forbiddenDropZoneClass;
                                 config.droppable = "false";
-                                div = Renderer.render(dropZoneTemplate, config);
+                                dropzoneEl = Renderer.render(dropZoneTemplate, config);
                             }
 
-                            if (firstChild.length > 0) {
-                                if (undefined !== currentContentId) {
-                                    if (firstChild.data(this.idDataAttribute) !== currentContentId) {
-                                        firstChild.before(div);
-                                    }
-                                } else {
-                                    firstChild.before(div);
-                                }
+                            if (children.length > 0) {
+                                this.putDropZoneAroundContentSetChildren(children, dropzoneEl, currentContentId, contentSet);
                             } else {
-                                contentSet.jQueryObject.prepend(div);
+                                contentSet.jQueryObject.html(dropzoneEl);
                             }
-
-                            this.putDropZoneAroundContentSetChildren(children, div, currentContentId);
                         }
                     }
                 }
@@ -254,31 +268,80 @@ define(
              * @param {String} template
              * @param {String} currentContentId
              */
-            putDropZoneAroundContentSetChildren: function (children, template, currentContentId) {
+            putDropZoneAroundContentSetChildren: function (children, template, currentContentId, contentSet) {
                 var self = this;
 
-                children.each(function () {
+                children.each(function (index) {
                     var currentTarget = jQuery(this),
-                        next = currentTarget.next('.' + self.contentClass);
+                        position,
+                        floatCss,
+                        firstTemplate,
+                        secondTemplate;
 
-                    if (undefined !== currentContentId) {
-                        if (currentTarget.data(self.idDataAttribute) !== currentContentId &&
-                                next.data(self.idDataAttribute) !== currentContentId) {
+                    if (!currentContentId || currentTarget.data(self.idDataAttribute) !== currentContentId) {
+                        floatCss = currentTarget.css('float');
 
-                            currentTarget.after(template);
+                        secondTemplate = jQuery(template);
+                        firstTemplate = jQuery(template);
+
+                        if (floatCss !== 'none') {
+                            contentSet.jQueryObject.css('position', 'relative');
+                            secondTemplate.addClass('vertical');
+                            secondTemplate.html('');
+
+                            position = currentTarget.position();
+
+                            if (0 === index) {
+                                firstTemplate.addClass('vertical');
+                                firstTemplate.html('');
+                                firstTemplate.height(currentTarget.outerHeight());
+                                firstTemplate.css('left', position.left);
+                                firstTemplate.css('top', position.top);
+                            }
+
+                            secondTemplate.height(currentTarget.outerHeight());
+                            secondTemplate.css('left', position.left + self.getLeftWidth(currentTarget));
+                            secondTemplate.css('top', position.top);
                         }
-                    } else {
-                        currentTarget.after(template);
+
+                        currentTarget.after(secondTemplate);
+
+                        if (0 === index) {
+                            currentTarget.before(firstTemplate);
+                        }
                     }
                 });
+            },
+
+            getLeftWidth: function (element) {
+                var res = 0;
+
+                if (element instanceof jQuery) {
+                    res = element.width() +
+                          parseInt(element.css('padding-left').replace('px', ''), 10) +
+                          parseInt(element.css('margin-left').replace('px', ''), 10) +
+                          parseFloat(element.css('border-left-width').replace('px', ''), 10);
+                }
+
+                return res;
+            },
+
+            removeAttributes: function (element) {
+                var attributes = ContentManager.getAllAttributes(element),
+                    key;
+
+                for (key in attributes) {
+                    if (attributes.hasOwnProperty(key)) {
+                        element.removeAttr(key);
+                    }
+                }
             },
 
             /**
              * Delete all dropzone
              */
             cleanHTMLZoneForContentset: function () {
-                jQuery('.' + this.dropZoneClass).remove();
-                ContentManager.addDefaultZoneInContentSet(true);
+                jQuery('.' + this.dropZoneClass).not('.without-children').remove();
             },
 
             /**
@@ -287,21 +350,27 @@ define(
              * @returns {Number}
              */
             getPosition: function (zone, parent) {
+
                 var prevContent = ContentManager.getContentByNode(zone.prev('.' + this.contentClass)),
                     contentSet = ContentManager.getContentByNode(parent),
-                    content,
+                    children = [],
+                    key,
                     pos = 0;
 
-                if (prevContent !== null) {
-                    contentSet.getNodeChildren().each(function () {
-                        content = ContentManager.getContentByNode(jQuery(this));
+                if (null === prevContent) {
+                    return pos;
+                }
 
+                children = contentSet.getChildren();
+
+                for (key in children) {
+                    if (children.hasOwnProperty(key)) {
                         pos = pos + 1;
 
-                        if (content.uid === prevContent.uid) {
-                            return false;
+                        if (children[key].uid === prevContent.uid) {
+                            return pos;
                         }
-                    });
+                    }
                 }
 
                 return pos;
