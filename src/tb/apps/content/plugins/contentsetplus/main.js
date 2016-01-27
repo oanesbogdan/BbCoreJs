@@ -71,11 +71,16 @@ define(
              */
             buildContents: function (accepts) {
                 var key,
+                    content,
                     contents = [];
 
                 for (key in accepts) {
                     if (accepts.hasOwnProperty(key)) {
-                        contents.push(DefinitionManager.find(accepts[key]));
+                        content = DefinitionManager.find(accepts[key]);
+                        content.visible = true;
+                        content.thumbnail = content.image;
+
+                        contents.push(content);
                     }
                 }
 
