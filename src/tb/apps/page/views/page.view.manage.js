@@ -131,7 +131,7 @@ define([
 
         initLayout: function (tpl) {
             this.layout = jQuery(tpl).find('#content-library-pane-wrapper').layout({
-                applyDefaultStyles: false,
+                applyDefaultStyles: true,
                 closable: false,
                 west__childOptions: {
                     center__paneSelector: '.inner-center',
@@ -282,14 +282,14 @@ define([
             this.popin.addOptions({
                 id: 'page-popin-manage',
                 top: 180,
-                height: window.innerHeight - 192,
+                height: window.innerHeight - 150,
                 width: document.body.clientWidth,
                 closeOnEscape: false,
                 draggable: false,
                 open: function () {
                     parent = jQuery(this).parent('.ui-dialog:first');
                     parent.css({
-                        top: 192
+                        top: 150
                     });
                     parent.find(".ui-dialog-titlebar-close").hide();
                 }
@@ -297,7 +297,7 @@ define([
 
             jQuery(window).resize(function () {
                 parent.css({
-                    height: window.innerHeight - 192,
+                    height: window.innerHeight - 150,
                     width: document.body.clientWidth
                 });
                 jQuery('#content-library-pane-wrapper').layout().resizeAll();

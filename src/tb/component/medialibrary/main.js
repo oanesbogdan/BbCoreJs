@@ -187,7 +187,8 @@ define(
                         },
                         center__childOptions: {
                             center__paneSelector: ".inner-center.data-list-ctn",
-                            north__paneSelector: ".ui-layout-north"
+                            north__paneSelector: ".ui-layout-north",
+                            north__size: 250
                         }
                     });
                     this.widgetLayout.resizeAll();
@@ -569,7 +570,7 @@ define(
                     });
 
                     this.mediaPagination.on('afterRender', function (isVisible) {
-                        var position = (isVisible === true) ? 203 : 178;
+                        var position = (isVisible === true) ? 215 : 178;
                         self.fixDataviewLayout(position);
                     });
 

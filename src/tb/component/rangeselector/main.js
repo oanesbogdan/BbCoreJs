@@ -3,7 +3,7 @@ define(['underscore', 'jquery', 'jsclass', 'BackBone'], function (underscore, jQ
     var RangeSelector = new JS.Class({
         defaultConfig: {
             range: [0, 50],
-            cls: 'max-per-page-selector input-xs',
+            cls: 'max-per-page-selector',
             optionCls: 'page',
             selected: 1,
             css: {}
@@ -13,9 +13,9 @@ define(['underscore', 'jquery', 'jsclass', 'BackBone'], function (underscore, jQ
             userConfig = userConfig || {};
             this.config = jQuery.extend({}, this.defaultConfig, userConfig);
             jQuery.extend(this, {}, Backbone.Events);
-            this.widget = jQuery("<select/>");
+            this.widget = jQuery("<span class='select'><select></select></span>");
             this.minValue = 1;
-            this.widget.addClass(this.config.cls);
+            this.widget.find("select").addClass(this.config.cls);
             this.updateUi();
             this.select(this.config.selected, true);
             this.bindEvents();
@@ -36,13 +36,13 @@ define(['underscore', 'jquery', 'jsclass', 'BackBone'], function (underscore, jQ
                 jQuery(option).data('no', i);
                 optionsFragment.appendChild(jQuery(option).get(0));
             });
-            this.widget.append(jQuery(optionsFragment));
+            this.widget.find("select").append(jQuery(optionsFragment));
         },
 
         select: function (val, silent) {
             val = parseInt(val, 10);
             silent = (typeof silent === 'boolean') ? silent : false;
-            this.widget.val(val);
+            this.widget.find("select").val(val);
             this.currentStep = val;
             if (!silent) {
                 this.handleChange(this);
@@ -69,7 +69,7 @@ define(['underscore', 'jquery', 'jsclass', 'BackBone'], function (underscore, jQ
         },
 
         bindEvents: function () {
-            this.widget.on('change', jQuery.proxy(this.handleChange, this.widget, this));
+            this.widget.find("select").on('change', jQuery.proxy(this.handleChange, this.widget, this));
         },
 
         render: function (container, positionMethod) {

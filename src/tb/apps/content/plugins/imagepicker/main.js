@@ -78,7 +78,7 @@ define(['Core/Utils', 'content.pluginmanager', 'content.manager', 'jquery', 'com
         getActions: function () {
             var self = this;
             return [{
-                'ico': 'fa fa-th',
+                'ico': 'fa fa-picture-o',
                 cmd: self.createCommand(self.processCommands, self),
                 label: Translator.translate('media_selector'),
                 checkContext: function () {

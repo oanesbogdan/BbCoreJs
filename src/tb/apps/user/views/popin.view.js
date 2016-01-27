@@ -42,13 +42,13 @@ define(
                 id: 'user-popin-picker',
                 width: window.innerWidth,
                 top: 180,
-                height: window.innerHeight - 192,
+                height: window.innerHeight - 150,
                 closeOnEscape: false,
                 draggable: false,
                 open: function () {
                     parent = jQuery(this).parent('.ui-dialog:first');
                     parent.css({
-                        top: 192
+                        top: 150
                     });
                     parent.find(".ui-dialog-titlebar-close").hide();
                 }
@@ -71,7 +71,7 @@ define(
                 jQuery(window).resize(function () {
                     parent.css({
                         width: window.innerWidth,
-                        height: window.innerHeight - 192
+                        height: window.innerHeight - 150
                     });
                 });
 

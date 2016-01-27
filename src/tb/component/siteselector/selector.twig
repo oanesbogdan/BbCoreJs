@@ -1,5 +1,7 @@
-<select>
-    {% for site in sites %}
-    <option value="{{ site.uid }}" {% if selected == site.uid %}selected{% endif %}>{{ site.label }}</option>
-    {% endfor %}
-</select>
+<span class="select">
+  <select>
+      {% for site in sites %}
+      <option value="{{ site.uid }}" {% if selected == site.uid %}selected{% endif %}>{{ site.label }}</option>
+      {% endfor %}
+  </select>
+</span>
