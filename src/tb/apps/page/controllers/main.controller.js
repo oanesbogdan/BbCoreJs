@@ -243,6 +243,7 @@ define(
                             popinTitle: translator.translate('validation_confirmation'),
                             noContentMsg: translator.translate('no_page_modification_validate'),
                             title: translator.translate('confirm_saving_changes_page_below') + ' :',
+                            questionMsg: translator.translate('confirm_save_changes_made_to_page'),
                             currentPage: page,
                             onSave: function (data, popin) {
                                 if (data.length > 0) {
@@ -274,6 +275,7 @@ define(
                             popinTitle: translator.translate('cancel_confirmation'),
                             noContentMsg: translator.translate('no_page_modification_cancel'),
                             title: translator.translate('cancel_changes_page_below') + ' :',
+                            questionMsg: translator.translate('cancel_save_changes_made_to_page'),
                             currentPage: page,
                             onSave: function (data, popin) {
                                 if (data.length > 0) {
