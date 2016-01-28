@@ -97,6 +97,11 @@ define(['component!datastore', 'jsclass'], function (DataStore) {
         return restParams;
     });
 
+    restDataStore.addFilter('searchAction', function (value, restParams) {
+        restParams.criterias.search_action = value;
+        return restParams;
+    });
+
     /**
      *  Sorters definitions
      */
