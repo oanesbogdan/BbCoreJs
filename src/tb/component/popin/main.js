@@ -131,10 +131,10 @@ define('tb.component/popin/main', ['Core', 'tb.component/popin/PopIn', 'jquery',
             /**
              * Add setContent() method to Core.PopIn
              */
-            popIn.setContent = function (content) {
+            popIn.setContent = function (content, force) {
                 popIn.content = content;
 
-                if (popIn.isOpen()) {
+                if (force || popIn.isOpen()) {
                     // if the dialog exists, just update the html
                     jQuery('#' + popIn.getId()).html(popIn.getContent());
                 }

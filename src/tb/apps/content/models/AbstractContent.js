@@ -247,6 +247,21 @@ define(
                 return dfd.promise();
             },
 
+            getInfo: function () {
+                var self = this,
+                    dfd = jQuery.Deferred();
+
+                ContentRepository.findInfo(this.type, this.uid).done(function (info) {
+                    self.info = info;
+
+                    dfd.resolve(info);
+                }).fail(function () {
+                    dfd.reject();
+                });
+
+                return dfd.promise();
+            },
+
             setElements: function (elements) {
                 this.revision.elements = elements;
                 this.setUpdated(true);

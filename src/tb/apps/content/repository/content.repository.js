@@ -109,6 +109,16 @@ define(
                 },
 
                 /**
+                 * find info of content
+                 * @param {String} type
+                 * @param {String} uid
+                 * @returns {Promise}
+                 */
+                findInfo: function (type, uid) {
+                    return CoreDriverHandler.read(this.TYPE + '/' + type, {'uid': uid, 'info': ''});
+                },
+
+                /**
                  * Get the html of content
                  * @param {String} type
                  * @param {String} uid

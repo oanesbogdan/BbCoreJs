@@ -35,6 +35,7 @@
     "block_categories": "Catégories de blocs",
     "block_display": "Palette de blocs ",
     "block_description": "Description du bloc",
+    "block_informations": "Informations",
     "browse_to": "Aller à",
 
     "cancel": "Annuler",
@@ -70,6 +71,7 @@
     "create_a_page": "Créer une page",
     "create_group": "Créer un groupe",
     "create_user": "Créer un utilisateur",
+    "created": "Créé le",
     "created_before": "Créée avant",
     "created_after": "Créée après",
     "creation_date": "Date de création",
@@ -229,6 +231,7 @@
     "rename": "Renommer",
     "reset": " Réinitialiser",
     "restore": "Restaurer",
+    "revision": "Révision",
     "rights_description": "Description des droits",
     "rights_management": "Gestion des droits",
     "roles_management": "Gestion des rôles",
@@ -279,6 +282,7 @@
     "trash": "Corbeille",
     "tree": "Arborescence",
 
+    "uid": "Uid",
     "updated": "Mis à jour",
     "upload_drop_message": "Déposer un fichier ici ou cliquer pour uploader",
     "uploading": "Envoi en cours",

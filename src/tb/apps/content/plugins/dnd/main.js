@@ -62,7 +62,7 @@ define(
                 return [
                     {
                         name: 'dnd',
-                        ico: 'fa fa-hand-o-up bb-dnd btn-dnd',
+                        ico: 'fa fa-arrows bb-dnd btn-dnd',
                         hideInContextMenu: true,
                         label: Translator.translate('drag_and_drop'),
                         cmd: self.createCommand(self.doDnd, self),

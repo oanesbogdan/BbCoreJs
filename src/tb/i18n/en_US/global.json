@@ -35,6 +35,7 @@
     "block_categories": "Block categories",
     "block_display": "Block display",
     "block_description": "Block description",
+    "block_informations": "Informations",
     "browse_to": "Browse to",
 
     "cancel": "Cancel",
@@ -70,6 +71,7 @@
     "create_a_page": "Create a page",
     "create_group": "Create group",
     "create_user": "Create user",
+    "created": "Creation date",
     "created_before": "Created before",
     "created_after": "Created after",
     "creation_date": "Creation date",
@@ -230,6 +232,7 @@
     "rename": "Rename",
     "reset": "Reset",
     "restore": "Restore",
+    "revision": "Revision",
     "rights_description": "Rights description",
     "rights_management": "Rights management",
     "roles_management": "Roles management",
@@ -280,6 +283,7 @@
     "trash": "Trash",
     "tree": "Tree",
 
+    "uid": "Uid",
     "updated": "Updated",
     "upload_drop_message": "Drop files here or click to upload.",
     "uploading": "Uploading",
@@ -295,10 +299,12 @@
     "user_update_success": "User update succeeded",
     "users": "Users",
     "user_management": "User management",
+    
     "validate": "Validate",
     "validation_confirmation": "Validation confirmation",
     "validation_popin_note": "Unselected items won't appear online but will remain saved as a draft and visible in the backoffice.",
     "validation_unselect_note": "If you wish to delete unselected items permanently, press Cancel.",
+    
     "warning" : "Warning",
     "website_parameters": "Website parameters",
     "workflow_management": "Workflow management",

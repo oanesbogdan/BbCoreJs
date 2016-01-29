@@ -78,7 +78,7 @@ define(
                 return [
                     {
                         name: 'Remove',
-                        ico: 'fa fa-times',
+                        ico: 'fa fa-trash-o',
                         label: Translator.translate('remove_content'),
                         cmd: self.createCommand(self.remove, self),
                         checkContext: function () {
