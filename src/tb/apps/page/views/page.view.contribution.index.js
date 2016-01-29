@@ -164,21 +164,30 @@ define(
                                 type: 'datetimepicker',
                                 placeholder: 'dd/mm/aaaa',
                                 template: 'src/tb/apps/page/templates/elements/scheduling-input.twig',
-                                value: this.getStateSchedulingAsString(this.currentPage.publishing)
+                                value: this.getStateSchedulingAsString(this.currentPage.publishing),
+                                step: 1
                             },
                             archiving: {
                                 label: translator.translate('archiving_scheduled_for'),
                                 type: 'datetimepicker',
                                 placeholder: 'dd/mm/aaaa',
                                 template: 'src/tb/apps/page/templates/elements/scheduling-input.twig',
-                                value: this.getStateSchedulingAsString(this.currentPage.archiving)
+                                value: this.getStateSchedulingAsString(this.currentPage.archiving),
+                                step: 1
                             }
                         },
                         form: {
                             submitLabel: 'Ok'
                         },
                         onSubmit: jQuery.proxy(self.onSubmitSchedulingPublication, self),
-                        onValidate: jQuery.proxy(self.onValidateSchedulingPublication, self)
+                        onValidate: jQuery.proxy(self.onValidateSchedulingPublication, self),
+                        additionalButtons: {
+                            publishNow: {
+                                text: translator.translate('publish_now'),
+                                type: 'submit',
+                                class: 'btn btn-default-grey btn-sm bb-submit-form btn-publish-now'
+                            }
+                        }
                     };
 
                 if (jQuery(this.schedulingTag).length === 0) {
@@ -187,6 +196,8 @@ define(
 
                     FormBuilder.renderForm(config).done(function (html) {
                         jQuery(self.schedulingTag).html(html);
+                        jQuery(self.schedulingTag).on('click', '.btn-publish-now', jQuery.proxy(self.publishNow, self));
+
 
                         jQuery(self.schedulingTag).dialog({
                             position: { my: "left top", at: "left+270 bottom+2", of: jQuery("#bb5-maintabsContent") },
@@ -267,9 +278,11 @@ define(
                     archivingDate,
                     now = new Date();
 
+                now.setSeconds(0);
+                now.setMilliseconds(0);
+
                 if (data.publishing.length > 0) {
                     publishingDate = new Date(data.publishing);
-
                     if (publishingDate.getTime() < now.getTime()) {
                         form.addError('publishing', translator.translate('publishing_in_past_not_allowed'));
                     }
@@ -445,6 +458,10 @@ define(
                 }
 
                 return config;
+            },
+            publishNow: function () {
+                jQuery(this.schedulingTag).find(this.publishingElementTag + ' input').val(moment().format('YYYY/MM/DD HH:mm'));
+                jQuery(this.el).find('.page-state-select').val(1).change();
             },
 
             /**

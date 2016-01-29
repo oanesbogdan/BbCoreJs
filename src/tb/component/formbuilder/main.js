@@ -116,6 +116,10 @@ define(
                         config.form.onSubmit = config.onSubmit;
                     }
 
+                    if (typeof config.additionalButtons === 'object') {
+                        config.form.additionalButtons = config.additionalButtons;
+                    }
+
                     if (typeof config.onValidate === 'function') {
                         config.form.onValidate = config.onValidate;
                     }

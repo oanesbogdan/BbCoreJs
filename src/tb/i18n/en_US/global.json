@@ -222,6 +222,7 @@
     "published_before" : "Published before",
     "publishing_before_archiving": "Publication date can't be after archiving date",
     "publishing_in_past_not_allowed": "Publishing in past is not allowed",
+    "publish_now": "Publish now",
 
     "redirect_to": "Redirect to",
     "remove": "Remove",
