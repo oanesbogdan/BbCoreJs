@@ -64,6 +64,8 @@ define(
             RevisionManager = new JS.Class({
 
                 revisionSelectorClass: '.bb-revision-selector',
+                seeDetailsClass: '.bb-revision-see-details',
+                revisionListClass: '.bb-revision-list',
 
                 /**
                  * Initialize of Revision manage
@@ -83,6 +85,15 @@ define(
 
                     Core.ApplicationManager.invokeService('content.main.getSaveManager').done(function (ContentSaveManager) {
                         self.ContentSaveManager = ContentSaveManager;
+                    });
+                },
+
+                /**
+                 * Bind events
+                 */
+                bindEvents: function () {
+                    jQuery(this.seeDetailsClass).on('click', function () {
+                        jQuery(this.revisionListClass).toggle();
                     });
                 },
 
@@ -121,18 +132,26 @@ define(
                             var config = {
                                     items: DraftManager.computeDraft(drafts),
                                     title: self.config.title,
+                                    noteMsg: self.config.noteMsg,
                                     noContentMsg: self.config.noContentMsg,
-                                    noteMsg: self.config.noteMsg
+                                    questionMsg: self.config.questionMsg,
+                                    treeTemplate: treeTemplate
                                 },
                                 buttonName = 'Ok';
 
                             if (config.items.length > 0) {
-                                buttonName = translator.translate('confirm');
+                                buttonName = translator.translate('yes');
                             }
 
                             self.popin.addButton(buttonName, jQuery.proxy(self.save, self));
+                            if (config.items.length > 0) {
+                                self.popin.addButton(translator.translate('no'), function () {
+                                    self.popin.hide();
+                                });
+                            }
 
                             self.popin.setContent(Renderer.render(treeTemplate, config));
+                            self.bindEvents();
                             EventManager.init(self.selector);
                         });
                     });

@@ -202,6 +202,7 @@ define(
                     config = {
                         popinTitle: translator.translate('cancel_confirmation'),
                         noContentMsg: translator.translate('no_content_cancel'),
+                        questionMsg: translator.translate('cancel_content_cancel_modifications'),
                         title: translator.translate('cancel_changes_content_below') + ' :',
                         onSave: function (data, popin) {
                             popin.mask();
@@ -233,6 +234,7 @@ define(
                         popinTitle: translator.translate('validation_confirmation'),
                         noContentMsg: translator.translate('no_content_validate'),
                         noteMsg: translator.translate('validation_popin_note') + '<br />' + translator.translate('validation_unselect_note'),
+                        questionMsg: translator.translate('validate_content_publish_modifications_online'),
                         title: translator.translate('confirm_saving_changes_content_below') + ' :',
                         onSave: function (data, popin) {
                             popin.mask();
