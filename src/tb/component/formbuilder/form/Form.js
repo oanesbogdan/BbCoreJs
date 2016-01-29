@@ -43,6 +43,7 @@ define(
                 us.extend(this, Backbone.Events);
 
                 this.elements = {};
+                this.additionalButtons = {};
                 this.errors = {};
 
                 this.config = config;
@@ -113,6 +114,11 @@ define(
                 this.submitLabel = Translator.translate('save');
                 if (config.hasOwnProperty('submitLabel')) {
                     this.submitLabel = config.submitLabel;
+                }
+
+                this.additionalButtons = {};
+                if (config.hasOwnProperty('additionalButtons')) {
+                    this.additionalButtons = config.additionalButtons;
                 }
 
                 this.information = null;
@@ -218,6 +224,13 @@ define(
             getElements: function () {
                 return this.elements;
             },
+            /**
+             * Get all additionalButtons
+             * @returns {Object} Form
+             */
+            getAdditionalButtons: function () {
+                return this.additionalButtons;
+            },
 
             /**
              * Add error on the input corresponding with the key
@@ -303,7 +316,6 @@ define(
                         }
                     }
                 }
-
                 if (showError !== true) {
                     return new View(template, items, this).render();
                 }

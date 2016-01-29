@@ -23,7 +23,7 @@
         <div class="form-group form-inline">
             {{ 'page_status'|trans }} :
             <span class="select">
-                <select id="page-state-select" class="form-control input-xs" name="state" {% if page.is_root == true %}disabled{% endif %} >
+                <select id="page-state-select" class="form-control input-xs page-state-select" name="state" {% if page.is_root == true %}disabled{% endif %} >
                     {% for state in states %}
                         <option {% if page.state_code == state.code %}selected{% endif %} value="{{ state.code }}">{{ state.label }}</option>
                     {% endfor %}

@@ -221,6 +221,7 @@
     "published_before" : "Publier avant",
     "publishing_before_archiving": "La date de publication ne peut pas être postérieure à celle d'archivage",
     "publishing_in_past_not_allowed": "La publication dans le passé n'est pas autorisée",
+    "publish_now": "Publier maintenant",
 
     "redirect_to": "Rediriger vers",
     "remove": "Supprimer",

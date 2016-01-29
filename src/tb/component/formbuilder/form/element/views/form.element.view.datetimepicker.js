@@ -88,7 +88,8 @@ define(
                     onGenerate: function () {
                         jQuery(this).css('top', element.position().top + (element.innerHeight() * 2.5));
                     },
-                    lang: view.currentLang
+                    lang: view.currentLang,
+                    step: view.element.config.step
                 });
 
                 element.datetimepicker('show');
