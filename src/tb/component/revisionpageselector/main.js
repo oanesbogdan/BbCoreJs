@@ -47,6 +47,8 @@ define(
             RevisionPageSelector = new JS.Class({
 
                 revisionSelectorClass: '.bb-revision-page-selector',
+                seeDetailsClass: '.bb-revision-see-details',
+                revisionListClass: '.bb-revision-list',
 
                 /**
                  * Initialize of Revision manage
@@ -62,6 +64,15 @@ define(
 
                     Core.ApplicationManager.invokeService('page.main.getSaveManager').done(function (SaveManager) {
                         self.SaveManager = SaveManager;
+                    });
+                },
+
+                /**
+                 * Bind events
+                 */
+                bindEvents: function () {
+                    jQuery(this.seeDetailsClass).on('click', function () {
+                        jQuery(this.revisionListClass).toggle();
                     });
                 },
 
@@ -126,16 +137,23 @@ define(
                         config = {
                             items: self.renderItems(this.SaveManager.validateData(self.config.currentPage)),
                             title: self.config.title,
-                            noContentMsg: self.config.noContentMsg
+                            noContentMsg: self.config.noContentMsg,
+                            questionMsg: self.config.questionMsg
                         },
                         buttonName = 'Ok';
 
                     if (config.items.length > 0) {
-                        buttonName = Translator.translate('confirm');
+                        buttonName = Translator.translate('yes');
                     }
 
                     self.popin.addButton(buttonName, jQuery.proxy(self.save, self));
+                    if (config.items.length > 0) {
+                        self.popin.addButton(Translator.translate('no'), function () {
+                            self.popin.hide();
+                        });
+                    }
                     self.popin.setContent(Renderer.render(treeTemplate, config));
+                    self.bindEvents();
                 }
             });
 
