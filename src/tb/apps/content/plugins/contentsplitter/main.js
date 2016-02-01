@@ -209,8 +209,10 @@ define(['content.pluginmanager', 'Core/ApplicationManager', 'content.manager', '
 
         canApplyOnContext: function () {
             var contentParent = this.getCurrentContent().getParent(),
-                isAParagraph = this.getCurrentContentType() === this.SPLITTABLE_CONTENT;
-            return contentParent.isAContentSet() && isAParagraph && this.context.scope !== PluginManager.scope.CONTENT;
+                isAParagraph = this.getCurrentContentType() === this.SPLITTABLE_CONTENT,
+                parentIsAContentSet = (null === contentParent) ? false : contentParent.isAContentSet();
+
+            return parentIsAContentSet && isAParagraph && this.context.scope !== PluginManager.scope.CONTENT;
         },
 
         isActivated: function () {
