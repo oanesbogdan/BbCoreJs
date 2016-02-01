@@ -367,7 +367,7 @@ define(
                     });
                     /* when render : to handle layout */
                     this.contentPagination.on('afterRender', function (isVisible) {
-                        var position = (isVisible === true) ? 203 : 168;
+                        var position = (isVisible === true) ? 233 : 203;
                         self.fixDataviewLayout(position);
 
                     });
@@ -393,6 +393,9 @@ define(
 
                     /* when we have contents */
                     self.contentRestDataStore.on("dataStateUpdate", jQuery.proxy(this.updateCurrentNodeInfos, this));
+                    self.contentRestDataStore.on('dataStateUpdate', function () {
+                        self.widgetLayout.resizeAll();
+                    });
                 },
 
                 fixDataviewLayout: function (top) {
