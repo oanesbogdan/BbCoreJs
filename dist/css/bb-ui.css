@@ -10758,7 +10758,11 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   width: 30px;
   height: 30px;
   margin: 0 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+  line-height: 16px;
   text-decoration: none;
+  text-align: center;
 }
 /** Add Fixes */
 #bb5-ui .form-group.custom-form-group {
