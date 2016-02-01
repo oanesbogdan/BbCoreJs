@@ -71,8 +71,9 @@ define(
                  * Bind events
                  */
                 bindEvents: function () {
+                    var self = this;
                     jQuery(this.seeDetailsClass).on('click', function () {
-                        jQuery(this.revisionListClass).toggle();
+                        jQuery(self.revisionListClass).toggle();
                     });
                 },
 
