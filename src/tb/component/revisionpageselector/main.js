@@ -28,14 +28,19 @@ define(
     [
         'Core',
         'Core/Renderer',
+        'content.repository',
+        'revision.repository',
+        'revisionselector.managers/Draft',
+        'revisionselector.managers/Save',
         'component!popin',
         'component!translator',
+        'component!notify',
         'text!revisionpageselector.templates/tree.twig',
         'text!revisionpageselector.templates/item.twig',
         'jquery',
         'jsclass'
     ],
-    function (Core, Renderer, PopinManager, Translator, treeTemplate, itemTemplate, jQuery) {
+    function (Core, Renderer, ContentRepository, RevisionRepository, DraftManager, SaveManager, PopinManager, Translator, Notify, treeTemplate, itemTemplate, jQuery) {
 
         'use strict';
 
@@ -49,6 +54,7 @@ define(
                 revisionSelectorClass: '.bb-revision-page-selector',
                 seeDetailsClass: '.bb-revision-see-details',
                 revisionListClass: '.bb-revision-list',
+                contentRevisionListClass: '.bb-revision-selector',
 
                 /**
                  * Initialize of Revision manage
@@ -102,11 +108,30 @@ define(
                 },
 
                 /**
+                 * Check if there are content drafts
+                 * If yes save them and then save page modifications
+                 * 
+                 * @param {Boolean} hasDrafts
+                 * @returns {undefined}
+                 */
+                checkAndSaveDrafts: function (hasDrafts) {
+                    var self = this;
+
+                    if (hasDrafts === true) {
+                        RevisionRepository.save(SaveManager.save('#' + this.popin.getId() + ' ' + this.contentRevisionListClass), 'commit').done(function () {
+                            Notify.success(Translator.translate('contents_validated'));
+                            self.save();
+                        });
+                    } else {
+                        self.save();
+                    }
+                },
+
+                /**
                  * Apply the save to the callback
                  */
                 save: function () {
                     if (this.config.hasOwnProperty('onSave')) {
-                        this.getCheckedData();
                         this.config.onSave(this.getCheckedData(), this.popin);
                     }
                 },
@@ -114,7 +139,6 @@ define(
                 renderItems: function (items) {
                     var key,
                         template = '';
-
 
                     if (items !== undefined) {
 
@@ -135,26 +159,53 @@ define(
                     this.popin.display();
 
                     var self = this,
+                        items = this.SaveManager.validateData(self.config.currentPage),
                         config = {
-                            items: self.renderItems(this.SaveManager.validateData(self.config.currentPage)),
+                            items: self.renderItems(items),
                             title: self.config.title,
                             noContentMsg: self.config.noContentMsg,
                             questionMsg: self.config.questionMsg
-                        },
+                        };
+
+                    if (items.hasOwnProperty('state') && parseInt(items.state.value, 10) === 1) {
+                        ContentRepository.getDrafts().done(function (drafts) {
+                            if (Object.keys(drafts).length > 0) {
+                                config.questionMsg = Translator.translate('confirm_save_online_changes_made_to_page');
+                                config.drafts = DraftManager.computeDraft(drafts);
+                                self.setPopInContent(config, true);
+                            } else {
+                                self.setPopInContent(config, false);
+                            }
+                        });
+                    } else {
+                        this.setPopInContent(config, false);
+                    }
+                },
+
+                /**
+                 * Set the corresponding content and buttons for popin
+                 * 
+                 * @param {Object} config
+                 * @param {Boolean} hasDrafts
+                 * @returns {undefined}
+                 */
+                setPopInContent: function (config, hasDrafts) {
+                    var self = this,
                         buttonName = 'Ok';
 
                     if (config.items.length > 0) {
                         buttonName = Translator.translate('yes');
                     }
-
-                    self.popin.addButton(buttonName, jQuery.proxy(self.save, self));
+                    this.popin.addButton(buttonName, function () {
+                        self.checkAndSaveDrafts(hasDrafts);
+                    });
                     if (config.items.length > 0) {
-                        self.popin.addButton(Translator.translate('no'), function () {
-                            self.popin.hide();
+                        this.popin.addButton(Translator.translate('no'), function () {
+                            this.popin.hide();
                         });
                     }
-                    self.popin.setContent(Renderer.render(treeTemplate, config));
-                    self.bindEvents();
+                    this.popin.setContent(Renderer.render(treeTemplate, config));
+                    this.bindEvents();
                 }
             });
 
