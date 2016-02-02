@@ -6675,6 +6675,7 @@ Rich editor
   /*dialog -> ui-dialog-pinned-to-banner*/
   /*dialog -> contribution-scheduling*/
   /*datepicker*/
+  /*dropdown*/
   /*dialog-theme-background*/
   /*LAYOUT PANE*/
   /*DRAGGING*/
@@ -7519,9 +7520,12 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+#bb5-ui .bb5-ui-banner > .tab-content > .tab-pane > .row > [class^="col-bb5-"] {
+  height: 97px;
+}
 #bb5-ui .bb5-ui-banner > .tab-content > .tab-pane > .row [class^="col-bb5-"] {
   position: relative;
-  height: 97px;
+  min-height: 1px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -10072,6 +10076,9 @@ fieldset[disabled] #bb5-ui .btn-online.active {
 #bb5-ui .ui-datepicker .ui-state-active,
 #bb5-ui .ui-datepicker .ui-state-active:hover {
   color: #fff;
+}
+#bb5-ui #bb-current-user .dropdown-menu {
+  z-index: 490020;
 }
 #bb5-ui #dialog-theme-background {
   padding: 2px;
