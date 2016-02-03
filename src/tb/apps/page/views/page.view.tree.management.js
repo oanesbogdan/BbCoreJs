@@ -31,6 +31,14 @@ define(['Core', 'page.view.tree.contribution', 'jquery'], function (Core, Parent
             return;
         },
 
+        onRightClick: function () {
+            return;
+        },
+
+        onMove: function () {
+            return;
+        },
+
         setPageStore: function (pageStore) {
             PageStore = pageStore;
         },
