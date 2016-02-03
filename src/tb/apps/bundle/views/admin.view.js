@@ -59,6 +59,9 @@ define(
                     parent.css({
                         top: 150
                     });
+                },
+                close: function () {
+                    jQuery('#bundle-tab .btn-dialog-extension').removeClass('disabled');
                 }
             },
 

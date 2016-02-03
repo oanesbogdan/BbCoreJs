@@ -73,6 +73,7 @@ define(
             },
 
             openAdmin: function () {
+                jQuery('#' + this.id + ' .btn-dialog-extension').addClass('disabled');
                 ApplicationManager.invokeService('bundle.main.admin', this.bundle);
             },
 

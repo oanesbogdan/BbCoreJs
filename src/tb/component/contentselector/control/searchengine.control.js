@@ -76,8 +76,20 @@ define(
 
                     onShow: function (date, field) {
                         var datePicker = jQuery(field).data("xdsoft_datetimepicker");
+                        if (jQuery(field).data('is-open') === true) {
+                            return date;
+                        }
+                        jQuery(field).data('is-open', true);
                         jQuery(datePicker).hide();
+
                         return date;
+                    },
+
+                    onClose: function (event, field) {
+                        setTimeout(function () {
+                            jQuery(field).data('is-open', false);
+                            return event;
+                        }, 250);
                     },
 
                     onGenerate: function (date, field) {
@@ -90,6 +102,9 @@ define(
 
             showOrInitDateTimePicker: function (e) {
                 var dateField = jQuery(e.currentTarget).parent().siblings(this.defaultConfig.datepickerFieldClass).eq(0);
+                if (jQuery(dateField).data('is-open') === true) {
+                    return;
+                }
                 if (!jQuery(dateField).data('datetimepicker')) {
                     this.initDatepicker();
                 }
