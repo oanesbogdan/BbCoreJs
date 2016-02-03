@@ -23,11 +23,12 @@ define(['jquery', 'tb.component/treeview/NodeEditor', 'component!translator', "B
             if (typeof this.options.beforeRender === "function") {
                 this.beforeRender = this.options.beforeRender;
             }
+            this.options.dragAndDrop = true;
             if (jQuery(this.el).hasClass('treeview-ctn')) {
                 jQuery("body").append(this.el);
                 this.useWrapper = true;
+                this.options.dragAndDrop = false;
             }
-            this.options.dragAndDrop = true;
             this.nodeEditor = new NodeEditor(this);
             this.treeEl = jQuery(this.el).tree(this.options);
         },
