@@ -348,13 +348,18 @@ define(
                     self.repository.save(patch).then(
                         function () {
                             view.destroy();
-                            Notify.success('account_updated');
+                            Notify.success(trans('account_saved'));
                         },
                         function (error) {
-                            Notify.error('error_retry_later');
+                            var formError = self.parseRestError(error);
+                            if (formError) {
+                                Notify.error(formError);
+                            } else {
+                                Notify.error(trans('error_retry_later'));
+                            }
 
                             view.destroy();
-                            self.editCurrentService(user, self.parseRestError(error));
+                            self.editCurrentService(req, user, formError);
                         }
                     );
                 });
