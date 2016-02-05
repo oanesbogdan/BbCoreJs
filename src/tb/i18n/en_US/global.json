@@ -162,6 +162,7 @@
     "media_height": "H",
     "media_width": "W",
     "media_library": "Media library",
+    "media_library_no_result": "No media found",
     "media_preview": "Media preview",
     "media_selector": "Media selector",
     "menu_block_title": "Actions",
@@ -302,7 +303,7 @@
     "user_update_success": "User update succeeded",
     "users": "Users",
     "user_management": "User management",
-    
+
     "validate": "Validate",
     "validate_content": "Publish Online",
     "validate_content_publish_modifications_online": "Publish your modifications online ?",
@@ -311,7 +312,7 @@
     "validation_confirmation": "Validation confirmation",
     "validation_popin_note": "Unselected items won't appear online but will remain saved as a draft and visible in the backoffice.",
     "validation_unselect_note": "If you wish to delete unselected items permanently, press Cancel.",
-    
+
     "warning" : "Warning",
     "website_parameters": "Website parameters",
     "workflow_management": "Workflow management",

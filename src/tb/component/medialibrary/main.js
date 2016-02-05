@@ -520,7 +520,6 @@ define(
                         rootNode = this.mediaFolderTreeView.getRootNode();
                         this.selectedNode = rootNode.children[0];
                     }
-
                     resultTotal = this.mediaDataStore.getTotal();
                     jQuery(this.widget).find(".result-infos").html(this.selectedNode.name);
                     this.mediaPagination.setItems(resultTotal, this.mediaDataStore.count());

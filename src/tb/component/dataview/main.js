@@ -26,13 +26,14 @@ define(
     [
         'require',
         'underscore',
+        'tb.component/translator/main',
         'Core',
         'BackBone',
         'jquery',
         'jsclass',
         'text!dataviewTemplate/layout.tpl'
     ],
-    function (require, underscore) {
+    function (require, underscore, Translator) {
         'use strict';
         var mainTpl = require('text!dataviewTemplate/layout.tpl'),
             jQuery = require('jquery'),
@@ -188,9 +189,14 @@ define(
                 },
 
                 updateUi: function () {
-                    var items = (this.renderAsCollection) ? this.data : this.renderItems(),
-                        renderer = this.getModeRenderer(this.renderMode).render(items);
-                    jQuery(this.dataWrapper).html(renderer);
+                    var items = (this.renderAsCollection) ? this.data : this.renderItems();
+
+                    if (this.data.length === 0) {
+                        jQuery(this.dataWrapper).html(Translator.translate('media_library_no_result'));
+                    } else {
+                        jQuery(this.dataWrapper).html(this.getModeRenderer(this.renderMode).render(items));
+                    }
+
                     this.showSelections();
                     this.trigger('afterRender');
                 },
