@@ -161,6 +161,7 @@
     "media_height": "H",
     "media_width": "L",
     "media_library": "Médiathèque",
+    "media_library_no_result": "Aucun media trouvé",
     "media_preview": "Prévisualiser",
     "media_selector": "Sélecteur de média",
     "menu_block_title": "Actions",
