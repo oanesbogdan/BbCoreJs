@@ -28,10 +28,28 @@ define(['Core', 'jquery', 'Core/Renderer', 'text!../searchengine/templates/layou
                 closeOnDateSelect: true,
                 format: "d/m/Y",
                 parentID: self.mainSelector,
+                onGenerate: function () {
+                    jQuery(this).css('top', 165);
+                },
                 onSelectDate: function (ct, field) {
                     jQuery(field).data('selectedTime', Math.ceil(ct.getTime() / 1000));
+                },
+                onShow: function (date, field) {
+                    if (jQuery(field).data('is-open') === true) {
+                        return date;
+                    }
+                    jQuery(field).data('is-open', true);
+
+                    return date;
+                },
+                onClose: function (event, field) {
+                    setTimeout(function () {
+                        jQuery(field).data('is-open', false);
+
+                        return event;
+                    }, 250);
                 }
-            });
+            }).data('datetimepicker', true).data('is-open', false);
         },
 
         showOrInitDateTimePicker: function (e) {
@@ -40,7 +58,10 @@ define(['Core', 'jquery', 'Core/Renderer', 'text!../searchengine/templates/layou
             if (!jQuery(dateField).data('datetimepicker')) {
                 this.initDatepicker();
             }
-            jQuery(dateField).datetimepicker('show');
+            if (jQuery(dateField).data('is-open') === false) {
+                jQuery(dateField).data('is-open', true);
+                jQuery(dateField).datetimepicker('show');
+            }
         },
 
         bindEvents: function () {

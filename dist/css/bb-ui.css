@@ -7520,7 +7520,7 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-#bb5-ui .bb5-ui-banner > .tab-content > .tab-pane > .row > [class^="col-bb5-"] {
+#bb5-ui .bb5-ui-banner > .tab-content > .tab-pane > .row div[class^="col-bb5-"] {
   height: 97px;
 }
 #bb5-ui .bb5-ui-banner > .tab-content > .tab-pane > .row [class^="col-bb5-"] {

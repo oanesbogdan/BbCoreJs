@@ -86,13 +86,34 @@ define(
                 element.datetimepicker({
                     parentID: '#bb5-dialog-container',
                     onGenerate: function () {
-                        jQuery(this).css('top', element.position().top + (element.innerHeight() * 2.5));
+                        var position = view.getPosition(element);
+                        jQuery(this).css('top', position.top + 3 + element.outerHeight());
                     },
                     lang: view.currentLang,
                     step: view.element.config.step
                 });
 
                 element.datetimepicker('show');
+            },
+
+            getPosition: function (element) {
+                var parents = element.parentsUntil("#bb5-ui"),
+                    position = {'top': 0, 'left': 0},
+                    cssPosition,
+                    key = 0;
+
+                for (key;  key < parents.length; key += 1) {
+                    if (parents.hasOwnProperty(key)) {
+                        cssPosition = jQuery(parents[key]).css('position');
+
+                        if (cssPosition === "relative" || cssPosition === "absolute" || cssPosition === "fixed") {
+                            position.top += jQuery(parents[key]).position().top;
+                            position.left += jQuery(parents[key]).position().left;
+                        }
+                    }
+                }
+
+                return position;
             },
 
             /**
