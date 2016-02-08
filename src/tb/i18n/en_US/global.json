@@ -293,6 +293,7 @@
     "uploading": "Uploading",
     "url_required": "Valid url is required",
     "user": "User",
+    "user_addgroup_success": "User added to group",
     "user_filters": "User filters",
     "user_is_already_in_this_group": "User is already in this group",
     "user_is_not_in_this_group": "User is not in this group",
