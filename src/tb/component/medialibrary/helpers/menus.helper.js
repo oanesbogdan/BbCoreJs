@@ -58,6 +58,7 @@ define(['component!contextmenu', 'component!menu', 'jquery', 'component!notify']
 
                     cutAction: function () {
                         cuttedNode = selectedNode;
+                        jQuery(cuttedNode.element).addClass('action-selected');
                     },
 
                     showMediaFormAction: function (mediaType) {
