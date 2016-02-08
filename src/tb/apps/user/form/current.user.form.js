@@ -53,6 +53,12 @@ define(['component!formbuilder', 'component!translator'], function (formbuilder,
                         form.addError('email', translator.translate('email_is_invalid'));
                     }
                 }
+                if (!data.hasOwnProperty('firstname') || data.firstname.trim().length === 0) {
+                    form.addError('firstname', translator.translate('firstname_is_required'));
+                }
+                if (!data.hasOwnProperty('lastname') || data.lastname.trim().length === 0) {
+                    form.addError('lastname', translator.translate('lastname_is_required'));
+                }
             }
         };
     };

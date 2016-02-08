@@ -5,6 +5,7 @@
     "account_activated": "Account activated",
     "account_edit": "Account edit",
     "account_updated": "Account updated",
+    "account_saved" : "User account modifications saved",
     "actions": "Actions",
     "active": "Active",
     "activate": "Activate",
@@ -108,12 +109,13 @@
     "edition": "Edition",
     "email": "Email",
     "email_is_required": "Email is required",
-    "email_is_invalid": "Email is invalid",
+    "email_is_invalid": "Email is not valid",
     "error_retry_later": "Error, please retry later",
     "export": "Export",
     "external_link": "External link",
 
     "filters": "Filters",
+    "firstname_is_required": "Field required",
     "first_name": "First name",
     "find_users": "Find users",
     "from": "From",
@@ -142,6 +144,7 @@
     "keyword_is_linked": "Keyword is already linked to some content",
 
 
+    "lastname_is_required": "Field required",
     "last_name": "Last name",
     "layout": "Layout",
     "language": "Language",
