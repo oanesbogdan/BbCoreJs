@@ -158,6 +158,19 @@ define(
                     return this.config.available_media;
                 },
 
+                getCurrentMedia: function (type) {
+                    var medias = this.getAvailableMedia(),
+                        key;
+
+                    for (key in medias) {
+                        if (medias.hasOwnProperty(key) && medias[key].type === type) {
+                            return medias[key];
+                        }
+                    }
+
+                    return {};
+                },
+
                 selectItems: function (media) {
                     this.mediaListView.selectItems(media);
                 },
@@ -321,7 +334,9 @@ define(
                                         content_type: content.type,
                                         folder_uid: self.selectedNode.uid
                                     };
+
                                     deps.EditionHelper.show(content, {
+                                        title: trans('create_a_new_media') + " " + self.getCurrentMedia(type).title,
                                         onSave: jQuery.proxy(self.onSaveHandler, self, mediaInfos),
                                         onValidate: jQuery.proxy(self.validationHandler, self)
                                     });

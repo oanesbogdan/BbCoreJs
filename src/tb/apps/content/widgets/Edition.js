@@ -62,7 +62,7 @@ define(
                     position: { my: "center top", at: "center top+" + jQuery('#' + Core.get('menu.id')).height()}
                 });
 
-                popin.setTitle(translator.translate('edit'));
+                popin.setTitle(translator.translate(this.config.title || 'edit'));
                 popin.addOption('width', '500px');
 
                 Core.ApplicationManager.invokeService('content.main.registerPopin', name, popin);
