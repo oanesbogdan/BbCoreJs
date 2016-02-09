@@ -9753,6 +9753,12 @@ fieldset[disabled] #bb5-ui .btn-online.active {
 #bb5-ui .bb5-widget-toolbar select {
   margin-right: 5px;
 }
+#bb5-ui .bb5-widget-toolbar .pull-left {
+  margin-top: 7px;
+}
+#bb5-ui .bb5-widget-toolbar .pull-right {
+  margin-top: 7px;
+}
 #bb5-ui .bb5-widget-toolbar.list-options {
   position: relative;
 }

@@ -1,9 +1,10 @@
 define([
+    'Core',
     'Core/Renderer',
     'text!page/tpl/toolbar.twig',
     'jquery',
     'datetimepicker'
-], function (Renderer, template, jQuery) {
+], function (Core, Renderer, template, jQuery) {
     'use strict';
 
     /**
@@ -48,16 +49,20 @@ define([
         },
 
         clearFilters: function () {
+            Core.ApplicationManager.invokeService('page.main.popinDisplayManagement', true);
             this.pageStore.clearFilters();
             this.pageStore.applyFilter('byStatus', [0, 1, 2, 3]);
             this.pageStore.applySorter('byModified', 'desc');
             this.pageStore.applyFilter('searchAction', 1);
-            this.pageStore.execute();
+            this.pageStore.execute().done(function () {
+                Core.ApplicationManager.invokeService('page.main.popinDisplayManagement', false);
+            });
         },
 
         search: function (event) {
             var values = jQuery(event.target).serializeArray();
 
+            Core.ApplicationManager.invokeService('page.main.popinDisplayManagement', true);
             event.preventDefault();
             this.unApplyFilters();
 
@@ -88,7 +93,9 @@ define([
 
             this.pageStore.unApplyFilter('byOffset');
 
-            this.pageStore.execute();
+            this.pageStore.execute().done(function () {
+                Core.ApplicationManager.invokeService('page.main.popinDisplayManagement', false);
+            });
         },
 
         bindEvents: function () {

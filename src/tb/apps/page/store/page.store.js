@@ -15,7 +15,6 @@ define(['component!datastore', 'jsclass'], function (DataStore) {
             for (i = 0; i < name.length; i = i + 1) {
                 key = key + name[i].charAt(0).toUpperCase() + name[i].substr(1);
             }
-
             return 'by' + key;
         },
 
@@ -110,8 +109,8 @@ define(['component!datastore', 'jsclass'], function (DataStore) {
         return restParams;
     });
 
-    restDataStore.addSorter('byStatus', function (value, restParams) {
-        restParams.sorters.status = value;
+    restDataStore.addSorter('byState', function (value, restParams) {
+        restParams.sorters.state = value;
         return restParams;
     });
 
@@ -127,7 +126,7 @@ define(['component!datastore', 'jsclass'], function (DataStore) {
 
     restDataStore.applyNamedSorter = function (name, direction) {
         restDataStore.unApplySorter('byTitle');
-        restDataStore.unApplySorter('byStatus');
+        restDataStore.unApplySorter('byState');
         restDataStore.unApplySorter('byLayout');
         restDataStore.unApplySorter('byModified');
         restDataStore.applySorter(computeKey(name), direction);
