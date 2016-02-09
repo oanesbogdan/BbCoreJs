@@ -31,17 +31,18 @@ define(
             bindEvents: function () {
                 var element = jQuery('#' + this.id);
 
+                this.loadPopinTree();
                 element.on('click', 'ul#edit-tab li', this.manageMenu);
                 element.on('click', '#new-page', this.showNewPage);
                 element.on('click', '.global-save', this.manageSave);
-                element.on('click', '#bundle-toolbar-tree', this.showTree);
+                element.on('click', '#bundle-toolbar-tree', this.showPopinTree);
                 element.on('click', '#bundle-toolbar-contentSelector', this.showContentSelector);
                 element.on('click', '.bundle-toolbar-global-validate', this.manageValidate);
                 element.on('click', '.bundle-toolbar-global-cancel', this.manageCancel);
                 element.on("click", "#btn-show-mediaLibrary", this.showMediaLibrary);
                 element.on("click", "#keyword-editor", this.showKwEditor.bind(this));
                 if (sessionStorage.getItem('loadTree') === 'true') {
-                    this.showTree();
+                    this.showPopinTree();
                 }
             },
 
@@ -60,8 +61,7 @@ define(
                 }
             },
 
-            showTree: function () {
-                sessionStorage.setItem('loadTree', 'true');
+            loadPopinTree: function () {
                 var popinId = 'bb-page-tree',
                     treePromise,
                     config = {
@@ -72,18 +72,23 @@ define(
                         popinId: popinId,
                         autoLoadRoot: true
                     };
-                if (document.getElementById(popinId) !== null) {
-                    jQuery('#' + popinId).dialog('open');
-                } else {
-                    treePromise = Core.ApplicationManager.invokeService('page.main.tree', config);
-                    treePromise.done(function (pageTreeContribution) {
-                        pageTreeContribution.view.on("rootIsLoaded", function () {
-                            pageTreeContribution.view.showFilter();
-                            pageTreeContribution.selectPage(Core.get("page.uid"));
-                        });
-
+                treePromise = Core.ApplicationManager.invokeService('page.main.tree', config);
+                treePromise.done(function (pageTreeContribution) {
+                    pageTreeContribution.view.on("rootIsLoaded", function () {
+                        pageTreeContribution.view.showFilter();
+                        pageTreeContribution.selectPage(Core.get("page.uid"));
                     });
+
+                });
+            },
+            showPopinTree: function () {
+                var popinId = 'bb-page-tree',
+                    popinHolder = jQuery('#' + popinId).parent();
+                sessionStorage.setItem('loadTree', 'true');
+                if (jQuery(popinHolder).css('display') === 'none') {
+                    jQuery(popinHolder).show();
                 }
+                jQuery('#' + popinId).dialog('open');
             },
 
             showNewPage: function () {

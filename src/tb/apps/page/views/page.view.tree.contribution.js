@@ -217,16 +217,15 @@ define(
                                     var callback = function (data, response) {
                                         RequestHandler.send(self.buildRequest(response.getHeader('Location'))).done(function (page) {
                                             if (self.currentEvent.node.before_load === false) {
-                                                self.treeView.invoke('appendNode', self.view.formatePageToNode(page), self.currentEvent.node);
+                                                self.treeView.invoke('addNodeAfter', self.view.formatePageToNode(page), self.currentEvent.node);
                                             }
                                         });
 
                                         return data;
                                     }, serviceConfig = {
-                                        'parent_uid': self.currentEvent.node.id,
+                                        'parent_uid': ((self.currentEvent.node.parent.id !== undefined) ? self.currentEvent.node.parent.id : self.currentEvent.node.id),
                                         'callbackAfterSubmit': callback
                                     };
-
                                     ApplicationManager.invokeService('page.main.newPage', serviceConfig);
                                 }
                             },
