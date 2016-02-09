@@ -107,7 +107,7 @@ define(
                     uid = element.elements.value,
                     objectUid = element.object_uid;
 
-                if (uid !== undefined && uid !== '') {
+                if (typeof uid === 'string') {
                     this.KeywordRepository.find(uid).done(function (element) {
                         element.object_uid = objectUid;
                         dfd.resolve(element);

@@ -40,10 +40,14 @@ define(['Core', 'Core/Renderer', 'BackBone', 'filter!escapeQuote'], function (Co
                         span = element.find('span.updated'),
                         oldValue = self.element.value;
 
-                    if (String(input.val()) !== String(oldValue)) {
-                        span.text('updated');
-                    } else {
+                    if (!oldValue && String(input.val()) === '') {
                         span.text('');
+                    } else {
+                        if (String(input.val()) !== String(oldValue)) {
+                            span.text('updated');
+                        } else {
+                            span.text('');
+                        }
                     }
                 }
             });
