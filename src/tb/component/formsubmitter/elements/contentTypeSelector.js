@@ -33,10 +33,9 @@ define(['jsclass'], function () {
             if (value !== JSON.stringify(previousValue)) {
                 if (value) {
                     data = JSON.parse(value);
-                } else {
-                    data = {};
                 }
             }
+
             return data;
         }
     };
