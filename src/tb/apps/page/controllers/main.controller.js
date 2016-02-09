@@ -205,6 +205,21 @@ define(
                 }
             },
 
+            /**
+             * Set / unset mask for page management popin
+             * @param {Boolean} mask
+             * @returns {undefined}
+             */
+            popinDisplayManagementService: function (mask) {
+                if (this.manageView) {
+                    if (mask === true) {
+                        this.manageView.popin.mask();
+                    } else {
+                        this.manageView.popin.unmask();
+                    }
+                }
+            },
+
             toolbarManagementService: function (req) {
                 var ToolbarView = req('page.view.toolbar'),
                     view = new ToolbarView({'pageStore': PageStore});

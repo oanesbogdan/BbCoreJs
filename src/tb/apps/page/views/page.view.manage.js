@@ -121,7 +121,8 @@ define([
         },
 
         initPagination: function () {
-            var Pagination = require('component!pagination');
+            var self = this,
+                Pagination = require('component!pagination');
 
             this.pagination = Pagination.createPagination({
                 itemsOnPage: this.range.getValue()
@@ -130,10 +131,12 @@ define([
             this.pagination.on("pageChange", function (page) {
                 var limit = this.range.getValue(),
                     start = (page - 1) * limit;
-
+                self.popin.mask();
                 this.pageStore.setStart(start);
 
-                this.pageStore.execute();
+                this.pageStore.execute().done(function () {
+                    self.popin.unmask();
+                });
             }.bind(this));
         },
 
@@ -193,18 +196,22 @@ define([
         },
 
         bindSorterElements: function () {
-            var elements = jQuery('a[data-sorter]');
+            var self = this,
+                elements = jQuery('a[data-sorter]');
 
             elements.on('click', function (event) {
                 var elem = jQuery(event.target),
                     sorter = elem.data('sorter'),
                     direction = (elem.data('direction') === 'asc' ? 'desc' : 'asc');
 
+                self.popin.mask();
                 jQuery('a[data-direction="desc"]').data('direction', 'asc');
 
                 elem.data('direction', direction);
                 this.pageStore.applyNamedSorter(sorter, direction);
-                this.pageStore.execute();
+                this.pageStore.execute().done(function () {
+                    self.popin.unmask();
+                });
             }.bind(this));
         },
 
@@ -215,11 +222,14 @@ define([
                 var element = jQuery(event.currentTarget),
                     westBlock = self.selector.find('.ui-layout-west');
 
+                self.popin.mask();
                 westBlock.find('.txt-highlight').removeClass('txt-highlight');
                 element.addClass('txt-highlight');
 
                 this.pageStore.applyFilter('byTrash', [4]);
-                this.pageStore.execute();
+                this.pageStore.execute().done(function () {
+                    self.popin.unmask();
+                });
             }.bind(this));
         },
 
@@ -264,11 +274,13 @@ define([
                     require('component!notify').warning(require('component!translator').translate('no_page_selected'));
                     return;
                 }
-
+                this.popin.mask();
                 for (i = 0; i < elems.length; i = i + 1) {
                     uids.push(elems.get(i).getAttribute('data-identifier'));
                 }
-                Core.ApplicationManager.invokeService('page.main.' + service, {uids: uids, popin: this.popin}, this.pageStore);
+                Core.ApplicationManager.invokeService('page.main.' + service, {uids: uids, popin: this.popin}, this.pageStore).done(function () {
+                    self.popin.unmask();
+                });
 
                 this.selector.find('.' + this.chooseActionSelectClass).val('0');
             }.bind(this));
@@ -330,7 +342,7 @@ define([
                 window.open(jQuery(this).data('href'));
             });
 
-            this.tree.renderIn('#bb-page-management-tree-view');
+            this.tree.renderIn('#bb-page-management-tree-view', this.popin);
             this.range.render('#bb-page-management-range-view');
 
             this.pageStore.execute();
@@ -341,7 +353,7 @@ define([
                 this.selector.find('.ui-layout-resizer-west').addClass('hidden');
             }.bind(this));
 
-            this.pagination.render('#bb-page-management-pagination-view', 'replaceWith');
+            this.pagination.render('#bb-page-management-pagination-view ', 'replaceWith');
 
             this.dataview.render('#bb-page-management-data-view');
             this.popin.unmask();
