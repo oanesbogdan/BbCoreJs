@@ -59,12 +59,20 @@ define(
                     customItemEvents: {},
                     itemRenderer: function () {
                         return '<p>An item renderer must be provided</p>';
+                    },
+                    noResultCallback: function () {
+                        jQuery(this.dataWrapper).html(Translator.translate('no_result'));
                     }
                 },
 
                 initialize: function (config) {
                     jQuery.extend(this, {}, Backbone.Events);
                     this.config = jQuery.extend({}, this.defaultConfig, config);
+                    if (typeof this.config.noResultCallback === 'function') {
+                        this.config.noResultCallback = this.config.noResultCallback.bind(this);
+                    } else {
+                        this.config.noResultCallback = jQuery.noop;
+                    }
                     this.itemKey = this.config.itemKey;
                     this.renderMode = this.config.renderMode;
                     this.build();
@@ -192,7 +200,7 @@ define(
                     var items = (this.renderAsCollection) ? this.data : this.renderItems();
 
                     if (this.data.length === 0) {
-                        jQuery(this.dataWrapper).html(Translator.translate('media_library_no_result'));
+                        this.config.noResultCallback();
                     } else {
                         jQuery(this.dataWrapper).html(this.getModeRenderer(this.renderMode).render(items));
                     }

@@ -23,6 +23,7 @@ define(
         'text!tb.component/medialibrary/templates/layout.tpl',
         'BackBone',
         'mediaItem.renderer',
+        'tb.component/translator/main',
         'component!searchengine',
         'mediaFolder.datastore',
         'media.datastore',
@@ -45,7 +46,8 @@ define(
         jQuery,
         layout,
         BackBone,
-        ItemRenderer
+        ItemRenderer,
+        Translator
     ) {
 
         'use strict';
@@ -77,6 +79,9 @@ define(
                     css: {
                         width: "auto",
                         height: "auto"
+                    },
+                    noResultCallback: function () {
+                        jQuery(this.dataWrapper).html(Translator.translate('media_library_no_result'));
                     }
                 },
                 resetOnClose: true,
