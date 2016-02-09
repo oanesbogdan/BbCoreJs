@@ -20,7 +20,7 @@
 
 /* CONTENT */
 
-.bb-content:not(.bb-content-page-mode) {
+.bb-content.bb-content-edit-mode {
     position:relative;
     min-height:21px;
     padding-bottom: 15px;
@@ -52,13 +52,14 @@
     border: 2px solid #e34c26;
 }
 
-#bb5-ui .scroll{
-    background: @brand-success;
+#bb5-ui .bb-scroll{
+    background: #63791F;
     height: 50px;
     width: 100%;
     text-align: center;
-    opacity: 0.2;
     z-index: 999999;
+    opacity: 0;
+    .transition(all ease 350ms);
 
     .fa {
         opacity: 0.6;
@@ -67,17 +68,21 @@
     }
 
     &.over {
-        opacity: 0.6;
+        opacity: 0.6 !important;
     }
 
     &.scroll-up {
         position: fixed;
-        top: 190px;
+        top: 142px;
     }
 
     &.scroll-down {
         position: fixed;
         bottom: 0;
+    }
+
+    &.shown {
+        opacity: 1;
     }
 }
 

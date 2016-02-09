@@ -50,7 +50,9 @@ define(
 
                 this.populate();
 
-                this.bindEvents();
+                if (config.jQueryObject instanceof jQuery) {
+                    this.bindEvents();
+                }
 
                 this.revision = new ContentRevision(config);
             },
@@ -290,7 +292,9 @@ define(
              * Add properties to the content like bb-content class or id
              */
             populate: function () {
-                this.jQueryObject.attr('data-bb-id', this.id);
+                if (this.jQueryObject instanceof jQuery) {
+                    this.jQueryObject.attr('data-bb-id', this.id);
+                }
             },
 
             /**
@@ -306,11 +310,23 @@ define(
             refresh: function () {
                 var self = this,
                     dfd = jQuery.Deferred(),
-                    contentManager = require('content.manager');
+                    contentManager = require('content.manager'),
+                    attributes = null;
+
+                if (this.jQueryObject instanceof jQuery) {
+                    attributes = contentManager.getAllAttributes(this.jQueryObject);
+                }
 
                 ContentRepository.getHtml(this.type, this.uid, this.getRendermode()).done(function (html) {
 
                     html = contentManager.refreshImages(html);
+
+                    if (null !== attributes) {
+                        contentManager.putAttributes(html, attributes);
+                    }
+
+                    html.removeClass('bb-content-container-area');
+                    html.removeClass('bb-content-selected');
 
                     jQuery('[data-' + contentManager.identifierDataAttribute + '="' + contentManager.buildObjectIdentifier(self.type, self.uid) + '"]').replaceWith(html);
                     self.jQueryObject = html;
@@ -349,10 +365,6 @@ define(
              */
             computeMandatoryConfig: function (config) {
                 var key;
-
-                if (typeof config.jQueryObject !== 'object') {
-                    Core.exception('BadTypeException', 500, 'The jQueryObject must be set');
-                }
 
                 if (typeof config.uid !== 'string') {
                     Core.exception('BadTypeException', 500, 'The uid must be set');
@@ -395,13 +407,39 @@ define(
             },
 
             /**
+             * Get accepted content from DOM first then from definition if empty
+             * @returns {Array}
+             */
+            getAccept: function () {
+
+                if (!(this.jQueryObject instanceof jQuery)) {
+                    return this.getDefinition('accept');
+                }
+
+                var result = this.jQueryObject.attr('data-accept');
+
+                if (!result) {
+                    result = this.getDefinition('accept');
+                } else {
+                    result = result.split(',');
+                }
+
+                return result;
+            },
+
+            /**
              * Get Parent as content
              * @returns {Array}
              */
             getParent: function () {
-                var parentNode = this.jQueryObject.parents(this.contentClass + ':first');
 
-                return require('content.manager').getContentByNode(parentNode);
+                if (this.jQueryObject instanceof jQuery) {
+                    var parentNode = this.jQueryObject.parents(this.contentClass + ':first');
+
+                    return require('content.manager').getContentByNode(parentNode);
+                }
+
+                return null;
             },
 
             getRendermode: function () {
@@ -437,6 +475,16 @@ define(
             },
 
             /**
+             * Return children of contentSet
+             * @returns {Object}
+             */
+            getNodeChildren: function () {
+                if (this.jQueryObject instanceof jQuery) {
+                    return this.jQueryObject.children(this.contentClass);
+                }
+            },
+
+            /**
              * Check if the Content has elements
              * @returns {Boolean}
              */
@@ -466,7 +514,9 @@ define(
              * @param {String} className
              */
             addClass: function (className) {
-                this.jQueryObject.addClass(className);
+                if (this.jQueryObject instanceof jQuery) {
+                    this.jQueryObject.addClass(className);
+                }
             },
 
             /**
@@ -474,7 +524,9 @@ define(
              * @param {String} className
              */
             removeClass: function (className) {
-                this.jQueryObject.removeClass(className);
+                if (this.jQueryObject instanceof jQuery) {
+                    this.jQueryObject.removeClass(className);
+                }
             }
         });
 
