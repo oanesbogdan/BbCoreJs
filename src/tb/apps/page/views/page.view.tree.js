@@ -176,6 +176,9 @@ define(
 
                 if (this.config.popin === true) {
                     this.tree = Tree.createPopinTreeView(config);
+                    if (sessionStorage.getItem('loadTree') === null) {
+                        jQuery('#' + this.tree.popIn.id).parent().hide();
+                    }
                     this.treeView = this.tree.treeView;
                     this.tree.on("click", ".show_folder_action", this.handleSectionFilter, this);
                     Core.ApplicationManager.invokeService('content.main.registerPopin', 'treeView', this.tree);
