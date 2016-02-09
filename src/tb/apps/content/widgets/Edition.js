@@ -254,25 +254,29 @@ define(
             },
 
             onSubmit: function (data, form) {
-                var self = this;
+                var self = this,
+                    saveCallback = function () {
+                        form.config.popinInstance.unmask();
+                        form.config.popinInstance.hide();
+
+                        if (typeof this.config.onSave === "function") {
+                            this.config.onSave(data);
+                        }
+                        this.config.onSave = null;
+                        this.config.onValidate = null;
+                    };
 
                 form.config.popinInstance.mask();
 
                 FormSubmitter.process(data, form).done(function (res) {
                     self.computeData(res, form).done(function () {
                         Core.ApplicationManager.invokeService('content.main.save').done(function (promise) {
-                            promise.done(function () {
-                                form.config.content.getParent().refresh().done(function () {
-
-                                    form.config.popinInstance.unmask();
-                                    form.config.popinInstance.hide();
-
-                                    if (typeof self.config.onSave === "function") {
-                                        self.config.onSave(data);
-                                    }
-                                    self.config.onSave = null;
-                                    self.config.onValidate = null;
-                                });
+                            promise.done(function (nbContentsSaved) {
+                                if (nbContentsSaved === 0) {
+                                    saveCallback.apply(self);
+                                } else {
+                                    form.config.content.getParent().refresh().done(saveCallback.bind(self));
+                                }
                             });
                         });
                     });
