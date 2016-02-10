@@ -199,6 +199,7 @@ define(
 
                         self.pageTreeView.getTree().done(function (tree) {
                             self.pageTree = tree;
+                            self.pageTree.showFilter();
                             self.pageTreeView.loadTreeRoot();
                             self.bindTreeEvents();
 
