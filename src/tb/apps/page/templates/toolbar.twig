@@ -28,6 +28,18 @@
                 </span>
             </span>
         </p>
+        <p class="row form-group">
+            <span class="col-bb5-15"><label for="bb-page-status">{{ 'status'|trans }}</label></span>
+            <span class="col-bb5-35">
+                <span class="select select-block">
+                    <select class="form-control input-xs" id="bb-page-status" name="status">
+                        <option value="all">{{ 'all'|trans }}</option>
+                        <option value="all_inactive">{{ 'state-0'|trans }}</option>
+                        <option value="all_active">{{ 'state-1'|trans }}</option>
+                    </select>
+                </span>
+            </span>
+        </p>
         <p class="form-group text-right">
             <button type="reset" id="bb-toolbar-page-reset-search-form" class="btn btn-default-grey btn-xs">{{ 'reset'|trans }}</button>
             <button type="submit" class="btn btn-default-grey btn-xs"><i class="fa fa-search"></i>{{ 'search'|trans }}</button>
