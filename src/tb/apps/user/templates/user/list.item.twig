@@ -41,9 +41,11 @@
                     <button type="button" class="btn btn-default btn-sm btn-edit">
                         <i class="fa fa-pencil"></i> {{ 'edit'|trans }}
                     </button>
-                    <button type="button" class="btn btn-delete btn-default btn-sm">
-                        <i class="fa fa-trash-o"></i> {{ 'delete'|trans }}
-                    </button>
+                    {% if countAdministrators != 1 or user.isAdministrator() == false %}
+                        <button type="button" class="btn btn-delete btn-default btn-sm">
+                            <i class="fa fa-trash-o"></i> {{ 'delete'|trans }}
+                        </button>
+                    {% endif %}
                 </p>
             </div>
         </div>

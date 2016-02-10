@@ -102,6 +102,14 @@ define(['Core/Utils', 'cryptojs.md5', 'jsclass'], function (Utils, CryptoJS) {
 
         api_key: function () {
             return this.data.api_key === undefined ? this.ude : this.data.api_key;
+        },
+
+        isAdministrator: function () {
+            var groups = Utils.castAsArray(this.data.groups || []);
+            if (groups.indexOf('administrator') !== -1) {
+                return true;
+            }
+            return false;
         }
     });
 });
