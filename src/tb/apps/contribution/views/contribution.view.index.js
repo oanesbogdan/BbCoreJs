@@ -70,7 +70,8 @@ define(
                         site_uid: Core.get('site.uid'),
                         popin: true,
                         popinId: popinId,
-                        autoLoadRoot: true
+                        autoLoadRoot: true,
+                        hidePopin: true
                     };
                 treePromise = Core.ApplicationManager.invokeService('page.main.tree', config);
                 treePromise.done(function (pageTreeContribution) {
