@@ -275,7 +275,11 @@ define(
                                 if (nbContentsSaved === 0) {
                                     saveCallback.apply(self);
                                 } else {
-                                    form.config.content.getParent().refresh().done(saveCallback.bind(self));
+                                    if (form.config.content.jQueryObject instanceof jQuery) {
+                                        form.config.content.getParent().refresh().done(saveCallback.bind(self));
+                                    } else {
+                                        saveCallback.apply(self);
+                                    }
                                 }
                             });
                         });

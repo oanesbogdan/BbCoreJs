@@ -102,7 +102,7 @@ define(
 
                         ApplicationManager.invokeService('content.main.save', true).done(function (promise) {
                             promise.done(function () {
-                                content.refresh().done(function () {
+                                content.getParent().refresh().done(function () {
                                     mask.unmask(maskTarget);
                                     content.jQueryObject.unwrap();
                                 });

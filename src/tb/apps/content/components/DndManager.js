@@ -77,7 +77,7 @@ define(
             initDnD: function () {
                 dnd('#block-contrib-tab').addListeners('classcontent', '.' + this.dndClass);
                 dnd('#bb5-site-wrapper').addListeners('classcontent', '.' + this.dndClass);
-                jQuery('[data-bb-identifier^="Element/Image"]').on('dragenter', jQuery.proxy(this.mediaDragEnter, this));
+                jQuery('body').on('dragenter', '[data-bb-identifier^="Element/Image"]', jQuery.proxy(this.mediaDragEnter, this));
             },
 
             attachDnDOnPalette: function () {
