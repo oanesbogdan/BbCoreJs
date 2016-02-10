@@ -8,7 +8,7 @@ define(['content.pluginmanager', 'Core/ApplicationManager', 'content.manager', '
 
         scope: PluginManager.scope.BLOCK,
         onInit: function () {
-            this.SPLITTABLE_CONTENT = "Text/Paragraph";
+            this.SPLITTABLE_CONTENTS = this.getConfig('splittableContents');
             this.btnState = 0;
             this.splitData = {};
             return true;
@@ -74,7 +74,6 @@ define(['content.pluginmanager', 'Core/ApplicationManager', 'content.manager', '
             jQuery('.bb-contentsplitter-marker').remove();
         },
 
-        /*@cf */
         getCursorPosition: function (element) {
             var caretOffset = 0,
                 range,
@@ -209,10 +208,19 @@ define(['content.pluginmanager', 'Core/ApplicationManager', 'content.manager', '
 
         canApplyOnContext: function () {
             var contentParent = this.getCurrentContent().getParent(),
-                isAParagraph = this.getCurrentContentType() === this.SPLITTABLE_CONTENT,
                 parentIsAContentSet = (null === contentParent) ? false : contentParent.isAContentSet();
 
-            return parentIsAContentSet && isAParagraph && this.context.scope !== PluginManager.scope.CONTENT;
+            return parentIsAContentSet && this.isSplittable() && this.context.scope !== PluginManager.scope.CONTENT;
+        },
+
+        isSplittable: function () {
+            var canSplit = false;
+
+            if (jQuery.isArray(this.SPLITTABLE_CONTENTS) && jQuery.inArray(this.getCurrentContentType(), this.SPLITTABLE_CONTENTS) !== -1) {
+                canSplit = true;
+            }
+            
+            return canSplit;
         },
 
         isActivated: function () {
