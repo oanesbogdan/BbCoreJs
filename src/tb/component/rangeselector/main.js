@@ -60,7 +60,7 @@ define(['underscore', 'jquery', 'jsclass', 'BackBone'], function (underscore, jQ
         },
 
         handleChange: function (selector) {
-            selector.currentStep = this.val();
+            selector.currentStep = selector.widget.find("select").val();
             selector.trigger('pageRangeSelectorChange', selector.currentStep);
         },
 
