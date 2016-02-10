@@ -13,14 +13,17 @@
                     {% for content in category.contents %}
                         {% if content.visible  %}
                             <div class="bb5-list-data-item bb-block">
-                                <div class="bb5-extension-pane">
+                                <div 
+				    {% if draggable == true %}
+                                        draggable="true"
+                                        class="bb5-extension-pane bb-dnd"
+				    {% else %}
+					class="bb5-extension-pane"
+                                    {% endif %}
+				    data-bb-type="{{ content.type }}">
                                     <div class="pull-left">
                                         <figure class="bb5-extension-img">
                                             <img
-                                                {% if draggable == true %}
-                                                    draggable="true"
-                                                    class="bb-dnd"
-                                                {% endif %}
                                                 data-bb-type="{{ content.type }}"
                                                 style="width:75px;"
                                                 src="{{ content.thumbnail }}"
