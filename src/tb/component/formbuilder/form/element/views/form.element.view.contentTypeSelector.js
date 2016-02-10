@@ -49,12 +49,32 @@ define(
 
                 Core.Mediator.subscribe('on:form:render', function (form) {
                     if (self.isLoaded) { return false; }
-                    self.contentTypeSelector = form.find(".element_" + self.element.getKey());
-                    self.inputInfos = self.contentTypeSelector.find(".form-infos").eq(0);
-                    self.contentTypeSelector.on("click", ".add-contenttype", self.showContentTypeTree.bind(self));
-                    self.contentTypeSelector.on("click", ".trash-btn", self.removeContentType.bind(self));
+                    self.contentTypeSelector = form.find('.element_' + self.element.getKey());
+                    self.inputInfos = self.contentTypeSelector.find('.form-infos').eq(0);
+                    self.contentTypeSelector.on('click', '.add-contenttype', self.showContentTypeTree.bind(self));
+                    self.contentTypeSelector.on('click', '.trash-btn', self.removeContentType.bind(self));
+                    self.contentTypeSelector.on('click', '.disable-btn', self.disableContentType.bind(self));
+
                     self.isLoaded = true;
                 });
+            },
+
+            disableContentType: function (e) {
+                var currentTarget = jQuery(e.currentTarget),
+                    icon = currentTarget.find('i'),
+                    currentItem = currentTarget.closest(".contenttype-item"),
+                    input = currentItem.find('input'),
+                    val = input.val();
+
+                if ('!' === val.substring(0, 1)) {
+                    input.val(val.substring(1));
+                    icon.removeClass('text-danger');
+                } else {
+                    input.val('!' + val);
+                    icon.addClass('text-danger');
+                }
+
+                this.updateValues();
             },
 
             removeContentType: function (e) {
@@ -68,6 +88,8 @@ define(
                 var previousValue = (this.element.config && this.element.config.hasOwnProperty("value")) ? this.element.config.value : [];
                 this.previousValue = Array.isArray(previousValue) ? previousValue : [];
 
+                this.allowDisable = Boolean(this.element.config.allow_disable);
+
                 this.maxentry = this.MAX_ENTRY;
                 if (this.element.config && this.element.config.hasOwnProperty('maxentry')) {
                     this.maxentry = parseInt(this.element.config.maxentry, 10);
@@ -76,20 +98,25 @@ define(
 
             canAddMoreItems: function () {
                 return this.contentTypeSelector.find(".contenttype-item").length < this.maxentry;
-
             },
 
             handleContentTypeSelection: function (node) {
+
                 if (!node) {
                     return;
                 }
+
                 if (!this.canAddMoreItems()) {
                     this.categoryTreeView.hide();
+
                     return;
                 }
-                var contentType = this.BACKBEE_NAMESPACE + node.type.replace('/', '\\'),
+
+                var self = this,
+                    contentType = this.BACKBEE_NAMESPACE + node.type.replace('/', '\\'),
                     item = Renderer.render(itemLayout, {
-                        contentType: contentType
+                        contentType: contentType,
+                        allowDisable: self.allowDisable
                     });
 
                 this.contentTypeSelector.find(".item-container").append(jQuery(item));
@@ -135,8 +162,16 @@ define(
             render: function () {
                 var itemRenders = [],
                     self = this;
+
                 jQuery.each(this.element.value, function (i) {
-                    itemRenders.push(Renderer.render(itemLayout, {contentType: self.element.value[i]}));
+                    var val = self.element.value[i],
+                        config = {
+                            contentType: val,
+                            allowDisable: self.allowDisable,
+                            isDisable: '!' === val.substring(0, 1)
+                        };
+
+                    itemRenders.push(Renderer.render(itemLayout, config));
                 });
 
                 return Renderer.render(this.template, {
