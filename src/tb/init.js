@@ -84,6 +84,7 @@ define(function () {
                                 /* we need the filter to be able to use the login form before load
                                  * the application configuration
                                  */
+                                Renderer.addFunction('trans', function (key) { return key; });
                                 Renderer.addFilter('trans', function (key) { return key; });
 
                                 var initOnConnect = function () {
