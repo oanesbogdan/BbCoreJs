@@ -141,6 +141,7 @@ define(['Core', 'jquery', '../keywordseditor/datastore/keyword.datastore', '../k
                         self.movePagerAsLastChild(parentNode);
                     });
                 }).fail(function (response) {
+                    self.isEditing = false;
                     response = JSON.parse(response);
                     errorKey = response.message.toLowerCase();
                     msg = TranslatorComponent.translate(errorKey) + " !";
@@ -245,7 +246,6 @@ define(['Core', 'jquery', '../keywordseditor/datastore/keyword.datastore', '../k
             },
 
             loadNode: function (e) {
-
                 var nodeParentUid;
 
                 if (e.node.isLoaded || this.isEditing) { return false; }
