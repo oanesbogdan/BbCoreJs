@@ -68,6 +68,12 @@ define(['component!formbuilder', 'component!translator'], function (formbuilder,
             },
 
             onValidate: function (form, data) {
+                if (!data.hasOwnProperty('firstname') || data.firstname.trim().length === 0) {
+                    form.addError('firstname', translator.translate('firstname_is_required'));
+                }
+                if (!data.hasOwnProperty('lastname') || data.lastname.trim().length === 0) {
+                    form.addError('lastname', translator.translate('lastname_is_required'));
+                }
                 if (!data.hasOwnProperty('login') || data.login.trim().length === 0) {
                     form.addError('login', translator.translate('login_is_required'));
                 }
