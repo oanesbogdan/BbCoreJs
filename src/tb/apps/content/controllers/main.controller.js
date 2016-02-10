@@ -198,14 +198,14 @@ define(
 
                 if (confirm !== true) {
                     SaveManager.save().done(function () {
-                        dfd.resolve();
+                        dfd.resolve(nbContents);
                     });
                 } else {
 
                     if (nbContents > 0) {
                         SaveManager.save().done(function () {
                             notify.success(nbContents + ' ' + translator.translate('content_saved_sentence' + ((nbContents > 1) ? '_plural' : '')));
-                            dfd.resolve();
+                            dfd.resolve(nbContents);
                         });
                     } else {
                         notify.warning(translator.translate('no_content_save'));
