@@ -256,6 +256,7 @@ define(
             addItem: function (content) {
                 var list = jQuery(this.elementSelector + ' .' + this.listClass);
 
+                content.data = content.definition;
                 list.prepend(Renderer.render(itemTemplate, {'element': this.element, 'item': content}));
 
                 this.updateMoveBtn();
