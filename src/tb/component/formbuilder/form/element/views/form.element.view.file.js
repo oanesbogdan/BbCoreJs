@@ -161,7 +161,7 @@ define(
                     var file = {'name': value.name};
 
                     dropzone.options.addedfile.call(dropzone, file);
-                    dropzone.createThumbnailFromUrl(file, value.thumbnail + '?' + new Date().getTime());
+                    dropzone.createThumbnailFromUrl(file, value.thumbnail + '?' + new Date().getTime(), null, "Anonymous");
 
                     element.val(value.path);
                 }
