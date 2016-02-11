@@ -281,27 +281,21 @@ define(
             getEditableContentService: function (content) {
                 var self = this,
                     dfd = new jQuery.Deferred(),
-                    element,
                     result = [];
 
                 if (jQuery.inArray(content.type, this.EDITABLE_ELEMENTS) !== -1) {
                     result.push(content);
                     dfd.resolve(result);
                 } else {
-                    content.getData('elements').done(function (elements) {
-                        jQuery.each(elements, function (subContentName) {
-                            element = elements[subContentName];
-                            if (null === element) {
-                                return true;
-                            }
+                    content.getNodeChildren().each(function () {
+                        var element = ContentManager.getContentByNode(jQuery(this));
 
-                            if (jQuery.inArray(element.type, self.EDITABLE_ELEMENTS) === -1) {
-                                return true;
-                            }
-                            result.push(ContentManager.buildElement(element));
-                        });
-                        dfd.resolve(result);
+                        if (null !== element && jQuery.inArray(element.type, self.EDITABLE_ELEMENTS) !== -1) {
+                            result.push(element);
+                        }
                     });
+
+                    dfd.resolve(result);
                 }
 
                 return dfd.promise();
