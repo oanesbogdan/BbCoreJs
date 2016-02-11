@@ -24,10 +24,11 @@ define(
         'content.manager',
         'component!translator',
         'component!popin',
+        'Core/ApplicationManager',
         'jquery',
         'jsclass'
     ],
-    function (Core, PluginManager, ContentManager, Translator, PopinManager, jQuery) {
+    function (Core, PluginManager, ContentManager, Translator, PopinManager, ApplicationManager, jQuery) {
 
         'use strict';
 
@@ -47,7 +48,14 @@ define(
                 this.popin.setContent(Translator.translate('remove_content_confirmation_message'));
                 this.popin.addButton('Ok', function () {
                     ContentManager.remove(self.getCurrentContent());
-                    self.popin.hide();
+                    self.popin.mask();
+                    ApplicationManager.invokeService('content.main.save', false).done(function (promise) {
+                        promise.done(function () {
+                            self.popin.hide();
+                            self.popin.unmask();
+                        });
+                    });
+
                 });
             },
 
