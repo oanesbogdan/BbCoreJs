@@ -265,7 +265,7 @@ define(
                                     SaveManager.save(data, page.uid).done(function () {
                                         notify.success(translator.translate('page_modification_validated'));
 
-                                        //location.reload();
+                                        location.reload();
 
                                         popin.unmask();
                                         popin.hide();
