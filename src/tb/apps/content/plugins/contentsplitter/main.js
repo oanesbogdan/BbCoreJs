@@ -219,7 +219,7 @@ define(['content.pluginmanager', 'Core/ApplicationManager', 'content.manager', '
             if (jQuery.isArray(this.SPLITTABLE_CONTENTS) && jQuery.inArray(this.getCurrentContentType(), this.SPLITTABLE_CONTENTS) !== -1) {
                 canSplit = true;
             }
-            
+
             return canSplit;
         },
 
