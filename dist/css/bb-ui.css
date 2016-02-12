@@ -7649,6 +7649,13 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   margin-top: 1px;
   margin-left: -15px;
 }
+#bb5-ui .search-bar {
+  border-bottom: 1px solid #e4e4e4;
+  padding-bottom: 9px;
+}
+#bb5-ui .search-bar .form-control {
+  z-index: 0;
+}
 #bb5-ui .control {
   position: relative;
   display: inline-block;

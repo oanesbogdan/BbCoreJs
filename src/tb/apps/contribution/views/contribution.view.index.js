@@ -77,6 +77,7 @@ define(
                 treePromise.done(function (pageTreeContribution) {
                     pageTreeContribution.view.on("rootIsLoaded", function () {
                         pageTreeContribution.view.showFilter();
+                        pageTreeContribution.view.showSearch();
                         pageTreeContribution.selectPage(Core.get("page.uid"));
                     });
 

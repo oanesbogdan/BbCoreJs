@@ -201,6 +201,7 @@ define(
                             self.pageTree = tree;
                             self.pageTree.showFilter();
                             self.pageTreeView.loadTreeRoot();
+                            self.pageTreeView.showSearch();
                             self.bindTreeEvents();
 
                         });

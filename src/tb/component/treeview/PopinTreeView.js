@@ -86,6 +86,10 @@ define(
                     jQuery(this.popinTemplate).find(".folder-filter").removeClass("hidden").show();
                 },
 
+                showSearch: function () {
+                    jQuery(this.popinTemplate).find(".search-bar").removeClass("hidden").show();
+                },
+
                 hideFilter: function () {
                     jQuery(this.popinTemplate).find(".folder-filter").addClass("hidden").hide();
                 },
@@ -101,6 +105,7 @@ define(
                 checkParameters: function () {
                     this.options.open = (typeof this.options.open === "function") ? jQuery.proxy(this.options.open, this) : jQuery.noop;
                     this.options.create = (typeof this.options.create === "function") ? jQuery.proxy(this.options.create, this) : jQuery.noop;
+                    this.options.close = (typeof this.options.close === "function") ? jQuery.proxy(this.options.close, this) : jQuery.noop;
                     this.options.onCreatePopInMenu = (typeof this.options.onCreatePopInMenu === "function") ? this.options.onCreatePopInMenu.bind(this) : jQuery.noop;
                     if (!this.options.hasOwnProperty("data") || !Array.isArray(this.options.data)) {
                         this.options.data = [];
@@ -129,6 +134,7 @@ define(
                 },
                 onClose: function () {
                     sessionStorage.removeItem("loadTree");
+                    this.options.close(this);
                 },
 
                 createPopIn: function () {
