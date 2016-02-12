@@ -276,7 +276,7 @@ define(
                                 function () {
                                     Core.ApplicationManager.invokeService('user.group.index', popin);
                                     Core.ApplicationManager.invokeService('user.user.index', popin);
-                                    Notify.success(trans('user_update_success'));
+                                    Notify.success(trans('user_removed_success'));
                                 },
                                 function () {
                                     Notify.error(trans('user_update_fail'));
