@@ -37,8 +37,10 @@ define(
                 this.lastInstance = null;
                 this.externalPluginsPath = '';
                 this.editorContainer = '#content-contrib-tab .bb-cke-wrapper';
+
                 var lib = [],
                     self = this;
+
                 if (this.config.hasOwnProperty('libName')) {
                     lib.push(this.config.libName);
                 }
@@ -52,6 +54,7 @@ define(
                 }
 
                 this.handleContentEvents();
+
                 Utils.requireWithPromise(lib).done(function () {
                     self.editor = CKEDITOR;
                     self.editor.disableAutoInline = true;
@@ -99,7 +102,9 @@ define(
                 if (!e.editor) {
                     return;
                 }
+
                 var editorHtml = jQuery("#cke_" + e.editor.name);
+
                 if (jQuery(this.editorContainer).find(editorHtml).length) {
                     return;
                 }
@@ -110,6 +115,7 @@ define(
             getEditableContents: function (content) {
                 var dfd = new jQuery.Deferred(),
                     self = this;
+
                 if (!this.conciseInfos.hasOwnProperty(content.uid)) {
                     Core.ApplicationManager.invokeService('content.main.getEditableContent', content).done(function (promise) {
                         promise.done(function (editableContents) {
@@ -120,6 +126,7 @@ define(
                 } else {
                     dfd.resolve(self.conciseInfos[content.uid]);
                 }
+
                 return dfd.promise();
             },
 
@@ -132,8 +139,10 @@ define(
                     if (!editableContents.length) {
                         return;
                     }
+
                     jQuery.each(editableContents, function (i) {
                         editable = editableContents[i];
+
                         if (!self.identifierMap[editable.uid]) {
                             self.identifierMap[editable.uid] = editable.jQueryObject.selector;
                         }
@@ -149,6 +158,9 @@ define(
             handleInstance: function (event) {
                 var editor = event.editor;
                 this.editors.push(editor);
+
+                editor.focus();
+
                 editor.on("blur", jQuery.proxy(this.handleContentEdition, this));
             },
 
@@ -169,15 +181,20 @@ define(
 
             applyToElement: function (element) {
                 element = jQuery(element);
+
                 if (!element.length) {
                     return;
                 }
+
                 if (element.hasClass('cke_editable_inline')) {
                     return true;
                 }
+
                 element.attr('contenteditable', true);
+
                 var conf = element.data('rteConfig') || 'basic',
                     rteConfig = this.editableConfig[conf];
+
                 this.editor.inline(jQuery(element).get(0), rteConfig);
             },
 
