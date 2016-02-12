@@ -23,13 +23,14 @@ define(
         'Core/ApplicationManager',
         'page.view.tree',
         'component!contextmenu',
+        'component!notify',
         'page.repository',
         'jquery',
         'Core/Request',
         'Core/RequestHandler',
         'component!translator'
     ],
-    function (Core, ApplicationManager, PageTreeView, ContextMenu, PageRepository, jQuery, Request, RequestHandler, Translator) {
+    function (Core, ApplicationManager, PageTreeView, ContextMenu, Notify, PageRepository, jQuery, Request, RequestHandler, Translator) {
 
         'use strict';
 
@@ -181,10 +182,11 @@ define(
                 if (event.move_info.moved_node.is_fake === true) {
                     return;
                 }
-
+                this.view.tree.popIn.mask();
                 event.move_info.do_move();
 
-                var moveInfo = event.move_info,
+                var self = this,
+                    moveInfo = event.move_info,
                     page_uid = moveInfo.moved_node.id,
                     parent_uid = moveInfo.moved_node.parent.id,
                     data = {};
@@ -195,7 +197,10 @@ define(
                     data.parent_uid = parent_uid;
                 }
 
-                PageRepository.moveNode(page_uid, data);
+                PageRepository.moveNode(page_uid, data).done(function () {
+                    Notify.success(Translator.translate('tree_modification_saved'));
+                    self.view.tree.popIn.unmask();
+                });
             },
 
             selectPage: function (page_uid) {
