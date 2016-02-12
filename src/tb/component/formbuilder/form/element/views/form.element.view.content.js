@@ -30,12 +30,13 @@ define(
 
             mainSelector: Core.get('wrapper_toolbar_selector'),
 
-            initialize: function (template, formTag, element) {
+            initialize: function (template, formTag, element, form) {
                 this.el = formTag;
                 this.template = template;
                 this.element = element;
                 this.editClass = 'edit';
                 this.elementSelector = 'form#' + this.el + ' ul[data-uid=' + this.element.value + ']';
+                this.form = form;
 
                 this.bindEvents();
             },
@@ -45,7 +46,8 @@ define(
             },
 
             onUpdateClick: function (event) {
-                var target = jQuery(event.currentTarget),
+                var self = this,
+                    target = jQuery(event.currentTarget),
                     ul = target.parents('ul');
 
                 Core.ApplicationManager.invokeService('content.main.getContentManager').done(function (ContentManager) {
@@ -66,7 +68,8 @@ define(
                                         title.text(content.data.label.substring(0, 5));
                                     }
                                 });
-                            }
+                            },
+                            options: self.form.options
                         };
 
                         Edition.show(content, config);

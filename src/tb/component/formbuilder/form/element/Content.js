@@ -26,14 +26,14 @@ define('tb.component/formbuilder/form/element/Content', function () {
      */
     return {
 
-        initialize: function (key, config, formTag, view, template, error) {
+        initialize: function (key, config, formTag, view, template, error, form) {
             this.callSuper(key, config, formTag, error);
             this.view = view;
             this.template = template;
 
             this.buildCustomConfig(config);
 
-            this.viewObject = new this.view(this.template, this.formTag, this);
+            this.viewObject = new this.view(this.template, this.formTag, this, form);
         },
 
         buildCustomConfig: function (config) {

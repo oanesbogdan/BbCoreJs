@@ -58,6 +58,7 @@ define(
                     draggable: false,
                     resizable: false,
                     autoOpen: false,
+                    modal: true,
                     height: jQuery(window).height() - (20 * 2),
                     width: jQuery(window).width() - (20 * 2)
                 },

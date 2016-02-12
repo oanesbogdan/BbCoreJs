@@ -48,19 +48,30 @@ define(
                     if (this.popin && this.popin[content.uid]) {
                         this.popin[content.uid].destroy();
                     }
+                    this.config.parent = null;
                     this.content = content;
-                    this.popin[this.content.uid] = this.createPopin('contentEdit-' + this.content.uid);
+                    if (this.config.options !== undefined && this.config.options.current_uid !== undefined && this.popin[this.config.options.current_uid] !== undefined) {
+                        this.config.parent = this.popin[this.config.options.current_uid];
+                    }
+                    this.popin[this.content.uid] = this.createPopin('contentEdit-' + this.content.uid, this.config.parent);
                     this.edit();
                 }
             },
 
-            createPopin: function (name) {
-                var popin = PopinManager.createPopIn({
-                    close: function () {
-                        Core.ApplicationManager.invokeService('content.main.removePopin', name);
-                    },
-                    position: { my: "center top", at: "center top+" + jQuery('#' + Core.get('menu.id')).height()}
-                });
+            createPopin: function (name, parent) {
+                var popin,
+                    config = {
+                        close: function () {
+                            Core.ApplicationManager.invokeService('content.main.removePopin', name);
+                        },
+                        position: { my: "center top", at: "center top" + jQuery('#' + Core.get('menu.id')).height()}
+                    };
+
+                if (parent) {
+                    popin = PopinManager.createSubPopIn(parent, config);
+                } else {
+                    popin = PopinManager.createPopIn(config);
+                }
 
                 popin.setTitle(translator.translate(this.config.title || 'edit'));
                 popin.addOption('width', '500px');
@@ -246,6 +257,10 @@ define(
                 this.popin[this.content.uid].mask();
 
                 this.getFormConfig().done(function (config) {
+
+                    config.options = {
+                        'current_uid': self.content.uid
+                    };
                     FormBuilder.renderForm(config).done(function (html) {
                         self.popin[self.content.uid].setContent(html);
                         self.popin[self.content.uid].unmask();

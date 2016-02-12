@@ -50,6 +50,7 @@ define(
                     close: function () {
                         Core.ApplicationManager.invokeService('content.main.removePopin', 'contentParameters');
                     },
+                    modal: true,
                     position: { my: "center top", at: "center top+" + jQuery('#' + Core.get('menu.id')).height()}
                 });
                 this.popin.setTitle(translator.translate('parameters'));
