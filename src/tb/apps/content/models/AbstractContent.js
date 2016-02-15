@@ -479,9 +479,20 @@ define(
              * @returns {Object}
              */
             getNodeChildren: function () {
+                var children = [],
+                    self = this;
+
                 if (this.jQueryObject instanceof jQuery) {
-                    return this.jQueryObject.children(this.contentClass);
+                    this.jQueryObject.find(this.contentClass).each(function () {
+                        var current = jQuery(this);
+
+                        if (current.parents(self.contentClass + ':first').is(self.jQueryObject)) {
+                            children.push(jQuery(current));
+                        }
+                    });
                 }
+
+                return children;
             },
 
             /**
