@@ -308,6 +308,7 @@
     "user_save_success": "User save succeeded",
     "user_update_fail": "User update failed",
     "user_update_success": "User update succeeded",
+    "user_removed_success": "User removed from this group",
     "users": "Users",
     "user_management": "User management",
 

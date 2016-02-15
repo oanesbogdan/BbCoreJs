@@ -307,6 +307,7 @@
     "user_save_success": "Utilisateur sauvegardé",
     "user_update_fail": "Echec de la mise à jour utilisateur",
     "user_update_success": "Utilisateur mis à jour",
+    "user_removed_success": "Utilisateur retiré du groupe",
     "users": "Utilisateur",
     "user_management": "Gestion des utilisateurs",
 
