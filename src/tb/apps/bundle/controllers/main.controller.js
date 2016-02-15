@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
-define(['Core', 'bundle.view.list', 'bundle.view.index'], function (Core, ListView, IndexView) {
+define(['Core', 'bundle.view.list', 'bundle.view.index', 'component!translator', 'tb.component/mask/main'], function (Core, ListView, IndexView, Translator, MaskManager) {
     'use strict';
 
     Core.ControllerManager.registerController('MainController', {
@@ -91,12 +91,14 @@ define(['Core', 'bundle.view.list', 'bundle.view.index'], function (Core, ListVi
          * @returns {bundle.controller_L1.bundle.controllerAnonym$1}
          */
         listAndRender: function (ConstructorView, config) {
-            var self = this;
+            var self = this,
+                maskManager = MaskManager.createMask({'message': Translator.translate('loading')});
 
             if (config === undefined) {
                 config = {};
             }
 
+            maskManager.mask('#extensions');
             this.repository.listManageable().done(function (data) {
                 config.bundles = data;
 
@@ -104,6 +106,8 @@ define(['Core', 'bundle.view.list', 'bundle.view.index'], function (Core, ListVi
 
                 self.renderView(ConstructorView, config);
                 self.indexShown = true;
+
+                maskManager.unmask('#extensions');
             });
         },
 
