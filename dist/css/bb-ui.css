@@ -9946,6 +9946,14 @@ fieldset[disabled] #bb5-ui .btn-online.active {
 #bb5-ui .ui-widget-header .ui-datepicker-prev .ui-icon {
   line-height: 26px;
 }
+#bb5-ui .ui-widget-overlay {
+  background-color: rgba(255, 255, 255, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
 #bb5-ui .ui-widget .ui-icon {
   text-indent: 0;
   display: inline-block;

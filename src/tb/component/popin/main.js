@@ -192,9 +192,29 @@ define('tb.component/popin/main', ['Core', 'tb.component/popin/PopIn', 'jquery',
          * @return {PopIn}  the child pop-in
          */
         createSubPopIn: function (parent, options) {
-            var popIn = this.createPopIn(options);
+            var popIn,
+                parentPopin,
+                shift = 30,
+                maxHeight;
+
+            options = options || {};
+            options.modal = true;
+
+            popIn = this.createPopIn(options);
 
             if (typeof parent === 'object' && typeof parent.isA === 'function' && parent.isA(PopIn)) {
+                if (parent.id !== undefined) {
+                    parentPopin = jQuery("#" + parent.id).parent();
+
+                    if (parentPopin !== undefined && typeof (parentPopin.position()) === 'object') {
+                        maxHeight = jQuery(window).height() - parentPopin.position().top - shift - 5;
+
+                        popIn.addOption('position', { my: "left+" + shift + " top+" + shift, at: "left top", of: parentPopin });
+                        popIn.addOption('maxHeight', maxHeight);
+                    }
+
+                }
+
                 parent.addChild(popIn);
                 popIn.parent = parent;
             } else {

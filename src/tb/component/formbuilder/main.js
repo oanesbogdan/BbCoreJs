@@ -123,6 +123,10 @@ define(
                     if (typeof config.onValidate === 'function') {
                         config.form.onValidate = config.onValidate;
                     }
+
+                    if (typeof config.options === 'object') {
+                        config.form.options = config.options;
+                    }
                 },
 
                 parseFormConfig: function (formConfig) {

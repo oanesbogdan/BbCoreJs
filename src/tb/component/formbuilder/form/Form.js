@@ -130,6 +130,11 @@ define(
                 if (config.hasOwnProperty('error')) {
                     this.error = config.error;
                 }
+
+                this.options = {};
+                if (config.hasOwnProperty('options')) {
+                    this.options = config.options;
+                }
             },
 
             /**
@@ -299,7 +304,7 @@ define(
                             elementTemplate = require(elementConfig.template);
                             elementView = require(elementConfig.view);
 
-                            element = new ElementClass(key, elementConfig, this.id, elementView, elementTemplate, this.getError(key));
+                            element = new ElementClass(key, elementConfig, this.id, elementView, elementTemplate, this.getError(key), this);
 
                             if (this.elementsRendered === undefined) {
                                 this.elementsRendered = [];
