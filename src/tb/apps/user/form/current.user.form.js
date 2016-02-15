@@ -46,6 +46,8 @@ define(['component!formbuilder', 'component!translator'], function (formbuilder,
             },
 
             onValidate: function (form, data) {
+                var userObject = view.user.getObject();
+
                 if (!data.hasOwnProperty('email') || data.email.trim().length === 0) {
                     form.addError('email', translator.translate('email_is_required'));
                 } else {
@@ -58,6 +60,10 @@ define(['component!formbuilder', 'component!translator'], function (formbuilder,
                 }
                 if (!data.hasOwnProperty('lastname') || data.lastname.trim().length === 0) {
                     form.addError('lastname', translator.translate('lastname_is_required'));
+                }
+                if (userObject.firstname === data.firstname.trim() && userObject.lastname === data.lastname.trim() && userObject.email === data.email.trim()) {
+                    form.addError('noCompletion', 'noCompletion');
+                    view.destroy();
                 }
             }
         };
