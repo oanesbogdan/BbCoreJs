@@ -29,13 +29,15 @@ define(
              */
             initialize: function (data) {
                 if (data.popin) {
+                    if (data.popinTitle !== undefined) {
+                        this.popin_config.title = data.popinTitle;
+                    }
                     popin = PopinManager.createSubPopIn(data.popin, this.popin_config);
                 } else {
                     popin = PopinManager.createPopIn(this.popin_config);
                 }
                 popin.setContent(Renderer.render(tpl, {text: data.text}));
             },
-
 
             display: function () {
                 this.dfd = jQuery.Deferred();

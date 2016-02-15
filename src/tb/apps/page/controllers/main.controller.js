@@ -390,10 +390,11 @@ define(
             removeGroupedService: function (req, data, pageStore) {
                 var translator = req('component!translator'),
                     View = req('page.view.validation'),
-                    view = new View({text: 'grouped_remove_text', popin: data.popin});
+                    view = new View({text: 'grouped_remove_text', popin: data.popin, popinTitle: translator.translate('delete_page')});
 
                 view.display().then(
                     function () {
+                        data.popin.mask();
                         this.repository.groupedPatch(data.uids, {state: 'delete'}).then(
                             function () {
                                 if (data.uids.length === 1) {
@@ -401,9 +402,12 @@ define(
                                 } else {
                                     req('component!notify').success(translator.translate('pages_are_deleted'));
                                 }
-                                pageStore.execute();
+                                pageStore.execute().done(function () {
+                                    data.popin.unmask();
+                                });
                             },
                             function () {
+                                data.popin.unmask();
                                 req('component!notify').error(translator.translate('internal_error'));
                             }
                         );
