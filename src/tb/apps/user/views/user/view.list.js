@@ -33,6 +33,7 @@ define(
             initialize: function (data) {
                 this.current = data.current;
                 this.group_listing = data.group_listing;
+                this.countAdministrators = data.countAdministrators;
                 this.user = new User();
                 this.user.populate(data.user);
                 this.user.groups().forEach(function (group, key) {
@@ -45,7 +46,7 @@ define(
              * @returns {Object} PageViewEdit
              */
             render: function () {
-                return renderer.render(require('text!user/templates/user/list.item.twig'), {user: this.user, current: this.current, group_listing: this.group_listing});
+                return renderer.render(require('text!user/templates/user/list.item.twig'), {user: this.user, current: this.current, group_listing: this.group_listing, countAdministrators: this.countAdministrators});
             }
         });
     }

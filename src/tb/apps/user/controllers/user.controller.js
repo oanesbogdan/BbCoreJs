@@ -64,12 +64,22 @@ define(
             updateIndexView: function (req, popin, users, current) {
                 var View = req('user/views/user/view.list'),
                     template = req('text!user/templates/user/list.twig'),
-                    i;
+                    i,
+                    countAdministrators = 0;
 
                 users = Utils.castAsArray(users);
+                users.filter(function (user) {
+                    user.groups.filter(function (group) {
+                        if ('administrator' === group.name) {
+                            countAdministrators += 1;
+                        }
+                        return countAdministrators;
+                    });
+                    return countAdministrators;
+                });
 
                 for (i = users.length - 1; i >= 0; i = i - 1) {
-                    users[i] = new View({user: users[i], current: current});
+                    users[i] = new View({user: users[i], current: current, countAdministrators: countAdministrators});
                 }
 
                 popin.addUsers(renderer.render(template, {users: users}));
