@@ -55,6 +55,7 @@
     "confirm_saving_changes_content_below": "Confirm content modifications",
     "confirm_saving_changes_page_below": "Confirm page modifications",
     "confirm_save_changes_made_to_page": "Do you want to save the modifications on page status ?",
+    "confirm_save_online_changes_made_to_page": "You are about to put this page online, the modifications made on pages will be published",
     "content_management": "Content management",
     "contribution": "Contribution",
     "content": "Content",
