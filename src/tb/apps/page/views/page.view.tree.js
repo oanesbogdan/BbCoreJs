@@ -69,6 +69,12 @@ define(
                 }
             },
 
+            showSearch: function () {
+                if (this.config.popin === true) {
+                    this.tree.showSearch();
+                }
+            },
+
             initCallStack: function () {
                 var self = this,
                     stack = {
@@ -159,7 +165,7 @@ define(
                         height: 400 > jQuery(window).height() - 40 ? jQuery(window).height() - 40 : 400,
 
                         onCanMove: function (node) {
-                            if (node.is_fake || node.has_ellipsis) {
+                            if (node.is_fake || node.has_ellipsis || node.tree.action === 'search') {
                                 return false;
                             }
                             return true;
@@ -168,6 +174,12 @@ define(
                         onCreate: function () {
                             if (self.hasSiteSelector()) {
                                 self.handleSiteSelector(this.widget);
+                            }
+                        },
+                        close: function () {
+                            if (jQuery('#' + self.config.popinId + ' .searchWord').val()) {
+                                jQuery('#' + self.config.popinId + ' .searchWord').val('');
+                                jQuery('#' + self.config.popinId + ' .searchButton').click();
                             }
                         }
                     };
@@ -181,6 +193,8 @@ define(
                     }
                     this.treeView = this.tree.treeView;
                     this.tree.on("click", ".show_folder_action", this.handleSectionFilter, this);
+                    this.tree.on("click", ".searchButton", this.handleTreeSearch, this);
+                    this.tree.on("keypress", ".searchWord", this.handleTreeSearch, this);
                     Core.ApplicationManager.invokeService('content.main.registerPopin', 'treeView', this.tree);
                 } else {
                     this.treeView = this.tree = Tree.createTreeView(null, config);
@@ -231,6 +245,40 @@ define(
                 });
                 this.nodeActionMemory = null;
             },
+            handleTreeSearch: function (e) {
+                if (e.type !== 'click' && e.which !== 13) {
+                    return;
+                }
+
+                var self = this,
+                    parentNode = this.treeView.getRootNode();
+
+                parentNode.removeChildren();
+                this.treeView.treeEl.empty();
+
+                self.callStack = self.initCallStack();
+                if (jQuery('#' + this.config.popinId + ' .searchWord').val() === "") {
+                    self.callStack.append(self.getTree).done(function () {
+                        self.loadTreeRoot();
+                    });
+                } else {
+                    self.callStack.append(self.getSearchResults).done(function (data) {
+                        if (data.length === 0) {
+                            self.treeView.invoke('appendNode', self.buildNode(Translator.translate('page_no_results_found'), {
+                                'is_fake': true,
+                                'is_msg': true
+                            }));
+                        } else {
+                            self.insertDataInNode(data, parentNode);
+                        }
+
+                        self.clearProcessingState();
+                        self.unmask();
+                    });
+                }
+                self.callStack.execute();
+
+            },
 
             /**
             * Event trigged when LI is created
@@ -267,18 +315,27 @@ define(
                 var self = this,
                     parent = event.node.parent;
                 /* do nothing with ellipsis node */
-                if (event.node.is_ellipsis) {
+                if (event.node.is_ellipsis || event.node.is_msg) {
                     return;
                 }
 
                 if (event.node.is_fake === true && self.config.do_pagination === true) {
                     this.mask();
-                    self.findPages(parent, parent.range_to + 1).done(function (data) {
-                        self.treeView.invoke('removeNode', event.node);
-                        self.insertDataInNode(data, parent);
-                    }).always(function () {
-                        self.unmask();
-                    });
+                    if (event.node.tree.action === 'search') {
+                        self.getSearchResults(parent.range_to + 1).done(function (data) {
+                            self.treeView.invoke('removeNode', event.node);
+                            self.insertDataInNode(data, parent);
+                        }).always(function () {
+                            self.unmask();
+                        });
+                    } else {
+                        self.findPages(parent, parent.range_to + 1).done(function (data) {
+                            self.treeView.invoke('removeNode', event.node);
+                            self.insertDataInNode(data, parent);
+                        }).always(function () {
+                            self.unmask();
+                        });
+                    }
                 }
             },
 
@@ -335,12 +392,14 @@ define(
             * Update limit of node for create pagination
             * @param {Object} event
             * @param {Object} response
+            * @param {String} action performed
             */
-            updateLimit: function (node, response) {
+            updateLimit: function (node, response, action) {
                 if (node !== undefined) {
                     node.range_total = response.getRangeTotal();
                     node.range_to = response.getRangeTo();
                     node.range_from = response.getRangeFrom();
+                    node.action = action || '';
                 }
             },
 
@@ -625,6 +684,29 @@ define(
                 }).fail(function () {
                     dfd.reject();
                 });
+                return dfd.promise();
+            },
+
+            getSearchResults: function (start) {
+                start = start || 0;
+
+                var filters = {
+                        'title' : jQuery('#' + this.config.popinId + ' .searchWord').val(),
+                        site_uid: this.site_uid
+                    },
+                    dfd = jQuery.Deferred(),
+                    self = this,
+                    parentNode = this.treeView.getRootNode();
+
+                this.mask();
+
+                PageRepository.search(filters, start, self.limit_of_page).done(function (data, response) {
+                    self.updateLimit(parentNode, response, 'search');
+                    dfd.resolve(data);
+                }).fail(function () {
+                    dfd.reject();
+                });
+
                 return dfd.promise();
             }
         });

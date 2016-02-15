@@ -60,6 +60,10 @@ define(
                 this.view.showFilter();
             },
 
+            showSearch: function () {
+                this.view.showSearch();
+            },
+
             bindEvents: function () {
                 this.contextMenu = new ContextMenu(this.buildContextMenuConfig());
 
