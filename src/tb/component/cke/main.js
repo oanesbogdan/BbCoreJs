@@ -113,19 +113,13 @@ define(
             },
 
             getEditableContents: function (content) {
-                var dfd = new jQuery.Deferred(),
-                    self = this;
+                var dfd = new jQuery.Deferred();
 
-                if (!this.conciseInfos.hasOwnProperty(content.uid)) {
-                    Core.ApplicationManager.invokeService('content.main.getEditableContent', content).done(function (promise) {
-                        promise.done(function (editableContents) {
-                            self.conciseInfos[content.uid] = editableContents;
-                            dfd.resolve(editableContents);
-                        });
+                Core.ApplicationManager.invokeService('content.main.getEditableContent', content).done(function (promise) {
+                    promise.done(function (editableContents) {
+                        dfd.resolve(editableContents);
                     });
-                } else {
-                    dfd.resolve(self.conciseInfos[content.uid]);
-                }
+                });
 
                 return dfd.promise();
             },
@@ -136,6 +130,7 @@ define(
                     nodeSelector;
 
                 this.getEditableContents(content).done(function (editableContents) {
+
                     if (!editableContents.length) {
                         return;
                     }
@@ -150,6 +145,7 @@ define(
                         if (!jQuery.contains(document, editable.jQueryObject.get(0))) {
                             editable.jQueryObject = content.jQueryObject.find(nodeSelector).eq(0);
                         }
+
                         self.applyToElement(editable.jQueryObject);
                     });
                 });

@@ -184,6 +184,16 @@ define(
             },
 
             /**
+             * Return children of contentSet
+             * @returns {Object}
+             */
+            getNodeChildren: function () {
+                if (this.jQueryObject instanceof jQuery) {
+                    return this.jQueryObject.children(this.contentClass);
+                }
+            },
+
+            /**
              * Get children as content
              * @returns {Array}
              */
