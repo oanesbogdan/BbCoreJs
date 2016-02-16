@@ -62,6 +62,7 @@ define(
                 },
                 close: function () {
                     jQuery('#bundle-tab .btn-dialog-extension').removeClass('disabled');
+                    jQuery('#bundle-admin').dialog("destroy").remove();
                 }
             },
 
