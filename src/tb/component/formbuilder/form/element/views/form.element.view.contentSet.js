@@ -36,11 +36,11 @@ define(
             blockClass: '.bb-block',
             mainSelector: Core.get('wrapper_toolbar_selector'),
 
-            initialize: function (template, formTag, element) {
-
+            initialize: function (template, formTag, element, form) {
                 this.el = formTag;
                 this.template = template;
                 this.element = element;
+                this.form = form;
 
                 this.editClass = 'edit';
                 this.trashClass = 'trash';
@@ -111,13 +111,19 @@ define(
 
             onEdit: function (event) {
                 var target = jQuery(event.currentTarget),
-                    li = target.parents('li');
+                    li = target.parents('li'),
+                    config = {
+                        type: li.data('type'),
+                        uid: li.data('uid')
+                    },
+                    self = this;
 
                 Core.ApplicationManager.invokeService('content.main.getContentManager').done(function (ContentManager) {
-                    var content = ContentManager.getContentByNode(li);
-
+                    var content = ContentManager.buildElement(config);
                     Core.ApplicationManager.invokeService('content.main.getEditionWidget').done(function (Edition) {
-                        Edition.show(content);
+                        Edition.show(content, {
+                            options: self.form.options
+                        });
                     });
                 });
             },
