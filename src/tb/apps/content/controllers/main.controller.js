@@ -117,7 +117,7 @@ define(
                 });
 
                 Core.Scope.subscribe('content', function () {
-                    ContentManager.addDefaultZoneInContentSet(true);
+                    ContentManager.addDefaultZoneInContentSet(false);
                 }, function () {
                     ContentManager.addDefaultZoneInContentSet(false);
                 });
