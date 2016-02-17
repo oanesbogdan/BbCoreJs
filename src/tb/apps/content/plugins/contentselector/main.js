@@ -57,7 +57,20 @@ define(
             },
 
             canApplyOnContext: function () {
-                return this.getCurrentContent().isAContentSet();
+                var content = this.getCurrentContent(),
+                    check = false;
+
+                if (content.isAContentSet()) {
+                    if (content.maxEntry) {
+                        if (content.getNodeChildren().length < content.maxEntry) {
+                            check = true;
+                        }
+                    } else {
+                        check = true;
+                    }
+                }
+
+                return check;
             },
 
             getActions: function () {

@@ -253,7 +253,11 @@ define(
                             }
 
                             if (children.length > 0) {
-                                this.putDropZoneAroundContentSetChildren(children, dropzoneEl, currentContentId, contentSet);
+                                if (contentSet.maxEntry && children.length < contentSet.maxEntry) {
+                                    this.putDropZoneAroundContentSetChildren(children, dropzoneEl, currentContentId, contentSet);
+                                } else if (!contentSet.maxEntry) {
+                                    this.putDropZoneAroundContentSetChildren(children, dropzoneEl, currentContentId, contentSet);
+                                }
                             } else {
                                 contentSet.jQueryObject.html(dropzoneEl);
                             }

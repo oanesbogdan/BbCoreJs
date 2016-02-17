@@ -35,6 +35,8 @@ define(
         var ContentSet = new JS.Class(AbstractContent, {
 
             identifierDataAttribute: 'bb-identifier',
+            maxEntryDataAttribute: 'bb-maxentry',
+            maxEntry:  null,
 
             /**
              * Initialize Content
@@ -43,6 +45,12 @@ define(
              */
             initialize: function (config) {
                 this.callSuper(config);
+
+                if (this.jQueryObject instanceof jQuery) {
+                    if (this.jQueryObject.data(this.maxEntryDataAttribute)) {
+                        this.maxEntry = this.jQueryObject.data(this.maxEntryDataAttribute);
+                    }
+                }
             },
 
             /**
