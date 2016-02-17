@@ -43,7 +43,7 @@ define(
                 var self = this,
                     dfd = jQuery.Deferred(),
                     config,
-                    element = this.ContentManager.buildElement({'uid': object.uid, 'type': object.type});
+                    element = object.content;
 
                 element.getData().done(function () {
                     self.getChildren(element).done(function () {
