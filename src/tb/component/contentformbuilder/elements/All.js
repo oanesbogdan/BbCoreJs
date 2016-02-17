@@ -50,7 +50,7 @@ define(
                     return dfd.promise();
                 }
 
-                element = this.ContentManager.buildElement({'uid': object.uid, 'type': object.type});
+                element = object.content;
 
                 element.getData().done(function () {
 

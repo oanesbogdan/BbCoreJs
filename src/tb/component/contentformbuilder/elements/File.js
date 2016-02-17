@@ -73,7 +73,7 @@ define(
                     return;
                 }
 
-                var element = this.ContentManager.buildElement({'uid': object.uid, 'type': object.type});
+                var element = object.content;
 
                 element.getData('elements', true, true).done(function (elements) {
                     config.label = object.label || object.name;

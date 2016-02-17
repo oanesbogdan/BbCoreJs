@@ -162,12 +162,19 @@ define(
                 if (uids.length > 0) {
                     require('content.repository').findByUids(uids).done(function (elements) {
                         var element,
-                            key2;
+                            key2,
+                            key3;
 
                         for (key2 in elements) {
                             if (elements.hasOwnProperty(key2)) {
                                 element = elements[key2];
-                                ContentManager.buildElement({'type': element.type, 'uid': element.uid, 'elementData': element});
+                                for (key3 in elementsArray) {
+                                    if (elementsArray.hasOwnProperty(key3)) {
+                                        if (elementsArray[key3].uid === element.uid) {
+                                            elementsArray[key3].content = ContentManager.buildElement({'type': element.type, 'uid': element.uid, 'elementData': element});
+                                        }
+                                    }
+                                }
                             }
                         }
 

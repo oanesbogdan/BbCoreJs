@@ -61,7 +61,7 @@ define(
                     return;
                 }
 
-                var element = this.ContentManager.buildElement({'uid': object.uid, 'type': object.type});
+                var element = object.content;
 
                 element.getData().done(function () {
 
