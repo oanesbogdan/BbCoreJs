@@ -339,10 +339,10 @@ a.cke_dialog_ui_button {
   width: auto;
   height: auto;
   z-index: 490002!important;
+  width: 350px;
 }
 .cke_dialog_body {
   display: block;
-  width: 350px;
 }
 .cke_dialog strong {
   font-weight: bold;
