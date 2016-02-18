@@ -7,6 +7,9 @@ define(['content.pluginmanager', 'Core/ApplicationManager', 'content.manager', '
     PluginManager.registerPlugin('contentsplitter', {
 
         scope: PluginManager.scope.BLOCK,
+
+        TEXT_ELEMENT: "Element/Text",
+
         onInit: function () {
             this.SPLITTABLE_CONTENTS = this.getConfig('splittableContents');
             this.btnState = 0;
@@ -49,6 +52,11 @@ define(['content.pluginmanager', 'Core/ApplicationManager', 'content.manager', '
             if (!this.isActivated()) {
                 return false;
             }
+
+            if (!this.isATextElement(e.target)) {
+                return false;
+            }
+
             this.removeMarker();
             var sel = window.getSelection ? window.getSelection() : document.selection,
                 txtToAdd = "<span class='bb-contentsplitter-marker'></span>",
@@ -106,28 +114,29 @@ define(['content.pluginmanager', 'Core/ApplicationManager', 'content.manager', '
             }
         },
 
-        updateNodeContent: function (node, value) {
+        updateNodeContent: function (node, key, value) {
             var jQueryDfd = jQuery.Deferred(),
                 contentValue,
-                bodyElement;
+                textElement;
 
             node.getData("elements").done(function (elements) {
-                bodyElement = elements.body;
 
-                if (!bodyElement) {
-                    return false;
+                textElement = elements[key];
+
+                if (!textElement) {
+                    throw new Error(this.getCurrentContentType() + "must have a [body] element to be splittable.");
                 }
 
-                bodyElement = ContentManager.buildElement({
-                    'type': bodyElement.type,
-                    uid: bodyElement.uid
+                textElement = ContentManager.buildElement({
+                    'type': textElement.type,
+                    uid: textElement.uid
                 });
 
                 contentValue = value.map(function () {
                     return jQuery(this).get(0).outerHTML;
                 }).get().join("");
 
-                bodyElement.set("value", contentValue);
+                textElement.set("value", contentValue);
 
                 jQueryDfd.resolve(node);
             });
@@ -142,7 +151,6 @@ define(['content.pluginmanager', 'Core/ApplicationManager', 'content.manager', '
                 splitData = this.getContentState('splitData'),
                 currentC = this.getCurrentContent(),
                 splittedContent,
-                newNode,
                 remainedContentValue,
                 splitContentValue,
 
@@ -174,21 +182,19 @@ define(['content.pluginmanager', 'Core/ApplicationManager', 'content.manager', '
                 splitData.anchorNode.html(remainedContentValue);
                 /*append Content here */
                 currentNodeParent.append(splittedContent, siblingPosition + 1).done(function () {
-                    /*append rev*/
-                    newNode = ContentManager.buildElement({
-                        'type': self.getCurrentContentType(),
-                        'uid': splittedContent.uid
-                    }).jQueryObject;
-                    ContentManager.maskMng.mask(newNode);
-                    /* update contents */
 
-                    jQuery.when(
-                        self.updateNodeContent(currentC, remainedContentValue),
-                        self.updateNodeContent(splittedContent, splitContentValue)
-                    ).done(function () {
-                        self.saveChanges().done(function () {
-                            splittedContent.refresh();
+                    self.getCurrentTextElementNodeName().done(function (name) {
+
+                        jQuery.when(
+                            self.updateNodeContent(currentC, name, remainedContentValue),
+                            self.updateNodeContent(splittedContent, name, splitContentValue)
+                        ).done(function () {
+                            ContentManager.maskMng.mask(currentNodeParent.jQueryObject);
+                            self.saveChanges().done(function () {
+                                currentNodeParent.refresh();
+                            });
                         });
+
                     });
                 });
 
@@ -225,6 +231,44 @@ define(['content.pluginmanager', 'Core/ApplicationManager', 'content.manager', '
 
         isActivated: function () {
             return this.getContentState("isActivated");
+        },
+
+        isATextElement: function (anchorNode) {
+            var isText = false,
+                textElement,
+                parent = jQuery(anchorNode).parents('.bb-content:first');
+
+            if (!parent.length) { return isText; }
+
+            textElement = ContentManager.buildElement({jQueryObject: parent});
+            if (textElement && textElement.type === this.TEXT_ELEMENT) {
+                isText = true;
+            }
+
+            return isText;
+        },
+
+        getCurrentTextElementNodeName: function () {
+            var dfd = new jQuery.Deferred(),
+                currentTextElement,
+                elementInfos,
+                splitDataInfos = this.getContentState('splitData'),
+                parentElement = jQuery(splitDataInfos.anchorNode).parents('.bb-content:first');
+
+            currentTextElement = ContentManager.buildElement({jQueryObject: parentElement});
+
+            this.getCurrentContent().getData("elements").done(function (elements) {
+                jQuery.each(elements, function (key) {
+                    elementInfos = elements[key];
+                    if (elementInfos.uid === currentTextElement.uid) {
+                        dfd.resolve(key);
+                        return true;
+                    }
+                });
+                dfd.reject();
+            });
+
+            return dfd.promise();
         },
 
         showSplitButton: function () {
