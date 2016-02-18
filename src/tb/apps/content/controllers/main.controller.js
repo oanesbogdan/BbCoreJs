@@ -85,10 +85,23 @@ define(
                 ContentManager.computeImages('body');
             },
 
+            enablePluginOnIframe: function (active) {
+                var iframe = jQuery('iframe');
+
+                if (active) {
+                    iframe.parent().prepend(jQuery('<div class="bb-mask"></div>'));
+                } else {
+                    iframe.siblings('.bb-mask').remove();
+                }
+            },
+
             addDefaultZoneInContentSetService: function () {
-                var disable = false,
-                    disableLink = function () {
-                        return disable;
+                var self = this,
+                    disable = false,
+                    disableLink = function (event) {
+                        if (!disable) {
+                            event.preventDefault();
+                        }
                     };
 
                 Core.Scope.subscribe('block', function () {
@@ -105,6 +118,8 @@ define(
                         target.onclick = null;
                     });
 
+                    self.enablePluginOnIframe(true);
+
                 }, function () {
                     var links = jQuery('#bb5-site-wrapper').find('a');
 
@@ -114,12 +129,16 @@ define(
                     links.each(function () {
                         jQuery(this).get(0).onclick = jQuery(this).get(0).onClickBckp;
                     });
+
+                    self.enablePluginOnIframe(false);
                 });
 
                 Core.Scope.subscribe('content', function () {
                     ContentManager.addDefaultZoneInContentSet(false);
+                    self.enablePluginOnIframe(true);
                 }, function () {
                     ContentManager.addDefaultZoneInContentSet(false);
+                    self.enablePluginOnIframe(false);
                 });
             },
 

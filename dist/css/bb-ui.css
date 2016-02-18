@@ -10764,6 +10764,13 @@ fieldset[disabled] #bb5-ui .btn-online.active {
 #bb5-site-wrapper .bb-content.bb-content-container-area {
   border: 2px dashed grey;
 }
+#bb5-site-wrapper .bb-mask {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
 #bb5-site-wrapper .content-actions {
   z-index: 489999;
 }
