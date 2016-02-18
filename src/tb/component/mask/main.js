@@ -2,7 +2,7 @@ define(['Core', 'jquery', 'component!translator', 'jsclass'], function (Core, jQ
     'use strict';
     var Mask = new JS.Class({
         defaultConfig: {
-            loaderCls: 'bb5-overlay',
+            loaderCls: 'bb-overlay',
             message: Translator.translate('loading')
         },
 
@@ -14,19 +14,6 @@ define(['Core', 'jquery', 'component!translator', 'jsclass'], function (Core, jQ
         buildLoader: function () {
             var loader = jQuery("<div/>").clone();
             jQuery(loader).addClass(this.config.loaderCls);
-            loader.css({
-                'background-color': 'rgba(0, 0, 0, .7)',
-                'color': 'white',
-                'font-size': '14px',
-                'height': '100%',
-                'left': '0',
-                'position': 'absolute',
-                'text-align': 'center',
-                'border': '1px solid',
-                'top': '0',
-                'z-index': '489999',
-                'width': '100%'
-            });
             jQuery(loader).html('<i class="fa fa-spin fa-spinner"></i>' + this.config.message);
             return loader;
         },
