@@ -5611,6 +5611,9 @@ button#bb5-ui .close {
   box-sizing: border-box;
   display: none;
 }
+#bb5-ui .xdsoft_datetimepicker.xdsoft_rtl {
+  padding: 8px 0 8px 8px;
+}
 #bb5-ui .xdsoft_datetimepicker iframe {
   position: absolute;
   left: 0;
@@ -5662,6 +5665,11 @@ button#bb5-ui .close {
   float: left;
   margin-left: 8px;
 }
+#bb5-ui .xdsoft_datetimepicker.xdsoft_rtl .xdsoft_datepicker {
+  float: right;
+  margin-right: 8px;
+  margin-left: 0;
+}
 #bb5-ui .xdsoft_datetimepicker.xdsoft_showweeks .xdsoft_datepicker {
   width: 256px;
 }
@@ -5671,6 +5679,11 @@ button#bb5-ui .close {
   text-align: center;
   margin-left: 8px;
   margin-top: 0;
+}
+#bb5-ui .xdsoft_datetimepicker.xdsoft_rtl .xdsoft_timepicker {
+  float: right;
+  margin-right: 8px;
+  margin-left: 0;
 }
 #bb5-ui .xdsoft_datetimepicker .xdsoft_datepicker.active + .xdsoft_timepicker {
   margin-top: 8px;
@@ -5736,6 +5749,12 @@ button#bb5-ui .close {
   display: block;
   margin-left: 14px;
   margin-top: 7px;
+}
+#bb5-ui .xdsoft_datetimepicker.xdsoft_rtl .xdsoft_timepicker .xdsoft_prev,
+#bb5-ui .xdsoft_datetimepicker.xdsoft_rtl .xdsoft_timepicker .xdsoft_next {
+  float: none;
+  margin-left: 0;
+  margin-right: 14px;
 }
 #bb5-ui .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_prev {
   background-position: -40px 0;
@@ -5947,6 +5966,10 @@ button#bb5-ui .close {
   top: 0;
   bottom: 0;
   cursor: pointer;
+}
+#bb5-ui .xdsoft_datetimepicker.xdsoft_rtl .xdsoft_scrollbar {
+  left: 0;
+  right: auto;
 }
 #bb5-ui .xdsoft_scroller_box {
   position: relative;
@@ -6799,6 +6822,22 @@ Rich editor
 #bb5-ui h6,
 #bb5-ui .h6 {
   font-size: 12px;
+}
+#bb5-ui #bb5-maintabsContent {
+  position: relative;
+}
+#bb5-ui .bb-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 14px;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  text-align: center;
+  border: 1px solid;
+  top: 0;
+  z-index: 489999;
+  width: 100%;
 }
 #bb5-ui #bb5-navbar-primary {
   border-radius: 0;

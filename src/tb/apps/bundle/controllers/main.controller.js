@@ -98,7 +98,7 @@ define(['Core', 'bundle.view.list', 'bundle.view.index', 'component!translator',
                 config = {};
             }
 
-            maskManager.mask('#extensions');
+            maskManager.mask('#bb5-maintabsContent');
             this.repository.listManageable().done(function (data) {
                 config.bundles = data;
 
@@ -107,7 +107,7 @@ define(['Core', 'bundle.view.list', 'bundle.view.index', 'component!translator',
                 self.renderView(ConstructorView, config);
                 self.indexShown = true;
 
-                maskManager.unmask('#extensions');
+                maskManager.unmask('#bb5-maintabsContent');
             });
         },
 
