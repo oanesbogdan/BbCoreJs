@@ -74,6 +74,7 @@ define(['Core', 'page.view.tree.contribution', 'jquery'], function (Core, Parent
                     PageStore.applyFilter('byStatus', [0, 1, 2, 3]);
                     PageStore.applyFilter('byOffset', 1);
                     PageStore.applyFilter('byParent', event.node.uid);
+                    PageStore.applyFilter('searchAction', '1');
                     PageStore.execute().done(function () {
                         Core.ApplicationManager.invokeService('page.main.popinDisplayManagement', false);
                     });
