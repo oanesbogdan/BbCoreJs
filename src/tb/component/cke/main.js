@@ -109,7 +109,7 @@ define(
                     return;
                 }
 
-                jQuery(this.editorContainer).append(editorHtml);
+                jQuery(this.editorContainer).html(editorHtml);
             },
 
             getEditableContents: function (content) {
