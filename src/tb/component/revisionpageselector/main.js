@@ -110,12 +110,14 @@ define(
                 /**
                  * Check if there are content drafts
                  * If yes save them and then save page modifications
-                 * 
+                 *
                  * @param {Boolean} hasDrafts
                  * @returns {undefined}
                  */
                 checkAndSaveDrafts: function (hasDrafts) {
                     var self = this;
+
+                    this.popin.mask();
 
                     if (hasDrafts === true) {
                         RevisionRepository.save(SaveManager.save('#' + this.popin.getId() + ' ' + this.contentRevisionListClass), 'commit').done(function () {
@@ -157,7 +159,6 @@ define(
                  */
                 show: function () {
                     this.popin.display();
-
                     var self = this,
                         items = this.SaveManager.validateData(self.config.currentPage),
                         config = {
@@ -168,6 +169,7 @@ define(
                         };
 
                     if (items.hasOwnProperty('state') && parseInt(items.state.value, 10) === 1) {
+                        this.popin.mask();
                         ContentRepository.getDrafts().done(function (drafts) {
                             if (Object.keys(drafts).length > 0) {
                                 config.questionMsg = Translator.translate('confirm_save_online_changes_made_to_page');
@@ -176,6 +178,8 @@ define(
                             } else {
                                 self.setPopInContent(config, false);
                             }
+
+                            self.popin.unmask();
                         });
                     } else {
                         this.setPopInContent(config, false);
@@ -184,7 +188,7 @@ define(
 
                 /**
                  * Set the corresponding content and buttons for popin
-                 * 
+                 *
                  * @param {Object} config
                  * @param {Boolean} hasDrafts
                  * @returns {undefined}
