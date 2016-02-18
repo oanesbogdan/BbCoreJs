@@ -13,13 +13,17 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 }
 .cke_dialog_body {
     &:extend(#bb5-ui .ui-widget, #bb5-ui .ui-dialog);
+    display: block;
     width: 350px;
 }
 .cke_dialog strong {
     font-weight: bold
 }
 .cke_dialog_title {
-    &:extend(#bb5-ui .ui-widget-header *, #bb5-ui .ui-widget .ui-dialog-titlebar, #bb5-ui .ui-widget-header);
+    &:extend(#bb5-ui .bb5-ui-reset, #bb5-ui .ui-widget-header *, #bb5-ui .ui-widget .ui-dialog-titlebar, #bb5-ui .ui-widget-header, #bb5-ui .ui-dialog .ui-dialog-title);
+    font-size: 11px;
+    line-height: 15px;
+    padding: 11px 13px;
 }
 .cke_dialog_contents {
     background-color: #fff;
@@ -92,10 +96,12 @@ a.cke_dialog_tab_disabled {
     border-top: 0
 }
 .cke_dialog_close_button {
-    &:extend(#bb5-ui .ui-widget-header .ui-button, #bb5-ui .ui-widget-header .ui-button);
+    &:extend(#bb5-ui .bb5-ui-reset, #bb5-ui .ui-widget-header .ui-button, #bb5-ui .ui-widget-header .ui-button);
+    line-height: 26px;
     &:after {
+        &:extend(#bb5-ui .bb5-ui-reset);
         content: "@{fa-var-times}";
-        color: #fff;
+        line-height: 26px;
         #bb5-ui .fa;
     }
 }

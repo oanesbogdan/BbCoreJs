@@ -47,7 +47,8 @@ module.exports = function (grunt) {
                 cleancss: true,
                 files: {
                     'dist/css/bb-ui.css': 'less/bb-ui.less',
-                    'dist/css/bb-ui-login.css': 'less/bb-ui-login.less'
+                    'dist/css/bb-ui-login.css': 'less/bb-ui-login.less',
+                    'src/tb/component/cke/skins/backbee/dialog.css' : 'less/ckeditor_dialog.less'
                 }
             }
         },
