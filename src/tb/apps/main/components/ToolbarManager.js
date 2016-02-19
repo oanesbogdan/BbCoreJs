@@ -49,7 +49,10 @@ define(
             append: function (id, html, force) {
                 var wrapper = jQuery(this.wrapperId),
                     currentTab = wrapper.children('div#' + id),
-                    activeTab = wrapper.children(this.tabClass + '.active');
+                    activeTab = wrapper.children(this.tabClass + '.active'),
+                    tabArea,
+                    currentLink,
+                    href;
 
                 activeTab.removeClass('active');
 
@@ -61,6 +64,15 @@ define(
                     wrapper.append(Renderer.render(template, {'id': id, 'html': html}));
                 } else {
                     currentTab.addClass('active');
+
+                    tabArea = currentTab.find('#edit-tab');
+                    if (tabArea.length > 0) {
+                        currentLink = tabArea.find('li.active');
+                        if (currentLink.length > 0) {
+                            href = currentLink.children('a').attr('href');
+                            localStorage.setItem('current_url', href.substring(1));
+                        }
+                    }
                 }
             }
         });
