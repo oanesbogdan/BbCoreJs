@@ -103,13 +103,16 @@ define(
                     return;
                 }
 
-                var editorHtml = jQuery("#cke_" + e.editor.name);
+                var editorHtml = jQuery("#cke_" + e.editor.name),
+                    container = jQuery(this.editorContainer);
 
-                if (jQuery(this.editorContainer).find(editorHtml).length) {
+                if (container.find(editorHtml).length) {
                     return;
                 }
 
-                jQuery(this.editorContainer).html(editorHtml);
+                container.find('.default-message').addClass('hidden');
+
+                container.append(editorHtml);
             },
 
             getEditableContents: function (content) {
