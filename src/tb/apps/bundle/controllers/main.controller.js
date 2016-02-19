@@ -38,6 +38,16 @@ define(['Core', 'bundle.view.list', 'bundle.view.index', 'component!translator',
             this.bundles = null;
             this.repository = require('bundle.repository');
             this.mainApp =  Core.get('application.main');
+
+            Core.Scope.subscribe('bundle',
+                function () { return; },
+                function () {
+                    var adminView = Core.get('current_admin_view');
+
+                    if (adminView) {
+                        Core.get('current_admin_view').destruct();
+                    }
+                });
         },
 
         /**
