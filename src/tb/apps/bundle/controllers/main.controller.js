@@ -46,6 +46,7 @@ define(['Core', 'bundle.view.list', 'bundle.view.index', 'component!translator',
 
                     if (adminView) {
                         Core.get('current_admin_view').destruct();
+                        Core.set('current_admin_view', undefined);
                     }
                 });
         },
