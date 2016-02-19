@@ -64,6 +64,11 @@ define(['Core', 'contribution.view.index', 'jquery'], function (Core, IndexView,
          */
         indexAction: function () {
             this.indexService();
+
+            if (!this.redirect) {
+                Core.RouteManager.navigateByPath('/content/contribution/edit');
+                this.redirect = true;
+            }
         },
 
 

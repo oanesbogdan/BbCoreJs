@@ -44,6 +44,11 @@ define(['jquery', 'Core/Renderer', 'text!main/tpl/toolbar', 'component!translato
                         label: translator.translate('contribute'),
                         text: translator.translate('edition'),
                         url: '#/contribution/index',
+                        sub_url: [
+                            'content/contribution/edit',
+                            'content/contribution/index',
+                            'page/contribution/index'
+                        ],
                         active: false
                     },
                     {
@@ -64,6 +69,52 @@ define(['jquery', 'Core/Renderer', 'text!main/tpl/toolbar', 'component!translato
 
         },
 
+        searchParentUrl: function (url) {
+            var menu = this.toolbar.menus,
+                key,
+                key2,
+                item,
+                subItem;
+
+            for (key in menu) {
+                if (menu.hasOwnProperty(key)) {
+                    item = menu[key];
+                    if (item.sub_url) {
+                        for (key2 in item.sub_url) {
+                            if (item.sub_url.hasOwnProperty(key2)) {
+                                subItem = item.sub_url[key2];
+                                if (subItem === url) {
+                                    return item.url;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return null;
+        },
+
+        putActiveClassOnLink: function (url) {
+            if (null === url) {
+                return false;
+            }
+
+            if (url.substring(0, 2) === '#/') {
+                url = url.substring(2);
+            }
+
+            var link = jQuery('li a[href="#/' + url + '"]');
+
+            if (link.length > 0) {
+                link.parent('li').addClass('active');
+
+                return true;
+            }
+
+            return false;
+        },
+
         onItemClick: function (event) {
             var target = jQuery(event.currentTarget);
 
@@ -77,19 +128,17 @@ define(['jquery', 'Core/Renderer', 'text!main/tpl/toolbar', 'component!translato
          * @returns {Object} MainViewIndex
          */
         render: function () {
+
             var html = jQuery(Renderer.render(template, this.toolbar)),
-                currentUrl = Core.get('current_url'),
-                link;
+                currentUrl = Core.get('current_url');
 
             jQuery(this.el).html(html);
 
             html.find('ul#bb5-maintabs li').on('click', this.onItemClick);
 
             if (currentUrl !== null) {
-                link = jQuery('li a[href="#/' + currentUrl + '"]');
-
-                if (link.length > 0) {
-                    link.parent('li').addClass('active');
+                if (!this.putActiveClassOnLink(currentUrl)) {
+                    this.putActiveClassOnLink(this.searchParentUrl(currentUrl));
                 }
             }
 
