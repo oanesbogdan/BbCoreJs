@@ -52,7 +52,7 @@ define(
              */
             add: function () {
                 var content = this.getCurrentContent(),
-                    accepts = content.getDefinition('accept');
+                    accepts = ContentManager.replaceChars(content.getAccept(), '\\', '/');
 
                 if (accepts.length === 1) {
                     ContentManager.createElement(accepts[0]).done(function (newContent) {
@@ -93,14 +93,21 @@ define(
              * @param {Mixed} contents
              */
             showPopin: function (contents) {
-                var config = {};
+                var config = {},
+                    content = this.getCurrentContent(),
+                    accepts = this.buildContents(ContentManager.replaceChars(content.getAccept(), '\\', '/'));
 
                 if (this.widget === undefined) {
                     if (contents !== undefined) {
                         config.contents = contents;
                     }
-                    this.widget = new DialogContentsList(config);
+                } else {
+                    this.widget.destroy();
+                    if (accepts.length > 0) {
+                        config.contents = accepts;
+                    }
                 }
+                this.widget = new DialogContentsList(config);
                 this.widget.show();
                 this.bindEvents();
             },
@@ -123,7 +130,7 @@ define(
              * @returns {Boolean}
              */
             onContentClick: function (event) {
-                this.widget.hide();
+                this.widget.destroy();
 
                 var self = this,
                     currentContent = this.getCurrentContent(),

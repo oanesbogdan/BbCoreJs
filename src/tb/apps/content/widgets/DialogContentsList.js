@@ -47,6 +47,7 @@ define(
              * Create popin for parameters form
              */
             createPopin: function () {
+                var self = this;
                 this.popin = Popin.createPopIn({
                     open: function () {
                         var popin = jQuery(this);
@@ -55,6 +56,9 @@ define(
                             left: 20
                         });
 
+                    },
+                    close: function () {
+                        self.destroy();
                     }
                 });
 
@@ -187,6 +191,13 @@ define(
              */
             hide: function () {
                 this.popin.hide();
+            },
+
+            /**
+             * Destroy the popin
+             */
+            destroy: function () {
+                this.popin.destroy();
             }
         });
 

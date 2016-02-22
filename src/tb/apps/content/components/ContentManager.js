@@ -425,6 +425,26 @@ define(
                 }
 
                 return objectIdentifier;
+            },
+
+            /**
+             * Replace all occurences of charToReplace with charReplaceWith in an array
+             * 
+             * @param {Array} parseArray
+             * @param {String} charToReplace
+             * @param {String} charReplaceWith
+             * @returns {Array}
+             */
+            replaceChars: function (parseArray, charToReplace, charReplaceWith) {
+                var key;
+
+                for (key in parseArray) {
+                    if (parseArray.hasOwnProperty(key)) {
+                        parseArray[key] = parseArray[key].replace(charToReplace, charReplaceWith);
+                    }
+                }
+
+                return parseArray;
             }
         });
 

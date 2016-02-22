@@ -50,7 +50,7 @@ define(
             showContentSelector: function () {
                 /* set Accept and other things */
                 var currentContent = this.getCurrentContent(),
-                    accept = currentContent.definition.accept;
+                    accept = ContentManager.replaceChars(currentContent.getAccept(), '\\', '/');
 
                 this.contentSelector.setContenttypes(accept);
                 this.contentSelector.display();
