@@ -1028,7 +1028,8 @@ a#bb5-ui .text-danger:hover {
 a#bb5-ui .bg-primary:hover {
   background-color: #be3a18;
 }
-#bb5-ui .bg-success {
+#bb5-ui .bg-success,
+#bb5-ui .bb5-list-media li .item-picture a.bg-success {
   background-color: #dff0d8;
 }
 a#bb5-ui .bg-success:hover {
@@ -1046,7 +1047,8 @@ a#bb5-ui .bg-info:hover {
 a#bb5-ui .bg-warning:hover {
   background-color: #f7ecb5;
 }
-#bb5-ui .bg-danger {
+#bb5-ui .bg-danger,
+#bb5-ui .bb5-list-media li .item-picture a.bg-danger {
   background-color: #f2dede;
 }
 a#bb5-ui .bg-danger:hover {
