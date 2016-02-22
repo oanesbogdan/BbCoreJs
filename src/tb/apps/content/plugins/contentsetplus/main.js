@@ -25,9 +25,10 @@ define(
         'content.widget.DialogContentsList',
         'jquery',
         'component!translator',
+        'component!mask',
         'jsclass'
     ],
-    function (PluginManager, ContentManager, DefinitionManager, DialogContentsList, jQuery, Translator) {
+    function (PluginManager, ContentManager, DefinitionManager, DialogContentsList, jQuery, Translator, MaskMng) {
 
         'use strict';
 
@@ -128,7 +129,10 @@ define(
                     currentContent = this.getCurrentContent(),
                     currentTarget = jQuery(event.currentTarget),
                     img = currentTarget.find('img'),
-                    type = img.data('bb-type');
+                    type = img.data('bb-type'),
+                    mask = MaskMng.createMask();
+
+                mask.mask(currentContent.jQueryObject);
 
                 ContentManager.createElement(type).done(function (content) {
                     var config = self.config,
