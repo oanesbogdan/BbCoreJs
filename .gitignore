@@ -11,3 +11,6 @@ nbproject/
 .grunt/
 coverage/
 npm-debug.log
+nightwatch/reports/*
+nightwatch/screens/*
+nightwatch/configuration/globals.json

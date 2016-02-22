@@ -89,11 +89,18 @@ Install nodejs and npm
 
 http://nodejs.org/
 
+Download the lastest version of selenium (used for functional testing using nightwatch)
 
-Install grunt-cli and bower
+http://selenium-release.storage.googleapis.com/index.html
+
+and run it using the following command
+
+$ java -jar selenium-server-standalone-{VERSION}.jar
+
+Install grunt-cli, bower and nightwatch
 
 ```
-npm install -g grunt-cli bower
+npm install -g grunt-cli bower nightwatch
 ```
 
 Install project dependencies
@@ -110,6 +117,12 @@ bower install
 ## Test and Build the project :
 ```
 grunt
+```
+
+## Run the functional testing :
+Before running the functional testing you need to create a configuration file inside nightwatch/configuration/globals.json (The file golobals.json.dist can be used as an example)
+```
+grunt nightwatch
 ```
 
 ### Deciders & mergers
