@@ -46,7 +46,8 @@ define(
 
         var popinConfig = {
                 width: 944,
-                height: 'auto'
+                height: 'auto',
+                modal: true
             },
 
             RevisionPageSelector = new JS.Class({

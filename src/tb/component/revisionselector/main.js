@@ -58,7 +58,8 @@ define(
 
         var popinConfig = {
                 width: 944,
-                height: 'auto'
+                height: 'auto',
+                modal: true
             },
 
             RevisionManager = new JS.Class({

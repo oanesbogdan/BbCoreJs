@@ -64,6 +64,7 @@ define(
                         close: function () {
                             Core.ApplicationManager.invokeService('content.main.removePopin', name);
                         },
+                        modal: true,
                         position: { my: "center top", at: "center top" + jQuery('#' + Core.get('menu.id')).height()}
                     };
 
