@@ -1,3 +1,4 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
 #bb5-ui .bb-cke-placeholder a.cke_button .cke_button_label {
   position: absolute;
   width: 1px;
@@ -7,6 +8,12 @@
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
+}
+#bb5-ui .bb5-list-media li .item-picture a.bg-success {
+  background-color: #dff0d8;
+}
+#bb5-ui .bb5-list-media li .item-picture a.bg-danger {
+  background-color: #f2dede;
 }
 #bb5-site-wrapper .content-actions button,
 #bb5-site-wrapper .content-actions a {
@@ -140,12 +147,12 @@
   -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5), 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 1px 0 rgba(255, 255, 255, 0.15) inset;
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5), 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 1px 0 rgba(255, 255, 255, 0.15) inset;
   background: #e4e4e4;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#e4e4e4));
-  background-image: -moz-linear-gradient(top, #fff, #e4e4e4);
-  background-image: -webkit-linear-gradient(top, #fff, #e4e4e4);
-  background-image: -o-linear-gradient(top, #fff, #e4e4e4);
-  background-image: -ms-linear-gradient(top, #fff, #e4e4e4);
-  background-image: linear-gradient(top, #fff, #e4e4e4);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e4e4e4));
+  background-image: -moz-linear-gradient(top, #ffffff, #e4e4e4);
+  background-image: -webkit-linear-gradient(top, #ffffff, #e4e4e4);
+  background-image: -o-linear-gradient(top, #ffffff, #e4e4e4);
+  background-image: -ms-linear-gradient(top, #ffffff, #e4e4e4);
+  background-image: linear-gradient(top, #ffffff, #e4e4e4);
   filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#ffffff', endColorstr='#e4e4e4');
 }
 #bb5-ui .bb-cke-placeholder a.cke_button {
@@ -230,7 +237,7 @@
 }
 #bb5-ui .btn:hover,
 #bb5-ui .btn:focus {
-  color: #333;
+  color: #333333;
   text-decoration: none;
 }
 #bb5-ui .btn:active,
@@ -308,7 +315,7 @@ fieldset[disabled] #bb5-ui .btn {
   color: red;
 }
 #bb5-ui .ui-dialog {
-  border: 2px solid #E4E4E4;
+  border: 2px solid #e4e4e4;
   border-radius: 0;
   overflow: hidden;
   position: absolute;
@@ -354,19 +361,12 @@ fieldset[disabled] #bb5-ui .btn {
   right: -2px;
   height: 5px;
   background: -moz-linear-gradient(top, #dadada 0%, rgba(0, 0, 0, 0) 100%);
-  /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #dadada), color-stop(100%, rgba(0, 0, 0, 0)));
-  /* Chrome,Safari4+ */
   background: -webkit-linear-gradient(top, #dadada 0%, rgba(0, 0, 0, 0) 100%);
-  /* Chrome10+,Safari5.1+ */
   background: -o-linear-gradient(top, #dadada 0%, rgba(0, 0, 0, 0) 100%);
-  /* Opera 11.10+ */
   background: -ms-linear-gradient(top, #dadada 0%, rgba(0, 0, 0, 0) 100%);
-  /* IE10+ */
   background: linear-gradient(to bottom, #dadada 0%, rgba(0, 0, 0, 0) 100%);
-  /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dadada', endColorstr='#00000000', GradientType=0);
-  /* IE6-9 */
 }
 #bb5-ui .ui-dialog .ui-dialog-buttonpane button {
   margin: 0 4px;
@@ -386,7 +386,7 @@ fieldset[disabled] #bb5-ui .btn {
 }
 #bb5-ui .ui-widget {
   background-color: #fff;
-  border: 1px solid #E4E4E4;
+  border: 1px solid #e4e4e4;
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box;
@@ -412,8 +412,8 @@ fieldset[disabled] #bb5-ui .btn {
   position: static;
 }
 #bb5-ui .ui-widget-header {
-  border-color: transparent transparent #E4E4E4 transparent;
-  border-bottom: 1px solid #E4E4E4;
+  border-color: transparent transparent #e4e4e4 transparent;
+  border-bottom: 1px solid #e4e4e4;
   border-radius: 0;
   position: relative;
   font-size: 13px;
@@ -430,7 +430,7 @@ fieldset[disabled] #bb5-ui .btn {
   top: 4px;
   right: 4px;
   padding: 0;
-  background: #E4E4E4;
+  background: #e4e4e4;
   border-radius: 100%;
 }
 #bb5-ui .ui-widget-header .ui-button .ui-button-text {
@@ -448,7 +448,7 @@ fieldset[disabled] #bb5-ui .btn {
   top: 4px;
   right: 4px;
   padding: 0;
-  background: #E4E4E4;
+  background: #e4e4e4;
   border-radius: 100%;
   width: 26px;
   height: 26px;

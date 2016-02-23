@@ -31,6 +31,12 @@ a.cke_dialog_tab {
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
+#bb5-ui .bb5-list-media li .item-picture a.bg-success {
+  background-color: #dff0d8;
+}
+#bb5-ui .bb5-list-media li .item-picture a.bg-danger {
+  background-color: #f2dede;
+}
 input.cke_dialog_ui_input_text,
 input.cke_dialog_ui_input_password,
 textarea.cke_dialog_ui_input_textarea {
