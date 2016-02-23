@@ -4,10 +4,19 @@ node_js:
 before_install:
     - npm cache clean
     - npm update npm -g
-    - npm install -g bower grunt-cli codeclimate-test-reporter
+    - npm install -g bower grunt-cli codeclimate-test-reporter nightwatch
 install:
     - npm install --save-dev
     - bower install
-script: grunt test
+before_script:
+    - export DISPLAY=:99.0
+    - sh -e /etc/init.d/xvfb start
+    - wget http://selenium-release.storage.googleapis.com/2.52/selenium-server-standalone-2.52.0.jar
+    - java -jar selenium-server-standalone-2.52.0.jar > /dev/null &
+    - sleep 3
+    - mv nightwatch/configuration/globals.json.dist nightwatch/configuration/globals.json
+script:
+    - grunt test
+    - grunt nightwatch
 after_script:
     - CODECLIMATE_REPO_TOKEN=6b66bc0cfc18d986b1467f0bedb68fe6f2e4ce7954efa5703ef2d1dfe1b2b2d6 codeclimate < coverage/lcov.info
