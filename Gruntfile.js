@@ -255,6 +255,15 @@ module.exports = function (grunt) {
                     ]
                 }
             }
+        },
+
+        /**
+         * application functional testing
+         */
+        nightwatch: {
+            options: {
+                standalone: false
+            }
         }
     });
 
@@ -273,6 +282,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-istanbul-coverage');
     grunt.loadNpmTasks('grunt-shell');
+    grunt.loadNpmTasks('grunt-nightwatch');
 
     // grunt tasks
     grunt.registerTask('default', ['less:css', 'jshint', 'jslint', 'jasmine:coverage', 'concat', 'uglify']);
