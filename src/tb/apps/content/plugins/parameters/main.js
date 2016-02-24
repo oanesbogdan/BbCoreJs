@@ -93,9 +93,15 @@ define(
 
                         Core.ApplicationManager.invokeService('content.main.save').done(function (promise) {
                             promise.done(function () {
-                                content.getParent().refresh().done(function () {
-                                    self.popin.hide();
-                                });
+                                if (content.getParent()) {
+                                    content.getParent().refresh().done(function () {
+                                        self.popin.hide();
+                                    });
+                                } else {
+                                    content.refresh().done(function () {
+                                        self.popin.hide();
+                                    });
+                                }
                             });
                         });
                     } else {
