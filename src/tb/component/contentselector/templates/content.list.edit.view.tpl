@@ -1,8 +1,8 @@
 {% set background = 'bb' %}
 
-{% if main_node_state == 1 %}
+{% if is_mainnode_online == 1 %}
     {% set background = 'bg-success' %}
-{% elif main_node_state == 0 %}
+{% elif is_mainnode_online == 0 %}
     {% set background = 'bg-danger' %}
 {% endif %}
 
