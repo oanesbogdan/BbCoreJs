@@ -52,9 +52,14 @@ define(
              */
             add: function () {
                 var content = this.getCurrentContent(),
-                    accepts = ContentManager.replaceChars(content.getAccept(), '\\', '/');
+                    accepts = ContentManager.replaceChars(content.getAccept(), '\\', '/'),
+                    mask;
 
                 if (accepts.length === 1) {
+
+                    mask = MaskMng.createMask();
+                    mask.mask(content.jQueryObject);
+
                     ContentManager.createElement(accepts[0]).done(function (newContent) {
                         content.append(newContent);
                     });
