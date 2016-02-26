@@ -42,15 +42,13 @@ define(
 
                 var dfd = jQuery.Deferred(),
                     config,
-                    element;
+                    element = object.content;
 
-                if (undefined === object.uid || undefined === object.type) {
+                if (!element || undefined === object.uid || undefined === object.type) {
                     dfd.reject('null_content');
 
                     return dfd.promise();
                 }
-
-                element = object.content;
 
                 element.getData().done(function () {
 

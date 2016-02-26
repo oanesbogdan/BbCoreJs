@@ -45,6 +45,11 @@ define(
                     config,
                     element = object.content;
 
+                if (!element) {
+                    dfd.reject('null_content');
+                    return;
+                }
+
                 element.getData().done(function () {
                     self.getChildren(element).done(function () {
                         var i,
