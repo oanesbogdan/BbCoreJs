@@ -1,5 +1,23 @@
 {
-  "default" : {
-    "baseUrl" : "http://early.backbee.com"
-  }
+    "default" : {
+        "baseUrl" : "http://early.backbee.com",
+        "loadTime" : {
+            "defaultWait" : 1000,
+            "body" : 100,
+            "loginPopin" : 3000,
+            "toolbar" : 8000,
+            "logout" : 3000,
+            "errorDisplay": 75
+        },
+        "login" : {
+            "realUser" : {
+                "username" : "admins",
+                "password" : "admins"
+            },
+            "fakeUser" : {
+                "username" : "fakeuser",
+                "password" : "fakepassword"
+            }
+        }
+    }
 }

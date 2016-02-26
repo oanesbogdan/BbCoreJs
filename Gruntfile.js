@@ -80,7 +80,7 @@ module.exports = function (grunt) {
          * code style
          */
         jshint: {
-            files: ['Gruntfile.js', 'src/**/*.js', 'specs/**/*.js'],
+            files: ['Gruntfile.js', 'src/**/*.js', 'specs/**/*.js', 'nightwatch/**/*.js'],
             options: {
                 jshintrc: '.jshintrc',
                 predef: ['xdescribe']
@@ -123,7 +123,7 @@ module.exports = function (grunt) {
                 }
             },
             sources: {
-                src: ['src/**/*.js'],
+                src: ['src/**/*.js', 'nightwatch/**/*.js'],
                 directives: {
                     browser: true,
                     devel: true,
