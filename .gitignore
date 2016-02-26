@@ -12,5 +12,5 @@ nbproject/
 coverage/
 npm-debug.log
 nightwatch/reports/*
-nightwatch/screens/*
+nightwatch/screenshots/*
 nightwatch/configuration/globals.json
