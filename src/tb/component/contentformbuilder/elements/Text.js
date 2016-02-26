@@ -55,13 +55,12 @@ define(
             },
 
             populateConfig: function (object, config, dfd) {
+                var element = object.content;
 
-                if (undefined === object.uid || undefined === object.type) {
+                if (!element || undefined === object.uid || undefined === object.type) {
                     dfd.reject('null_content');
                     return;
                 }
-
-                var element = object.content;
 
                 element.getData().done(function () {
 

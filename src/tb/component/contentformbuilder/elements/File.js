@@ -68,12 +68,12 @@ define(
 
             populateConfig: function (object, config, dfd) {
 
-                if (undefined === object.uid || undefined === object.type) {
+                var element = object.content;
+
+                if (!element || undefined === object.uid || undefined === object.type) {
                     dfd.reject('null_content');
                     return;
                 }
-
-                var element = object.content;
 
                 element.getData('elements', true, true).done(function (elements) {
                     config.label = object.label || object.name;

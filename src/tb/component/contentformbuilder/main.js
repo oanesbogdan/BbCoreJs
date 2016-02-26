@@ -60,6 +60,8 @@ define(
                                         content.addElement(object.name, {'uid': data.uid, 'type': object.type});
 
                                         object.uid = data.uid;
+                                        object.content = content;
+
                                         element.getConfig(object, content).done(function (newConfig) {
                                             dfd.resolve(newConfig);
                                         });
