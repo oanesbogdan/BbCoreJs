@@ -51,7 +51,7 @@ define(['jquery', '../pagination/helper/renderer.helper', 'jssimplepagination'],
 
             setItems: function (total, itemsToShow) {
                 if (this.isSinglePageMode()) {
-                    total = this.MAX_PAGES;
+                    total = (isNaN(total)) ? 0 : this.MAX_PAGES;
                     this.onLastPage = false;
                 }
                 if (isNaN(total)) {
