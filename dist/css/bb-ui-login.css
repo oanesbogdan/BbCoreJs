@@ -274,6 +274,10 @@ fieldset[disabled] #bb5-ui .btn {
 }
 #bb5-ui .btn:focus {
   outline: none;
+  color: #363636 !important;
+}
+#bb5-ui .btn:focus .fa {
+  color: #363636 !important;
 }
 #bb5-ui .btn-default-grey,
 #bb5-site-wrapper .content-actions button,
