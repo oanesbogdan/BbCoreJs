@@ -24,7 +24,8 @@ define(
         'component!notify',
         'require',
         'Core/Utils',
-        'jquery'
+        'jquery',
+        'component!mask'
     ],
     function (Core, renderer, User, Notify, require, Utils, jQuery) {
         'use strict';
@@ -83,6 +84,7 @@ define(
                 }
 
                 popin.addUsers(renderer.render(template, {users: users}));
+                Core.ApplicationManager.invokeService('user.main.resizeZones');
             },
 
             /**
@@ -219,7 +221,11 @@ define(
 
             addGroupService: function (popin, user_id, group_id) {
                 var user = new User(),
+                    groupContainer = jQuery('#group-list .bb5-manage-group[data-group="' + group_id + '"]'),
+                    groupMask = require('component!mask').createMask({}),
                     self = this;
+
+                groupMask.mask(groupContainer);
 
                 self.repository.find(user_id).then(
                     function (user_values) {
@@ -228,6 +234,7 @@ define(
                         user_values.groups.forEach(function (group) {
                             if (parseInt(group_id, 10) === group.id) {
                                 already_grouped = true;
+                                groupContainer.removeClass('ui-state-hover');
                             }
                         });
 
@@ -247,10 +254,12 @@ define(
                                 },
                                 function () {
                                     Notify.error(trans('user_update_fail'));
+                                    groupMask.unmask(groupContainer.removeClass('ui-state-hover'));
                                 }
                             );
                         } else {
                             Notify.warning(trans('user_is_already_in_this_group'));
+                            groupMask.unmask(groupContainer.removeClass('ui-state-hover'));
                         }
                     },
                     function () {
