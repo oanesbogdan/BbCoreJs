@@ -51,6 +51,84 @@ define('tb.component/popin/main', ['Core', 'tb.component/popin/PopIn', 'jquery',
              */
             containerId: 'bb5-dialog-container',
 
+            popinsStatus: null,
+
+            gap: 40,
+
+            initialize: function () {
+                this.popinsStatus = {};
+            },
+
+            updatePopinStatus: function (popIn) {
+                var dialog = jQuery('#' + popIn.getId()),
+                    position = dialog.parent().position(),
+                    width = dialog.parent().outerWidth(),
+                    height = dialog.parent().outerHeight(),
+                    positionEnd,
+                    isFullscreen,
+                    isOpened = popIn.isOpen();
+
+                if (!position || !position.hasOwnProperty("left") || !position.hasOwnProperty("top")) {
+                    return;
+                }
+
+                positionEnd = {
+                    'left': position.left + width,
+                    'top': position.top + height
+                };
+
+                isFullscreen = (position.left < this.gap && positionEnd.left > (jQuery(window).width() - this.gap)) ? true : isFullscreen;
+
+                if (isOpened && !isFullscreen) {
+                    this.popinsStatus[popIn.getId()] = {
+                        'isOpen': true,
+                        'position': position,
+                        'positionEnd': positionEnd
+                    };
+                } else {
+                    delete this.popinsStatus[popIn.getId()];
+                }
+            },
+
+            checkPosition: function (popIn) {
+                var key,
+                    dialog = jQuery('#' + popIn.getId()),
+                    position = dialog.parent().position(),
+                    newPosition = jQuery.extend({}, position),
+                    width = dialog.parent().outerWidth(),
+                    height = dialog.parent().outerHeight();
+
+                if (!position || !position.hasOwnProperty("left") || !position.hasOwnProperty("top")) {
+                    return;
+                }
+
+                for (key in this.popinsStatus) {
+                    if (this.popinsStatus.hasOwnProperty(key) && popIn.getId() !== key) {
+                        if (this.popinsStatus[key].isOpen) {
+                            if (
+                                position.left >= this.popinsStatus[key].position.left &&
+                                    position.left < this.popinsStatus[key].positionEnd.left &&
+                                    position.top >= this.popinsStatus[key].position.top &&
+                                    position.top < (this.popinsStatus[key].position.top + this.gap)
+                            ) {
+                                newPosition.top = this.popinsStatus[key].position.top + this.gap;
+                            }
+
+                            if (
+                                (position.left + width) >= this.popinsStatus[key].position.left &&
+                                    (position.left + width) < (this.popinsStatus[key].positionEnd.left + this.gap) &&
+                                    (position.top + height) >= this.popinsStatus[key].position.top &&
+                                    (position.top + height) < this.popinsStatus[key].positionEnd.top
+                            ) {
+                                newPosition.left = this.popinsStatus[key].positionEnd.left + this.gap - width;
+                            }
+                        }
+                    }
+                }
+
+                return newPosition;
+            },
+
             /**
              * Create a Core.PopIn with basic configuration like its id and options
              * @param  {Object} config configuration of pop-in
@@ -195,6 +273,7 @@ define('tb.component/popin/main', ['Core', 'tb.component/popin/PopIn', 'jquery',
             var popIn,
                 parentPopin,
                 shift = 30,
+                isFullscreen,
                 maxHeight;
 
             options = options || {};
@@ -209,8 +288,13 @@ define('tb.component/popin/main', ['Core', 'tb.component/popin/PopIn', 'jquery',
                     if (parentPopin !== undefined && typeof (parentPopin.position()) === 'object') {
                         maxHeight = jQuery(window).height() - parentPopin.position().top - shift - 5;
 
-                        popIn.addOption('position', { my: "left+" + shift + " top+" + shift, at: "left top", of: parentPopin });
-                        popIn.addOption('maxHeight', maxHeight);
+                        isFullscreen = ((jQuery(window).width() - 80) < parentPopin.outerWidth())  ? true : false;
+                        if (isFullscreen) {
+                            popIn.addOption('position', { my: "center top", at: "center top+180px", of: window});
+                        } else {
+                            popIn.addOption('position', { my: "left+" + shift + " top+" + shift, at: "left top", of: parentPopin });
+                            popIn.addOption('maxHeight', maxHeight);
+                        }
                     }
 
                 }
@@ -231,6 +315,8 @@ define('tb.component/popin/main', ['Core', 'tb.component/popin/PopIn', 'jquery',
         display: function (popIn) {
             var self = this,
                 dialogWrapper,
+                dialogPosition,
+                position,
                 parentZIndex;
 
             if (popIn.isClose()) {
@@ -252,11 +338,17 @@ define('tb.component/popin/main', ['Core', 'tb.component/popin/PopIn', 'jquery',
                     jQuery('#' + popIn.getId()).dialog(popIn.getOptions());
                     jQuery('#' + popIn.getId()).on('dialogclose', function () {
                         self.hide(popIn);
+                        manager.updatePopinStatus(popIn);
                     });
 
                     jQuery("#" + popIn.getId()).on('dialogfocus', jQuery.proxy(this.handleFocus, this, popIn));
 
+                    jQuery("#" + popIn.getId()).on('dialogdragstop', function () {
+                        manager.updatePopinStatus(popIn);
+                    });
+
                     jQuery("#" + popIn.getId()).on('dialogopen', function (event) {
+                        manager.updatePopinStatus(popIn);
 
                         if (popIn.parent) {
                             parentZIndex = jQuery('#' + popIn.parent.getId()).zIndex();
@@ -267,6 +359,14 @@ define('tb.component/popin/main', ['Core', 'tb.component/popin/PopIn', 'jquery',
                 }
 
                 jQuery('#' + popIn.getId()).dialog('open');
+                dialogPosition = jQuery('#' + popIn.getId()).parent().position();
+
+                position = manager.checkPosition(popIn);
+                if (position !== dialogPosition) {
+                    jQuery('#' + popIn.getId()).parent().css(position);
+                }
+
+                manager.updatePopinStatus(popIn);
             }
         },
 

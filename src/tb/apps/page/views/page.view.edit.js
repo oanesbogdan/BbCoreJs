@@ -56,6 +56,7 @@ define(
                 this.callbackAfterSubmit = this.config.callbackAfterSubmit;
 
                 this.popin = require('component!popin').createPopIn({
+                    modal: true,
                     position: { my: "center top", at: "center top+" + jQuery('#' + Core.get('menu.id')).height()}
                 });
 
