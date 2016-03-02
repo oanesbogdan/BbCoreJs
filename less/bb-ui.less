@@ -101,19 +101,19 @@ Version: 2.10 Dec2014
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dadada', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
 }
 
-    .bb-overlay {
-        background-color: rgba(0, 0, 0, .5);
-        color: white;
-        font-size: 14px;
-        height: 100%;
-        left: 0;
-        position: absolute;
-        text-align: center;
-        border: 1px solid;
-        top: 0;
-        z-index: 489999;
-        width: 100%;
-    }
+.bb-overlay {
+    background-color: rgba(0, 0, 0, .5);
+    color: white;
+    font-size: 14px;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    text-align: center;
+    border: 1px solid;
+    top: 0;
+    z-index: 489999;
+    width: 100%;
+}
 
 #bb5-ui {
     position:fixed;
@@ -140,6 +140,15 @@ Version: 2.10 Dec2014
 
     }
 
+    .bb-content-offline {
+	-webkit-box-shadow:0px 0px 1px 3px fade(@brand-danger, 85%);
+	box-shadow:0px 0px 1px 3px fade(@brand-danger, 85%);
+    }
+    .bb-content-online {
+	-webkit-box-shadow:0px 0px 1px 3px fade(@brand-success, 85%);
+	box-shadow:0px 0px 1px 3px fade(@brand-success, 85%);
+    }
+
     .alert {
         padding: 1em;
         line-height:1.2em;
@@ -158,9 +167,9 @@ Version: 2.10 Dec2014
         margin:0 auto!important;
         position: relative;
     }
-/*
-    #bb-page-management-trash-view, #bb-page-management-trash-view * {color:@bb5-txt-clr;}
-*/
+    /*
+	#bb-page-management-trash-view, #bb-page-management-trash-view * {color:@bb5-txt-clr;}
+    */
     .bb5-ui-width-setter {
         width:968px;
         margin:0 auto!important;
@@ -353,7 +362,7 @@ Version: 2.10 Dec2014
         /*dropdown*/
         .dropdown-menu>li>a {
             &:hover, &:focus {
-               background-color:#f5f5f5;
+		background-color:#f5f5f5;
             }
         }
         .dropdown-backdrop {
@@ -578,9 +587,9 @@ Version: 2.10 Dec2014
             &.bb5-border-strong {border-color:darken(@bb-border-clr,5%);}
         }
         &.col-bb5-pad-x2 {padding-left:@grid-gutter-width+2;
-            > .position-bottom {
-                margin-left:@grid-gutter-width+2;
-            }
+			  > .position-bottom {
+			      margin-left:@grid-gutter-width+2;
+			  }
         }
     }
 
@@ -1819,21 +1828,21 @@ Version: 2.10 Dec2014
     }
 
     .color-picker-preview span{display: inline-block;
-        width: 13px;
-        height: 13px;
-        border: 1px solid #F3F3F3;
+			       width: 13px;
+			       height: 13px;
+			       border: 1px solid #F3F3F3;
     }
 
     /*LAYOUT*/
     .bb5-layout-pane {
 
         .bb5-layout-figure {padding: 6px 7px;
-            border:1px solid #cecece;
-            background-color:#f5f5f5;
+			    border:1px solid #cecece;
+			    background-color:#f5f5f5;
 
-            img {
-                max-width: 36px;
-            }
+			    img {
+				max-width: 36px;
+			    }
 
         }
     }
@@ -1896,7 +1905,7 @@ Version: 2.10 Dec2014
         ul {#bb5-ui .dropdown-menu; display: block; z-index: 999999;
             li {
                 button {border-width: 0; background-color: transparent; padding: 0; width: 100%; text-align: left; padding: 3px 20px;
-                    &:hover {background-color: #F3F3F3;}
+			&:hover {background-color: #F3F3F3;}
                 }
             }
         }
@@ -1972,7 +1981,7 @@ Version: 2.10 Dec2014
         ul.jqtree-tree {
 
             li.jqtree-folder {
-             margin-bottom: 4px;
+		margin-bottom: 4px;
 
                 &.jqtree-closed {
                     margin-bottom: 1px;
@@ -2115,27 +2124,27 @@ Version: 2.10 Dec2014
 
     /*Rights*/
     .table-rights { margin-bottom: 3em;
-        > th, > td {text-align: center;}
-        .is-child {padding-left: 1.1em;}
-        .table-col-1 {width: 40%; text-align: left;}
-        .table-col-2 {width: 12%;}
-        .table-col-3 {width: 12%;}
-        .table-col-4 {width: 12%;}
-        .table-col-5 {width: 12%;}
-        .table-col-6 {width: 12%;}
+		    > th, > td {text-align: center;}
+		    .is-child {padding-left: 1.1em;}
+		    .table-col-1 {width: 40%; text-align: left;}
+		    .table-col-2 {width: 12%;}
+		    .table-col-3 {width: 12%;}
+		    .table-col-4 {width: 12%;}
+		    .table-col-5 {width: 12%;}
+		    .table-col-6 {width: 12%;}
 
-        > thead {
-            > tr {
-                border:1px solid @bb-toolbar-border;
-                background-color: @bb-toolbar-bg;
-                > th {
-                    border-bottom: 1px solid @bb-toolbar-border; vertical-align: middle;
-                }
-            }
-        }
-        > tbody > tr {
-            > td,> th {padding-bottom: 5px; padding-top:5px;}
-        }
+		    > thead {
+			> tr {
+			    border:1px solid @bb-toolbar-border;
+			    background-color: @bb-toolbar-bg;
+			    > th {
+				border-bottom: 1px solid @bb-toolbar-border; vertical-align: middle;
+			    }
+			}
+		    }
+		    > tbody > tr {
+			> td,> th {padding-bottom: 5px; padding-top:5px;}
+		    }
     }
 
     /*datetimepicker*/
@@ -2289,7 +2298,7 @@ Version: 2.10 Dec2014
             opacity: 1;
             &:before {
                 -webkit-animation: dropzone-over 4s infinite;
-                    animation: dropzone-over 4s infinite;
+		animation: dropzone-over 4s infinite;
             }
         }
     }
@@ -2313,7 +2322,7 @@ Version: 2.10 Dec2014
 }
 @-webkit-keyframes dropzone-over {
     0%, 50%, 100%{
-      -webkit-transform: translateY(0px);
+	-webkit-transform: translateY(0px);
     }
     25% {
         -webkit-transform: translateY(10px);
@@ -2359,11 +2368,11 @@ Version: 2.10 Dec2014
     .bb-content {
         &.bb-content-hover {
             -webkit-box-shadow:0px 0px 1px 3px fade(#000,20%);
-                box-shadow:0px 0px 1px 3px fade(#000,20%);
+	    box-shadow:0px 0px 1px 3px fade(#000,20%);
         }
         &.bb-content-selected {
             -webkit-box-shadow:0px 0px 1px 3px fade(@brand-primary, 85%);
-                box-shadow:0px 0px 1px 3px fade(@brand-primary, 85%);
+	    box-shadow:0px 0px 1px 3px fade(@brand-primary, 85%);
         } /*clicked block -> orange*/
         &.bb-content-container-area {
             border: 2px dashed grey;
