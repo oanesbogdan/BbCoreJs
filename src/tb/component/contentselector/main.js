@@ -279,8 +279,30 @@ define(
                 },
 
                 loadRootNode: function () {
-                    var tree = this.categoryTreeView.getRootNode();
-                    this.categoryTreeView.invoke("openNode", tree.children[0]);
+                    var tree = this.categoryTreeView.getRootNode(),
+                        rootNode = tree.children[0],
+                        firstElement;
+
+                    this.categoryTreeView.invoke("openNode", rootNode);
+
+                    if (rootNode.children.length > 0) {
+                        firstElement = rootNode.children[0];
+
+                        jQuery(firstElement.element).addClass('jqtree-selected');
+
+                        this.updateData(firstElement);
+                    }
+                },
+
+                updateData: function (element) {
+                    if (element.isACategory) {
+                        this.contentRestDataStore.unApplyFilter('byClasscontent').applyFilter('byCategory', element.name);
+                    } else {
+                        this.contentRestDataStore.unApplyFilter('byCategory').applyFilter('byClasscontent', element.type);
+                    }
+
+                    this.contentPagination.reset();
+                    this.contentRestDataStore.setStart(0).setLimit(this.contentPagination.getItemsOnPage()).execute();
                 },
 
                 initLayout: function () {
@@ -340,14 +362,7 @@ define(
                             return;
                         }
 
-                        if (selectedNode.isACategory) {
-                            self.contentRestDataStore.unApplyFilter('byClasscontent').applyFilter('byCategory', selectedNode.name);
-                        } else {
-                            self.contentRestDataStore.unApplyFilter('byCategory').applyFilter('byClasscontent', selectedNode.type);
-                        }
-                        self.contentPagination.reset();
-                        /* always reset pagination when we change category*/
-                        self.contentRestDataStore.setStart(0).setLimit(self.contentPagination.getItemsOnPage()).execute();
+                        self.updateData(selectedNode);
                     });
                     /* When range Changes */
                     this.pageRangeSelector.on("pageRangeSelectorChange", function (val) {
