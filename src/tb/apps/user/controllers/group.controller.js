@@ -52,8 +52,15 @@ define(
              */
             indexService: function (req, popin) {
                 var View = req('user/views/group/view.list'),
-                    template = req('text!user/templates/group/list.twig');
+                    template = req('text!user/templates/group/list.twig'),
+                    groupMask = require('component!mask').createMask({
+                        'message': trans('loading_groups')
+                    }),
+                    groupArea = jQuery('#' + popin.groupsAreaId);
 
+                groupArea.css('height', '70px');
+
+                groupMask.mask(groupArea);
 
                 this.repository.paginate().then(
                     function (groups) {
@@ -65,6 +72,8 @@ define(
                         }
 
                         popin.addGroups(renderer.render(template, {groups: groups}));
+
+                        groupMask.unmask(groupArea);
                     },
                     function () {
                         popin.addGroups('');

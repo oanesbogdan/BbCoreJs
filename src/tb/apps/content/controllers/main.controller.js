@@ -35,7 +35,9 @@ define(
         'jquery',
         'content.widget.DialogContentsList',
         'component!notify',
-        'content.widget.Edition'
+        'content.widget.Edition',
+        'component!mask',
+        'component!translator'
     ],
     function (
         Core,
@@ -54,7 +56,9 @@ define(
         jQuery,
         DialogContentsList,
         notify,
-        Edition
+        Edition,
+        MaskManager,
+        Translator
     ) {
         'use strict';
 
@@ -336,28 +340,43 @@ define(
 
             contributionIndexAction: function () {
 
-                var self = this;
+                var self = this,
+                    mask,
+                    contribArea;
 
                 Core.ApplicationManager.invokeService('contribution.main.index').done(function (service) {
                     service.done(function () {
                         Core.Scope.register('contribution', 'block');
 
                         if (self.contribution_loaded !== true) {
+
+                            contribArea = jQuery('#block-contrib-tab');
+
+                            mask = MaskManager.createMask({
+                                'message': Translator.translate('loading_blocks'),
+                                'css': {
+                                    'height': '97px',
+                                    'position': 'static'
+                                }
+                            });
+
+                            mask.mask(contribArea);
+
                             ContentRepository.findCategories().done(function (categories) {
                                 var view = new ContributionIndexView({
                                     'categories': categories
                                 });
                                 view.render();
 
+                                mask.unmask(contribArea);
+
                                 self.contribution_loaded = true;
 
                                 DndManager.initDnD();
-
-                                Core.ApplicationManager.invokeService('contribution.main.manageTabMenu', '#edit-tab-block');
                             });
-                        } else {
-                            Core.ApplicationManager.invokeService('contribution.main.manageTabMenu', '#edit-tab-block');
                         }
+
+                        Core.ApplicationManager.invokeService('contribution.main.manageTabMenu', '#edit-tab-block');
                     });
                 });
             },

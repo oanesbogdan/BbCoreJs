@@ -17,71 +17,84 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['Core', 'page.view.tree.contribution', 'jquery'], function (Core, Parent, jQuery) {
-    'use strict';
-    var PageStore;
+define(
+    [
+        'Core',
+        'page.view.tree.contribution',
+        'jquery',
+        'component!mask'
+    ],
+    function (Core, Parent, jQuery, MaskManager) {
 
-    return Parent.extend({
+        'use strict';
 
-        /**
-         * Event trigged on double click in node tree
-         * @param {Object} event
-         */
-        onDoubleClick: function () {
-            return;
-        },
+        var PageStore;
 
-        onRightClick: function () {
-            return;
-        },
+        return Parent.extend({
 
-        onMove: function () {
-            return;
-        },
+            /**
+             * Event trigged on double click in node tree
+             * @param {Object} event
+             */
+            onDoubleClick: function () {
+                return;
+            },
 
-        setPageStore: function (pageStore) {
-            PageStore = pageStore;
-        },
+            onRightClick: function () {
+                return;
+            },
 
-        renderIn: function (selector) {
-            var self = this;
+            onMove: function () {
+                return;
+            },
 
-            this.view.getTree().done(function (tree) {
-                tree.render(selector);
+            setPageStore: function (pageStore) {
+                PageStore = pageStore;
+            },
 
-                if (self.autoLoadRoot) {
-                    self.loadTreeRoot(tree);
-                }
+            renderIn: function (selector) {
+                var self = this,
+                    mask = MaskManager.createMask({});
 
-                self.view.on('rootIsLoaded', function () {
-                    var rootNode = tree.invoke('getNodeById', Core.get('root.uid'));
+                mask.mask(selector);
 
-                    jQuery(rootNode.element).children('div.jqtree-element').find('span').addClass('txt-highlight');
-                });
+                this.view.getTree().done(function (tree) {
+                    tree.render(selector);
 
-                self.treeView.on('click', function (event) {
-                    if (event.node.is_fake === true) {
-                        return;
+                    if (self.autoLoadRoot) {
+                        self.loadTreeRoot(tree);
                     }
-                    Core.ApplicationManager.invokeService('page.main.popinDisplayManagement', true);
-                    var element = jQuery(event.node.element),
-                        children = element.children('.jqtree-element'),
-                        westBlock = element.parents('.ui-layout-west');
 
-                    westBlock.find('.txt-highlight').removeClass('txt-highlight');
-                    children.find('span').addClass('txt-highlight');
+                    self.view.on('rootIsLoaded', function () {
+                        var rootNode = tree.invoke('getNodeById', Core.get('root.uid'));
 
-                    PageStore.applyFilter('byStatus', [0, 1, 2, 3]);
-                    PageStore.applyFilter('byOffset', 1);
-                    PageStore.applyFilter('byParent', event.node.uid);
-                    PageStore.applyFilter('searchAction', '1');
-                    PageStore.execute().done(function () {
-                        Core.ApplicationManager.invokeService('page.main.popinDisplayManagement', false);
+                        jQuery(rootNode.element).children('div.jqtree-element').find('span').addClass('txt-highlight');
+                    });
+
+                    self.treeView.on('click', function (event) {
+                        if (event.node.is_fake === true) {
+                            return;
+                        }
+                        Core.ApplicationManager.invokeService('page.main.popinDisplayManagement', true);
+                        var element = jQuery(event.node.element),
+                            children = element.children('.jqtree-element'),
+                            westBlock = element.parents('.ui-layout-west');
+
+                        westBlock.find('.txt-highlight').removeClass('txt-highlight');
+                        children.find('span').addClass('txt-highlight');
+
+                        PageStore.applyFilter('byStatus', [0, 1, 2, 3]);
+                        PageStore.applyFilter('byOffset', 1);
+                        PageStore.applyFilter('byParent', event.node.uid);
+                        PageStore.applyFilter('searchAction', '1');
+                        PageStore.execute().done(function () {
+                            Core.ApplicationManager.invokeService('page.main.popinDisplayManagement', false);
+                        });
                     });
                 });
-            });
 
-            return this;
-        }
-    });
-});
+                return this;
+            }
+        });
+    }
+);

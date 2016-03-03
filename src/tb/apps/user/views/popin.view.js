@@ -54,6 +54,9 @@ define(
                 }
             },
 
+            usersAreaId: 'user-list',
+            groupsAreaId: 'group-list',
+
             /**
              * Initialize of PageViewEdit
              */
@@ -171,12 +174,12 @@ define(
              * @returns {Object} PageViewEdit
              */
             addUsers: function (user_list) {
-                jQuery('#user-list').html(user_list);
+                jQuery('#' + this.usersAreaId).html(user_list);
                 this.bindUsers();
             },
 
             addGroups: function (group_list) {
-                jQuery('#group-list').html(group_list);
+                jQuery('#' + this.groupsAreaId).html(group_list);
                 this.bindGroups();
             }
         });
