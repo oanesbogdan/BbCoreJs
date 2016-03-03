@@ -988,6 +988,13 @@ Version: 2.10 Dec2014
                 border-color:@brand-primary;
             }
 
+            &:before {
+                content:"";
+                position: absolute;
+                top:0;
+                left: 0;
+            }
+              
             /* -> grid*/
             p {
                 margin: 0;
@@ -1039,6 +1046,24 @@ Version: 2.10 Dec2014
             -webkit-border-radius:0px;
             -moz-border-radius:0px;
             border-radius:0px;
+
+            &:before {
+                bottom:0;
+                border-left: 12px solid;
+            
+            }
+
+            &.bb-content-offline {
+                &:before {
+                   border-color: @bb5-clr-offline; 
+                }
+            }
+            &.bb-content-online {
+                &:before {
+                   border-color: @bb5-clr-online; 
+                }
+            }
+        
 
             p {
                 display:inline-block;
@@ -1097,6 +1122,24 @@ Version: 2.10 Dec2014
 
         }
 
+        /*Grid*/
+        &.bb5-list-media-is-grid  {
+            li {
+                &:before {
+                    border: 18px solid;
+                }
+                &.bb-content-offline {
+                    &:before {
+                       border-color: @bb5-clr-offline transparent transparent @bb5-clr-offline;
+                    }
+                }
+                &.bb-content-online {
+                    &:before {
+                       border-color: @bb5-clr-online transparent transparent @bb5-clr-online; 
+                    }
+                }
+            }
+        }
 
         /**/
         &.bb5-list-media-is-list.contentset_list li  {
@@ -1560,6 +1603,43 @@ Version: 2.10 Dec2014
             border-right:0;
             border-left:0;
             margin:0 0 7px 0;
+        }
+
+        .legend {
+            padding: 0;
+            list-style: none;
+            position: absolute;
+            bottom: 14px;
+            left: 0;
+
+            li {
+                display: inline-block;
+                padding-right: 1.5em;
+                span.legend-clr {
+                    display: inline-block;
+                    width: 14px;
+                    height: 14px;
+                    vertical-align: middle;
+                }
+
+                &.bb-content-offline {
+                    span.legend-clr {
+                        background-color: @bb5-clr-offline;
+                    }
+                }
+
+                &.bb-content-online {
+                    span.legend-clr {
+                        background-color: @bb5-clr-online;
+                    }
+                }
+
+                &.bb-content-not-used {
+                    span.legend-clr {
+                        background-color: lighten(@bb-toolbar-bg, 1%);
+                    }                    
+                }
+            }
         }
     }
 

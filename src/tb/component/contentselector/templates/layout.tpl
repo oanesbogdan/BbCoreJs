@@ -31,6 +31,11 @@
             <p class="bb5-widget-toolbar result-infos"></p>
             <div class="bb5-widget-toolbar list-options clearfix">
               <ul class="pagination content-selection-pagination clearfix"></ul>
+              <ul class="legend">
+                <li class="bb-content-offline"><span class="legend-clr"></span> {{ "content_selector_on_offline" | trans }}</li>
+                <li class="bb-content-online"><span class="legend-clr"></span> {{ "content_selector_on_online" | trans }}</li>
+                <li class="bb-content-not-used"><span class="legend-clr"></span> {{ "content_selector_not_used" | trans }}</li>
+              </ul>
               <p class="pull-right">
                 <button type="button" data-viewmode="grid" class="btn viewmode-btn btn-simple bb5-sortasgrid fa fa-th-large"></button>
                 <button type="button" data-viewmode="list" class="btn viewmode-btn btn-simple bb5-sortaslist fa fa-list-ul"></button>
