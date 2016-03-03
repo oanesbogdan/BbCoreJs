@@ -9275,6 +9275,7 @@ fieldset[disabled] #bb5-ui .btn-online.active {
 #bb5-ui .bb5-list-media {
   padding: 0;
   /* -> list*/
+  /*Grid*/
   /**/
 }
 #bb5-ui .bb5-list-media li {
@@ -9289,6 +9290,12 @@ fieldset[disabled] #bb5-ui .btn-online.active {
 }
 #bb5-ui .bb5-list-media li.selected {
   border-color: #e34c26;
+}
+#bb5-ui .bb5-list-media li:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 #bb5-ui .bb5-list-media li p {
   margin: 0;
@@ -9328,6 +9335,16 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   border-radius: 0px;
   /*Img*/
   /*Img data*/
+}
+#bb5-ui .bb5-list-media.bb5-list-media-is-list li:before {
+  bottom: 0;
+  border-left: 12px solid;
+}
+#bb5-ui .bb5-list-media.bb5-list-media-is-list li.bb-content-offline:before {
+  border-color: #ea795c;
+}
+#bb5-ui .bb5-list-media.bb5-list-media-is-list li.bb-content-online:before {
+  border-color: #b3d940;
 }
 #bb5-ui .bb5-list-media.bb5-list-media-is-list li p {
   display: inline-block;
@@ -9370,6 +9387,15 @@ fieldset[disabled] #bb5-ui .btn-online.active {
 }
 #bb5-ui .bb5-list-media.bb5-list-media-is-list li.bb5-content-item p:first-child a.edit img {
   width: 100%;
+}
+#bb5-ui .bb5-list-media.bb5-list-media-is-grid li:before {
+  border: 18px solid;
+}
+#bb5-ui .bb5-list-media.bb5-list-media-is-grid li.bb-content-offline:before {
+  border-color: #ea795c transparent transparent #ea795c;
+}
+#bb5-ui .bb5-list-media.bb5-list-media-is-grid li.bb-content-online:before {
+  border-color: #b3d940 transparent transparent #b3d940;
 }
 #bb5-ui .bb5-list-media.bb5-list-media-is-list.contentset_list li p:first-child {
   width: 55px;
@@ -9763,6 +9789,32 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   border-right: 0;
   border-left: 0;
   margin: 0 0 7px 0;
+}
+#bb5-ui .bb5-widget-toolbar .legend {
+  padding: 0;
+  list-style: none;
+  position: absolute;
+  bottom: 14px;
+  left: 0;
+}
+#bb5-ui .bb5-widget-toolbar .legend li {
+  display: inline-block;
+  padding-right: 1.5em;
+}
+#bb5-ui .bb5-widget-toolbar .legend li span.legend-clr {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  vertical-align: middle;
+}
+#bb5-ui .bb5-widget-toolbar .legend li.bb-content-offline span.legend-clr {
+  background-color: #ea795c;
+}
+#bb5-ui .bb5-widget-toolbar .legend li.bb-content-online span.legend-clr {
+  background-color: #b3d940;
+}
+#bb5-ui .bb5-widget-toolbar .legend li.bb-content-not-used span.legend-clr {
+  background-color: #f6f6f6;
 }
 #bb5-ui .pagination > li {
   display: inline-block;

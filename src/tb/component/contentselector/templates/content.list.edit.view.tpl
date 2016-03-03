@@ -1,14 +1,14 @@
 {% set background = '' %}
 
 {% if is_mainnode_online == 1 %}
-    {% set background = 'bg-success bb-content-online' %}
+    {% set background = 'bb-content-online' %}
 {% elif is_mainnode_online == 0 %}
-    {% set background = 'bg-danger bb-content-offline' %}
+    {% set background = 'bb-content-offline' %}
 {% endif %}
 
 <li data-uid={{uid}} class="bb5-selector-item {{ background }}" >
     <p class="item-picture">
-        <a title="{{label}}" href="javascript:;" class="{{ background }}">
+        <a title="{{label}}" href="javascript:;">
             <img alt="{{label}}" src="{{image}}">
         </a>
     </p>
