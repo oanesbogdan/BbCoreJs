@@ -167,6 +167,16 @@ define(
                 return result;
             },
 
+            addElement: function (key, value) {
+                var children = this.getChildren();
+
+                if (children[key]) {
+                    children[key] = value;
+                    this.revision.elements = children;
+                    this.setUpdated(true);
+                }
+            },
+
             updateRevision: function () {
                 this.updateRevisionElements();
 
