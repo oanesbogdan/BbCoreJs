@@ -6559,19 +6559,6 @@ colpick Color Picker / colpick.com
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dadada', endColorstr='#00000000', GradientType=0);
   /* IE6-9 */
 }
-.bb-overlay {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  font-size: 14px;
-  height: 100%;
-  left: 0;
-  position: absolute;
-  text-align: center;
-  border: 1px solid;
-  top: 0;
-  z-index: 489999;
-  width: 100%;
-}
 #bb5-ui {
   position: fixed;
   z-index: 490000;
@@ -6819,18 +6806,38 @@ Rich editor
 #bb5-ui #bb5-maintabsContent {
   position: relative;
 }
-#bb5-ui .bb-overlay {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
+#bb5-ui .bb-overlay,
+.bb-overlay {
+  background: -moz-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.4) 40%, rgba(229,229,229,0.9) 100%);
+  background: -webkit-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.4) 40%,rgba(229,229,229,0.9) 100%);
+  background: radial-gradient(ellipse at center,  rgba(255,255,255,0.4) 40%,rgba(229,229,229,0.9) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#99ffffff', endColorstr='#e6e5e5e5',GradientType=1 );
+  color: #333;
   font-size: 14px;
   height: 100%;
   left: 0;
   position: absolute;
   text-align: center;
-  border: 1px solid;
   top: 0;
   z-index: 489999;
   width: 100%;
+}
+#bb5-ui .bb-overlay .overlay-wrapper {
+  display: table;
+  width: 100%;
+  height: 100%;
+}
+#bb5-ui .bb-overlay .overlay-wrapper > div {
+  display: table-cell;
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
+}
+#bb5-ui .bb-overlay .bb-loader {
+  display: block;
+  height: 40px;
+  width: 40px;
+  margin: 0 auto 1em auto;
 }
 #bb5-ui #bb5-navbar-primary {
   border-radius: 0;
@@ -10679,6 +10686,21 @@ fieldset[disabled] #bb5-ui .btn-online.active {
 }
 #bb5-ui .xdsoft_datetimepicker {
   z-index: 490010;
+}
+#bb5-ui .bb-loader {
+  border-width: 1px;
+  border-color: #e34c26 transparent transparent;
+  border-radius: 100%;
+  border-style: solid;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  animation: loader 1s linear infinite;
+}
+@keyframes loader {
+  to {
+    transform: rotate(360deg);
+  }
 }
 #bb5-ui .spinner {
   margin: 0 auto;

@@ -17,7 +17,8 @@ define(['Core', 'jquery', 'component!translator', 'jsclass'], function (Core, jQ
                 key;
 
             jQuery(loader).addClass(this.config.loaderCls);
-            jQuery(loader).html('<i class="fa fa-spin fa-spinner"></i>' + this.config.message);
+
+            jQuery(loader).html('<div class="overlay-wrapper"><div><i class="bb-loader"></i>' + this.config.message + '</div></div>');
 
             for (key in this.config.css) {
                 if (this.config.css.hasOwnProperty(key)) {

@@ -65,6 +65,21 @@
 #bb5-ui #bb5-ui .pager:after {
   clear: both;
 }
+.bb-overlay {
+  background: -moz-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.4) 40%, rgba(229,229,229,0.9) 100%);
+  background: -webkit-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.4) 40%,rgba(229,229,229,0.9) 100%);
+  background: radial-gradient(ellipse at center,  rgba(255,255,255,0.4) 40%,rgba(229,229,229,0.9) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#99ffffff', endColorstr='#e6e5e5e5',GradientType=1 );
+  color: #333;
+  font-size: 14px;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  z-index: 489999;
+  width: 100%;
+}
 #bb5-site-wrapper .content-actions button,
 #bb5-site-wrapper .content-actions a {
   text-align: left;
