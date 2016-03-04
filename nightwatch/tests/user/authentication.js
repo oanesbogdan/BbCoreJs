@@ -178,6 +178,9 @@ module.exports = {
         // Check if toolbar is present
         toolbarSection.assert.elementPresent(toolbarSection.selector);
 
+        // Set class on body element before logout to test if the page refresh
+        client.windowSetClassOnElement('', testRefreshClass);
+
         // Simulate logout
         userSettingsSection
             .assert.elementPresent('@topMostLogin')
@@ -191,6 +194,14 @@ module.exports = {
             .getLocalStorage('bb-session-auth', function (result) {
                 this.assert.ok(result.value === null, 'Check if successfull logout');
             });
+
+        // Check if toolbar is not present
+        toolbarSection.assert.elementNotPresent(toolbarSection.selector);
+
+        // Check if the page is refreshed after logout
+        client
+            .pause(client.globals.loadTime.toolbar)
+            .expect.element('body').to.not.have.attribute('class').which.contains(testRefreshClass);
     },
 
     /**
