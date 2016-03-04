@@ -26,7 +26,9 @@ define(
         'page.save.manager',
         'Core/Utils',
         'page.store',
-        'jquery'
+        'jquery',
+        'component!mask',
+        'component!translator'
     ],
     function (
         Core,
@@ -36,7 +38,9 @@ define(
         SaveManager,
         Utils,
         PageStore,
-        jQuery
+        jQuery,
+        MaskManager,
+        Translator
     ) {
 
         'use strict';
@@ -81,7 +85,9 @@ define(
              */
             contributionIndexAction: function () {
 
-                var self = this;
+                var self = this,
+                    mask,
+                    contribArea;
 
                 Core.ApplicationManager.invokeService('contribution.main.index').done(function (service) {
                     service.done(function () {
@@ -89,21 +95,38 @@ define(
                         Core.Scope.register('contribution', 'page');
 
                         if (self.contribution_loaded !== true) {
+
+                            contribArea = jQuery('#page-contrib-tab');
+
+                            mask = MaskManager.createMask({
+                                'message': Translator.translate('loading_page_parameters'),
+                                'css': {
+                                    'height': '97px',
+                                    'position': 'static'
+                                }
+                            });
+
+                            mask.mask(contribArea);
+
                             self.repository.findCurrentPage().done(function (data) {
                                 if (data.hasOwnProperty(0)) {
                                     data = data[0];
                                 }
+
                                 Core.set("current.page", data);
+
                                 var view = new ContributionIndexView({'data': data});
+
                                 view.render();
+
+                                mask.unmask(contribArea);
 
                                 self.contribution_loaded = true;
 
-                                Core.ApplicationManager.invokeService('contribution.main.manageTabMenu', '#edit-tab-page');
                             });
-                        } else {
-                            Core.ApplicationManager.invokeService('contribution.main.manageTabMenu', '#edit-tab-page');
                         }
+
+                        Core.ApplicationManager.invokeService('contribution.main.manageTabMenu', '#edit-tab-page');
                     });
                 });
             },

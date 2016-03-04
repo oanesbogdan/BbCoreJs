@@ -3,7 +3,8 @@ define(['Core', 'jquery', 'component!translator', 'jsclass'], function (Core, jQ
     var Mask = new JS.Class({
         defaultConfig: {
             loaderCls: 'bb-overlay',
-            message: Translator.translate('loading')
+            message: Translator.translate('loading'),
+            css: {}
         },
 
         initialize: function (config) {
@@ -12,9 +13,18 @@ define(['Core', 'jquery', 'component!translator', 'jsclass'], function (Core, jQ
         },
 
         buildLoader: function () {
-            var loader = jQuery("<div/>").clone();
+            var loader = jQuery("<div/>").clone(),
+                key;
+
             jQuery(loader).addClass(this.config.loaderCls);
             jQuery(loader).html('<i class="fa fa-spin fa-spinner"></i>' + this.config.message);
+
+            for (key in this.config.css) {
+                if (this.config.css.hasOwnProperty(key)) {
+                    jQuery(loader).css(key, this.config.css[key]);
+                }
+            }
+
             return loader;
         },
 

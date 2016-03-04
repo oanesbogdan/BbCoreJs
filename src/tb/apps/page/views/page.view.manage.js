@@ -5,6 +5,7 @@ define([
     'Core/Renderer',
     'text!page/tpl/manage.list.twig',
     'component!translator',
+    'component!mask',
     'page.view.tree.management',
     'component!popin',
     'component!rangeselector',
@@ -14,7 +15,7 @@ define([
     'content.repository',
     'component!notify',
     'jquery-layout'
-], function (jQuery, repository, Core, Renderer, template, Translator) {
+], function (jQuery, repository, Core, Renderer, template, Translator, MaskManager) {
 
     'use strict';
 
@@ -29,6 +30,7 @@ define([
         selectAllClass: 'bb-page-manage-select-all',
         itemLineClass: 'bb-page-manage-item-line',
         seeClass: 'btn-see',
+        dataInit: false,
 
         /**
          * Initialize of PageViewReview
@@ -62,7 +64,9 @@ define([
         },
 
         initDataview: function () {
-            var Dataview = require('component!dataview');
+            var Dataview = require('component!dataview'),
+                self = this;
+
             this.dataview = Dataview.createDataView({
                 allowMultiSelection: true,
                 selectedItemClass: "selected",
@@ -77,12 +81,31 @@ define([
             this.dataview.registerRenderer({
                 name: 'list',
                 render: function (items) {
-                    var wrapper = jQuery("<ul/>");
+                    var wrapper = jQuery("<ul/>"),
+                        mask = MaskManager.createMask({
+                            'message': Translator.translate('loading_pages'),
+                            'css': {
+                                'height': '100px',
+                                'position': 'static'
+                            }
+                        });
+
                     wrapper.addClass('bb5-list-data bb5-list-display-list clearfix');
-                    if (items.children.length === 0) {
-                        items = Translator.translate('page_no_results_found');
+
+                    if (self.dataInit) {
+                        if (items.children.length === 0) {
+                            items = Translator.translate('page_no_results_found');
+                        }
+
+                        wrapper.html(items);
+
+                    } else {
+                        mask.mask(wrapper);
+
+                        self.dataInit = true;
                     }
-                    return jQuery(wrapper).html(items);
+
+                    return wrapper;
                 }
             });
 

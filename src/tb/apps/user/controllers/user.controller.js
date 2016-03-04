@@ -93,8 +93,11 @@ define(
              */
             indexService: function (req, popin, params) {
                 var current = Core.get('current_user'),
-                    self = this;
-
+                    self = this,
+                    usersMask = require('component!mask').createMask({
+                        'message': trans('loading_users')
+                    }),
+                    userArea = jQuery('#' + popin.usersAreaId);
 
                 if (params !== undefined) {
                     if (params.reset === true) {
@@ -103,6 +106,10 @@ define(
                         this.pagination_params = params;
                     }
                 }
+
+                userArea.css('height', '70px');
+
+                usersMask.mask(userArea);
 
                 this.repository.paginate(this.pagination_params).then(
                     function (users) {
@@ -113,6 +120,8 @@ define(
                                     current.populate(user_values);
 
                                     self.updateIndexView(req, popin, users, current);
+
+                                    usersMask.unmask('#' + popin.usersAreaId);
                                 }
                             );
                         } else {
