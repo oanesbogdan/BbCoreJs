@@ -63,6 +63,7 @@ define(
                 };
 
                 var toolbar = jQuery(this.config.tbSelector),
+                    parentUid = toolbar.attr('data-parent-uid'),
                     pageUid = toolbar.attr('data-page-uid'),
                     siteUid = toolbar.attr('data-site-uid'),
                     layoutUid = toolbar.attr('data-layout-uid'),
@@ -77,6 +78,7 @@ define(
                     Core.exception('MissingDataException', 500, 'Page uid, Site uid root uid, and Layout uid must be set in toolbar');
                 }
 
+                Core.set('parent.uid', parentUid);
                 Core.set('page.uid', pageUid);
                 Core.set('site.uid', siteUid);
                 Core.set('layout.uid', layoutUid);
