@@ -96,17 +96,17 @@ define(
             showNewPage: function () {
                 var popinId = 'bb-new-page',
                     config = {
-                        'parent_uid': Core.get('page.uid'),
+                        'parent_uid': Core.get('parent.uid') || Core.get('page.uid'),
                         'flag': 'redirect',
                         'popinId': popinId,
                         'from_page': true
                     };
+
                 if (document.getElementById(popinId) !== null) {
                     jQuery('#' + popinId).dialog('open');
                 } else {
                     Core.ApplicationManager.invokeService('page.main.newPage', config);
                 }
-
             },
 
             showMediaLibrary: function (config) {
