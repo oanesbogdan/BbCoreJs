@@ -38,7 +38,7 @@ module.exports = {
                             selector: 'a.fa.fa-pencil'
                         },
                         infoCircle: {
-                            selector: 'a.fa.fa-trash-o'
+                            selector: 'a.fa.fa-info-circle'
                         },
                         cog: {
                             selector: 'a.fa.fa-cog'
@@ -48,10 +48,10 @@ module.exports = {
             },
             elements: {
                 contentSelected: {
-                    selector: 'div.bb-content.bb-dnd.bb-content-selected[data-bb-identifier^="Article/Article"]'
+                    selector: '.bb-content.bb-dnd.bb-content-selected[data-bb-identifier^="Article/Article"]'
                 },
                 contentPlugins: {
-                    selector: 'div.bb-content.bb-dnd.bb-content-selected[data-bb-identifier^="Article/Article"] > div.bb5-ui.bb5-content-actions.content-actions'
+                    selector: '.bb-content.bb-dnd.bb-content-selected[data-bb-identifier^="Article/Article"] > div.bb5-ui.bb5-content-actions.content-actions'
                 }
             }
         },
