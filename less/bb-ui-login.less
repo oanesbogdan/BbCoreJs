@@ -54,7 +54,26 @@
       }
     }
   }
+
+  .bb-overlay {
+    &:extend(#bb5-ui .bb-overlay all);
+  }
+
+  > .bb-overlay {
+      display: none;
+  }
+
+  .bb-loader {
+    &:extend(#bb5-ui .bb-loader);
+  }
 }
+
+@keyframes loader {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .animation-delay(@delay) {
   animation-delay: @delay;
   -o-animation-delay: @delay;
