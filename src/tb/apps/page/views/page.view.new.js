@@ -33,6 +33,7 @@ define(
                 });
 
                 this.popin.setId(config.popinId);
+                this.popin.setClass('create-new-page-popin');
                 this.fromPage = config.from_page || false;
 
                 this.formBuilder = require('component!formbuilder');

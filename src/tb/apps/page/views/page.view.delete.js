@@ -47,6 +47,7 @@ define(
                     this.popin = require('component!popin').createPopIn({
                         position: { my: "center top", at: "center top+" + jQuery('#' + Core.get('menu.id')).height()}
                     });
+                    this.popin.setClass('delete-page-popin');
 
                     Core.ApplicationManager.invokeService('page.main.registerPopin', 'pageDelete', this.popin);
 
