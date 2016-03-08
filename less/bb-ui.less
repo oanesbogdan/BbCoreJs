@@ -1000,12 +1000,15 @@ Version: 2.10 Dec2014
                 border-color:@brand-primary;
             }
 
-            &:before {
-                content:"";
-                position: absolute;
-                top:0;
-                left: 0;
+            &.bb-content-offline, &.bb-content-online {
+                &:before {
+                    content:"";
+                    position: absolute;
+                    top:0;
+                    left: 0;
+                }
             }
+
               
             /* -> grid*/
             p {
