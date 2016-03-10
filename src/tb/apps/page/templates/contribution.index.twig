@@ -25,7 +25,8 @@
             <span class="select">
                 <select id="page-state-select" class="form-control input-xs page-state-select" name="state" {% if page.is_root == true %}disabled{% endif %} >
                     {% for state in states %}
-                        <option {% if page.state_code == state.code %}selected{% endif %} value="{{ state.code }}">{{ state.label }}</option>
+			{% set label = 'state-' + state.code %}
+                        <option {% if page.state_code == state.code %}selected{% endif %} value="{{ state.code }}">{{ label|trans }}</option>
                     {% endfor %}
                 </select>
             </span>
