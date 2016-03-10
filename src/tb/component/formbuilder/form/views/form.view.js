@@ -66,6 +66,7 @@ define(['Core', 'Core/Renderer', 'BackBone', 'jquery'], function (Core, Renderer
             });
 
             this.computeCheckBoxes(form, paramObj);
+            this.computeMultipleSelectors(form, paramObj);
 
             disabled.attr('disabled', 'disabled');
 
@@ -86,6 +87,21 @@ define(['Core', 'Core/Renderer', 'BackBone', 'jquery'], function (Core, Renderer
                         if (paramObj[name] === undefined) {
                             paramObj[name] = [];
                         }
+                    }
+                });
+            }
+        },
+
+        computeMultipleSelectors: function (form, paramObj) {
+            var multipleSelectors = form.find('select[multiple]');
+
+            if (multipleSelectors.length > 0) {
+                multipleSelectors.each(function () {
+                    var target = jQuery(this),
+                        name = target.prop('name');
+
+                    if (name && !target.prop('value')) {
+                        paramObj[name] = [];
                     }
                 });
             }
