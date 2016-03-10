@@ -3,12 +3,24 @@
         "baseUrl" : "http://early.backbee.com",
         "loadTime" : {
             "defaultWait" : 1000,
+            "minimumWait" : 250,
             "body" : 100,
             "loginPopin" : 3000,
-            "toolbar" : 8000,
+            "toolbar" : 10000,
             "logout" : 3000,
-            "errorDisplay": 75,
-	    "clickContent": 8000
+            "errorDisplay" : 75,
+            "pageTree" : {
+                "loadPopin" : 150,
+                "createPagePopin" : 1500,
+                "editPagePopin" : 1500,
+                "deletePagePopin" : 1500,
+                "createPage" : 1000,
+                "defaultWait" : 700,
+                "searchInput" : 600,
+                "searchSubmitButton" : 300,
+                "waitForSearchResults" : 500,
+                "waitForSubpagesToShow": 1000
+            }
         },
         "login" : {
             "realUser" : {
@@ -18,6 +30,14 @@
             "fakeUser" : {
                 "username" : "fakeuser",
                 "password" : "fakepassword"
+            }
+        },
+        "pageTree" : {
+            "searchForPage" : "Sport",
+            "createNewPage" : "Create new page test",
+            "position" : {
+                "x" : 10,
+                "y" : 200
             }
         }
     }
