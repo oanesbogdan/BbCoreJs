@@ -172,7 +172,7 @@ define([ 'Core', 'component!popin', 'BackBone', 'jquery', 'content.manager', 'co
                                                 var key;
 
                                                 for (key in parentElements) {
-                                                    if (parentElements.hasOwnProperty(key)) {
+                                                    if (parentElements.hasOwnProperty(key) && parentElements[key] !== null) {
                                                         if (parentElements[key].uid === currentMediaContent.uid) {
                                                             parent.addElement(key, {'uid': mediaContent.uid, 'type': mediaContent.type});
                                                         }
