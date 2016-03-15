@@ -95,6 +95,7 @@
     "delete_content": "Delete content",
     "delete_media": "Delete media",
     "delete_page": "Delete page",
+    "restore_page": "Restore page",
     "delete_user": "Delete user",
     "display": "Display",
     "display_external_content": "Display external content",
@@ -134,6 +135,7 @@
     "grouped_offline_text": "Put the selected page(s) offline?",
     "grouped_online_text": "Put the selected page(s) online?",
     "grouped_remove_text": "Remove the selected page(s)?<br>Warning : if you place pages in the Trash, they will be removed permanently once the Trash is emptied",
+    "grouped_restore_text": "Restore the selected page(s)?",
     "groups": "Groups",
 
     "has_been_deleted": "has been deleted",
@@ -207,6 +209,7 @@
 
     "page": "Page",
     "page_deleted": "Page deleted",
+    "page_restored": "Page restored",
     "page_filters": "Page filters",
     "page_modification_canceled": "Page modifications canceled",
     "page_modification_validated": "Page modifications validated",
@@ -214,6 +217,7 @@
     "page_set_online": "Page set online",
     "page_set_offline": "Page set offline",
     "pages_are_deleted": "Pages are deleted",
+    "pages_are_restored": "Pages are restored",
     "pages_set_online": "Pages set online",
     "pages_set_offline": "Pages set offline",
     "page_status": "Page status",
