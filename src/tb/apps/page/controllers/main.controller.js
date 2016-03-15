@@ -65,6 +65,7 @@ define(
                     toolbarManagementService: ['page.view.toolbar'],
                     setOnlineGroupedService: ['page.view.validation', 'component!translator', 'component!notify'],
                     setOfflineGroupedService: ['page.view.validation', 'component!translator', 'component!notify'],
+                    restoreGroupedService: ['page.view.validation', 'component!translator', 'component!notify'],
                     removeGroupedService: ['page.view.validation', 'component!translator', 'component!notify'],
                     changeParentGroupedService: ['component!translator', 'component!notify', 'page.view.tree.select.parent']
                 }
@@ -400,6 +401,37 @@ define(
                                 pageStore.execute();
                             },
                             function () {
+                                req('component!notify').error(translator.translate('internal_error'));
+                            }
+                        );
+                    }.bind(this),
+                    function () {
+                        view.destruct();
+                    }
+                );
+            },
+
+            restoreGroupedService: function (req, data, pageStore) {
+                var translator = req('component!translator'),
+                    View = req('page.view.validation'),
+                    view = new View({text: 'grouped_restore_text', popin: data.popin, popinTitle: translator.translate('restore_page')});
+
+                view.display().then(
+                    function () {
+                        data.popin.mask();
+                        this.repository.groupedPatch(data.uids, {state: 'restore'}).then(
+                            function () {
+                                if (data.uids.length === 1) {
+                                    req('component!notify').success(translator.translate('page_restored'));
+                                } else {
+                                    req('component!notify').success(translator.translate('pages_are_restored'));
+                                }
+                                pageStore.execute().done(function () {
+                                    data.popin.unmask();
+                                });
+                            },
+                            function () {
+                                data.popin.unmask();
                                 req('component!notify').error(translator.translate('internal_error'));
                             }
                         );

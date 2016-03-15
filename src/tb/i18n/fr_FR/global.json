@@ -95,6 +95,7 @@
     "delete_content": "Supprimer le contenu",
     "delete_media": "Supprimer le média",
     "delete_page": "Supprimer la page",
+    "restore_page": "Restaurer la page",
     "delete_user": "Supprimer l'utilisateur",
     "display": "Afficher",
     "display_external_content": "Afficher le contenu externe",
@@ -134,6 +135,7 @@
     "grouped_offline_text": "Mettre la (les) page(s) hors-ligne ?",
     "grouped_online_text": "Mettre la (les) page(s) sélectionnée(s) en ligne ?",
     "grouped_remove_text": "Supprimer la (les) page(s)?<br>Warning : Les pages supprimées de la poubelle seront supprimées définitivement",
+    "grouped_restore_text": "Restaurer la (les) page(s)",
     "groups": "Groupes",
 
     "has_been_deleted": "a été supprimé(e))",
@@ -206,6 +208,7 @@
 
     "page": "Page",
     "page_deleted": "Page supprimée",
+    "page_restored": "Page restaurée",
     "page_filters": "Filtres de la page",
     "page_modification_canceled": "Modification(s) de la page annulée(s)",
     "page_modification_validated": "Modifications(s) de la page validée(s)",
@@ -213,6 +216,7 @@
     "page_set_online": "Page mise en ligne",
     "page_set_offline": "Page mise hors ligne",
     "pages_are_deleted": "Pages sélectionnées",
+    "pages_are_restored": "Pages restaurées",
     "pages_set_online": "Pages mises en ligne",
     "pages_set_offline": "Pages mises hors ligne",
     "page_status": "Statut de la page",
