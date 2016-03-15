@@ -203,7 +203,16 @@ define(
 
                 PageRepository.moveNode(page_uid, data).done(function () {
                     Notify.success(Translator.translate('tree_modification_saved'));
-                    self.view.tree.popIn.unmask();
+
+                    PageRepository.find(page_uid).done(function (page) {
+                        if (self.currentEvent !== null && self.currentEvent.node.id === page.uid && self.currentEvent.node.uri !== page.uri) {
+                            jQuery(location).attr('href', page.uri);
+                        } else {
+                            self.view.updateNode(moveInfo.moved_node, page);
+                        }
+                        self.view.tree.popIn.unmask();
+                    });
+
                 });
             },
 
