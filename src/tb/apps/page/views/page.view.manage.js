@@ -63,10 +63,10 @@ define([
 
         toggleActionOptions: function (pageStore) {
             if (pageStore.isTrashFilter() === false) {
-                jQuery('.' + this.chooseActionSelectClass + ' option[value=setOnlineGrouped], .' + this.chooseActionSelectClass + 'option[value=setOfflineGrouped]').show();
+                jQuery('.' + this.chooseActionSelectClass + ' option[value=setOnlineGrouped], .' + this.chooseActionSelectClass + ' option[value=setOfflineGrouped]').show();
                 jQuery('.' + this.chooseActionSelectClass + ' option[value=restoreGrouped]').hide();
             } else {
-                jQuery('.' + this.chooseActionSelectClass + ' option[value=setOnlineGrouped], .' + this.chooseActionSelectClass + 'option[value=setOfflineGrouped]').hide();
+                jQuery('.' + this.chooseActionSelectClass + ' option[value=setOnlineGrouped], .' + this.chooseActionSelectClass + ' option[value=setOfflineGrouped]').hide();
                 jQuery('.' + this.chooseActionSelectClass + ' option[value=restoreGrouped]').show();
             }
         },
