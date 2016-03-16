@@ -364,7 +364,7 @@ define(
                     refreshPicture = function (img) {
                         var src = img.attr('src');
 
-                        if (src === undefined || src.length === 0 || img.naturalWidth === 0) {
+                        if (src === undefined || src.length === 0 || !img.naturalWidth) {
                             src = require('content.manager').defaultPicturePath;
 
                         }
@@ -429,7 +429,7 @@ define(
 
             /**
              * Replace all occurences of charToReplace with charReplaceWith in an array
-             * 
+             *
              * @param {Array} parseArray
              * @param {String} charToReplace
              * @param {String} charReplaceWith
