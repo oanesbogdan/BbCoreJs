@@ -10911,6 +10911,7 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   bottom: 0;
   right: 0;
   left: 0;
+  z-index: 10000;
 }
 #bb5-site-wrapper .content-actions {
   z-index: 489999;
