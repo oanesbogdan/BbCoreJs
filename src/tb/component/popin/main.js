@@ -251,7 +251,13 @@ define(
                  * Add unmask() method to Core.PopIn to remove loader overlay from dialog
                  */
                 popIn.unmask = function () {
+                    var input;
+
                     MaskManager.createMask({}).unmask(jQuery('#' + popIn.getId()).parent());
+                    input = jQuery('#' + popIn.getId() + ' form').find('input[type=text], input[type=email], select, textarea').eq(0);
+                    if (input.length && input.prop('tagName').toLowerCase() === 'input') {
+                        input.focus().val(input.val());
+                    }
                 };
 
                 return popIn;
