@@ -3,7 +3,7 @@
     "output_folder" : "nightwatch/reports",
     "custom_commands_path" : ["nightwatch/commands/login", "nightwatch/commands/utils", "nightwatch/commands/content"],
     "custom_assertions_path" : "",
-    "page_objects_path" : ["nightwatch/objects/login", "nightwatch/objects/content", "nightwatch/objects/page"],
+    "page_objects_path" : ["nightwatch/objects/login", "nightwatch/objects/content", "nightwatch/objects/page", "nightwatch/objects/toolbar"],
     "globals_path" : "nightwatch/configuration/globals.json",
 
     "test_settings" : {
