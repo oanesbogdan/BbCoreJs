@@ -366,7 +366,7 @@ define(
                     });
                     /* When range Changes */
                     this.pageRangeSelector.on("pageRangeSelectorChange", function (val) {
-                        self.contentRestDataStore.setLimit(val);
+                        self.contentRestDataStore.setStart(0).setLimit(val).execute();
                         self.contentPagination.setItemsOnPage(val); // -->will trigger pageChange
                     });
                     /* When page changes */
