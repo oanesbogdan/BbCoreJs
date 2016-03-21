@@ -364,9 +364,8 @@ define(
                     refreshPicture = function (img) {
                         var src = img.attr('src');
 
-                        if (src === undefined || src.length === 0 || !img.naturalWidth) {
+                        if (src === undefined || src.length === 0 || img.width() === 0) {
                             src = require('content.manager').defaultPicturePath;
-
                         }
 
                         img.attr('src', src + '?' + new Date().getTime());
