@@ -121,9 +121,14 @@ define(
                     this.popin.mask();
 
                     if (hasDrafts === true) {
-                        RevisionRepository.save(SaveManager.save('#' + this.popin.getId() + ' ' + this.contentRevisionListClass), 'commit').done(function () {
-                            Notify.success(Translator.translate('contents_validated'));
-                            self.save();
+
+                        Core.ApplicationManager.invokeService('content.main.save').done(function (promise) {
+                            promise.done(function () {
+                                RevisionRepository.save(SaveManager.save('#' + self.popin.getId() + ' ' + this.contentRevisionListClass), 'commit').done(function () {
+                                    Notify.success(Translator.translate('contents_validated'));
+                                    self.save();
+                                });
+                            });
                         });
                     } else {
                         self.save();
