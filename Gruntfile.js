@@ -286,6 +286,6 @@ module.exports = function (grunt) {
 
     // grunt tasks
     grunt.registerTask('default', ['less:css', 'jshint', 'jslint', 'jasmine:coverage', 'concat', 'uglify']);
-    grunt.registerTask('test', ['less:css', 'jshint', 'jslint', 'jasmine:coverage']);
+    grunt.registerTask('test', ['less:css', 'jshint', 'jslint']);
     grunt.registerTask('dist', ['less:css', 'copy', 'concat', 'shell', 'cssmin', 'uglify', 'requirejs']);
 };
