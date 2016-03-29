@@ -16,15 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
+
 /*global CKEDITOR:false */
 define(
     [
         'Core',
         'Core/Utils',
         'jquery',
-        'component!rtemanager'
+        'component!rtemanager',
+        'content.manager',
+        'content.dnd.manager',
+        'Core/ApplicationManager'
     ],
-    function (Core, Utils, jQuery, RteManager) {
+    function (Core, Utils, jQuery, RteManager, ContentManager, DNDManager, ApplicationManager) {
         'use strict';
 
         return RteManager.createAdapter('cke', {
@@ -56,6 +60,9 @@ define(
                 this.handleContentEvents();
 
                 Utils.requireWithPromise(lib).done(function () {
+
+                    self.addPluginSplitContent();
+
                     self.editor = CKEDITOR;
                     self.editor.disableAutoInline = true;
                     self.editor.dtd.$editable.span = 1;
@@ -63,6 +70,7 @@ define(
                     self.handleExtraPlugins(self.editor);
                     /* extends CKEditor config with user config here*/
                     jQuery.extend(self.editor.config, self.config);
+                    self.editor.config.extraPlugins = "split";
                     CKEDITOR.on('instanceReady', jQuery.proxy(self.handleInstance, self));
                     CKEDITOR.on('currentInstance', function () {
                         self.stickEditor({
@@ -73,6 +81,122 @@ define(
 
                     self.triggerOnReady(self);
                 });
+            },
+
+            addPluginSplitContent: function () {
+                var self = this;
+
+                CKEDITOR.plugins.add('split', {
+                    icons: 'split',
+                    init: function (editor) {
+                        editor.addCommand('insertSplitTag', {
+                            exec: function () {
+                                var element = CKEDITOR.dom.element.createFromHtml('<div class="bb-split"></div>');
+                                CKEDITOR.currentInstance.insertElement(element);
+                                self.splitContent();
+                            }
+                        });
+                        editor.ui.addButton('Split', {
+                            label: 'Spit content here',
+                            command: 'insertSplitTag',
+                            toolbar: 'insert'
+                        });
+                    }
+                });
+            },
+
+            splitContent: function () {
+
+                var self = this,
+                    splittedContent,
+                    nextValue,
+                    $activeElement = jQuery(self.editor.document.$.activeElement),
+                    $paragraph = $activeElement.closest('.bb-content-selected'),
+                    text = ContentManager.getContentByNode($activeElement),
+                    paragraph = ContentManager.getContentByNode($paragraph),
+                    currentNodeParent = paragraph.getParent(),//article Body (It MUST BE a contentSet)
+                    siblingPosition = DNDManager.getPosition($paragraph, currentNodeParent.jQueryObject),
+                    $split = $activeElement.find('.bb-split');
+
+                nextValue = $split.nextAll();
+                $split.nextAll().remove();
+                $split.remove();
+
+                ContentManager.maskMng.mask($paragraph);
+
+                ContentManager.createElement(paragraph.type).done(function (content) {
+                    splittedContent = ContentManager.buildElement({
+                        'type': content.type,
+                        'uid': content.uid
+                    });
+
+                    self.getCurrentTextElementNodeName(paragraph, text).done(function (name) {
+                        jQuery.when(
+                            self.updateNodeContent(paragraph, name, $activeElement.children()),
+                            self.updateNodeContent(splittedContent, name, nextValue)
+                        ).done(function () {
+                            currentNodeParent.append(splittedContent, siblingPosition + 1);
+                        });
+                    });
+                });
+
+                return false;
+            },
+
+            getCurrentTextElementNodeName: function (paragraph, text) {
+                var dfd = new jQuery.Deferred(),
+                    elementInfos;
+
+                paragraph.getData("elements").done(function (elements) {
+                    jQuery.each(elements, function (key) {
+                        elementInfos = elements[key];
+                        if (elementInfos.uid === text.uid) {
+                            dfd.resolve(key);
+                            return true;
+                        }
+                    });
+                    dfd.reject();
+                });
+
+                return dfd.promise();
+            },
+
+            updateNodeContent: function (node, key, value) {
+                var jQueryDfd = jQuery.Deferred(),
+                    contentValue,
+                    textElement;
+
+                node.getData("elements").done(function (elements) {
+
+                    textElement = elements[key];
+
+                    if (!textElement) {
+                        throw new Error(this.getCurrentContentType() + "must have a [body] element to be splittable.");
+                    }
+
+                    textElement = ContentManager.buildElement({
+                        'type': textElement.type,
+                        uid: textElement.uid
+                    });
+
+                    contentValue = value.map(function () {
+                        return jQuery(this).get(0).outerHTML;
+                    }).get().join("");
+
+                    textElement.set("value", contentValue);
+
+                    jQueryDfd.resolve(node);
+                });
+
+                return jQueryDfd.promise();
+            },
+
+            saveChanges : function () {
+                var dfd = new jQuery.Deferred();
+                ApplicationManager.invokeService('content.main.save', true).done(function (servicePromise) {
+                    servicePromise.done(dfd.resolve);
+                });
+                return dfd.promise();
             },
 
             handleContentEvents : function () {
