@@ -528,6 +528,9 @@ define(
                     }
 
                     callbacks[0].call(this);
+                }).fail(function () {
+                    self.clearProcessingState();
+                    self.unmask();
                 });
 
             },

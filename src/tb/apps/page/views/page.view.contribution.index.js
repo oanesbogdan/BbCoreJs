@@ -76,7 +76,7 @@ define(
              * Initialize of PageViewContributionIndex
              */
             initialize: function (config) {
-                this.currentPage = config.data;
+                this.currentPage = config ? config.data : null;
             },
 
             /**
@@ -471,13 +471,17 @@ define(
             render: function () {
                 var self = this;
 
-                PageRepository.getWorkflowState(this.currentPage.layout_uid).done(function (workflowStates) {
-                    jQuery(self.el).html(Renderer.render(template, {'page': self.currentPage, 'states': workflowStates}));
-                    self.bindEvents();
-                    self.setStateScheduling(self.currentPage);
-                }).fail(function (e) {
-                    console.log(e);
-                });
+                if (null === this.currentPage) {
+                    jQuery(self.el).html(Renderer.render(template, {'page': null}));
+                } else {
+                    PageRepository.getWorkflowState(this.currentPage.layout_uid).done(function (workflowStates) {
+                        jQuery(self.el).html(Renderer.render(template, {'page': self.currentPage, 'states': workflowStates}));
+                        self.bindEvents();
+                        self.setStateScheduling(self.currentPage);
+                    }).fail(function (e) {
+                        console.log(e);
+                    });
+                }
             }
         });
 
