@@ -88,6 +88,7 @@ define(
 
                 var self = this,
                     mask,
+                    view,
                     contribArea;
 
                 Core.ApplicationManager.invokeService('contribution.main.index').done(function (service) {
@@ -116,14 +117,17 @@ define(
 
                                 Core.set("current.page", data);
 
-                                var view = new ContributionIndexView({'data': data});
+                                view = new ContributionIndexView({'data': data});
+
+                            }).fail(function () {
+                                view = new ContributionIndexView();
+                            }).always(function () {
 
                                 view.render();
 
                                 mask.unmask(contribArea);
 
                                 self.contribution_loaded = true;
-
                             });
                         }
 

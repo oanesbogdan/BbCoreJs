@@ -81,6 +81,9 @@ define(
                         page.modified = moment.unix(parseInt(page.modified, 10)).format('H:m DD/MM/YYYY');
                         self.setContent(Renderer.render(template, data));
                         self.popin.unmask();
+                    }).fail(function () {
+                        self.setContent(translator.translate('page_information_unavailable'));
+                        self.popin.unmask();
                     });
                 }
             },
