@@ -5613,9 +5613,6 @@ button#bb5-ui .close {
   box-sizing: border-box;
   display: none;
 }
-#bb5-ui .xdsoft_datetimepicker.xdsoft_rtl {
-  padding: 8px 0 8px 8px;
-}
 #bb5-ui .xdsoft_datetimepicker iframe {
   position: absolute;
   left: 0;
@@ -5667,11 +5664,6 @@ button#bb5-ui .close {
   float: left;
   margin-left: 8px;
 }
-#bb5-ui .xdsoft_datetimepicker.xdsoft_rtl .xdsoft_datepicker {
-  float: right;
-  margin-right: 8px;
-  margin-left: 0;
-}
 #bb5-ui .xdsoft_datetimepicker.xdsoft_showweeks .xdsoft_datepicker {
   width: 256px;
 }
@@ -5681,11 +5673,6 @@ button#bb5-ui .close {
   text-align: center;
   margin-left: 8px;
   margin-top: 0;
-}
-#bb5-ui .xdsoft_datetimepicker.xdsoft_rtl .xdsoft_timepicker {
-  float: right;
-  margin-right: 8px;
-  margin-left: 0;
 }
 #bb5-ui .xdsoft_datetimepicker .xdsoft_datepicker.active + .xdsoft_timepicker {
   margin-top: 8px;
@@ -5751,12 +5738,6 @@ button#bb5-ui .close {
   display: block;
   margin-left: 14px;
   margin-top: 7px;
-}
-#bb5-ui .xdsoft_datetimepicker.xdsoft_rtl .xdsoft_timepicker .xdsoft_prev,
-#bb5-ui .xdsoft_datetimepicker.xdsoft_rtl .xdsoft_timepicker .xdsoft_next {
-  float: none;
-  margin-left: 0;
-  margin-right: 14px;
 }
 #bb5-ui .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_prev {
   background-position: -40px 0;
@@ -5968,10 +5949,6 @@ button#bb5-ui .close {
   top: 0;
   bottom: 0;
   cursor: pointer;
-}
-#bb5-ui .xdsoft_datetimepicker.xdsoft_rtl .xdsoft_scrollbar {
-  left: 0;
-  right: auto;
 }
 #bb5-ui .xdsoft_scroller_box {
   position: relative;
@@ -10804,7 +10781,7 @@ fieldset[disabled] #bb5-ui .btn-online.active {
   position: relative;
   -webkit-transition: all ease 250ms;
   transition: all ease 250ms;
-  background-color: green;
+  background-color: #B7DCB7;
   color: black;
   font-weight: 700;
   font-size: 14px;
@@ -10814,7 +10791,7 @@ fieldset[disabled] #bb5-ui .btn-online.active {
 }
 .bb-dropzone.over {
   height: 100px;
-  background-color: #C5E0BA;
+  background-color: #6F9062;
   color: black;
   font-size: 14px;
   padding: 41px 0;
