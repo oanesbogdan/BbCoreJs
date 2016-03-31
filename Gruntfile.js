@@ -19,7 +19,6 @@
 module.exports = function (grunt) {
     'use strict';
 
-    var path = (grunt.option('path') !== undefined) ? grunt.option('path') : undefined;
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
@@ -143,45 +142,6 @@ module.exports = function (grunt) {
             src: ['less/*.less']
         },
 
-        /**
-         * application testing
-         */
-        jasmine: {
-            test: {
-                src: ['<%= dir.src %>/component/**/*.js'],
-                options: {
-                    specs: path || '<%= dir.specs %>/**/*.spec.js',
-                    helpers: '<%= dir.specs %>/**/*.helper.js',
-                    template: require('grunt-template-jasmine-requirejs'),
-                    templateOptions: {
-                        baseUrl: '',
-                        requireConfigFile: '<%= dir.specs %>/require.config.js'
-                    }
-                }
-            },
-
-            coverage: {
-                src: '<%= jasmine.test.src %>',
-                options: {
-                    specs: path || '<%= dir.specs %>/**/*.spec.js',
-                    template: require('grunt-template-jasmine-istanbul'),
-                    templateOptions: {
-                        coverage: 'coverage/json/coverage.json',
-                        report: [
-                            {type: 'cobertura', options: {dir: 'coverage'}},
-                            {type: 'lcov', options: {dir: 'coverage'}},
-                            {type: 'text-summary'}
-                        ],
-                        template: require('grunt-template-jasmine-requirejs'),
-                        templateOptions: {
-                            baseUrl: '',
-                            requireConfigFile: '<%= dir.specs %>/require.config.js'
-                        }
-                    }
-                }
-            }
-        },
-
         concat: {
             options: {
                 separator: '',
@@ -279,13 +239,13 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-lesslint');
 
-    grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-istanbul-coverage');
     grunt.loadNpmTasks('grunt-shell');
     grunt.loadNpmTasks('grunt-nightwatch');
 
     // grunt tasks
-    grunt.registerTask('default', ['less:css', 'jshint', 'jslint', 'jasmine:coverage', 'concat', 'uglify']);
+
+    grunt.registerTask('default', ['less:css', 'jshint', 'jslint', 'concat', 'uglify']);
     grunt.registerTask('test', ['less:css', 'jshint', 'jslint']);
     grunt.registerTask('dist', ['less:css', 'copy', 'concat', 'shell', 'cssmin', 'uglify', 'requirejs']);
 };
