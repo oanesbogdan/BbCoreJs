@@ -312,7 +312,7 @@ define(
 
                     Core.Mediator.subscribeOnce("rest:send:before", this.registerLastRestRequest.bind(this));
                     CoreDriverHandler.read(this.config.resourceEndpoint, restParams.criterias, restParams.sorters, this.start, this.limit).done(function (data, response) {
-                        self.total = response.getRangeTotal();
+                        self.total = response.getRangeTo();
                         self.setData(data);
                         resultPromise.resolve(data, response);
                     }).fail(function (response) {
