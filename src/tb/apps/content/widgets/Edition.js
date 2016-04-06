@@ -39,7 +39,8 @@ define(
             contentSetClass: '.contentset',
             config: {
                 onSave: null,
-                onValidate: null
+                onValidate: null,
+                class: null
             },
 
             show: function (content, config) {
@@ -72,6 +73,10 @@ define(
                     popin = PopinManager.createSubPopIn(parent, config);
                 } else {
                     popin = PopinManager.createPopIn(config);
+                }
+
+                if (this.config.class !== null) {
+                    popin.setClass(this.config.class);
                 }
 
                 popin.setTitle(translator.translate(this.config.title || 'edit'));

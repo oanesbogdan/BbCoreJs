@@ -55,6 +55,7 @@ define(
                 autoDisplay: true,
                 viewmode: 'grid',
                 dialogConfig: {
+                    dialogClass: 'media-library',
                     draggable: false,
                     resizable: false,
                     autoOpen: false,
@@ -328,7 +329,8 @@ define(
                                 };
                                 deps.EditionHelper.show(content, {
                                     onValidate: jQuery.proxy(self.validationHandler, self),
-                                    onSave: jQuery.proxy(self.onSaveHandler, self, mediaInfos)
+                                    onSave: jQuery.proxy(self.onSaveHandler, self, mediaInfos),
+                                    class: 'media-image-form'
                                 });
                                 /* deal with main dialog getting focus while editing */
                                 self.dialog.addChild(deps.EditionHelper.getDialog());
@@ -344,7 +346,8 @@ define(
                                     deps.EditionHelper.show(content, {
                                         title: trans('create_a_new_media') + " " + self.getCurrentMedia(type).title,
                                         onSave: jQuery.proxy(self.onSaveHandler, self, mediaInfos),
-                                        onValidate: jQuery.proxy(self.validationHandler, self)
+                                        onValidate: jQuery.proxy(self.validationHandler, self),
+                                        class: 'media-image-form'
                                     });
                                     /* deal with main dialog getting focus while editing */
                                     self.dialog.addChild(deps.EditionHelper.getDialog());
