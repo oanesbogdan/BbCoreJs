@@ -45,7 +45,7 @@ define('tb.component/formbuilder/form/element/Textarea', function () {
                 this.rows = config.rows;
             } else {
                 this.rows = 5;
-                if (config.value.length > 0 && config.value.length > 200) {
+                if (config.value && config.value.length > 0 && config.value.length > 200) {
                     this.rows = Math.ceil(config.value.length / 40);
                     if (this.rows > 25) {
                         this.rows = 25;

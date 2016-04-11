@@ -42,7 +42,8 @@ define(
                 var dfd = jQuery.Deferred(),
                     config = {
                         'type': 'textarea',
-                        'label': this.definition.type
+                        'label': this.definition.type,
+                        'value': ''
                     };
 
                 if (object !== undefined) {
