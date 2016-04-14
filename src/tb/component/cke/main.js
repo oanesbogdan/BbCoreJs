@@ -109,18 +109,39 @@ define(
 
                 var self = this,
                     splittedContent,
-                    nextValue,
                     $activeElement = jQuery(self.editor.document.$.activeElement),
                     $paragraph = $activeElement.closest('.bb-content-selected'),
                     text = ContentManager.getContentByNode($activeElement),
                     paragraph = ContentManager.getContentByNode($paragraph),
-                    currentNodeParent = paragraph.getParent(),//article Body (It MUST BE a contentSet)
+                    currentNodeParent = paragraph.getParent(),
                     siblingPosition = DNDManager.getPosition($paragraph, currentNodeParent.jQueryObject),
-                    $split = $activeElement.find('.bb-split');
+                    $split = $activeElement.find('.bb-split'),
+                    $contents = $split.parent(':first').contents(),
+                    prevValue = '',
+                    afterValue = '',
+                    spotted = false;
 
-                nextValue = $split.nextAll();
-                $split.nextAll().remove();
-                $split.remove();
+                $contents.each(function () {
+                    var $element = jQuery(this),
+                        nativeElement = $element.get(0),
+                        value = '';
+
+                    if (!$element.hasClass('bb-split')) {
+
+                        value = nativeElement.nodeValue;
+                        if (null === value) {
+                            value = $element.get(0).outerHTML;
+                        }
+
+                        if (spotted) {
+                            afterValue = afterValue + value;
+                        } else {
+                            prevValue = prevValue + value;
+                        }
+                    } else {
+                        spotted = true;
+                    }
+                });
 
                 ContentManager.maskMng.mask($paragraph);
 
@@ -132,10 +153,11 @@ define(
 
                     self.getCurrentTextElementNodeName(paragraph, text).done(function (name) {
                         jQuery.when(
-                            self.updateNodeContent(paragraph, name, $activeElement.children()),
-                            self.updateNodeContent(splittedContent, name, nextValue)
+                            self.updateNodeContent(paragraph, name, prevValue),
+                            self.updateNodeContent(splittedContent, name, afterValue)
                         ).done(function () {
                             currentNodeParent.append(splittedContent, siblingPosition + 1);
+                            $split.remove();
                         });
                     });
                 });
@@ -163,7 +185,6 @@ define(
 
             updateNodeContent: function (node, key, value) {
                 var jQueryDfd = jQuery.Deferred(),
-                    contentValue,
                     textElement;
 
                 node.getData("elements").done(function (elements) {
@@ -179,11 +200,7 @@ define(
                         uid: textElement.uid
                     });
 
-                    contentValue = value.map(function () {
-                        return jQuery(this).get(0).outerHTML;
-                    }).get().join("");
-
-                    textElement.set("value", contentValue);
+                    textElement.set("value", value);
 
                     jQueryDfd.resolve(node);
                 });
