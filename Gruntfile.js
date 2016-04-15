@@ -127,6 +127,7 @@ module.exports = function (grunt) {
                     browser: true,
                     devel: true,
                     todo: true,
+                    nomen: true,
                     predef: [
                         'define',
                         'require',
