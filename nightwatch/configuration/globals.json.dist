@@ -3,6 +3,8 @@
         "baseUrl" : "http://early.backbee.com",
         "loadTime" : {
             "defaultWait" : 1000,
+            "mediumWait" : 2000,
+            "longWait" : 5000,
             "minimumWait" : 250,
             "body" : 100,
             "loginPopin" : 3000,
@@ -38,6 +40,17 @@
             "position" : {
                 "x" : 10,
                 "y" : 200
+            }
+        },
+        "mediaLibrary" : {
+            "names" : {
+                "folder" : "Nightwatch folder",
+                "image" : "Nightwatch picture",
+                "pdf" : "Nightwatch pdf"
+            },
+            "files" : {
+                "image" : "/nightwatch/testfiles/test.jpg",
+                "pdf" : "/nightwatch/testfiles/test.pdf"
             }
         }
     }

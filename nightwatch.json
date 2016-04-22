@@ -1,9 +1,9 @@
 {
     "src_folders" : ["nightwatch/tests"],
     "output_folder" : "nightwatch/reports",
-    "custom_commands_path" : ["nightwatch/commands/login", "nightwatch/commands/utils", "nightwatch/commands/content"],
+    "custom_commands_path" : ["nightwatch/commands/login", "nightwatch/commands/utils", "nightwatch/commands/content", "nightwatch/commands/medialibrary"],
     "custom_assertions_path" : "",
-    "page_objects_path" : ["nightwatch/objects/login", "nightwatch/objects/content", "nightwatch/objects/page", "nightwatch/objects/toolbar"],
+    "page_objects_path" : ["nightwatch/objects/login", "nightwatch/objects/content", "nightwatch/objects/page", "nightwatch/objects/toolbar", "nightwatch/objects/medialibrary"],
     "globals_path" : "nightwatch/configuration/globals.json",
 
     "test_settings" : {
