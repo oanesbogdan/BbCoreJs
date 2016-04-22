@@ -71,7 +71,7 @@ define(
             },
 
             onPaletteBlocksClick: function () {
-                if (this.widget === undefined) {
+                if (this.widget === undefined || this.widget.popin.state === 2) {
                     this.widget = new DialogContentsList({'draggable': true});
                 }
                 this.widget.show();
