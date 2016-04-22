@@ -82,12 +82,14 @@
   z-index: 489999;
   width: 100%;
 }
+.bb-overlay .overlay-wrapper,
 #bb5-ui .bb-overlay .overlay-wrapper,
 .bb-overlay .overlay-wrapper {
   display: table;
   width: 100%;
   height: 100%;
 }
+.bb-overlay .overlay-wrapper > div,
 #bb5-ui .bb-overlay .overlay-wrapper > div,
 .bb-overlay .overlay-wrapper > div {
   display: table-cell;
@@ -95,6 +97,7 @@
   height: 100%;
   vertical-align: middle;
 }
+.bb-overlay .bb-loader,
 #bb5-ui .bb-overlay .bb-loader,
 .bb-overlay .bb-loader {
   display: block;
@@ -227,7 +230,9 @@
   padding: 6px 15px;
   margin: 0 -5px 0.5em -5px;
 }
-#bb5-ui .bb-loader {
+.bb-loader,
+#bb5-ui .bb-loader,
+.bb-loader {
   border-width: 1px;
   border-color: #e34c26 transparent transparent;
   border-radius: 100%;
