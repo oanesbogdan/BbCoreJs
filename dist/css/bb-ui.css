@@ -6802,18 +6802,21 @@ Rich editor
   z-index: 489999;
   width: 100%;
 }
-#bb5-ui .bb-overlay .overlay-wrapper {
+#bb5-ui .bb-overlay .overlay-wrapper,
+.bb-overlay .overlay-wrapper {
   display: table;
   width: 100%;
   height: 100%;
 }
-#bb5-ui .bb-overlay .overlay-wrapper > div {
+#bb5-ui .bb-overlay .overlay-wrapper > div,
+.bb-overlay .overlay-wrapper > div {
   display: table-cell;
   width: 100%;
   height: 100%;
   vertical-align: middle;
 }
-#bb5-ui .bb-overlay .bb-loader {
+#bb5-ui .bb-overlay .bb-loader,
+.bb-overlay .bb-loader {
   display: block;
   height: 40px;
   width: 40px;
@@ -10668,7 +10671,8 @@ fieldset[disabled] #bb5-ui .btn-online.active {
 #bb5-ui .xdsoft_datetimepicker {
   z-index: 490010;
 }
-#bb5-ui .bb-loader {
+#bb5-ui .bb-loader,
+.bb-loader {
   border-width: 1px;
   border-color: #e34c26 transparent transparent;
   border-radius: 100%;
