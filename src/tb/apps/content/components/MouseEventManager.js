@@ -40,6 +40,7 @@ define(
             identifierDataAttribute: 'bb-identifier',
             idDataAttribute: 'bb-id',
             ELEMENT_IMAGE: 'Element/Image',
+            ELEMENT_MEDIA: 'Media/Image',
             TARGET_SELF: 'self',
             TARGET_PARENT: 'parent',
             /**
@@ -72,7 +73,12 @@ define(
                 if (this.isEnabled === true) {
                     var currentTarget = jQuery(event.currentTarget),
                         contentTargetRule = this.TARGET_SELF,
-                        content = ContentManager.getContentByNode(currentTarget);
+                        content = ContentManager.getContentByNode(currentTarget),
+                        parentContent = ContentManager.getContentByNode(currentTarget.parent());
+
+                    if (content.type === this.ELEMENT_IMAGE && parentContent.type === this.ELEMENT_MEDIA) {
+                        content = parentContent;
+                    }
 
                     if (ContentManager.isUsable(content.type)) {
                         content.jQueryObject = currentTarget;
