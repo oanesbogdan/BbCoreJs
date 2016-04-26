@@ -423,6 +423,7 @@ define(
                     this.menusHelper.getToolbarMenu().render(toolbarMenuCtn);
                     this.bindEvents();
                     jQuery("#" + this.dialog.id).parent().find(".ui-dialog-buttonpane .ui-dialog-buttonset").addClass("pull-right");
+                    searchEnginerCtn.on("keyup", this.handleEnterKey.bind(this));
                 },
 
                 loadMediaFolders: function () {
@@ -466,6 +467,16 @@ define(
                     this.mediaDataStore.applyFilter("byMediaFolder", e.node.uid).execute();
                     this.mediaFolderTreeView.invoke("selectNode", e.node);
                     this.menusHelper.setSelectedNode(e.node);
+                },
+
+                handleEnterKey: function (e) {
+                    var submitButton = jQuery(this.widget).find(".search-engine-ctn button.search-btn");
+
+                    if (e.keyCode !== 13) {
+                        return;
+                    }
+
+                    submitButton.click();
                 },
 
                 formatData: function (data) {
