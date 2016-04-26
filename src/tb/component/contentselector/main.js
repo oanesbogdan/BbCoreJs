@@ -257,6 +257,7 @@ define(
                         this.loadAllCategories();
                     }
                     jQuery("#" + this.popIn.id).parent().find(".ui-dialog-buttonpane .ui-dialog-buttonset").addClass("pull-right");
+                    searchEnginerCtn.on("keyup", this.handleEnterKey.bind(this));
                 },
 
                 deleteContent: function (content) {
@@ -500,6 +501,16 @@ define(
                         .setStart(0).setLimit(this.contentPagination.getItemsOnPage())
                         .applyFilter("bySite", site)
                         .execute();
+                },
+
+                handleEnterKey: function (e) {
+                    var submitButton = jQuery(this.widget).find(".bb5-form-wrapper button.search-btn");
+
+                    if (e.keyCode !== 13) {
+                        return;
+                    }
+
+                    submitButton.click();
                 },
 
                 onOpen: function (selector) {
