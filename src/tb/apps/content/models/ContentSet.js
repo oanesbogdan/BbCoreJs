@@ -93,6 +93,9 @@ define(
                         self.refresh().done(function () {
                             require('content.manager').addDefaultZoneInContentSet(true);
 
+                            // make sure the content set is still focused
+                            self.jQueryObject.click();
+
                             dfd.resolve();
                         });
                     });
