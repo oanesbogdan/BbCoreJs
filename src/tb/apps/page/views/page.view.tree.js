@@ -189,7 +189,7 @@ define(
                 if (this.config.popin === true) {
                     this.tree = Tree.createPopinTreeView(config);
                     if (this.config.hidePopin === true && sessionStorage.getItem('loadTree') === null) {
-                        jQuery('#' + this.tree.popIn.id).dialog("close");
+                        jQuery('#' + this.tree.popIn.id).parent().hide();
                     }
                     this.treeView = this.tree.treeView;
                     this.tree.on("click", ".show_folder_action", this.handleSectionFilter, this);
