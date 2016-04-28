@@ -11,7 +11,12 @@ define([ 'Core', 'component!popin', 'BackBone', 'jquery', 'content.manager', 'co
 
         trans = require('Core').get('trans') || function (value) { return value; },
 
-        dialogTemplate = "<div><p><input id='user-choice' type='checkbox'></input> " + trans("remember_my_choice") + "</p></div>",
+        validateId = 'validate-button',
+        validateButton = "<span class='col-bb5-20'><button id='" + validateId + "' class='btn btn-default-grey'>" + trans("yes") + "</button></span>",
+        cancelId = 'cancel-button',
+        cancelButton = "<span class='col-bb5-20'><button id='" + cancelId + "' class='btn btn-default-grey'>" + trans("no") + "</button></span>",
+        userChoiceCheckbox = "<span class='col-bb5-60'><input id='user-choice' type='checkbox'></input> " + trans("remember_my_choice") + "</span>",
+        dialogTemplate = "<div>" + validateButton + cancelButton + userChoiceCheckbox + "</div>",
 
         AddToMediaLibraryDialog = new JS.Class({
 
@@ -196,8 +201,7 @@ define([ 'Core', 'component!popin', 'BackBone', 'jquery', 'content.manager', 'co
                 });
 
                 jQuery(content).on('click', '#user-choice', this.handleClick.bind(this));
-
-                this.dialog.addButton(trans('yes'), function () {
+                jQuery(content).on('click', '#' + validateId, function () {
                     self.dialog.hide();
                     if (self.getState() === self.States.SELECT_STATE) {
                         sessionMng.setItem(self.STORAGE_KEY, self.States.SELECT_STATE);
@@ -210,7 +214,7 @@ define([ 'Core', 'component!popin', 'BackBone', 'jquery', 'content.manager', 'co
                     }
                 });
 
-                this.dialog.addButton(trans('no'), function () {
+                jQuery(content).on('click', '#' + cancelId, function () {
                     self.dialog.hide();
                     if (self.getState() === self.States.SELECT_STATE) {
                         sessionMng.setItem(self.STORAGE_KEY, self.States.UNSELECT_STATE); // save_to_medialibray = 0
@@ -219,7 +223,6 @@ define([ 'Core', 'component!popin', 'BackBone', 'jquery', 'content.manager', 'co
                     if (typeof processFn === 'function') {
                         processFn();
                     }
-
                 });
             },
 
