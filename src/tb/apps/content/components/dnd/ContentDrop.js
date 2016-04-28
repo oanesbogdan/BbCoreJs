@@ -81,7 +81,8 @@ define(
                     maskTarget = content.jQueryObject.parent().parent(),
                     dropContext = {
                         hasListener: false,
-                        process: this.doDropMedia.bind(this, event, file)
+                        process: this.doDropMedia.bind(this, event, file),
+                        content: content
                     };
 
                 mask.mask(maskTarget);

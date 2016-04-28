@@ -3,7 +3,7 @@
  *
  */
 
-define([ 'Core', 'component!popin', 'BackBone', 'jquery', 'content.manager', 'component!session', 'jsclass'], function (Core, popinManager, BackBone, jQuery, ContentManager, sessionMng) {
+define([ 'Core', 'component!popin', 'content.repository', 'BackBone', 'jquery', 'content.manager', 'component!session', 'jsclass'], function (Core, popinManager, ContentRepository, BackBone, jQuery, ContentManager, sessionMng) {
 
     'use strict';
 
@@ -88,13 +88,19 @@ define([ 'Core', 'component!popin', 'BackBone', 'jquery', 'content.manager', 'co
             init: function () {
                 var content = this.dialog.getContent(),
                     processFn = null,
-                    self = this;
+                    self = this,
+                    isInMediaLibrary = false;
 
                 Core.Mediator.subscribe('on:classcontent:beforedropmedia', function (context) {
                     if (!self.showDialog) { return; }
                     context.hasListener = true;
                     processFn = context.process;
-                    self.show();
+
+                    ContentRepository.isInMedialibrary(context.content.getParent().uid).done(function (response) {
+                        isInMediaLibrary = response;
+
+                        self.show();
+                    });
                 });
 
                 Core.Mediator.subscribe('on:classcontent:afterdropmedia', function (content, droppedFile, config) {
@@ -105,7 +111,11 @@ define([ 'Core', 'component!popin', 'BackBone', 'jquery', 'content.manager', 'co
                         file,
                         contentParams = self.getAddToLibraryParams(content);
 
-                    if (contentParams && self.saveToMediaLibrary) {
+                    if (contentParams) {
+
+                        if (false === isInMediaLibrary && false === self.saveToMediaLibrary) {
+                            return;
+                        }
 
                         config.updateCurrent = false;
 
@@ -122,19 +132,27 @@ define([ 'Core', 'component!popin', 'BackBone', 'jquery', 'content.manager', 'co
 
                                         Core.ApplicationManager.invokeService('content.main.save', true).done(function () {
 
-                                            mediaData = {
-                                                title: droppedFile.name,
-                                                content_uid: element.uid,
-                                                content_type: contentParams.transformInto
-                                            };
-
-                                            mediaDatastore.save(mediaData, true).done(function () {
+                                            var func = function () {
                                                 refreshElement = refreshElement.getParent() || refreshElement;
 
                                                 refreshElement.refresh().done(function () {
                                                     dfd.resolve();
                                                 });
-                                            });
+                                            };
+
+                                            if (true === self.saveToMediaLibrary) {
+                                                mediaData = {
+                                                    title: droppedFile.name,
+                                                    content_uid: element.uid,
+                                                    content_type: contentParams.transformInto
+                                                };
+
+                                                mediaDatastore.save(mediaData, true).done(function () {
+                                                    func();
+                                                });
+                                            } else {
+                                                func();
+                                            }
                                         });
 
                                         return dfd.promise();
