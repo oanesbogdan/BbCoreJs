@@ -41,6 +41,7 @@ define(
                 this.lastInstance = null;
                 this.externalPluginsPath = '';
                 this.editorContainer = '#content-contrib-tab .bb-cke-wrapper';
+                this.canHandleContentEdition = true;
 
                 var lib = [],
                     self = this;
@@ -107,10 +108,12 @@ define(
 
             splitContent: function () {
 
+                this.canHandleContentEdition = false;
+
                 var self = this,
                     splittedContent,
                     $activeElement = jQuery(self.editor.document.$.activeElement),
-                    $paragraph = $activeElement.closest('.bb-content-selected'),
+                    $paragraph = $activeElement.parents('.bb-content:first'),
                     text = ContentManager.getContentByNode($activeElement),
                     paragraph = ContentManager.getContentByNode($paragraph),
                     currentNodeParent = paragraph.getParent(),
@@ -305,17 +308,20 @@ define(
             },
 
             handleContentEdition: function (evt) {
-
-                if (evt.editor.checkDirty()) {
-                    this.triggerOnEdit({
-                        node: evt.editor.container.$,
-                        data: evt.editor.getData()
-                    });
-                    /* save value here */
-                    Core.ApplicationManager.invokeService('content.main.getContentManager').done(function (ContentManager) {
-                        var content = ContentManager.getContentByNode(jQuery(evt.editor.container.$));
-                        content.set('value', evt.editor.getData());
-                    });
+                if (this.canHandleContentEdition) {
+                    if (evt.editor.checkDirty()) {
+                        this.triggerOnEdit({
+                            node: evt.editor.container.$,
+                            data: evt.editor.getData()
+                        });
+                        /* save value here */
+                        Core.ApplicationManager.invokeService('content.main.getContentManager').done(function (ContentManager) {
+                            var content = ContentManager.getContentByNode(jQuery(evt.editor.container.$));
+                            content.set('value', evt.editor.getData());
+                        });
+                    }
+                } else {
+                    this.canHandleContentEdition = true;
                 }
             },
 
