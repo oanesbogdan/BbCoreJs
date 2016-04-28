@@ -15,8 +15,8 @@ define([ 'Core', 'component!popin', 'BackBone', 'jquery', 'content.manager', 'co
         validateButton = "<span class='col-bb5-20'><button id='" + validateId + "' class='btn btn-default-grey'>" + trans("yes") + "</button></span>",
         cancelId = 'cancel-button',
         cancelButton = "<span class='col-bb5-20'><button id='" + cancelId + "' class='btn btn-default-grey'>" + trans("no") + "</button></span>",
-        userChoiceCheckbox = "<span class='col-bb5-60'><input id='user-choice' type='checkbox'></input> " + trans("remember_my_choice") + "</span>",
-        dialogTemplate = "<div>" + validateButton + cancelButton + userChoiceCheckbox + "</div>",
+        userChoiceCheckbox = "<div class='row form-group'><span class='col-bb5-100'><input id='user-choice' type='checkbox'></input> " + trans("remember_my_choice") + "</span></div>",
+        dialogTemplate = "<div class='row form-group'>" + validateButton + cancelButton + "<span class='col-bb5-60'></span></div>" + userChoiceCheckbox,
 
         AddToMediaLibraryDialog = new JS.Class({
 
