@@ -47,6 +47,16 @@ define(
                     CoreDriverHandler.addDriver('rest', CoreRestDriver);
                 },
 
+                isInMedialibrary: function (contentUid) {
+                    var dfd = jQuery.Deferred();
+
+                    CoreDriverHandler.read('media', {'content_uid': contentUid}).done(function (media) {
+                        dfd.resolve(media.length !== 0);
+                    });
+
+                    return dfd.promise();
+                },
+
                 /**
                  * Find a content
                  * @param {String} type
