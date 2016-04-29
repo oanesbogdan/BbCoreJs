@@ -19,6 +19,7 @@
 
 define(
     [
+        'Core/ApplicationManager',
         'Core',
         'Core/Renderer',
         'jquery',
@@ -31,7 +32,8 @@ define(
         'component!mask',
         'jsclass'
     ],
-    function (Core,
+    function (ApplicationManager,
+              Core,
               Renderer,
               jQuery,
               Content,
@@ -304,6 +306,9 @@ define(
                             }
                         });
                         oldContentParent.setElements(elementInfos);
+
+                        ApplicationManager.invokeService('content.main.save', true);
+
                     }).always(function () {
                         self.maskMng.unmask(oldContentHtml);
                     });
