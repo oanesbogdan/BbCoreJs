@@ -1,7 +1,6 @@
 define(
     [
         'content.pluginmanager',
-        'Core',
         'component!contentselector',
         'component!translator',
         'jquery',
@@ -10,7 +9,6 @@ define(
     ],
     function (
         PluginManager,
-        Core,
         ContentSelector,
         Translator,
         jQuery,
@@ -27,24 +25,29 @@ define(
             },
 
             handleContentSelection: function (selections) {
-                var contentInfos,
-                    position,
+                var position,
                     content,
-                    self = this;
+                    self = this,
+                    promises = [],
+                    currentPromise,
+                    i;
+
                 if (!selections.length) {
                     return;
                 }
-                jQuery.each(selections, function (i) {
-                    try {
-                        contentInfos = selections[i];
-                        content = ContentManager.buildElement(contentInfos);
-                        position = self.getConfig("appendPosition");
-                        position = (position === "bottom") ? "last" : 0;
-                        self.getCurrentContent().append(content, position);
-                    } catch (e) {
-                        Core.exception('ContentSelectorPluginException', 50000, e);
-                    }
+
+                jQuery.each(selections, function (index) {
+                    content = ContentManager.buildElement(selections[index]);
+                    position = self.getConfig("appendPosition");
+                    position = (position === "bottom") ? "last" : 0;
+                    promises.push(self.getCurrentContent().append.bind(self.getCurrentContent(), content, position));
                 });
+
+                currentPromise = promises[0]();
+
+                for (i = 1; i < promises.length; i = i + 1) {
+                    currentPromise = currentPromise.then(promises[i]);
+                }
             },
 
             showContentSelector: function () {
