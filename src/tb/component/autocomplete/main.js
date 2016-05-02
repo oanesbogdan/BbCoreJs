@@ -162,27 +162,14 @@ define(['Core', 'BackBone', 'Core/Utils', 'jquery', 'Core/Renderer', 'text!../au
                 this.dataStore.on("stateUpdate", this.updateUi.bind(this));
             }
             this.widget.on("mouseenter", ".suggestion-item", this.handleSelection.bind(this));
-            this.field.on("keyup", this.handleEnterKey.bind(this));
+            this.field.on("keydown", this.handleBackSpace);
             this.field.on("keyup", this.findSuggestions.bind(this));
             this.widget.on("click", ".suggestion-item", this.handleClick.bind(this));
+
         },
 
-        handleEnterKey: function (e) {
-            if (e.keyCode !== 13) {
-                return;
-            }
-            e.preventDefault();
-            if (this.currentSelection) {
-                this.trigger("selection", this.currentSelection);
-                this.clear();
-                return true;
-            }
-
-            if (!this.isPending) {
-                this.trigger("empty");
-            }
-
-            return true;
+        handleBackSpace: function (e) {
+            if (13 === e.keyCode) { return false; }
         },
 
         handleSelection: function (e) {
