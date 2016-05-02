@@ -275,7 +275,13 @@ define(
                         'current_uid': self.content.uid
                     };
                     FormBuilder.renderForm(config).done(function (html) {
+
                         self.popin[self.content.uid].setContent(html);
+
+                        setTimeout(function () {
+                            jQuery('#' + self.popin[self.content.uid].id).scrollTop(0);
+                        }, 0);
+
                         self.popin[self.content.uid].unmask();
                     });
                 });
