@@ -362,13 +362,9 @@ define(
 
                 var images = html.find('img'),
                     refreshPicture = function (img) {
-                        var src = img.attr('src');
-
-                        if (src === undefined || src.length === 0 || img.width() === 0) {
-                            src = require('content.manager').defaultPicturePath;
-                        }
-
-                        img.attr('src', src + '?' + new Date().getTime());
+                        img.on('error', function () {
+                            jQuery(this).attr('src', require('content.manager').defaultPicturePath + '?' + new Date().getTime());
+                        });
                     };
 
                 if (images.length > 0) {
