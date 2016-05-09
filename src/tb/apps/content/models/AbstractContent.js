@@ -443,7 +443,7 @@ define(
             },
 
             getRendermode: function () {
-                var rendermode = 'default';
+                var rendermode = '';
 
                 if (undefined !== this.jQueryObject) {
                     if (this.jQueryObject.data('rendermode')) {
