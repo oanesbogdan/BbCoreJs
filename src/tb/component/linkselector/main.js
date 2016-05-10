@@ -40,6 +40,7 @@ define(
         'text!ls-templates/page-item.twig',
         'moment',
         'component!siteselector',
+        'component!searchengine',
         'jquery-layout',
         'jsclass'
     ],
@@ -70,6 +71,7 @@ define(
             paginationSelector: '.link-selector-selection-pagination',
             resultInfosSelector: '.result-infos',
             rangeSelectorSelector: '.max-per-page-selector',
+            searchEngineSelector: '.search-engine-ctn',
             menuSelector: '.link-selector-menu',
             internalLinkSelector: '.link-selector-internal-link',
             externalLinkSelector: '.link-selector-external-link',
@@ -81,16 +83,21 @@ define(
                 site_uid: Core.get('site.uid')
             },
 
-            pagintationConfig: {
+            paginationConfig: {
                 itemsOnPage: 10
             },
 
             rangeConfig: {
-                range: [5, 45, 5]
+                range: [5, 45, 5],
+                selected: 10
             },
 
             dataStoreConfig: {
                 resourceEndpoint: 'page'
+            },
+
+            searchEngineConfig: {
+                showFieldStatus: true
             },
 
             initInternal: function () {
@@ -99,6 +106,7 @@ define(
                 this.initDataView();
                 this.initPagination();
                 this.initRangeSelector();
+                this.initSearchEngine();
 
                 this.maskManager = Mask.createMask({});
             },
@@ -125,6 +133,7 @@ define(
                 this.dataStore.setStart(0).setLimit(this.pagination.getItemsOnPage());
                 this.loadTree(this, false);
                 this.dataView.reset();
+                this.searchEngine.reset();
                 this.widget.find(this.resultInfosSelector).html("");
             },
 
@@ -261,11 +270,13 @@ define(
             onReady: function () {
                 var bodyElement = this.widget.find(this.bodySelector),
                     paginationSelector = this.widget.find(this.paginationSelector),
-                    rangeSelectorSelector = this.widget.find(this.rangeSelectorSelector);
+                    rangeSelectorSelector = this.widget.find(this.rangeSelectorSelector),
+                    searchEnginerCtn = this.widget.find(this.searchEngineSelector);
 
                 this.dataView.render(bodyElement);
                 this.pagination.render(paginationSelector, 'replaceWith');
                 this.rangeSelector.render(rangeSelectorSelector, 'replaceWith');
+                this.searchEngine.render(searchEnginerCtn);
 
             },
 
@@ -278,15 +289,48 @@ define(
                 this.rangeSelector = RangeSelector.createPageRangeSelector(this.rangeConfig);
             },
 
+            initSearchEngine: function () {
+                this.searchEngine = require('component!searchengine').createSimpleSearchEngine(this.searchEngineConfig);
+            },
+
             initDataStore: function () {
                 this.dataStore = new DataStore.RestDataStore(this.dataStoreConfig);
 
                 this.dataStore.addFilter("byParent", function (value, restParams) {
-
                     restParams.criterias = {
                         'state': [1, 2, 3],
                         'parent_uid': value
                     };
+
+                    return restParams;
+                });
+
+                this.dataStore.addFilter("byTitle", function (value, restParams) {
+                    restParams.criterias.title = value;
+
+                    return restParams;
+                });
+
+                this.dataStore.addFilter('byBeforeDate', function (value, restParams) {
+                    restParams.criterias.created_before = value;
+
+                    return restParams;
+                });
+
+                this.dataStore.addFilter('byAfterDate', function (value, restParams) {
+                    restParams.criterias.created_after = value;
+
+                    return restParams;
+                });
+
+                this.dataStore.addFilter('byStatus', function (value, restParams) {
+                    if (value === 'all') {
+                        restParams.criterias.state = [0, 1, 2, 3];
+                    } else if (value === 'all_active') {
+                        restParams.criterias.state = [1, 3];
+                    } else if (value === 'all_inactive') {
+                        restParams.criterias.state = [0, 2];
+                    }
 
                     return restParams;
                 });
@@ -310,25 +354,16 @@ define(
                 var self = this;
 
                 this.dataStore.on('processing', function () {
-                    self.mask();
+                    self.popin.mask();
                 });
 
                 this.dataStore.on('doneProcessing', function () {
-                    self.unMask();
+                    self.popin.unmask();
                 });
 
-                this.pagination.on("pageChange", function (page) {
-
-                    var limit = self.pagination.getItemsOnPage(),
-                        start = (page - 1) * limit,
-                        seletectedNode = self.tree.getSelectedNode();
-
-                    self.dataStore.setStart(start);
-
-                    if (!seletectedNode || (seletectedNode && seletectedNode.isRoot)) {
-                        return;
-                    }
-
+                this.pagination.on("pageChange", function (page, itemsToShow) {
+                    self.dataStore.setLimit(itemsToShow);
+                    self.dataStore.computeNextStart(page);
                     self.dataStore.execute();
                 });
 
@@ -338,6 +373,22 @@ define(
                 });
 
                 this.dataStore.on("dataStateUpdate", jQuery.proxy(this.updatePaginationInfos, this));
+
+                this.searchEngine.on("doSearch", function (criteria) {
+                    jQuery.each(criteria, function (key, value) {
+                        if (criteria[key] !== undefined) {
+                            var filterName = 'by' + key.charAt(0).toUpperCase() + key.slice(1);
+
+                            if (jQuery.trim(value).length === 0) {
+                                self.dataStore.unApplyFilter(filterName);
+                            } else {
+                                self.dataStore.applyFilter(filterName, value);
+                            }
+                        }
+                    });
+
+                    self.dataStore.execute();
+                });
             },
 
             onTreeClick: function (event) {
@@ -348,17 +399,20 @@ define(
                     return;
                 }
 
+                this.searchEngine.reset();
                 this.dataStore.applyFilter('byParent', event.node.id);
                 this.dataStore.setStart(0);
                 self.dataStore.execute();
             },
 
             updatePaginationInfos: function () {
-                var resultTotal = this.dataStore.getTotal();
+                var resultTotal = this.dataStore.getTotal(),
+                    nrToShow = this.dataStore.count(),
+                    text = (this.tree.getSelectedNode().name !== undefined) ? this.tree.getSelectedNode().name + ' - ' : '';
 
-                this.widget.find(this.resultInfosSelector).html(this.tree.getSelectedNode().name + ' - ' + resultTotal + ' item(s)');
+                this.widget.find(this.resultInfosSelector).html(text + resultTotal + ' item(s)');
 
-                this.pagination.setItems(resultTotal);
+                this.pagination.setItems(resultTotal, nrToShow);
             },
 
             itemRenderer: function (mode, item) {
