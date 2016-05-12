@@ -10,13 +10,14 @@ define(['Core', 'jquery', 'Core/Renderer', 'text!../searchengine/templates/layou
             beforeDateClass: '.before-date',
             afterDateClass: '.after-date',
             titleFieldClass: '.content-title',
+            statusFieldClass: '.content-status',
             searchBtnClass: '.search-btn'
         },
 
         initialize: function (config) {
             this.config = jQuery.extend({}, this.defaultConfig, config);
             jQuery.extend(this, {}, Backbone.Events);
-            this.widget = jQuery(Renderer.render(layout)).clone();
+            this.widget = jQuery(Renderer.render(layout, {'showFieldStatus': this.config.showFieldStatus})).clone();
             this.initDatepicker();
             this.bindEvents();
         },
@@ -95,6 +96,7 @@ define(['Core', 'jquery', 'Core/Renderer', 'text!../searchengine/templates/layou
             jQuery(this.widget).find("input").val("");
             jQuery(this.widget).find(this.config.beforeDateClass).eq(0).data("selectedTime", "");
             jQuery(this.widget).find(this.config.afterDateClass).eq(0).data("selectedTime", "");
+            jQuery(this.widget).find(this.config.statusFieldClass).val('all');
         },
 
         handleSearch: function () {
@@ -102,6 +104,7 @@ define(['Core', 'jquery', 'Core/Renderer', 'text!../searchengine/templates/layou
             criteria.title = jQuery(this.config.titleFieldClass).eq(0).val();
             criteria.beforeDate = jQuery(this.config.beforeDateClass).eq(0).data('selectedTime') || '';
             criteria.afterDate = jQuery(this.config.afterDateClass).eq(0).data('selectedTime') || '';
+            criteria.status = jQuery(this.config.statusFieldClass).eq(0).val() || '';
             this.trigger("doSearch", criteria);
         }
     });
