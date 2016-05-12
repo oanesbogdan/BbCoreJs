@@ -137,7 +137,7 @@ define(
                  */
                 getHtml: function (type, uid, renderMode) {
                     var request = new Request(),
-                        url = '/rest/1/' + resourceName + '/' + type + '/' + uid,
+                        url = Core.get('api_base_url') + resourceName + '/' + type + '/' + uid,
                         currentPageUid = Core.get('page.uid'),
                         data = {};
 
