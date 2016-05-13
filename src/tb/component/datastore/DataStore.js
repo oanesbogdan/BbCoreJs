@@ -239,6 +239,9 @@ define(
                 getTotal: function () {
                     return this.total;
                 },
+                getRangeTotal: function () {
+                    return this.rangeTotal;
+                },
 
                 initialize: function (config) {
                     config = jQuery.extend({}, this.defaultConfig, config);
@@ -313,6 +316,7 @@ define(
                     Core.Mediator.subscribeOnce("rest:send:before", this.registerLastRestRequest.bind(this));
                     CoreDriverHandler.read(this.config.resourceEndpoint, restParams.criterias, restParams.sorters, this.start, this.limit).done(function (data, response) {
                         self.total = response.getRangeTotal();
+                        self.rangeTotal = response.getRangeTo();
                         self.setData(data);
                         resultPromise.resolve(data, response);
                     }).fail(function (response) {
