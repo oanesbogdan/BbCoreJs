@@ -136,6 +136,7 @@ define(['Core', 'jquery', '../keywordseditor/datastore/keyword.datastore', '../k
 
                     /* reload the tree */
                     self.keywordStore.find(jsonNode.uid).done(function (node) {
+                        parentNode.isLoaded = true;
                         currentNodeInfos = self.formatData([node]);
                         onEditCallBack(currentNodeInfos[0]);
                         self.movePagerAsLastChild(parentNode);
