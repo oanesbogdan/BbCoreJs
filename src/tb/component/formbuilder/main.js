@@ -153,6 +153,8 @@ define(
 
                             typeFormated = elementConfig.type.substr(0, 1).toUpperCase() + elementConfig.type.substr(1);
 
+                            elementConfig.hidden = (true === elementConfig.hidden) ? elementConfig.hidden : false;
+
                             //Class
                             if (false === elementConfig.hasOwnProperty('class')) {
                                 elementConfig.class = formPath + 'ElementBuilder!' + typeFormated;
