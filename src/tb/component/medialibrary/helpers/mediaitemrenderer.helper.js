@@ -177,6 +177,12 @@ define(
                     if (mode === 'list' || mode === 'grid') {
                         mode = this.mode;
                     }
+
+                    item.smallTitle = item.title;
+                    if (item.title && item.title.length > 48) {
+                        item.smallTitle = item.title.substring(0, 45) + '...';
+                    }
+
                     var template = this.templates[mode],
                         data =  Renderer.render(template, item); //mode is unused
                     return this.bindItemEvents(data, item);

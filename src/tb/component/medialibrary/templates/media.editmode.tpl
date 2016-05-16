@@ -1,6 +1,6 @@
 <li data-uid={{id}} class="bb5-selector-item">
-    <p class="item-picture"><a title="{{title}}" href="javascript:;"><img alt="{{title}}" src="{{image}}"></a></p>
-    <p><strong class="txt-highlight">{{title}}</strong></p>
+    <p class="item-picture"><a href="javascript:;"><img src="{{image}}"></a></p>
+    <p><strong class="txt-highlight">{{smallTitle}}</strong></p>
 
     <p>
         <button class="btn btn-simple btn-xs show-media-btn"><i class="fa fa-eye"></i>{{ "see" | trans}}</button>
