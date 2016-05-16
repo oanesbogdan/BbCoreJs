@@ -161,7 +161,16 @@ define(
                     var file = {'name': value.name};
 
                     dropzone.options.addedfile.call(dropzone, file);
-                    dropzone.createThumbnailFromUrl(file, value.thumbnail + '?' + new Date().getTime(), null, "Anonymous");
+                    dropzone.createThumbnailFromUrl(file, value.thumbnail + '?' + new Date().getTime(), function () {
+                        if (event.type === 'error') {
+
+                            var fileBackup = {'name': value.name};
+
+                            dropzone.removeFile(file);
+                            dropzone.options.addedfile.call(dropzone, fileBackup);
+                            dropzone.createThumbnailFromUrl(fileBackup, require('content.manager').defaultPicturePath + '?' + new Date().getTime(), null, "Anonymous");
+                        }
+                    }, "Anonymous");
 
                     element.val(value.path);
                 }
