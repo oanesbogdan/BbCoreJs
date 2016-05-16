@@ -354,6 +354,7 @@ define(
                                 parentZIndex = jQuery('#' + popIn.parent.getId()).zIndex();
                                 dialogWrapper = jQuery(event.currentTarget).closest(".ui-dialog").eq(0);
                                 jQuery(dialogWrapper).zIndex(parentZIndex + 1);
+                                jQuery(dialogWrapper).nextAll('.ui-widget-overlay.ui-front').eq(0).zIndex(parentZIndex);
                             }
                         });
                     }
