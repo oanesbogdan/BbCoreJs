@@ -137,6 +137,16 @@ define(
                 this.widget.find(this.resultInfosSelector).html("");
             },
 
+            handleEnterKey: function (e) {
+                var submitButton = jQuery(this.widget).find(".search-engine-ctn button.search-btn");
+
+                if (e.keyCode !== 13) {
+                    return;
+                }
+
+                submitButton.click();
+            },
+
             loadTree: function (Selector) {
 
                 Core.ApplicationManager.invokeService('page.main.getPageTreeViewInstance').done(function (PageTreeView) {
@@ -277,7 +287,7 @@ define(
                 this.pagination.render(paginationSelector, 'replaceWith');
                 this.rangeSelector.render(rangeSelectorSelector, 'replaceWith');
                 this.searchEngine.render(searchEnginerCtn);
-
+                searchEnginerCtn.on("keyup", this.handleEnterKey.bind(this));
             },
 
             initPagination: function () {
