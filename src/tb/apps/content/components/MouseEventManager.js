@@ -73,12 +73,7 @@ define(
                 if (this.isEnabled === true) {
                     var currentTarget = jQuery(event.currentTarget),
                         contentTargetRule = this.TARGET_SELF,
-                        content = ContentManager.getContentByNode(currentTarget),
-                        parentContent = ContentManager.getContentByNode(currentTarget.parent());
-
-                    if (content.type === this.ELEMENT_IMAGE && parentContent.type === this.ELEMENT_MEDIA) {
-                        content = parentContent;
-                    }
+                        content = ContentManager.getContentByNode(currentTarget);
 
                     if (ContentManager.isUsable(content.type)) {
                         content.jQueryObject = currentTarget;
@@ -87,9 +82,10 @@ define(
                             content = content.getParent();
                         }
                         Core.Mediator.publish('on:classcontent:contextmenu', content, event);
+
+                        return false;
                     }
                 }
-                return false;
             },
             /**
              * Event trigged on click

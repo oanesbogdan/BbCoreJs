@@ -296,8 +296,9 @@ define(
                     self = this;
                 this.maskMng.mask(oldContentHtml);
                 newContent.getHtml(renderMode).done(function (html) {
+                    self.refreshImages(html);
+
                     jQuery(oldContentHtml).replaceWith(html);
-                    self.computeImages();
                     oldContentParent.getData("elements").done(function (elements) {
                         jQuery.each(elements, function (key, data) {
                             if (data.uid === oldContent.uid) {
