@@ -194,6 +194,7 @@ define(
                     this.popin.addButton(trans('no'), function () {
                         self.popin.destroy();
                     });
+                    this.popin.addButtonCss();
                 }
             });
         return MediaItemRenderer;
