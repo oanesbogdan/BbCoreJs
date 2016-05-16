@@ -22,6 +22,7 @@ define([ 'Core', 'component!popin', 'content.repository', 'BackBone', 'jquery', 
 
             STORAGE_KEY: 'save_in_medialibrary',
             TEXT_ELEMENT: 'Element/Text',
+            MEDIA_ELEMENT: 'Media/Image',
             ADD_TO_LIBRARY_MAP: 'component:medialibrary:add_to_library_map',
             States: {
                 UNSELECT_STATE: 0,
@@ -92,11 +93,15 @@ define([ 'Core', 'component!popin', 'content.repository', 'BackBone', 'jquery', 
                     isInMediaLibrary = false;
 
                 Core.Mediator.subscribe('on:classcontent:beforedropmedia', function (context) {
-                    if (!self.showDialog) { return; }
+
+                    var parent = context.content.getParent();
+
+                    if (!self.showDialog || (parent.type !== self.MEDIA_ELEMENT)) { return; }
+
                     context.hasListener = true;
                     processFn = context.process;
 
-                    ContentRepository.isInMedialibrary(context.content.getParent().uid).done(function (response) {
+                    ContentRepository.isInMedialibrary(parent.uid).done(function (response) {
                         isInMediaLibrary = response;
 
                         self.show();
@@ -111,7 +116,7 @@ define([ 'Core', 'component!popin', 'content.repository', 'BackBone', 'jquery', 
                         file,
                         contentParams = self.getAddToLibraryParams(content);
 
-                    if (contentParams) {
+                    if (contentParams && (currentMediaContent === self.MEDIA_ELEMENT)) {
 
                         if (false === isInMediaLibrary && false === self.saveToMediaLibrary) {
                             return;
@@ -190,6 +195,7 @@ define([ 'Core', 'component!popin', 'content.repository', 'BackBone', 'jquery', 
 
                                     if (null !== currentMediaContent) {
                                         parent = currentMediaContent.getParent();
+
                                         if (parent !== null) {
                                             parent.getData('elements').done(function (parentElements) {
                                                 var key;
