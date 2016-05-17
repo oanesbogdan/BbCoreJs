@@ -96,6 +96,8 @@ define(
                             // make sure the content set is still focused
                             self.jQueryObject.click();
 
+                            ApplicationManager.invokeService('content.main.enablePluginOnIframe', true);
+
                             dfd.resolve();
                         });
                     });

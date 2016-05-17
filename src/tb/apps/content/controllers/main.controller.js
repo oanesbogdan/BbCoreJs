@@ -90,13 +90,16 @@ define(
                 ContentManager.computeImages('body');
             },
 
-            enablePluginOnIframe: function (active) {
-                var iframe = jQuery('iframe');
+            enablePluginOnIframeService: function (active) {
+                var iframe = jQuery('[data-force-click=true]'),
+                    $currentMask = iframe.siblings('.bb-mask');
 
                 if (active) {
-                    iframe.parent().prepend(jQuery('<div class="bb-mask"></div>'));
+                    if ($currentMask.length === 0) {
+                        iframe.prepend(jQuery('<div class="bb-mask"></div>'));
+                    }
                 } else {
-                    iframe.siblings('.bb-mask').remove();
+                    $currentMask.remove();
                 }
             },
 
@@ -123,7 +126,7 @@ define(
                         target.onclick = null;
                     });
 
-                    self.enablePluginOnIframe(true);
+                    self.enablePluginOnIframeService(true);
 
                 }, function () {
                     var links = jQuery('#bb5-site-wrapper').find('a');
@@ -135,7 +138,7 @@ define(
                         jQuery(this).get(0).onclick = jQuery(this).get(0).onClickBckp;
                     });
 
-                    self.enablePluginOnIframe(false);
+                    self.enablePluginOnIframeService(false);
                 });
 
                 Core.Scope.subscribe('content', function () {
