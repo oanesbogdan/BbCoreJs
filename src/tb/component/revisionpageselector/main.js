@@ -122,9 +122,9 @@ define(
 
                     if (hasDrafts === true) {
 
-                        Core.ApplicationManager.invokeService('content.main.save').done(function (promise) {
+                        Core.ApplicationManager.invokeService('content.main.saveManager').done(function (promise) {
                             promise.done(function () {
-                                RevisionRepository.save(SaveManager.save('#' + self.popin.getId() + ' ' + this.contentRevisionListClass), 'commit').done(function () {
+                                RevisionRepository.save(SaveManager.save('#' + self.popin.getId() + ' ' + self.contentRevisionListClass), 'commit').done(function () {
                                     Notify.success(Translator.translate('contents_validated'));
                                     self.save();
                                 });
