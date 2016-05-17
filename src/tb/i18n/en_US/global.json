@@ -330,7 +330,7 @@
     "user_management": "User management",
 
     "validate": "Validate",
-    "validate_content": "Publish Online",
+    "validate_content": "Publish",
     "validate_content_publish_modifications_online": "Publish your modifications online ?",
     "cancel_content_cancel_modifications": "Cancel your modifications ?",
     "validate_cancel_see_details": "See details",
