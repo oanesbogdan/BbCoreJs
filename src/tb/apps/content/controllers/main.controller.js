@@ -244,6 +244,10 @@ define(
                 return dfd.promise();
             },
 
+            saveManagerService: function () {
+                return SaveManager.save();
+            },
+
             /**
              * Show the revision selector
              * @returns {undefined}
