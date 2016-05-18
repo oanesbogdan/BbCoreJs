@@ -53,20 +53,35 @@ define(
             add: function () {
                 var content = this.getCurrentContent(),
                     accepts = ContentManager.replaceChars(content.getAccept(), '\\', '/'),
+                    availableAccepts = [],
+                    key,
                     mask;
 
-                if (accepts.length === 1) {
+                for (key in accepts) {
+                    if (accepts.hasOwnProperty(key)) {
+                        if (accepts[key] && '!' !== accepts[key].substring(0, 1)) {
+                            availableAccepts.push(accepts[key]);
+                        }
+                    }
+                }
 
-                    mask = MaskMng.createMask();
-                    mask.mask(content.jQueryObject);
+                if (availableAccepts.length > 0) {
 
-                    ContentManager.createElement(accepts[0]).done(function (newContent) {
-                        content.append(newContent);
-                    });
-                } else if (accepts.length === 0) {
-                    this.showPopin();
+                    if (availableAccepts.length === 1) {
+                        mask = MaskMng.createMask();
+                        mask.mask(content.jQueryObject);
+
+                        ContentManager.createElement(availableAccepts[0]).done(function (newContent) {
+                            content.append(newContent);
+                        });
+                    } else {
+                        this.showPopin(this.buildContents(accepts));
+                    }
+
+                } else if (accepts.length > 0) {
+                    this.showPopin(null, accepts);
                 } else {
-                    this.showPopin(this.buildContents(accepts));
+                    this.showPopin();
                 }
             },
 
@@ -97,35 +112,25 @@ define(
              * Show popin and bind events
              * @param {Mixed} contents
              */
-            showPopin: function (contents) {
-                var config = {},
-                    content = this.getCurrentContent(),
-                    accepts = this.buildContents(ContentManager.replaceChars(content.getAccept(), '\\', '/'));
+            showPopin: function (contents, forbiddenContents) {
+                var config = {};
 
-                if (this.widget === undefined) {
-                    if (contents !== undefined) {
-                        config.contents = contents;
-                    }
-                } else {
+                config.onContentClick = this.onContentClick.bind(this);
+
+                if (this.widget !== undefined) {
                     this.widget.destroy();
-                    if (accepts.length > 0) {
-                        config.contents = accepts;
-                    }
                 }
+
+                if (contents) {
+                    config.contents = contents;
+                }
+
+                if (forbiddenContents) {
+                    config.forbiddenContents = forbiddenContents;
+                }
+
                 this.widget = new DialogContentsList(config);
                 this.widget.show();
-                this.bindEvents();
-            },
-
-            /**
-             * Bind events of popin
-             */
-            bindEvents: function () {
-                if (this.binded !== true) {
-                    jQuery('#' + this.widget.popin.getId()).on('click', this.blockClass, jQuery.proxy(this.onContentClick, this));
-
-                    this.binded = true;
-                }
             },
 
             /**

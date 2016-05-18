@@ -75,6 +75,15 @@ define(
                     config = {};
                 }
 
+                this.onContentClick = (typeof config.onContentClick === 'function') ? config.onContentClick : jQuery.noop;
+
+                this.forbiddenContents = null;
+                if (config.hasOwnProperty('forbiddenContents')) {
+                    if (typeof config.forbiddenContents === 'object') {
+                        this.forbiddenContents = config.forbiddenContents;
+                    }
+                }
+
                 this.contents = null;
                 if (config.hasOwnProperty('contents')) {
                     if (typeof config.contents === 'object') {
@@ -104,10 +113,17 @@ define(
                     var self = this;
 
                     if (this.categories === null && this.contents === null) {
-                        ContentRepository.findCategories().done(function (categories) {
-                            self.categories = categories;
-                            self.doShow();
-                        });
+                        if (null !== this.forbiddenContents) {
+                            ContentRepository.findCategoriesByWithoutAccept(this.forbiddenContents).done(function (categories) {
+                                self.categories = categories;
+                                self.doShow();
+                            });
+                        } else {
+                            ContentRepository.findCategories().done(function (categories) {
+                                self.categories = categories;
+                                self.doShow();
+                            });
+                        }
                     } else {
                         this.doShow();
                     }
@@ -168,6 +184,8 @@ define(
                     this.toggleClasses,
                     jQuery.proxy(this.toggleHeader, this)
                 );
+
+                jQuery('#' + this.popin.getId()).on('click', '.bb-block', this.onContentClick);
             },
 
             /**

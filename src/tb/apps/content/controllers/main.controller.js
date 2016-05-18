@@ -143,10 +143,10 @@ define(
 
                 Core.Scope.subscribe('content', function () {
                     ContentManager.addDefaultZoneInContentSet(false);
-                    self.enablePluginOnIframe(true);
+                    self.enablePluginOnIframeService(true);
                 }, function () {
                     ContentManager.addDefaultZoneInContentSet(false);
-                    self.enablePluginOnIframe(false);
+                    self.enablePluginOnIframeService(false);
                 });
             },
 
