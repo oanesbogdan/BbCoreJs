@@ -100,6 +100,33 @@ define(
                     return dfd.promise();
                 },
 
+                findCategoriesByWithoutAccept: function (accepts) {
+                    var dfd = jQuery.Deferred();
+
+                    this.findCategories().done(function (categories) {
+                        var key,
+                            key2,
+                            content;
+
+                        for (key in categories) {
+                            if (categories.hasOwnProperty(key)) {
+                                for (key2 in categories[key].contents) {
+                                    if (categories[key].contents.hasOwnProperty(key2)) {
+                                        content = categories[key].contents[key2];
+                                        if (-1 !== accepts.indexOf('!' + content.type)) {
+                                            delete categories[key].contents[key2];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        dfd.resolve(categories);
+                    });
+
+                    return dfd.promise();
+                },
+
                 /**
                  * Get all drafts
                  * @returns {Promise}

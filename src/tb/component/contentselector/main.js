@@ -445,6 +445,12 @@ define(
                  * if the selector is not reader add it to a queue
                  * */
                 setContenttypes: function (contentypeArr) {
+
+                    var key,
+                        self = this,
+                        accepts = [],
+                        data;
+
                     if (!Array.isArray(contentypeArr)) {
                         throw "ContentSelectorWidgetException [setContenttypes] expects an array";
                     }
@@ -452,14 +458,28 @@ define(
                     if (underscore.isEqual(this.currentContentTypes, contentypeArr)) {
                         return;
                     }
-                    if (contentypeArr.length) {
-                        var data = formater.format("contenttype", contentypeArr);
+
+                    for (key in contentypeArr) {
+                        if (contentypeArr.hasOwnProperty(key)) {
+                            if (contentypeArr[key] && '!' !== contentypeArr[key].substring(0, 1)) {
+                                accepts.push(contentypeArr[key]);
+                            }
+                        }
+                    }
+
+                    if (accepts.length > 0) {
+                        data = formater.format("contenttype", accepts);
                         this.categoryTreeView.setData(data);
-                        this.currentContentTypes = contentypeArr;
                         this.loadRootNode();
                     } else {
-                        this.loadAllCategories();
+                        Core.ApplicationManager.invokeService("content.main.getRepository").done(function (pageRepository) {
+                            pageRepository.findCategoriesByWithoutAccept(contentypeArr).done(function (categories) {
+                                self.categoryTreeView.setData(formater.format('category', categories));
+                                self.loadRootNode();
+                            });
+                        });
                     }
+
                     this.currentContentTypes = contentypeArr;
                 },
 

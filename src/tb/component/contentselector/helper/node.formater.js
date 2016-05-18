@@ -11,7 +11,7 @@ define(['Core', 'jquery'], function (Core, jQuery) {
                     cContent;
                 jQuery.each(data, function (i) {
                     cContent = data[i];
-                    if (!cContent.visible) {
+                    if (!cContent || !cContent.visible) {
                         return true;
                     }
                     if (cContent.hasOwnProperty("label") && typeof cContent.label === "string") {
@@ -61,7 +61,7 @@ define(['Core', 'jquery'], function (Core, jQuery) {
                 if (category.contents) {
                     jQuery.each(category.contents, function (i) {
                         content = category.contents[i];
-                        if (content.visible) {
+                        if (content && content.visible) {
                             isVisible = true;
                         }
                         return false;
