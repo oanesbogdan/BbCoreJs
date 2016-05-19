@@ -46,13 +46,13 @@ define(
                     dfd = jQuery.Deferred(),
                     config;
 
-                this.buildElements(object).done(function () {
-                    self.getKeywords(arguments).done(function () {
+                this.buildElements(object).done(function (elements) {
+                    self.getKeywords(elements).done(function (keywords) {
                         config = {
                             'type': 'keywordSelector',
                             'label': object.label || object.name,
                             'object_name': object.name,
-                            'value': self.getValue(arguments)
+                            'value': self.getValue(keywords)
                         };
 
                         content[object.name + '_values'] = config.value;
@@ -68,6 +68,7 @@ define(
                 var key,
                     element,
                     value = [];
+
 
                 for (key in elements) {
                     if (elements.hasOwnProperty(key)) {
@@ -86,7 +87,9 @@ define(
             },
 
             getKeywords: function (elements) {
-                var promises = [],
+                var keywords = {},
+                    dfd = jQuery.Deferred(),
+                    uid,
                     key,
                     element;
 
@@ -94,63 +97,66 @@ define(
                     if (elements.hasOwnProperty(key)) {
                         element = elements[key];
                         if (element !== null) {
-                            promises.push(this.findValue(element));
+                            uid = element.elements.value;
+
+                            if (uid && typeof uid === 'string') {
+                                keywords[uid] = element;
+                            }
                         }
                     }
                 }
 
-                return jQuery.when.apply(undefined, promises).promise();
-            },
+                if (Object.keys(keywords).length > 0) {
+                    this.KeywordRepository.findByUids(Object.keys(keywords)).done(function (data) {
+                        var key2;
 
-            findValue: function (element) {
-                var dfd = jQuery.Deferred(),
-                    uid = element.elements.value,
-                    objectUid = element.object_uid;
+                        for (key2 in data) {
+                            if (data.hasOwnProperty(key2)) {
+                                data[key2].object_uid = keywords[data[key2].uid].object_uid;
+                            }
+                        }
 
-                if (uid && typeof uid === 'string') {
-                    this.KeywordRepository.find(uid).done(function (element) {
-                        element.object_uid = objectUid;
-                        dfd.resolve(element);
+                        dfd.resolve(data);
                     });
                 } else {
-                    dfd.resolve(null);
+                    dfd.resolve([]);
                 }
 
                 return dfd.promise();
             },
 
             buildElements: function (object) {
-                var promises = [],
-                    element,
+                var uids = [],
+                    dfd = jQuery.Deferred(),
                     key;
 
                 if (!jQuery.isArray(object.elements)) {
-                    if (undefined === object.uid) {
-                        promises.push(null);
-                    } else {
-                        promises.push(this.buildElement({'uid': object.uid, 'type': object.type}));
+                    if (undefined !== object.uid) {
+                        uids.push(object.uid);
                     }
                 } else {
                     for (key in object.elements) {
                         if (object.elements.hasOwnProperty(key)) {
-                            element = object.elements[key];
-                            promises.push(this.buildElement({'uid': element.uid, 'type': element.type}));
+                            uids.push(object.elements[key].uid);
                         }
                     }
                 }
 
-                return jQuery.when.apply(undefined, promises).promise();
-            },
+                if (uids.length > 0) {
+                    this.ContentRepository.findByUids(uids).done(function (data) {
+                        var key2;
 
-            buildElement: function (object) {
-                var dfd = jQuery.Deferred();
+                        for (key2 in data) {
+                            if (data.hasOwnProperty(key2)) {
+                                data[key2].object_uid = data[key2].uid;
+                            }
+                        }
 
-                this.ContentRepository.findData(object.type, object.uid).done(function (data) {
-                    data.object_uid = object.uid;
-                    dfd.resolve(data);
-                }).fail(function () {
-                    dfd.resolve(null);
-                });
+                        dfd.resolve(data);
+                    });
+                } else {
+                    dfd.resolve([]);
+                }
 
                 return dfd.promise();
             }

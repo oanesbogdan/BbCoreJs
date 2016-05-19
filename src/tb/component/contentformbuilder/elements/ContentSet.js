@@ -40,8 +40,7 @@ define(
             },
 
             getConfig: function (object) {
-                var self = this,
-                    dfd = jQuery.Deferred(),
+                var dfd = jQuery.Deferred(),
                     config,
                     element = object.content;
 
@@ -51,57 +50,19 @@ define(
                 }
 
                 element.getData().done(function () {
-                    self.getChildren(element).done(function () {
-                        var i,
-                            children = [];
+                    config = {
+                        'type': 'contentSet',
+                        'label': object.label || object.name,
+                        'object_name': object.name,
+                        'object_uid': object.uid,
+                        'object_type': object.type,
+                        'element': element,
+                        'children': element.data.elements
+                    };
 
-                        for (i in arguments) {
-                            if (arguments.hasOwnProperty(i)) {
-                                children.push(arguments[i]);
-                            }
-                        }
-
-                        config = {
-                            'type': 'contentSet',
-                            'label': object.label || object.name,
-                            'object_name': object.name,
-                            'object_uid': object.uid,
-                            'object_type': object.type,
-                            'children': children,
-                            'element': element
-                        };
-
-                        dfd.resolve(config);
-                    });
+                    dfd.resolve(config);
                 }).fail(function (data, response) {
                     dfd.reject(data, response);
-                });
-
-                return dfd.promise();
-            },
-
-            getChildren: function (content) {
-                var key,
-                    element,
-                    elements = content.data.elements,
-                    promises = [];
-
-                for (key in elements) {
-                    if (elements.hasOwnProperty(key)) {
-                        element = elements[key];
-                        promises.push(this.loadChild(element.uid, element.type));
-                    }
-                }
-
-                return jQuery.when.apply(undefined, promises).promise();
-            },
-
-            loadChild: function (uid, type) {
-                var dfd = jQuery.Deferred(),
-                    subcontent = this.ContentManager.buildElement({'uid': uid, 'type': type});
-
-                subcontent.getData().done(function () {
-                    dfd.resolve(subcontent);
                 });
 
                 return dfd.promise();

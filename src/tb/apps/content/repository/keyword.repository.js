@@ -43,6 +43,12 @@ define(
 
             find: function (uid) {
                 return CoreDriverHandler.read(this.TYPE, {'id': uid});
+            },
+
+            findByUids: function (uids) {
+                uids = uids.join();
+
+                return CoreDriverHandler.read(this.TYPE, {'uids': uids});
             }
         });
 

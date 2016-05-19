@@ -25,9 +25,10 @@ define(
         'BackBone',
         'jquery',
         'text!tb.component/formbuilder/form/element/templates/contentSet_item.twig',
+        'text!tb.component/formbuilder/form/element/templates/contentSet_container.twig',
         'component!contentselector'
     ],
-    function (Core, require, Renderer, Backbone, jQuery, itemTemplate) {
+    function (Core, require, Renderer, Backbone, jQuery, itemTemplate, containerTemplate) {
 
         'use strict';
 
@@ -51,12 +52,86 @@ define(
                 this.moveClass = 'move';
                 this.moveDownClass = 'move-down';
                 this.moveUpClass = 'move-up';
+                this.containerPlusClass = 'plus';
                 this.elementSelector = 'form#' + this.el + ' .element_' + this.element.getKey();
 
                 this.bindEvents();
             },
 
             bindEvents: function () {
+                var mainNode = jQuery(this.mainSelector);
+
+                mainNode.on('click', this.elementSelector + ' .' + this.containerPlusClass, jQuery.proxy(this.onPlusClick, this));
+            },
+
+            onPlusClick: function (event) {
+                var elements = this.element.children,
+                    key,
+                    $target = jQuery(event.target),
+                    $mainNode = jQuery(this.elementSelector),
+                    $container = $mainNode.find('.bb5-listContainers'),
+                    self = this,
+                    uids = [],
+                    render;
+
+                if ($container.length > 0) {
+                    if ($container.hasClass('hidden')) {
+                        $container.removeClass('hidden');
+                        $target.text('-');
+                    } else {
+                        $container.addClass('hidden');
+                        $target.text('+');
+                    }
+
+                    return;
+                }
+
+                render = function (children) {
+                    $target.text('-');
+
+                    $mainNode.find('.label-contentset').after(Renderer.render(containerTemplate, {'items': children}));
+
+                    self.bindContainerEvents();
+                };
+
+                for (key in elements) {
+                    if (elements.hasOwnProperty(key)) {
+                        uids.push(elements[key].uid);
+                    }
+                }
+
+                if (uids.length > 0) {
+
+                    Core.ApplicationManager.invokeService('content.main.getRepository').done(function (repository) {
+                        repository.findByUids(uids).done(function (data) {
+                            var config = {},
+                                child,
+                                i,
+                                children = [];
+
+                            Core.ApplicationManager.invokeService('content.main.getContentManager').done(function (ContentManager) {
+                                for (i = 0; i < data.length; i = i + 1) {
+                                    child = data[i];
+
+                                    config = {
+                                        'uid': child.uid,
+                                        'type': child.type,
+                                        'elementData': child
+                                    };
+
+                                    children.push(Renderer.render(itemTemplate, {'element': self.element, 'item': ContentManager.buildElement(config)}));
+                                }
+
+                                render(children);
+                            });
+                        });
+                    });
+                } else {
+                    render([]);
+                }
+            },
+
+            bindContainerEvents: function () {
                 var self = this,
                     mainNode = jQuery(this.mainSelector);
 
@@ -331,19 +406,7 @@ define(
              * @returns {String} html
              */
             render: function () {
-                var key,
-                    items = [],
-                    children = this.element.children,
-                    child;
-
-                for (key in children) {
-                    if (children.hasOwnProperty(key)) {
-                        child = children[key];
-                        items.push(Renderer.render(itemTemplate, {'element': this.element, 'item': child}));
-                    }
-                }
-
-                return Renderer.render(this.template, {element: this.element, 'items': items});
+                return Renderer.render(this.template, {element: this.element});
             }
         });
 
