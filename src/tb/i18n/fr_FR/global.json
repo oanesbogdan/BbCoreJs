@@ -89,7 +89,7 @@
     "content_selector": "Sélecteur de contenu",
 
     "data_base": "Base de données",
-    "date_format": "MM,JJ,AAAA hh:mm",
+    "date_format": "DD/MM/YYYY HH:mm",
     "deactivate": "Désactiver",
     "deactivated": "Désactivaté(e)",
     "delete": "Supprimer",
