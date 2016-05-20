@@ -1,0 +1,23 @@
+<div class="bb-rollback">
+    {% for revision in revisions %}
+        <div
+            class="item {% if loop.first == false %}hidden{% endif %}"
+            {% if loop.first %}data-current="true"{% endif %}
+            data-type="{{ revision.type }}"
+            data-uid="{{ revision.content_uid }}"
+            data-revision="{{ revision.revision }}"
+        >
+            <p>
+                {% if revision.hasPrev == true %}
+                    <span class="btn-revision prev"><</span>
+                {% endif %}
+
+                {{ trans('back_to_version' )}} {{ revision.revision }} {{ trans('of') }} {{ revision.modified }}
+
+                {% if revision.hasNext == true %}
+                    <span class="btn-revision next">></span>
+                {% endif %}
+            </p>
+        </div>
+    {% endfor %}
+</div>

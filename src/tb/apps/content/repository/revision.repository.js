@@ -34,6 +34,7 @@ define(
         var RevisionRepository = new JS.Class({
 
             TYPE: 'classcontent-draft',
+            REVISION_TYPE: 'revision',
 
             limit: 30,
 
@@ -42,6 +43,16 @@ define(
              */
             initialize: function () {
                 CoreDriverHandler.addDriver('rest', CoreRestDriver);
+            },
+
+            findAllByUidAndType: function (uid, type) {
+                return CoreDriverHandler.read(this.REVISION_TYPE + '/' + type, {'uid': uid});
+            },
+
+            revert: function (uid, type, to) {
+                to = to || -1;
+
+                return CoreDriverHandler.patch(this.TYPE + '/' + type, {'revision': to}, {'uid': uid});
             },
 
             save: function (data, operation) {

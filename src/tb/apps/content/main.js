@@ -71,6 +71,7 @@ require.config({
         'content/tpl/scrollzone': 'src/tb/apps/content/templates/scrollzone.twig',
         'content/tpl/block_description': 'src/tb/apps/content/templates/block-description.twig',
         'content/tpl/block_informations': 'src/tb/apps/content/templates/block-informations.twig',
+        'content/tpl/rollback_items': 'src/tb/apps/content/plugins/rollback/templates/items.twig',
 
         //Views
         'content.view.contribution.index': 'src/tb/apps/content/views/content.view.contribution.index',
