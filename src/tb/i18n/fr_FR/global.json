@@ -30,6 +30,7 @@
     "author": "Auteur",
     "available_in_menus": "Accessible depuis le menu",
 
+    "back_to_version": "Revenir à la version",
     "before": "Avant",
     "block": "Bloc",
     "blocks": "Blocs",
@@ -201,6 +202,7 @@
     "no_result": "Aucun résultat",
     "no_user_found": "Auncun utilisateur trouvé",
 
+    "of": "du",
     "online": "En ligne",
     "only_picture_allowed": "Seule une image peut être insérée ici",
     "orphaned_content": "Contenu orphelin",
@@ -260,6 +262,7 @@
     "rights_description": "Description des droits",
     "rights_management": "Gestion des droits",
     "roles_management": "Gestion des rôles",
+    "rollback_content_title": "Changement de version",
 
     "save": "Enregistrer",
     "save_as_draft": "Brouillon",

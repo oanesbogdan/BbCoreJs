@@ -30,6 +30,7 @@
     "author": "Author",
     "available_in_menus": "Available in menus",
 
+    "back_to_version": "Back to version",
     "before": "Before",
     "block": "Block",
     "blocks": "Blocks",
@@ -202,6 +203,7 @@
     "no_result": "No result",
     "no_user_found": "No user found",
 
+    "of": "of",
     "online": "Online",
     "only_picture_allowed": "Only picture allowed here",
     "orphaned_content": "Orphaned content",
@@ -261,6 +263,7 @@
     "rights_description": "Rights description",
     "rights_management": "Rights management",
     "roles_management": "Roles management",
+    "rollback_content_title": "Change version",
 
     "save": "Save",
     "save_as_draft": "Save as draft",
