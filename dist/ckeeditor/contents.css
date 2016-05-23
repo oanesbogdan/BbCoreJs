@@ -18,6 +18,10 @@ body
 	margin: 20px;
 }
 
+.cke_panel_block {
+	outline: 0;
+}
+
 .cke_editable
 {
 	font-size: 13px;
