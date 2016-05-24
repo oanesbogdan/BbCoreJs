@@ -30,13 +30,7 @@ define(['jsclass'], function () {
          * @param {Object} definition
          */
         addDefinition: function (definition) {
-            var img;
             if (null === this.find(definition.type)) {
-                img = document.createElement('img');
-                img.src = definition.image;
-                img.style.cssText = 'width: 25px, height: 25px';
-                definition.img = img;
-
                 this.definitions.push(definition);
             }
         },
