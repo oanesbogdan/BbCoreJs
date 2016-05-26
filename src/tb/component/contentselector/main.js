@@ -176,6 +176,7 @@ define(
                 initComponents: function () {
                     this.contentRestDataStore = require('content.datastore');
                     this.contentRestDataStore.applyFilter('usePagination', 0);
+                    this.contentRestDataStore.applyFilter('excludeDeletedPages', 1);
                     this.categoryTreeView = this.createCategoryTreeView();
                     this.contentDataView = this.createDataView();
                     this.contentPagination = this.createPagination();

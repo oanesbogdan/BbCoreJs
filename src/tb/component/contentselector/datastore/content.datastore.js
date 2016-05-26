@@ -46,5 +46,10 @@ define(['component!datastore', 'jsclass'], function (DataStore) {
         return restParams;
     });
 
+    restDataStore.addFilter("excludeDeletedPages", function (value, restParams) {
+        restParams.criterias.excludeDeletedPages = value;
+        return restParams;
+    });
+
     return restDataStore;
 });
