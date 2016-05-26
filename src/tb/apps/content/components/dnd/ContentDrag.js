@@ -62,6 +62,7 @@ define(
                 event.stopPropagation();
 
                 var target = jQuery(event.target),
+                    img,
                     content;
 
                 this.dataTransfer.isNew = false;
@@ -70,7 +71,11 @@ define(
                     content = {type: target.data(this.typeDataAttribute)};
                 } else {
                     content = ContentManager.getContentByNode(target.parents('.' + this.contentClass + ':first'));
-                    event.dataTransfer.setDragImage(content.definition.img, 25, 25);
+
+                    img = document.createElement('img');
+                    img.src = content.definition.image;
+
+                    event.dataTransfer.setDragImage(img, 25, 25);
                 }
 
                 this.dataTransfer.content = content;
