@@ -211,6 +211,7 @@
 
     "page": "Page",
     "page_deleted": "Page deleted",
+    "page_no_permission_to_delete": "You don't have the rights to delete this page",
     "page_restored": "Page restored",
     "page_filters": "Page filters",
     "page_information_unavailable": "Page information unavailable",
@@ -220,6 +221,7 @@
     "page_set_online": "Page set online",
     "page_set_offline": "Page set offline",
     "pages_are_deleted": "Pages are deleted",
+    "pages_no_permission_to_delete": "You don't have the rights to delete these pages",
     "pages_are_restored": "Pages are restored",
     "pages_set_online": "Pages set online",
     "pages_set_offline": "Pages set offline",
