@@ -455,10 +455,29 @@ define(
                     function () {
                         data.popin.mask();
                         this.repository.groupedPatch(data.uids, {state: 'delete'}).then(
-                            function () {
-                                if (data.uids.length === 1) {
+                            function (response) {
+                                var key,
+                                    pageNumberWithoutPermission = 0,
+                                    pageNumberWithPermission = 0;
+
+                                for (key in response) {
+                                    if (response.hasOwnProperty(key) && response[key].hasOwnProperty('statusCode')) {
+                                        if (response[key].statusCode === 403) {
+                                            pageNumberWithoutPermission += 1;
+                                        } else {
+                                            pageNumberWithPermission += 1;
+                                        }
+                                    }
+                                }
+
+                                if (pageNumberWithoutPermission === 1) {
+                                    req('component!notify').error(translator.translate('page_no_permission_to_delete'));
+                                } else if (pageNumberWithoutPermission > 1) {
+                                    req('component!notify').error(translator.translate('pages_no_permission_to_delete'));
+                                }
+                                if (pageNumberWithPermission === 1) {
                                     req('component!notify').success(translator.translate('page_deleted'));
-                                } else {
+                                } else if (pageNumberWithPermission > 1) {
                                     req('component!notify').success(translator.translate('pages_are_deleted'));
                                 }
                                 pageStore.execute().done(function () {
