@@ -19,10 +19,11 @@
 
 define(
     [
+        'content.repository',
         'jquery',
         'jsclass'
     ],
-    function (jQuery) {
+    function (ContentRepository, jQuery) {
 
         'use strict';
 
@@ -51,7 +52,6 @@ define(
                 }
 
                 element.getData().done(function () {
-
                     config = {
                         'type': 'content',
                         'label': object.label || object.name,
@@ -62,6 +62,15 @@ define(
                         'object_label': element.data.label,
                         'element': element
                     };
+
+                    if (element.type === 'Media/Image' && element.data.elements.image) {
+                        var imageEl = element.data.elements.image;
+                        ContentRepository.find(imageEl.type, imageEl.uid).done(function (elementImage) {
+                            if (config.image !== elementImage.image) {
+                                config.image = elementImage.image;
+                            }
+                        });
+                    }
 
                     dfd.resolve(config);
                 }).fail(function (data, response) {

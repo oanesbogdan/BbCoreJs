@@ -82,7 +82,7 @@ define(
 
                     if (elements.path && elements.path !== '' && elements.originalname && elements.originalname !== '') {
                         config.value = {
-                            thumbnail: config.dropzone.default_thumbnail,
+                            thumbnail: element.data.image,
                             name: elements.originalname,
                             path: elements.path
                         };
