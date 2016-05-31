@@ -363,11 +363,16 @@ define(
                 return object;
             },
 
-            refreshImages: function (html) {
+            refreshImages: function (html, forceUpdate) {
                 html = jQuery(html);
 
                 var images = html.find('img'),
                     refreshPicture = function (img) {
+
+                        if (true === forceUpdate) {
+                            img.attr('src', img.attr('src') + '?' + new Date().getTime());
+                        }
+
                         img.on('error', function () {
                             jQuery(this).attr('src', require('content.manager').defaultPicturePath + '?' + new Date().getTime());
                         });
