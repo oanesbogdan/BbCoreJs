@@ -319,7 +319,7 @@ define(
 
                 ContentRepository.getHtml(this.type, this.uid, this.getRendermode()).done(function (html) {
 
-                    html = contentManager.refreshImages(html);
+                    html = contentManager.refreshImages(html, true);
 
                     if (null !== attributes) {
                         contentManager.putAttributes(html, attributes);
