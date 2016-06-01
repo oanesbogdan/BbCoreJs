@@ -359,7 +359,7 @@ define(
                         });
                     }
 
-                    jQuery('#' + popIn.getId()).dialog('open');
+                    jQuery('#' + popIn.getId()).dialog('open').dialog('moveToTop');
                     dialogPosition = jQuery('#' + popIn.getId()).parent().position();
 
                     position = manager.checkPosition(popIn);
