@@ -233,7 +233,7 @@ define(
 
 
             blurEditor: function (e) {
-                var isInEditorZone = jQuery(e.target).closest('.cke_top').length;
+                var isInEditorZone = jQuery(e.target).closest('.cke_top').length || jQuery(e.target).closest('.cke_dialog');
                 if (isInEditorZone) {
                     return;
                 }
