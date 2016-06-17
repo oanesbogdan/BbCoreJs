@@ -116,7 +116,7 @@ define([ 'Core', 'component!popin', 'content.repository', 'BackBone', 'jquery', 
                         file,
                         contentParams = self.getAddToLibraryParams(content);
 
-                    if (contentParams && (currentMediaContent === self.MEDIA_ELEMENT)) {
+                    if (contentParams && (currentMediaContent.type === self.MEDIA_ELEMENT)) {
 
                         if (false === isInMediaLibrary && false === self.saveToMediaLibrary) {
                             return;
