@@ -160,7 +160,7 @@ define(
                     html;
 
                 if (this.categories !== null) {
-                    config.categories = this.categories;
+                    config.categories = this.manageCategories(this.categories);
                 } else if (this.contents !== null) {
                     config.categories = this.buildFakeCategories(this.contents);
                 }
@@ -173,6 +173,32 @@ define(
                 DndManager.attachDnDOnPalette();
 
                 this.bindEvents();
+            },
+
+            manageCategories: function (categories) {
+                var key,
+                    blockKey,
+                    category,
+                    block;
+
+                for (key in categories) {
+                    if (categories.hasOwnProperty(key)) {
+                        category = categories[key];
+                        category.show = false;
+
+                        for (blockKey in category.contents) {
+                            if (category.contents.hasOwnProperty(blockKey)) {
+                                block = category.contents[blockKey];
+                                if (block.visible) {
+                                    category.show = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return categories;
             },
 
             /**
