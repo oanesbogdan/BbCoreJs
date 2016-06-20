@@ -338,8 +338,12 @@ define(
 
                 element.attr('contenteditable', true);
 
-                var conf = element.data('rteConfig') || 'basic',
+                var conf = element.data('rteconfig') || 'basic',
                     rteConfig = this.editableConfig[conf];
+
+                if (!rteConfig) {
+                    rteConfig = this.editableConfig['basic'];
+                }
 
                 this.editor.inline(jQuery(element).get(0), rteConfig);
             },
