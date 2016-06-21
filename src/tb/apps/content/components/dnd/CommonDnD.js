@@ -56,7 +56,7 @@ define(
             },
 
             onDragEnter: function (event) {
-                var target = jQuery(event.target),
+                var target = (event.target.nodeType === 3) ? jQuery(event.target.parentNode) : jQuery(event.target),
                     parent;
 
                 if (target.attr('dropzone') && target.hasClass(this.dropZoneClass)) {
