@@ -33,10 +33,15 @@ define(
             compute: function (key, value, form) {
                 var element = jQuery('form#' + form.getId() + ' .element_' + key),
                     span = element.find('span.updated'),
-                    data = null;
+                    data = null,
+                    doc,
+                    $body;
 
                 if (span.text() === 'updated') {
-                    data = value;
+                    doc = new DOMParser().parseFromString(value, "text/html");
+                    $body = jQuery(doc.getElementsByTagName('body'));
+
+                    data = $body.html();
                 }
 
                 return data;

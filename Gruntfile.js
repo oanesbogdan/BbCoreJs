@@ -134,6 +134,7 @@ module.exports = function (grunt) {
                         'module',
                         'Backbone',
                         'JS',
+                        'DOMParser',
                         'load' // temp remove it
                     ]
                 }
