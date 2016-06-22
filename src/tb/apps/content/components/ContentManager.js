@@ -294,7 +294,9 @@ define(
                     oldContentParent = oldContent.getParent(),
                     oldContentHtml = oldContent.jQueryObject,
                     self = this;
+
                 this.maskMng.mask(oldContentHtml);
+
                 newContent.getHtml(renderMode).done(function (html) {
                     self.refreshImages(html);
 
@@ -303,7 +305,8 @@ define(
                         jQuery.each(elements, function (key, data) {
                             if (data.uid === oldContent.uid) {
                                 elementInfos[key] = { uid: newContent.uid, type: newContent.type };
-                                return true;
+                            } else {
+                                elementInfos[key] = data;
                             }
                         });
                         oldContentParent.setElements(elementInfos);
