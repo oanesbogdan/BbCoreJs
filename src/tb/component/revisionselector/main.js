@@ -129,6 +129,10 @@ define(
 
                     this.popin.display();
 
+                    if (true === this.config.silent) {
+                        jQuery('#' + this.popin.getId()).parents('.ui-dialog:first').addClass('hidden');
+                    }
+
                     self.ContentSaveManager.save().done(function () {
                         self.repository.getDrafts().done(function (drafts) {
                             var config = {
@@ -155,6 +159,10 @@ define(
                             self.popin.setContent(Renderer.render(treeTemplate, config));
                             self.bindEvents();
                             EventManager.init(self.selector);
+
+                            if (self.config.silent === true) {
+                                self.save();
+                            }
                         });
                     });
                 }
