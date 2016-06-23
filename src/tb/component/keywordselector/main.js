@@ -50,6 +50,8 @@ define(['Core/Utils',
         COMMA_KEY: 188,
         ENTER_KEY: 13,
         BACKSPACE_KEY: 8,
+        ARROWDOWN_KEY: 40,
+        ARROWUP_KEY: 38,
 
         initialize: function (userConfig) {
             this.config = jQuery.extend({}, this.defaultConfig, userConfig);
@@ -81,6 +83,7 @@ define(['Core/Utils',
             jQuery(this.widget).on("click", ".fa-remove", this.rmKwHandler.bind(this));
 
             jQuery(this.widget).on("keydown", ".kw-editor", this.handleBackSpace.bind(this));
+            jQuery(this.widget).on("keydown", ".kw-editor", this.handleUpDownArrow.bind(this));
 
             this.autoComplete.on("selection", function (suggestion) {
                 var keywordItem = jQuery.extend({}, suggestion);
@@ -137,6 +140,34 @@ define(['Core/Utils',
                 self.removeKeword(kwUid);
             }
             return false;
+        },
+
+        handleUpDownArrow: function (e) {
+            if (e.keyCode !== this.ARROWDOWN_KEY && e.keyCode !== this.ARROWUP_KEY) {
+                return;
+            }
+
+            var suggestionListItems = jQuery('li.suggestion-item'),
+                selected = suggestionListItems.filter('.selected'),
+                current;
+
+            suggestionListItems.removeClass('selected');
+
+            if (e.keyCode === this.ARROWDOWN_KEY) {
+                if (!selected.length || selected.is(':last-child')) {
+                    current = suggestionListItems.eq(0);
+                } else {
+                    current = selected.next();
+                }
+            } else if (e.keyCode === this.ARROWUP_KEY) {
+                if (!selected.length || selected.is(':first-child')) {
+                    current = suggestionListItems.last();
+                } else {
+                    current = selected.prev();
+                }
+            }
+
+            current.addClass('selected');
         },
 
         rmKwHandler: function (e) {

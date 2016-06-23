@@ -11300,6 +11300,9 @@ fieldset[disabled] #bb5-ui .btn-online.active {
 #bb5-ui .kw-wrapper.list-inline .backbee-autocomplete .suggestion-item.active {
   cursor: pointer;
 }
+#bb5-ui .kw-wrapper.list-inline .backbee-autocomplete .suggestion-item.selected {
+  background-color: #eeeeee;
+}
 #bb5-ui .kw-wrapper.list-inline input.kw-editor {
   border-width: 0;
 }
