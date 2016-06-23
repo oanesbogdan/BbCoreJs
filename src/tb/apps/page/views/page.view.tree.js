@@ -161,6 +161,7 @@ define(
                         dragAndDrop: true,
                         onCreateLi: this.onCreateLi,
                         id: this.config.popinId || 'bb-page-tree' + '-' + uid,
+                        keyboardSupport: false,
                         title: self.config.popin_title,
                         height: 400 > jQuery(window).height() - 40 ? jQuery(window).height() - 40 : 400,
 
