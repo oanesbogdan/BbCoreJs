@@ -1,5 +1,5 @@
 <li data-uid={{id}} class="bb5-selector-item">
-    <p class="item-picture"><a href="javascript:;"><img src="{{image}}"></a></p>
+    <p class="item-picture"><a title="{{title}}" href="javascript:;"><img src="{{image}}"></a></p>
     <p class="item-ttl"><strong class="txt-highlight">{{smallTitle}}</strong></p>
     <p class="item-meta">
           {% if content.extra %}
