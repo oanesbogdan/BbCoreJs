@@ -380,6 +380,8 @@ define(
                                 self.contribution_loaded = true;
 
                                 DndManager.initDnD();
+
+                                Core.Mediator.publish('after:block-toolbar:shown');
                             });
                         }
 
