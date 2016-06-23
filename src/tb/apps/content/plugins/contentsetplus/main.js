@@ -55,6 +55,7 @@ define(
                     accepts = ContentManager.replaceChars(content.getAccept(), '\\', '/'),
                     availableAccepts = [],
                     key,
+                    self = this,
                     mask;
 
                 for (key in accepts) {
@@ -72,7 +73,16 @@ define(
                         mask.mask(content.jQueryObject);
 
                         ContentManager.createElement(availableAccepts[0]).done(function (newContent) {
-                            content.append(newContent);
+                            var config = self.config,
+                                position = 0;
+
+                            if (config.hasOwnProperty(availableAccepts[0])) {
+                                if (config[availableAccepts[0]].hasOwnProperty('appendPosition') && config[availableAccepts[0]].appendPosition === 'bottom') {
+                                    position = 'last';
+                                }
+                            }
+
+                            content.append(newContent, position);
                         });
                     } else {
                         this.showPopin(this.buildContents(accepts));
