@@ -40,6 +40,7 @@ define(
                 beforeDateClass: '.before-date',
                 afterDateClass: '.after-date',
                 titleFieldClass: '.content-title',
+                contentHideNotLinkedClass: '.content-hide',
                 searchBtnClass: '.search-btn'
             },
 
@@ -146,6 +147,7 @@ define(
                     self = this,
                     field;
                 jQuery(this.widget).find("input").val("");
+                jQuery(this.widget).find(this.config.contentHideNotLinkedClass).eq(0).prop('checked', true);
                 jQuery(this.widget).find(this.config.beforeDateClass).eq(0).data("selectedTime", "");
                 jQuery(this.widget).find(this.config.afterDateClass).eq(0).data("selectedTime", "");
                 fields.each(function (i) {
@@ -159,6 +161,7 @@ define(
                 criteria.title = jQuery(this.widget).find(this.config.titleFieldClass).eq(0).val();
                 criteria.beforeDate = jQuery(this.widget).find(this.config.beforeDateClass).eq(0).data('selectedTime') || '';
                 criteria.afterDate = jQuery(this.widget).find(this.config.afterDateClass).eq(0).data('selectedTime') || '';
+                criteria.hideNotLinked = jQuery(this.widget).find(this.config.contentHideNotLinkedClass).is(':checked');
                 this.trigger("doSearch", criteria);
             }
         });

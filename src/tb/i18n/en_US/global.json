@@ -67,6 +67,7 @@
     "content_selector": "Content selector",
     "content_selector_on_offline": "Content is on an offline page",
     "content_selector_on_online": "Content is on an online page",
+    "hide_content_not_linked_to_pages": "Hide contents that don't appear on any pages",
     "contents_validated": "Content published online",
     "contents_canceled": "Content canceled",
     "copy": "Copy",
