@@ -28,6 +28,18 @@ define(['component!datastore', 'jquery', 'jsclass'], function (DataStore, jQuery
                 return dfd.promise();
             });
 
+            DataStore.RestDataStore.define('findAncestors', function (uid) {
+                var dfd = new jQuery.Deferred(),
+                    self = this;
+                this.trigger("processing");
+                this.restHandler.read('media-folder/' + uid + '/ancestors').done(function (node) {
+                    dfd.resolve(node);
+                }).fail(function () {
+                    self.trigger("doneProcessing");
+                    dfd.reject();
+                });
+                return dfd.promise();
+            });
 
             DataStore.RestDataStore.define('findNode', function (uid) {
                 var dfd = new jQuery.Deferred(),

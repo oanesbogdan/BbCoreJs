@@ -430,11 +430,72 @@ define(
                     var self = this;
                     this.mediaFolderDataStore.execute().done(function (result) {
                         self.openedMediaFolder = self.mediaFolderTreeView.getNodeById(result[0].id);
-                        self.mediaFolderDataStore.applyFilter("byMediaFolder", self.openedMediaFolder.uid).execute().done(function () {
-                            self.mediaFolderTreeView.invoke('openNode', self.openedMediaFolder);
-                            self.autoLoadMedia();
-                        });
+
+                        var folderUid = sessionStorage.getItem('lastSelectedFolder');
+
+                        if (folderUid && self.openedMediaFolder.uid !== folderUid) {
+                            self.selectFolder(folderUid);
+                        } else {
+                            self.mediaFolderDataStore.applyFilter("byMediaFolder", self.openedMediaFolder.uid).execute().done(function () {
+                                self.mediaFolderTreeView.invoke('openNode', self.openedMediaFolder);
+                                self.autoLoadMedia();
+                            });
+                        }
                     });
+                },
+
+                selectFolder: function (folderUid) {
+                    var self = this;
+                    if (!folderUid) { return false; }
+
+                    self.mediaFolderDataStore.findAncestors(folderUid).done(function (ancestorInfos) {
+                        if (ancestorInfos && ancestorInfos.length === 0) {
+                            self.handleTreeMask('remove');
+                            return false;
+                        }
+
+                        var callbacks = [],
+                            nodeCallBack,
+                            nextIndex = 0;
+
+                        jQuery.each(ancestorInfos, function (i) {
+                            var curentObject = ancestorInfos[i];
+                            nextIndex = nextIndex + 1;
+                            nodeCallBack = self.createNodeCallBack(curentObject, callbacks, nextIndex, folderUid);
+                            callbacks.push(nodeCallBack);
+                        });
+
+                        if (callbacks.length === 0) {
+                            self.handleTreeMask('remove');
+                            return false;
+                        }
+
+                        callbacks[0].call(this);
+                    }).fail(function (reason) {
+                        require("component!notify").error(reason);
+                    });
+                },
+
+                createNodeCallBack: function (curentObject, callbacks, nextIndex, folderUid) {
+                    var self = this,
+                        nextCallback;
+
+                    return function () {
+                        self.openedMediaFolder = self.mediaFolderTreeView.getNodeById('node_' + curentObject.uid);
+
+                        self.mediaFolderDataStore.applyFilter("byMediaFolder", self.openedMediaFolder.uid).execute().done(function () {
+                            if (callbacks.length === nextIndex) {
+                                self.openedMediaFolder = self.mediaFolderTreeView.getNodeById('node_' + folderUid);
+                                self.selectedNode = self.openedMediaFolder;
+                                self.autoLoadMedia();
+                            }
+
+                            nextCallback = callbacks[nextIndex];
+                            if (typeof nextCallback === "function") {
+                                nextCallback.call(self);
+                            }
+                        });
+                    };
                 },
 
                 autoLoadMedia : function () {
@@ -467,6 +528,7 @@ define(
                     this.mediaDataStore.applyFilter("byMediaFolder", e.node.uid).execute();
                     this.mediaFolderTreeView.invoke("selectNode", e.node);
                     this.menusHelper.setSelectedNode(e.node);
+                    sessionStorage.setItem('lastSelectedFolder', e.node.uid);
                 },
 
                 handleEnterKey: function (e) {
