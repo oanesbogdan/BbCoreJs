@@ -41,6 +41,11 @@ define(['component!datastore', 'jsclass'], function (DataStore) {
         return restParams;
     });
 
+    restDataStore.addFilter("byHideNotLinked", function (value, restParams) {
+        restParams.criterias.hideNotLinked = value;
+        return restParams;
+    });
+
     restDataStore.addFilter("usePagination", function (value, restParams) {
         restParams.criterias.usePagination = value;
         return restParams;
