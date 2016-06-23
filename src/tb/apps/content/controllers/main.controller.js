@@ -286,7 +286,7 @@ define(
              * Show the revision selector
              * @returns {undefined}
              */
-            validateService: function (req) {
+            validateService: function (req, silent) {
                 var translator = req('component!translator'),
                     config = {
                         popinTitle: translator.translate('validation_confirmation'),
@@ -294,8 +294,11 @@ define(
                         noteMsg: translator.translate('validation_popin_note') + '<br />' + translator.translate('validation_unselect_note'),
                         questionMsg: translator.translate('validate_content_publish_modifications_online'),
                         title: translator.translate('confirm_saving_changes_content_below') + ' :',
+                        silent: silent || false,
                         onSave: function (data, popin) {
+
                             popin.mask();
+
                             RevisionRepository.save(data, 'commit').done(function () {
                                 if (data.length === 0) {
                                     notify.warning(translator.translate('no_content_validate'));
