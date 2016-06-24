@@ -108,7 +108,13 @@ define(
                     this.popin = PopinManager.createPopIn({
                         position: { my: "center top", at: "center top+" + jQuery('#' + Core.get('menu.id')).height()}
                     });
+
                     this.popin.setTitle(title);
+
+                    if (this.config.silent === true) {
+                        popinConfig.modal = false;
+                    }
+
                     this.popin.addOptions(popinConfig);
                 },
 
