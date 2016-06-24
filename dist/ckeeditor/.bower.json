@@ -11,14 +11,16 @@
     "text",
     "javascript"
   ],
-  "authors": "CKSource - Frederico Knabben (http://cksource.com)",
-  "license": "http://ckeditor.com/about/license",
+  "authors": "CKSource (http://cksource.com/)",
+  "license": "For licensing, see LICENSE.md or http://ckeditor.com/license.",
   "homepage": "http://ckeditor.com",
-  "_release": "e3c8c891d9",
+  "main": "./ckeditor.js",
+  "moduleType": "globals",
+  "_release": "8fff28d6a1",
   "_resolution": {
     "type": "branch",
     "branch": "standard/stable",
-    "commit": "e3c8c891d967c3354cc6b6b49b57f0253cc0ff04"
+    "commit": "8fff28d6a169a2d6897d5fec880fe08632163942"
   },
   "_source": "git://github.com/ckeditor/ckeditor-releases.git",
   "_target": "standard/stable",
