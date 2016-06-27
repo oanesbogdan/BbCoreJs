@@ -44,6 +44,13 @@ define(
                 CoreDriverHandler.addDriver(this.DEFAULT_DRIVER_KEY, CoreRestDriver);
             },
 
+            /* 
+             * Find bundle by uid
+            */
+            findByUid: function (uid) {
+                return CoreDriverHandler.read(this.TYPE, { 'uid': uid });
+            },
+
             /**
              * List bundles
              * @param {Function} callback
