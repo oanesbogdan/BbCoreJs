@@ -67,6 +67,7 @@ define(['jquery', 'Core/Renderer', 'text!main/tpl/toolbar', 'component!translato
                 logo: require.toUrl('html/img/backbee.png')
             };
 
+            Core.Mediator.publish('on:toolbar:afterInitialize', this.toolbar);
         },
 
         searchParentUrl: function (url) {
@@ -121,6 +122,8 @@ define(['jquery', 'Core/Renderer', 'text!main/tpl/toolbar', 'component!translato
             target.siblings('.active').removeClass('active');
 
             target.addClass('active');
+
+            Core.Mediator.publish('on:toolbar:afterItemClick', event);
         },
 
         /**
