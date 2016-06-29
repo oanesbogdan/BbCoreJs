@@ -161,7 +161,7 @@ define(
                 criteria.title = jQuery(this.widget).find(this.config.titleFieldClass).eq(0).val();
                 criteria.beforeDate = jQuery(this.widget).find(this.config.beforeDateClass).eq(0).data('selectedTime') || '';
                 criteria.afterDate = jQuery(this.widget).find(this.config.afterDateClass).eq(0).data('selectedTime') || '';
-                criteria.hideNotLinked = jQuery(this.widget).find(this.config.contentHideNotLinkedClass).is(':checked');
+                criteria.hideNotLinked = jQuery(this.widget).find(this.config.contentHideNotLinkedClass).is(':checked') ? 1 : 0;
                 this.trigger("doSearch", criteria);
             }
         });
