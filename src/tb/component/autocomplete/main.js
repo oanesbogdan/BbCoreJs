@@ -116,7 +116,7 @@ define(['Core', 'BackBone', 'Core/Utils', 'jquery', 'Core/Renderer', 'text!../au
 
 
         findSuggestions: function (e) {
-            if (e.keyCode === 13) {
+            if (e.keyCode === 13 || e.keyCode === 40 || e.keyCode === 38) {
                 return;
             }
             this.clear();
@@ -152,6 +152,18 @@ define(['Core', 'BackBone', 'Core/Utils', 'jquery', 'Core/Renderer', 'text!../au
             this.clear();
         },
 
+        handleEnter: function (e) {
+            if (e.keyCode !== 13) {
+                return;
+            }
+
+            var suggestionNode = jQuery('li.suggestion-item.selected'),
+                uid = jQuery(suggestionNode).data("item");
+            this.trigger("selection", this.suggestionList.get(uid));
+
+            this.clear();
+        },
+
         clear: function () {
             jQuery(this.widget).html("").hide();
             this.currentSelection = null;
@@ -163,6 +175,7 @@ define(['Core', 'BackBone', 'Core/Utils', 'jquery', 'Core/Renderer', 'text!../au
             }
             this.widget.on("mouseenter", ".suggestion-item", this.handleSelection.bind(this));
             this.field.on("keydown", this.handleBackSpace);
+            this.field.on("keydown", this.handleEnter.bind(this));
             this.field.on("keyup", this.findSuggestions.bind(this));
             this.widget.on("click", ".suggestion-item", this.handleClick.bind(this));
 
