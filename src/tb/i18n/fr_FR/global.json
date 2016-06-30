@@ -152,6 +152,7 @@
 
     "lastname_is_required": "Champ obligatoire",
     "last_name": "Nom de famille",
+    "last_update": "Dernière mise à jour",
     "layout": "Gabarit",
     "language": "Langue",
     "link_selector_label": "Sélecteur de liens",
