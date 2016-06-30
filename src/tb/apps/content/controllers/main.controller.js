@@ -222,6 +222,9 @@ define(
              * Call method save into SaveManager
              */
             saveService: function (req, confirm) {
+
+                Core.Mediator.publish('before:content:save');
+
                 var translator = req('component!translator'),
                     nbContents = SaveManager.getContentsToSave().length,
                     dfd = new jQuery.Deferred();
@@ -287,6 +290,9 @@ define(
              * @returns {undefined}
              */
             validateService: function (req, silent) {
+
+                Core.Mediator.publish('before:content:validate');
+
                 var translator = req('component!translator'),
                     config = {
                         popinTitle: translator.translate('validation_confirmation'),

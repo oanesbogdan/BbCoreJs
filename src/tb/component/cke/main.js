@@ -220,7 +220,16 @@ define(
             },
 
             handleContentEvents : function () {
+                var self = this,
+                    cb = function () {
+                        if (self.lastInstance) {
+                            self.lastInstance.fire("blur", {editor: self.lastInstance});
+                        }
+                    };
+
                 jQuery(document).on('click', jQuery.proxy(this.blurEditor, this));
+                Core.Mediator.subscribe('before:content:validate', cb);
+                Core.Mediator.subscribe('before:content:save', cb);
             },
 
             /**
