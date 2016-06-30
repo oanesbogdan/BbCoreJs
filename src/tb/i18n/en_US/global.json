@@ -154,6 +154,7 @@
 
     "lastname_is_required": "Field required",
     "last_name": "Last name",
+    "last_update": "Last update",
     "layout": "Layout",
     "language": "Language",
     "link_selector_label": "Link Selector",
