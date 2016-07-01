@@ -65,6 +65,7 @@ define(
                     self.addPluginSplitContent();
 
                     self.editor = CKEDITOR;
+                    self.editor.config.disableNativeSpellChecker = false;
                     self.editor.disableAutoInline = true;
                     self.editor.dtd.$editable.span = 1;
                     self.editor.dtd.$editable.a = 1;
