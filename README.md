@@ -120,7 +120,7 @@ grunt
 ```
 
 ## Run the functional testing :
-Before running the functional testing you need to create a configuration file inside nightwatch/configuration/globals.json (The file golobals.json.dist can be used as an example)
+Before running the functional testing you need to create a configuration file inside nightwatch/configuration/globals.json (The file globals.json.dist can be used as an example)
 ```
 grunt nightwatch
 ```
@@ -131,7 +131,7 @@ BackBee has a core team who have rights on repositories.
 * Only mergers can merge your work on master branch;
 * If one of the deciders gives a ``:-1:`` on your suggestion, the pull request won't be merged until he changes his mind;
 
-Current mergers are @ndufreche and @crouillon, current deciders are @eric-chau, @fkroockmann, @hbaptiste, @mickaelandrieu.
+Current mergers are @crouillon and @fkroockmann, current deciders are @eric-chau and @hbaptiste.
 
 All the core team is here to help you if you want to improve BackBee, we love contribution :)
 
