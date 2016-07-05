@@ -73,6 +73,8 @@ define(
 
                         popin.addGroups(renderer.render(template, {groups: groups}));
 
+                        Core.ApplicationManager.invokeService('user.main.resizeZones');
+
                         groupMask.unmask(groupArea);
                     },
                     function () {
