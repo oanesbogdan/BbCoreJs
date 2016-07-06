@@ -352,7 +352,7 @@ define(
                     rteConfig = this.editableConfig[conf];
 
                 if (!rteConfig) {
-                    rteConfig = this.editableConfig['basic'];
+                    rteConfig = this.editableConfig.basic;
                 }
 
                 this.editor.inline(jQuery(element).get(0), rteConfig);
