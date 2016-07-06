@@ -243,6 +243,13 @@ define('tb.component/popin/PopIn', ['jquery', 'jsclass'], function (jQuery) {
                 return this;
             },
 
+            addButtonCss: function () {
+                jQuery('[aria-describedby="' + this.getId() + '"]')
+                            .find(".ui-dialog-buttonset button")
+                            .removeClass()
+                            .addClass("btn btn-default-grey btn-sm");
+            },
+
             getDialog: function () {
                 var dialog = null,
                     root = jQuery('#' + this.getId());
