@@ -259,6 +259,9 @@ define(
              * @returns {undefined}
              */
             cancelService: function (req) {
+
+                Core.Mediator.publish('before:content:cancel');
+
                 var translator = req('component!translator'),
                     config = {
                         popinTitle: translator.translate('cancel_confirmation'),
@@ -277,6 +280,8 @@ define(
 
                                 popin.unmask();
                                 popin.hide();
+
+                                Core.Mediator.publish('after:content:cancel');
                             });
                         }
 
@@ -314,6 +319,8 @@ define(
 
                                 popin.unmask();
                                 popin.hide();
+
+                                Core.Mediator.publish('after:content:validate');
                             });
                         }
                     };
