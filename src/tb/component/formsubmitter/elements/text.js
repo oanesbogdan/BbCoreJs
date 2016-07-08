@@ -34,7 +34,7 @@ define(
             compute: function (key, value, form) {
                 var element = jQuery('form#' + form.getId() + ' .element_' + key),
                     span = element.find('span.updated'),
-                    data = null,
+                    data = {'value': null},
                     doc,
                     $body;
 
@@ -42,12 +42,12 @@ define(
                     doc = new DOMParser().parseFromString(value, "text/html");
                     $body = jQuery(doc.getElementsByTagName('body'));
 
-                    data = $body.html();
+                    data.value = $body.html();
 
                     Core.Mediator.publish('on:formsubmitter:textAfterCompute', data, doc);
                 }
 
-                return data;
+                return data.value;
             }
         };
 
