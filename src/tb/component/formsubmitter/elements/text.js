@@ -19,10 +19,11 @@
 
 define(
     [
+        'Core',
         'jquery',
         'jsclass'
     ],
-    function (jQuery) {
+    function (Core, jQuery) {
 
         'use strict';
 
@@ -42,6 +43,8 @@ define(
                     $body = jQuery(doc.getElementsByTagName('body'));
 
                     data = $body.html();
+
+                    Core.Mediator.publish('on:formsubmitter:textAfterCompute', data, doc);
                 }
 
                 return data;
