@@ -59,6 +59,23 @@ define(
                 return ContentContainer.getContentsUpdated();
             },
 
+            clear: function () {
+
+                var contents = this.getContentsToSave(),
+                    content,
+                    key;
+
+                for (key in contents) {
+                    if (contents.hasOwnProperty(key)) {
+                        content = contents[key];
+
+                        content.setUpdated(false);
+                        delete content.revision.elements;
+                        delete content.revision.parameters;
+                    }
+                }
+            },
+
             /**
              * Update elements and parameters
              * @param {Object} content
