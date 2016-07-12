@@ -54,13 +54,15 @@ define('tb.component/translator/main', ['component!logger', 'jquery', 'Core'], f
              * Define a locale according to current choice or browser
              */
             defineDefaultLocale: function () {
-                var locale = localStorage.getItem('locale');
+                var locale = localStorage.getItem('locale'),
+                    index;
 
                 if (null === locale) {
                     locale = navigator.language;
+                    index = locale.index('-');
 
-                    if (-1 !== locale.indexOf('-')) {
-                        locale = locale.replace('-', '_');
+                    if (-1 !== index) {
+                        locale = locale.substring(0, index) + '_' + locale.substring(index + 1).toUpperCase();
                     } else {
                         locale = locale + '_' + locale.toUpperCase();
                     }
