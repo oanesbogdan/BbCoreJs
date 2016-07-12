@@ -25,6 +25,7 @@
 
         var association = {
                 'Element/Text': 'Text',
+                'Element/Date': 'Date',
                 'Element/Image': 'File',
                 'Element/File': 'File',
                 'Element/Keyword': 'Keyword',
