@@ -26,9 +26,10 @@ define(
         'component!rtemanager',
         'content.manager',
         'content.dnd.manager',
+        'content.save.manager',
         'Core/ApplicationManager'
     ],
-    function (Core, Utils, jQuery, RteManager, ContentManager, DNDManager, ApplicationManager) {
+    function (Core, Utils, jQuery, RteManager, ContentManager, DNDManager, SaveManager, ApplicationManager) {
         'use strict';
 
         return RteManager.createAdapter('cke', {
@@ -160,7 +161,14 @@ define(
                             self.updateNodeContent(paragraph, name, prevValue),
                             self.updateNodeContent(splittedContent, name, afterValue)
                         ).done(function () {
-                            currentNodeParent.append(splittedContent, siblingPosition + 1);
+                            currentNodeParent.append(splittedContent, siblingPosition + 1).done(function () {
+
+                                //prevent cke autosave
+                                setTimeout(function () {
+                                    SaveManager.clear();
+                                }, 200);
+                            });
+
                             $split.remove();
                         });
                     });
