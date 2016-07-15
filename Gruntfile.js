@@ -213,7 +213,8 @@ module.exports = function (grunt) {
                         'jssimplepagination',
 
                         'cryptojs.core',
-                        'cryptojs.md5'
+                        'cryptojs.md5',
+                        'multiselect-two-sides'
                     ]
                 }
             }

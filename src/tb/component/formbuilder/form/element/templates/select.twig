@@ -1,31 +1,80 @@
 <label for="{{ element.getKey() }}" class="label">{{ element.getLabel() }}</label>
 
-<span class="select select-block">
+<span class="select select-block{% if element.isMultiple() %} select-multiple{% endif %}">
+    {% if element.isMultiple() %}
+        <div class="col-bb5-45">
+            <select class="form-control {{ element.getKey() }}_left" multiple>
+                {% if isArray == true %}
+
+                    {% for item in element.getOptions() %}
+                        {% if loop.index0 not in element.getValue() or loop.index0.toString() not in element.getValue() %}
+                            <option value="{{ loop.index0 }}">{{ item }}</option>
+                        {% endif %}
+                    {% endfor %}
+
+                {% else %}
+
+                    {% for key, item in element.getOptions() %}
+                        {% if key not in element.getValue() %}
+                            <option value="{{ key }}">{{ item }}</option>
+                        {% endif %}
+                    {% endfor %}
+
+                {% endif %}
+            </select>
+        </div>
+        <div class="col-bb5-10">
+            <button type="button" class="btn btn-block {{ element.getKey() }}_rightSelected"><i class="fa fa-arrow-right"></i></button>
+            <button type="button" class="btn btn-block {{ element.getKey() }}_leftSelected"><i class="fa fa-arrow-left"></i></button>
+        </div>
+        <div class="col-bb5-45">
+    {% endif %}
     <select name="{{ element.getKey() }}"
             {% if element.isDisabled() %}disabled{% endif %}
             {% if element.isMultiple() %}multiple{% endif %}
-            class="form-control"
+            class="form-control {{ element.getKey() }}_right"
             >
+        {% if element.isMultiple() %}
+            {% if isArray == true %}
 
-        {% if isArray == true %}
-            {% for item in element.getOptions() %}
-                <option {% if loop.index0 in element.getValue() or loop.index0.toString() in element.getValue() %}selected{% endif %}
-                 value="{{ loop.index0 }}">
-                    {{ item }}
-                </option>
-            {% endfor %}
+                {% for item in element.getOptions() %}
+                    {% if loop.index0 in element.getValue() or loop.index0.toString() in element.getValue() %}
+                        <option value="{{ loop.index0 }}">{{ item }}</option>
+                    {% endif %}
+                {% endfor %}
+
+            {% else %}
+
+                {% for key, item in element.getOptions() %}
+                    {% if key in element.getValue() %}
+                        <option value="{{ key }}">{{ item }}</option>
+                    {% endif %}
+                {% endfor %}
+
+            {% endif %}
         {% else %}
+            {% if isArray == true %}
+                {% for item in element.getOptions() %}
+                    <option {% if loop.index0 in element.getValue() or loop.index0.toString() in element.getValue() %}selected{% endif %}
+                     value="{{ loop.index0 }}">
+                        {{ item }}
+                    </option>
+                {% endfor %}
+            {% else %}
 
-            {% for key, item in element.getOptions() %}
-                <option {% if key in element.getValue() %}selected{% endif %}
-                 value="{{ key }}">
-                    {{ item }}
-                </option>
-            {% endfor %}
+                {% for key, item in element.getOptions() %}
+                    <option {% if key in element.getValue() %}selected{% endif %}
+                     value="{{ key }}">
+                        {{ item }}
+                    </option>
+                {% endfor %}
 
+            {% endif %}
         {% endif %}
-
     </select>
+    {% if element.isMultiple() %}
+        </div>
+    {% endif %}
 </span>
 
 <span class="hidden updated"></span>

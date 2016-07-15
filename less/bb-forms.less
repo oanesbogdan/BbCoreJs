@@ -236,6 +236,20 @@ textarea {
     }
 
 }
+
+.select.select-multiple {
+    &:before {
+        content:none;
+    }
+    &:after {
+        content:none;
+    }
+}
+
+.select.select-multiple select {
+    height: 100px;
+}
+
 /* Undo the Firefox inner focus ring */
 .select select:focus:-moz-focusring {
   color: transparent;
