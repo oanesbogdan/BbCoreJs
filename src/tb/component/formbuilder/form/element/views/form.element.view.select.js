@@ -17,10 +17,12 @@
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['Core', 'Core/Renderer', 'BackBone', 'jquery'], function (Core, Renderer, Backbone, jQuery) {
+define(['Core', 'Core/Renderer', 'BackBone', 'jquery', 'multiselect-two-sides'], function (Core, Renderer, Backbone, jQuery) {
     'use strict';
 
     var SelectView = Backbone.View.extend({
+
+        mainSelector: Core.get('wrapper_toolbar_selector'),
 
         initialize: function (template, formTag, element) {
             this.el = formTag;
@@ -33,10 +35,14 @@ define(['Core', 'Core/Renderer', 'BackBone', 'jquery'], function (Core, Renderer
         bindEvents: function () {
             var self = this;
 
+            if (this.element.isMultiple()) {
+                jQuery(this.mainSelector).on('click', 'form#' + this.el, jQuery.proxy(this.manageMultiselect, null, this));
+            }
+
             Core.Mediator.subscribe('before:form:submit', function (form) {
                 if (form.attr('id') === self.el) {
                     var element = form.find('.element_' + self.element.getKey()),
-                        selected = element.find('select option:selected'),
+                        selected = self.element.isMultiple() ? element.find('select.' + self.element.getKey() + '_right option') : element.find('select option:selected'),
                         span = element.find('span.updated'),
                         key,
                         data = [],
@@ -69,6 +75,18 @@ define(['Core', 'Core/Renderer', 'BackBone', 'jquery'], function (Core, Renderer
                 }
             });
         },
+
+        manageMultiselect: function (view) {
+            jQuery('.' + view.element.getKey() + '_left').multiselect({
+                right: '.' + view.element.getKey() + '_right',
+                rightSelected: '.' + view.element.getKey() + '_rightSelected',
+                leftSelected: '.' + view.element.getKey() + '_leftSelected',
+                keepRenderingSort: true,
+                submitAllLeft: false,
+                submitAllRight: false
+            });
+        },
+
         /**
          * Render the template into the DOM with the Renderer
          * @returns {String} html

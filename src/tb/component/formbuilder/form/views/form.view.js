@@ -93,15 +93,27 @@ define(['Core', 'Core/Renderer', 'BackBone', 'jquery'], function (Core, Renderer
         },
 
         computeMultipleSelectors: function (form, paramObj) {
-            var multipleSelectors = form.find('select[multiple]');
+            var multipleSelectors = form.find('select[multiple]*[class*="_right"]');
 
             if (multipleSelectors.length > 0) {
                 multipleSelectors.each(function () {
-                    var target = jQuery(this),
-                        name = target.prop('name');
+                    var select = jQuery(this),
+                        selectName = select.prop('name'),
+                        options = jQuery('.' + select.prop('class').split(' ').join('.') + ' option');
 
-                    if (name && !target.prop('value')) {
-                        paramObj[name] = [];
+                    if (options.length > 0 && selectName) {
+                        options.each(function () {
+                            var option = jQuery(this);
+
+                            if (paramObj.hasOwnProperty(selectName)) {
+                                paramObj[selectName] = jQuery.makeArray(paramObj[selectName]);
+                                paramObj[selectName].push(option.val());
+                            } else {
+                                paramObj[selectName] = option.val();
+                            }
+                        });
+                    } else if (selectName) {
+                        paramObj[selectName] = [];
                     }
                 });
             }

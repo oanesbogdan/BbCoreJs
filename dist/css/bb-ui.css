@@ -7855,6 +7855,15 @@ fieldset[disabled] #bb5-ui .btn-online.active {
 #bb5-ui .select select.input-xs {
   padding: .1rem 2.25rem .35rem .5rem;
 }
+#bb5-ui .select.select-multiple:before {
+  content: none;
+}
+#bb5-ui .select.select-multiple:after {
+  content: none;
+}
+#bb5-ui .select.select-multiple select {
+  height: 100px;
+}
 #bb5-ui .select select:focus:-moz-focusring {
   color: transparent;
   text-shadow: 0 0 0 #000;
