@@ -59,7 +59,7 @@ define('tb.component/translator/main', ['component!logger', 'jquery', 'Core'], f
 
                 if (null === locale) {
                     locale = navigator.language;
-                    index = locale.index('-');
+                    index = locale.indexOf('-');
 
                     if (-1 !== index) {
                         locale = locale.substring(0, index) + '_' + locale.substring(index + 1).toUpperCase();
