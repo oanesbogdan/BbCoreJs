@@ -35,6 +35,8 @@ define(
 
         var SaveManager = new JS.Class({
 
+            ELEMENT_KEYWORD: 'Element/Keyword',
+
             /**
              * Save all content updated
              */
@@ -42,7 +44,32 @@ define(
                 var contents = this.getContentsToSave(),
                     promises = [],
                     content,
-                    key;
+                    key,
+                    contentsToBeProcessed = [],
+                    keywordContents = [];
+
+                for (key in contents) {
+                    if (contents.hasOwnProperty(key)) {
+                        content = contents[key];
+                        if (content.type === this.ELEMENT_KEYWORD) {
+                            keywordContents.push(content);
+                        } else {
+                            contentsToBeProcessed.push(content);
+                        }
+                    }
+                }
+
+                if (keywordContents.length > 0) {
+                    promises = this.processSave(keywordContents, promises);
+                }
+                promises = this.processSave(contentsToBeProcessed, promises);
+
+                return jQuery.when.apply(undefined, promises).promise();
+            },
+
+            processSave: function (contents, promises) {
+                var key,
+                    content;
 
                 for (key in contents) {
                     if (contents.hasOwnProperty(key)) {
@@ -52,7 +79,7 @@ define(
                     }
                 }
 
-                return jQuery.when.apply(undefined, promises).promise();
+                return promises;
             },
 
             getContentsToSave: function () {
