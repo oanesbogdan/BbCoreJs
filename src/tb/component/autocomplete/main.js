@@ -29,7 +29,7 @@ define(['Core', 'BackBone', 'Core/Utils', 'jquery', 'Core/Renderer', 'text!../au
         settings: {
             dataSource: [],
             selectedCls: "active",
-            threshold: 3,
+            threshold: 2,
             field: null
         },
 
