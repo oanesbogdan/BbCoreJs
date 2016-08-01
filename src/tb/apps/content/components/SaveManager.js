@@ -41,7 +41,8 @@ define(
              * Save all content updated
              */
             save: function () {
-                var contents = this.getContentsToSave(),
+                var self = this,
+                    contents = this.getContentsToSave(),
                     promises = [],
                     content,
                     key,
@@ -61,7 +62,14 @@ define(
 
                 if (keywordContents.length > 0) {
                     promises = this.processSave(keywordContents, promises);
+
+                    return jQuery.when.apply(undefined, promises).promise().then(function () {
+                        var contentPromises = self.processSave(contentsToBeProcessed, []);
+
+                        return jQuery.when.apply(undefined, contentPromises).promise();
+                    });
                 }
+
                 promises = this.processSave(contentsToBeProcessed, promises);
 
                 return jQuery.when.apply(undefined, promises).promise();
