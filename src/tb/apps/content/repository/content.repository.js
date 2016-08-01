@@ -74,10 +74,11 @@ define(
                     return CoreDriverHandler.read(this.TYPE, {'definition': ''});
                 },
 
-                findByUids: function (uids) {
+                findByUids: function (uids, preserveOrder) {
                     uids = uids.join();
+                    preserveOrder = preserveOrder ? 1 : 0;
 
-                    return CoreDriverHandler.read(this.TYPE, {'uids': uids, 'site_uid': ''});
+                    return CoreDriverHandler.read(this.TYPE, {'uids': uids, 'preserve_order': preserveOrder, 'site_uid': ''});
                 },
 
                 /**

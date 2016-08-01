@@ -107,7 +107,7 @@ define(
                 }
 
                 if (Object.keys(keywords).length > 0) {
-                    this.KeywordRepository.findByUids(Object.keys(keywords)).done(function (data) {
+                    this.KeywordRepository.findByUids(Object.keys(keywords), true).done(function (data) {
                         var key2;
 
                         for (key2 in data) {
@@ -143,7 +143,7 @@ define(
                 }
 
                 if (uids.length > 0) {
-                    this.ContentRepository.findByUids(uids).done(function (data) {
+                    this.ContentRepository.findByUids(uids, true).done(function (data) {
                         var key2;
 
                         for (key2 in data) {
