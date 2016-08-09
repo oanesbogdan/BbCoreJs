@@ -74,6 +74,7 @@ define(
                 });
 
                 jQuery('.dropdown-toggle').dropdown();
+                Core.Mediator.publish('after:userToolbar:render', this);
                 return this;
             },
 
